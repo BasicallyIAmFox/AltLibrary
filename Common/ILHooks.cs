@@ -14,16 +14,13 @@ using System.Linq;
 using System.Reflection;
 using Terraria;
 using Terraria.GameContent;
-using Terraria.GameContent.Generation;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Graphics.Effects;
-using Terraria.ID;
 using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.Utilities;
-using Terraria.WorldBuilding;
 
 namespace AltLibrary.Core
 {
@@ -107,6 +104,8 @@ namespace AltLibrary.Core
 
         // TO-DO:
         // Figure out why it can't find some stuff
+        // Remove obsolete mark once fixed
+        [Obsolete]
         private static void WorldGen_GERunner(ILContext il)
         {
             ILCursor c = new(il);
