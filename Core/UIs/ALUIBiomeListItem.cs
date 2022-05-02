@@ -114,7 +114,6 @@ namespace AltLibrary.Core.UIs
 			CalculatedStyle dimensions = _achievementIcon.GetDimensions();
 			float num8 = dimensions.X + dimensions.Width;
 			Vector2 value9 = new(num8 + 7f, innerDimensions.Y);
-			bool flag = false;
 			float num7 = innerDimensions.Width - dimensions.Width + 1f - (float)(num9 * 2);
 			Vector2 baseScale5 = new(0.85f);
 			Vector2 baseScale4 = new(0.92f);

@@ -289,6 +289,8 @@ namespace AltLibrary.Common.Systems
             AddHellHouses();
         }
 
+        // Remove obsolete mark once added compatibility with custom Hell biomes
+        [Obsolete]
         private void AddHellHouses()
         {
             int num68 = (int)(Main.maxTilesX * 0.25);
@@ -1117,7 +1119,8 @@ namespace AltLibrary.Common.Systems
             }
         }
 
-
+        // Remove obsolete mark once added drunk worldgen
+        [Obsolete]
         private void WorldEvilAltTask(GenerationProgress progress, GameConfiguration configuration)
         {
             int num677 = Main.maxTilesX;

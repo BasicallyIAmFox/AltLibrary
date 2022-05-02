@@ -13,7 +13,7 @@ namespace AltLibrary
 
         public static List<AltBiome> biomes = new();
 
-        public static Dictionary<int, float> hellAltTrans = new();
+        public static Dictionary<string, float> hellAltTrans = new();
 
         public AltLibrary()
         {
@@ -28,7 +28,6 @@ namespace AltLibrary
         public override void Unload()
         {
             AltLibraryConfig.Config = null;
-            hellAltTrans = null;
         }
     }
 }

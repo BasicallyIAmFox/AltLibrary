@@ -190,10 +190,7 @@ namespace AltLibrary.Common.AltBiomes
         {
             ModTypeLookup<AltBiome>.Register(this);
             AltLibrary.biomes.Add(this);
-            if (BiomeType == BiomeType.Hell)
-            {
-                AltLibrary.hellAltTrans.Add(Type, 0f);
-            }
+            AltLibrary.hellAltTrans.Add(FullName, 0f);
             Type = AltLibrary.biomes.Count;
         }
     }
