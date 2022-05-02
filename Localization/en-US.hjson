@@ -1,5 +1,7 @@
 Mods: {
 	AltLibrary: {
+		ChooseBiome: "Choose Biomes"
+		ChooseOre: "Choose Ores"
 		RecipeGroups: {
 			EvilBars: "Evil Bar"
 			HallowBars: "Light Bar"
