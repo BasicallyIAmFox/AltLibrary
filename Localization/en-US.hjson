@@ -1,0 +1,29 @@
+Mods: {
+	AltLibrary: {
+		RecipeGroups: {
+			EvilBars: "Evil Bar"
+			HallowBars: "Light Bar"
+			HellBars: "Underworld Bar"
+			JungleBars: "Tropical Bar"
+			MushroomBars: "Mushroom Bar"
+			EvilSwords: "Evil Sword"
+			HallowSwords: "Light Sword"
+			HellSwords: "Underworld Sword"
+			JungleSwords: "Tropical Sword"
+			ComboSwords: "Combination Sword"
+			TrueComboSwords: "True Combination Sword"
+			TrueHallowSwords: "True Light Sword"
+			RottenChunks: "Vile Innard"
+			PixieDusts: "Light Residue"
+			CrystalShards: "Light Component"
+			CursedFlames: "Vile Component"
+			ShadowScales: "Evil Boss Drop"
+			JungleSpores: "Tropical Component"
+			Deathweed: "Evil Herb"
+			Fireblossom: "Underworld Herb"
+			Moonglow: "Tropical Herb"
+			Hellforges: "Underworld Forge"
+		}
+	}
+  
+}
