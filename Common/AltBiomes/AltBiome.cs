@@ -144,7 +144,8 @@ namespace AltLibrary.Common.AltBiomes
         /// </summary>
         public int? LootCageTile = null;
         /// <summary>
-        /// For Evil alts. The TileID of this biome's equivalent to Demon Altars.
+        /// For Evil alts, this is the TileID of this biome's equivalent to Demon Altars.
+        /// For Underworld alts, this is the TileID of this biome's equivalent to Hellforges.
         /// </summary>
         public int? AltarTile = null;
         public int? OrbTile = null;
