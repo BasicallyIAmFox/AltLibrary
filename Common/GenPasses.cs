@@ -12,6 +12,7 @@ namespace AltLibrary.Common
         private static MethodBase ResetInfo;
         private static MethodBase ShiniesInfo;
         private static MethodBase AltarsInfo;
+        private static MethodBase HardmodeWallsInfo;
 
         public static event ILContext.Manipulator HookGenPassReset
         {
@@ -31,11 +32,22 @@ namespace AltLibrary.Common
             remove => HookEndpointManager.Unmodify(AltarsInfo, value);
         }
 
+        public static event ILContext.Manipulator HookGenPassHardmodeWalls
+        {
+            add => HookEndpointManager.Modify(HardmodeWallsInfo, value);
+            remove => HookEndpointManager.Unmodify(HardmodeWallsInfo, value);
+        }
+
         public static void ILGenerateWorld(ILContext il)
         {
             ResetInfo = GetGenPassInfo(il, "Reset");
             ShiniesInfo = GetGenPassInfo(il, "Shinies");
             AltarsInfo = GetGenPassInfo(il, "Altars");
+        }
+
+        public static void ILSMCallBack(ILContext il)
+        {
+            HardmodeWallsInfo = GetGenPassInfo(il, "Hardmode Walls");
         }
 
         private static MethodBase GetGenPassInfo(ILContext il, string name)
