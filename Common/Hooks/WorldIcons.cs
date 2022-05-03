@@ -197,7 +197,9 @@ namespace AltLibrary.Common.Hooks
                                 BiomeType.Evil => tempDict[path2].worldEvil,
                                 _ => tempDict[path2].worldEvil,
                             };
-                            return equals == biome.FullName;
+                            bool bl = equals == biome.FullName;
+                            if (biome.BiomeType == BiomeType.Hallow) bl &= ourData.IsHardMode;
+                            return bl;
                         }));
                     }
                 }
