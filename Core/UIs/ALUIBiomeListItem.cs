@@ -152,24 +152,24 @@ namespace AltLibrary.Core.UIs
 
             if (_achievement.BiomeType == BiomeType.Evil)
             {
-                if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff < 0) _achievement.Type = -1;
-                if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff <= -2) _achievement.Type = -2;
                 UIWorldCreationEdits.AltEvilBiomeChosenType = _achievement.Type - 1;
+                if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff < 0) UIWorldCreationEdits.AltEvilBiomeChosenType = -1;
+                if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff <= -2) UIWorldCreationEdits.AltEvilBiomeChosenType = -2;
             }
             if (_achievement.BiomeType == BiomeType.Hallow)
             {
-                if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff < 0) _achievement.Type = -3;
                 UIWorldCreationEdits.AltHallowBiomeChosenType = _achievement.Type - 1;
+                if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff < 0) UIWorldCreationEdits.AltJungleBiomeChosenType = -3;
             }
             if (_achievement.BiomeType == BiomeType.Hell)
             {
-                if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff < 0) _achievement.Type = -5;
                 UIWorldCreationEdits.AltHellBiomeChosenType = _achievement.Type - 1;
+                if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff < 0) UIWorldCreationEdits.AltJungleBiomeChosenType = -5;
             }
             if (_achievement.BiomeType == BiomeType.Jungle)
             {
-                if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff < 0) _achievement.Type = -4;
                 UIWorldCreationEdits.AltJungleBiomeChosenType = _achievement.Type - 1;
+                if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff < 0) UIWorldCreationEdits.AltJungleBiomeChosenType = -4;
             }
         }
 
