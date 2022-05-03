@@ -14,12 +14,48 @@ namespace AltLibrary.Common.Systems
             string hell = WorldBiomeManager.worldHell;
             string jungle = WorldBiomeManager.worldJungle;
             int causedIssueBy = -1;
-            if (ModContent.Find<AltBiome>(evil).BiomeType != BiomeType.Evil)
+            if (evil != "" && ModContent.Find<AltBiome>(evil).BiomeType != BiomeType.Evil)
             {
                 List<string> checks = new() { hallow, hell, jungle };
                 foreach (string check in checks)
                 {
                     if (check != "" && ModContent.Find<AltBiome>(check).BiomeType == BiomeType.Evil)
+                    {
+                        causedIssueBy = (int)AltLibrary.biomes.First(x => x.FullName == check).BiomeType;
+                        break;
+                    }
+                }
+            }
+            if (hallow != "" && ModContent.Find<AltBiome>(hallow).BiomeType != BiomeType.Hallow)
+            {
+                List<string> checks = new() { evil, hell, jungle };
+                foreach (string check in checks)
+                {
+                    if (check != "" && ModContent.Find<AltBiome>(check).BiomeType == BiomeType.Hallow)
+                    {
+                        causedIssueBy = (int)AltLibrary.biomes.First(x => x.FullName == check).BiomeType;
+                        break;
+                    }
+                }
+            }
+            if (hell != "" && ModContent.Find<AltBiome>(hell).BiomeType != BiomeType.Hell)
+            {
+                List<string> checks = new() { evil, hallow, jungle };
+                foreach (string check in checks)
+                {
+                    if (check != "" && ModContent.Find<AltBiome>(check).BiomeType == BiomeType.Hell)
+                    {
+                        causedIssueBy = (int)AltLibrary.biomes.First(x => x.FullName == check).BiomeType;
+                        break;
+                    }
+                }
+            }
+            if (jungle != "" && ModContent.Find<AltBiome>(jungle).BiomeType != BiomeType.Jungle)
+            {
+                List<string> checks = new() { evil, hallow, hell };
+                foreach (string check in checks)
+                {
+                    if (check != "" && ModContent.Find<AltBiome>(check).BiomeType == BiomeType.Jungle)
                     {
                         causedIssueBy = (int)AltLibrary.biomes.First(x => x.FullName == check).BiomeType;
                         break;
