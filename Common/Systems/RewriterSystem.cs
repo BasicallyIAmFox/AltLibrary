@@ -13,7 +13,7 @@ namespace AltLibrary.Common.Systems
             string hallow = WorldBiomeManager.worldHallow;
             string hell = WorldBiomeManager.worldHell;
             string jungle = WorldBiomeManager.worldJungle;
-            BiomeType causedIssueBy = (BiomeType)(-1);
+            int causedIssueBy = -1;
             if (ModContent.Find<AltBiome>(evil).BiomeType != BiomeType.Evil)
             {
                 List<string> checks = new() { hallow, hell, jungle };
@@ -21,18 +21,18 @@ namespace AltLibrary.Common.Systems
                 {
                     if (check != "" && ModContent.Find<AltBiome>(check).BiomeType == BiomeType.Evil)
                     {
-                        causedIssueBy = AltLibrary.biomes.First(x => x.FullName == check).BiomeType;
+                        causedIssueBy = (int)AltLibrary.biomes.First(x => x.FullName == check).BiomeType;
                         break;
                     }
                 }
             }
-            if (causedIssueBy == (BiomeType)(-1))
+            if (causedIssueBy == -1)
             {
                 AltLibrary.Instance.Logger.Info("Checking issues done! Enjoy game!");
             }
             else
             {
-                string inside = causedIssueBy == BiomeType.Evil ? "evil" : (causedIssueBy == BiomeType.Hallow ? "hallow" : (causedIssueBy == BiomeType.Hell ? "hell" : "jungle"));
+                string inside = causedIssueBy == 0 ? "evil" : (causedIssueBy == 1 ? "hallow" : (causedIssueBy == 2 ? "hell" : "jungle"));
 
                 AltLibrary.Instance.Logger.Info($"Found error in {inside}! Fixing...");
 
@@ -42,7 +42,7 @@ namespace AltLibrary.Common.Systems
                         {
                             switch (causedIssueBy)
                             {
-                                case BiomeType.Hallow:
+                                case 1:
                                     {
                                         string evil2 = evil;
                                         string hallow2 = hallow;
@@ -50,7 +50,7 @@ namespace AltLibrary.Common.Systems
                                         WorldBiomeManager.worldEvil = hallow2;
                                         break;
                                     }
-                                case BiomeType.Hell:
+                                case 2:
                                     {
                                         string evil2 = evil;
                                         string hallow2 = hell;
@@ -58,7 +58,7 @@ namespace AltLibrary.Common.Systems
                                         WorldBiomeManager.worldEvil = hallow2;
                                         break;
                                     }
-                                case BiomeType.Jungle:
+                                case 3:
                                     {
                                         string evil2 = evil;
                                         string hallow2 = jungle;
@@ -73,7 +73,7 @@ namespace AltLibrary.Common.Systems
                         {
                             switch (causedIssueBy)
                             {
-                                case BiomeType.Evil:
+                                case 0:
                                     {
                                         string evil2 = evil;
                                         string hallow2 = hallow;
@@ -81,7 +81,7 @@ namespace AltLibrary.Common.Systems
                                         WorldBiomeManager.worldEvil = hallow2;
                                         break;
                                     }
-                                case BiomeType.Hell:
+                                case 2:
                                     {
                                         string evil2 = hell;
                                         string hallow2 = hallow;
@@ -89,7 +89,7 @@ namespace AltLibrary.Common.Systems
                                         WorldBiomeManager.worldHell = hallow2;
                                         break;
                                     }
-                                case BiomeType.Jungle:
+                                case 3:
                                     {
                                         string evil2 = jungle;
                                         string hallow2 = hallow;
@@ -104,7 +104,7 @@ namespace AltLibrary.Common.Systems
                         {
                             switch (causedIssueBy)
                             {
-                                case BiomeType.Evil:
+                                case 0:
                                     {
                                         string evil2 = evil;
                                         string hallow2 = hell;
@@ -112,7 +112,7 @@ namespace AltLibrary.Common.Systems
                                         WorldBiomeManager.worldEvil = hallow2;
                                         break;
                                     }
-                                case BiomeType.Hallow:
+                                case 1:
                                     {
                                         string evil2 = hell;
                                         string hallow2 = hallow;
@@ -120,7 +120,38 @@ namespace AltLibrary.Common.Systems
                                         WorldBiomeManager.worldHell = hallow2;
                                         break;
                                     }
-                                case BiomeType.Jungle:
+                                case 3:
+                                    {
+                                        string evil2 = jungle;
+                                        string hallow2 = hell;
+                                        WorldBiomeManager.worldHell = evil2;
+                                        WorldBiomeManager.worldJungle = hallow2;
+                                        break;
+                                    }
+                            }
+                            break;
+                        }
+                    case "jungle":
+                        {
+                            switch (causedIssueBy)
+                            {
+                                case 0:
+                                    {
+                                        string evil2 = evil;
+                                        string hallow2 = jungle;
+                                        WorldBiomeManager.worldJungle = evil2;
+                                        WorldBiomeManager.worldEvil = hallow2;
+                                        break;
+                                    }
+                                case 1:
+                                    {
+                                        string evil2 = jungle;
+                                        string hallow2 = hallow;
+                                        WorldBiomeManager.worldHallow = evil2;
+                                        WorldBiomeManager.worldJungle = hallow2;
+                                        break;
+                                    }
+                                case 2:
                                     {
                                         string evil2 = jungle;
                                         string hallow2 = hell;

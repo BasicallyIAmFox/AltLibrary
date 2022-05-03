@@ -10,6 +10,7 @@ namespace AltLibrary.Common.AltBiomes
     public abstract class AltBiome : ModType
     {
         internal int specialValueForWorldUIDoNotTouchElseYouCanBreakStuff { get; set; }
+        internal bool? isForCrimsonOrCorruptWorldUIFix { get; set; }
 
         public BiomeType BiomeType { get; set; }
         public ModBiome Biome { get; private set; }

@@ -37,6 +37,7 @@ namespace AltLibrary.Common
         public static int Cobalt;
         public static int Mythril;
         public static int Adamantite;
+        public static bool isCrimson;
         public enum CurrentAltOption
         {
             Biome,
@@ -56,9 +57,10 @@ namespace AltLibrary.Common
         public static void UIWorldCreation_BuildPage(On.Terraria.GameContent.UI.States.UIWorldCreation.orig_BuildPage orig, UIWorldCreation self)
         {
             chosenOption = (CurrentAltOption)(-1);
-            List<int> evilBiomeTypes = new() { -1, -2 };
+            List<int> evilBiomeTypes = new() { -333, -666 };
             AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Evil).ToList().ForEach(x => evilBiomeTypes.Add(x.Type - 1));
             AltEvilBiomeChosenType = evilBiomeTypes[Main.rand.Next(evilBiomeTypes.Count)];
+            isCrimson = AltEvilBiomeChosenType == -333 ? false : true;
             List<int> hallowBiomeTypes = new() { -3 };
             AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Hallow).ToList().ForEach(x => hallowBiomeTypes.Add(x.Type - 1));
             AltHallowBiomeChosenType = hallowBiomeTypes[Main.rand.Next(hallowBiomeTypes.Count)];
@@ -207,8 +209,8 @@ namespace AltLibrary.Common
                 {
                     list.Add(new RandomOptionBiome("RandomUnderworldBiome"));
                 }
-                list.Add(new VanillaBiome("CorruptBiome", BiomeType.Evil, -1, Color.MediumPurple, Language.GetText("Mods.AltLibrary.Biomes.CorruptName"), Language.GetText("Mods.AltLibrary.Biomes.CorruptDesc")));
-                list.Add(new VanillaBiome("CrimsonBiome", BiomeType.Evil, -2, Color.IndianRed, Language.GetText("Mods.AltLibrary.Biomes.CrimsonName"), Language.GetText("Mods.AltLibrary.Biomes.CrimsonDesc")));
+                list.Add(new VanillaBiome("CorruptBiome", BiomeType.Evil, -333, Color.MediumPurple, Language.GetText("Mods.AltLibrary.Biomes.CorruptName"), Language.GetText("Mods.AltLibrary.Biomes.CorruptDesc"), false));
+                list.Add(new VanillaBiome("CrimsonBiome", BiomeType.Evil, -666, Color.IndianRed, Language.GetText("Mods.AltLibrary.Biomes.CrimsonName"), Language.GetText("Mods.AltLibrary.Biomes.CrimsonDesc"), true));
                 foreach (AltBiome biome in AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Evil))
                 {
                     list.Add(biome);
@@ -385,11 +387,12 @@ namespace AltLibrary.Common
                 if (AltEvilBiomeChosenType <= -1)
                 {
                     WorldBiomeManager.worldEvil = "";
-                    WorldGen.crimson = AltEvilBiomeChosenType == -2;
+                    WorldGen.crimson = isCrimson;
                 }
                 else
                 {
                     WorldBiomeManager.worldEvil = AltLibrary.biomes[AltEvilBiomeChosenType].FullName;
+                    WorldGen.crimson = false;
                 }
                 if (AltJungleBiomeChosenType <= -1)
                 {
@@ -462,8 +465,8 @@ namespace AltLibrary.Common
                     if (i == 3 && AltJungleBiomeChosenType >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.biomes[AltJungleBiomeChosenType].IconSmall ?? "AltLibrary/Assets/WorldIcons/ButtonJungle");
                     Rectangle? rectangle = null;
                     if (i == 0 && AltHallowBiomeChosenType < 0) rectangle = new(30, 30, 30, 30);
-                    if (i == 1 && AltEvilBiomeChosenType == -1) rectangle = new(210, 0, 30, 30);
-                    if (i == 1 && AltEvilBiomeChosenType <= -2) rectangle = new(360, 0, 30, 30);
+                    if (i == 1 && AltEvilBiomeChosenType > -666 && AltEvilBiomeChosenType <= -333) rectangle = new(210, 0, 30, 30);
+                    if (i == 1 && AltEvilBiomeChosenType <= -666) rectangle = new(360, 0, 30, 30);
                     if (i == 2 && AltHellBiomeChosenType < 0) rectangle = new(30, 60, 30, 30);
                     if (i == 3 && AltJungleBiomeChosenType < 0) rectangle = new(180, 30, 30, 30);
                     ValueTuple<Asset<Texture2D>, Rectangle?> valueTuple = new(asset, rectangle);

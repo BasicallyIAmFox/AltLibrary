@@ -16,7 +16,7 @@ namespace AltLibrary.Common.AltBiomes
         private readonly LocalizedText displayName;
         private readonly LocalizedText desc;
         private readonly Color nameColor;
-        public VanillaBiome(string name, BiomeType biome, int type, Color nameColor, LocalizedText displayName, LocalizedText desc)
+        public VanillaBiome(string name, BiomeType biome, int type, Color nameColor, LocalizedText displayName, LocalizedText desc, bool? fix = null)
         {
             this.name = name;
             if (name == "CorruptBiome") specialValueForWorldUIDoNotTouchElseYouCanBreakStuff = -1;
@@ -29,6 +29,7 @@ namespace AltLibrary.Common.AltBiomes
             this.displayName = displayName;
             this.desc = desc;
             this.nameColor = nameColor;
+            isForCrimsonOrCorruptWorldUIFix = fix;
         }
 
         public override bool IsLoadingEnabled(Mod mod) => false;
