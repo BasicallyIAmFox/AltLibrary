@@ -67,12 +67,12 @@ namespace AltLibrary.Common
                         }
                     }
                 }
-                var corroCondition = new LeadingConditionRule(new CorroCrimDropCondition());
-                var crimCondition = new LeadingConditionRule(new CorroCrimDropCondition());
-                var corroCondition2 = new LeadingConditionRule(new Conditions.IsCorruptionAndNotExpert());
-                var crimCondition2 = new LeadingConditionRule(new Conditions.IsCrimsonAndNotExpert());
+                var corroCrimCondition = new LeadingConditionRule(new CorroCrimDropCondition());
+                var corroCondition = new LeadingConditionRule(new Conditions.IsCorruptionAndNotExpert());
+                var crimCondition = new LeadingConditionRule(new Conditions.IsCrimsonAndNotExpert());
 
-                corroCondition2.OnSuccess(corroCondition);
+                corroCrimCondition.OnSuccess(corroCondition);
+                corroCrimCondition.OnSuccess(crimCondition);
                 corroCondition.OnSuccess(ItemDropRule.Common(ItemID.DemoniteOre, 1, 30, 90));
                 corroCondition.OnSuccess(ItemDropRule.Common(ItemID.CorruptSeeds, 1, 1, 3));
                 corroCondition.OnSuccess(ItemDropRule.Common(ItemID.UnholyArrow, 1, 20, 50));
@@ -80,19 +80,18 @@ namespace AltLibrary.Common
                 crimCondition.OnSuccess(ItemDropRule.Common(ItemID.CrimtaneOre, 1, 30, 90));
                 crimCondition.OnSuccess(ItemDropRule.Common(ItemID.CrimsonSeeds, 1, 1, 3));
 
-                npcLoot.Add(crimCondition2);
-                npcLoot.Add(corroCondition2);
+                npcLoot.Add(corroCrimCondition);
 
-                foreach (var biome in EvilList)
-                {
-                    var altCondition = new LeadingConditionRule(new EvilAltDropCondition(biome.FullName));
-                    var altItemType = biome.BiomeOreItem == null ? ItemID.DemoniteOre : (int)biome.BiomeOreItem;
-                    RegisterAltEvilDrops(altCondition, altItemType, 1, 30, 90, npcLoot);
-                    altItemType = biome.SeedType == null ? ItemID.CorruptSeeds : (int)biome.SeedType;
-                    RegisterAltEvilDrops(altCondition, altItemType, 1, 1, 3, npcLoot);
-                    altItemType = biome.ArrowType == null ? 0 : (int)biome.ArrowType;
-                    if (altItemType != 0) RegisterAltEvilDrops(altCondition, altItemType, 1, 20, 50, npcLoot);
-                }
+                //foreach (var biome in EvilList)
+                //{
+                //    var altCondition = new LeadingConditionRule(new EvilAltDropCondition(biome.FullName));
+                //    var altItemType = biome.BiomeOreItem == null ? ItemID.DemoniteOre : (int)biome.BiomeOreItem;
+                //    RegisterAltEvilDrops(altCondition, altItemType, 1, 30, 90, npcLoot);
+                //    altItemType = biome.SeedType == null ? ItemID.CorruptSeeds : (int)biome.SeedType;
+                //    RegisterAltEvilDrops(altCondition, altItemType, 1, 1, 3, npcLoot);
+                //    altItemType = biome.ArrowType == null ? 0 : (int)biome.ArrowType;
+                //    if (altItemType != 0) RegisterAltEvilDrops(altCondition, altItemType, 1, 20, 50, npcLoot);
+                //}
             }
             if (npc.type == NPCID.Retinazer || npc.type == NPCID.Spazmatism)
             {
