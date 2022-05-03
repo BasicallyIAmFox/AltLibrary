@@ -152,24 +152,23 @@ namespace AltLibrary.Core.UIs
 
             if (_achievement.BiomeType == BiomeType.Evil)
             {
-                UIWorldCreationEdits.AltEvilBiomeChosenType = _achievement.Type - 1;
-                if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff < 0) UIWorldCreationEdits.AltEvilBiomeChosenType = -1;
-                if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff <= -2) UIWorldCreationEdits.AltEvilBiomeChosenType = -2;
+                AltLibrary.Instance.Logger.Info(_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff);
+                UIWorldCreationEdits.AltEvilBiomeChosenType = _achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff == 0 ? _achievement.Type - 1 : _achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff;
             }
             if (_achievement.BiomeType == BiomeType.Hallow)
             {
-                UIWorldCreationEdits.AltHallowBiomeChosenType = _achievement.Type - 1;
-                if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff < 0) UIWorldCreationEdits.AltJungleBiomeChosenType = -3;
+                if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff < 0) _achievement.Type = -3;
+                UIWorldCreationEdits.AltHallowBiomeChosenType = _achievement.Type > 0 ? _achievement.Type - 1 : _achievement.Type;
             }
             if (_achievement.BiomeType == BiomeType.Hell)
             {
-                UIWorldCreationEdits.AltHellBiomeChosenType = _achievement.Type - 1;
-                if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff < 0) UIWorldCreationEdits.AltJungleBiomeChosenType = -5;
+                if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff < 0) _achievement.Type = -5;
+                UIWorldCreationEdits.AltHellBiomeChosenType = _achievement.Type > 0 ? _achievement.Type - 1 : _achievement.Type;
             }
             if (_achievement.BiomeType == BiomeType.Jungle)
             {
-                UIWorldCreationEdits.AltJungleBiomeChosenType = _achievement.Type - 1;
-                if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff < 0) UIWorldCreationEdits.AltJungleBiomeChosenType = -4;
+                if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff < 0) _achievement.Type = -4;
+                UIWorldCreationEdits.AltJungleBiomeChosenType = _achievement.Type > 0 ? _achievement.Type - 1 : _achievement.Type;
             }
         }
 
