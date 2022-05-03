@@ -133,7 +133,7 @@ namespace AltLibrary.Common.AltBiomes
         /// <summary>
         /// For Evil Alts. The ItemID of the ore that Eye of Cthulhu will drop in worlds with this biome.
         /// </summary>
-        public int? OreItemType = null;
+        public int? BiomeOreItem = null;
         /// <summary>
         /// For Evil Alts. In Corruption worlds, EoC will drop Unholy Arrows, which the Crimson has no equivalent for. 
         /// If you have a comparable item you wish for EoC to drop, define it here.
