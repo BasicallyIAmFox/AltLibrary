@@ -386,7 +386,7 @@ namespace AltLibrary.Common
                 {
                     WorldBiomeManager.worldEvil = "";
                     AltLibrary.Instance.Logger.Info(AltEvilBiomeChosenType.ToString());
-                    WorldGen.crimson = AltEvilBiomeChosenType == -2;
+                    WorldGen.crimson = !(AltEvilBiomeChosenType == -2);
                 }
                 else
                 {

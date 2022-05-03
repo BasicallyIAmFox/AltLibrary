@@ -51,7 +51,7 @@ namespace AltLibrary.Core.UIs
             button = new(ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Empty", AssetRequestMode.ImmediateLoad));
             _achievementIcon.Width.Set(0f, 1f);
             _achievementIcon.Height.Set(0, 1f);
-            button.OnRightClick += _achievementIcon_OnClick;
+            button.OnClick += _achievementIcon_OnClick;
             _achievementIcon.Append(button);
             _innerPanelTopTexture = Main.Assets.Request<Texture2D>("Images/UI/Achievement_InnerPanelTop");
             if (_large)

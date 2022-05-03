@@ -26,13 +26,13 @@ namespace AltLibrary.Common.Systems
             tag.Add("AltLibrary:WorldHallow", worldHallow);
             tag.Add("AltLibrary:WorldHell", worldHell);
             tag.Add("AltLibrary:WorldJungle", worldJungle);
-            tag.Add("AltLibrary:Copper", Copper);
+            /*tag.Add("AltLibrary:Copper", Copper);
             tag.Add("AltLibrary:Iron", Iron);
             tag.Add("AltLibrary:Silver", Silver);
             tag.Add("AltLibrary:Gold", Gold);
             tag.Add("AltLibrary:Cobalt", Cobalt);
             tag.Add("AltLibrary:Mythril", Mythril);
-            tag.Add("AltLibrary:Adamantite", Adamantite);
+            tag.Add("AltLibrary:Adamantite", Adamantite);*/
 
             Dictionary<string, AltLibraryConfig.WorldDataValues> tempDict = AltLibraryConfig.Config.GetWorldData();
             AltLibraryConfig.WorldDataValues worldData;
@@ -54,13 +54,13 @@ namespace AltLibrary.Common.Systems
             worldHallow = tag.GetString("AltLibrary:WorldHallow");
             worldHell = tag.GetString("AltLibrary:WorldHell");
             worldJungle = tag.GetString("AltLibrary:WorldJungle");
-            Copper = tag.GetInt("AltLibrary:Copper");
+            /*Copper = tag.GetInt("AltLibrary:Copper");
             Iron = tag.GetInt("AltLibrary:Iron");
             Silver = tag.GetInt("AltLibrary:Silver");
             Gold = tag.GetInt("AltLibrary:Gold");
             Cobalt = tag.GetInt("AltLibrary:Cobalt");
             Mythril = tag.GetInt("AltLibrary:Mythril");
-            Adamantite = tag.GetInt("AltLibrary:Adamantite");
+            Adamantite = tag.GetInt("AltLibrary:Adamantite");*/
         }
 
         public override void NetSend(BinaryWriter writer)
@@ -69,13 +69,13 @@ namespace AltLibrary.Common.Systems
             writer.Write(worldHallow);
             writer.Write(worldHell);
             writer.Write(worldJungle);
-            writer.Write(Copper);
+            /*writer.Write(Copper);
             writer.Write(Iron);
             writer.Write(Silver);
             writer.Write(Gold);
             writer.Write(Cobalt);
             writer.Write(Mythril);
-            writer.Write(Adamantite);
+            writer.Write(Adamantite);*/
         }
 
         public override void NetReceive(BinaryReader reader)
@@ -84,13 +84,13 @@ namespace AltLibrary.Common.Systems
             worldHallow = reader.ReadString();
             worldHell = reader.ReadString();
             worldJungle = reader.ReadString();
-            Copper = reader.ReadInt32();
+            /*Copper = reader.ReadInt32();
             Iron = reader.ReadInt32();
             Silver = reader.ReadInt32();
             Gold = reader.ReadInt32();
             Cobalt = reader.ReadInt32();
             Mythril = reader.ReadInt32();
-            Adamantite = reader.ReadInt32();
+            Adamantite = reader.ReadInt32();*/
         }
     }
 }
