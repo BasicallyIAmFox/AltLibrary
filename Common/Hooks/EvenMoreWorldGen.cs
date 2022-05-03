@@ -55,7 +55,7 @@ namespace AltLibrary.Common.Hooks
                 return;
             if (!c.TryGotoNext(i => i.MatchLdfld(out _)))
                 return;
-            c.EmitDelegate(() =>
+            /*c.EmitDelegate(() =>
             {
                 if (WorldBiomeManager.worldEvil == "")
                 {
@@ -65,7 +65,7 @@ namespace AltLibrary.Common.Hooks
                 {
                     WorldGen.crimson = false;
                 }
-            });
+            });*/
             if (!c.TryGotoNext(i => i.MatchRet()))
                 return;
             if (!c.TryGotoPrev(i => i.MatchBneUn(out _)))
