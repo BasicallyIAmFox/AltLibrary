@@ -102,16 +102,13 @@ namespace AltLibrary.Core
             c.Emit(OpCodes.Ldloc, 4);
         }
 
-        // TO-DO:
-        // Figure out why it can't find some stuff
-        // Remove obsolete mark once fixed
-        [Obsolete]
         private static void WorldGen_GERunner(ILContext il)
         {
             ILCursor c = new(il);
 
             #region Hallow
-            if (!c.TryGotoNext(i => i.MatchLdcI4(70))) { AltLibrary.Instance.Logger.Info("Error here! $1"); return; } c.Index++;
+            if (!c.TryGotoNext(i => i.MatchLdcI4(70))) { AltLibrary.Instance.Logger.Info("Error here! $1"); return; }
+            c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
                 ushort value = orig;
@@ -121,7 +118,8 @@ namespace AltLibrary.Core
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(219))) { AltLibrary.Instance.Logger.Info("Error here! $2"); return; } c.Index++;
+            if (!c.TryGotoNext(i => i.MatchLdcI4(219))) { AltLibrary.Instance.Logger.Info("Error here! $2"); return; }
+            c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
                 ushort value = orig;
@@ -131,7 +129,8 @@ namespace AltLibrary.Core
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(222))) { AltLibrary.Instance.Logger.Info("Error here! $3"); return; } c.Index++;
+            if (!c.TryGotoNext(i => i.MatchLdcI4(222))) { AltLibrary.Instance.Logger.Info("Error here! $3"); return; }
+            c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
                 ushort value = orig;
@@ -141,7 +140,8 @@ namespace AltLibrary.Core
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(28))) { AltLibrary.Instance.Logger.Info("Error here! $4"); return; } c.Index++;
+            if (!c.TryGotoNext(i => i.MatchLdcI4(28))) { AltLibrary.Instance.Logger.Info("Error here! $4"); return; }
+            c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
                 ushort value = orig;
@@ -151,7 +151,8 @@ namespace AltLibrary.Core
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(117))) { AltLibrary.Instance.Logger.Info("Error here! $5"); return; } c.Index++;
+            if (!c.TryGotoNext(i => i.MatchLdcI4(117))) { AltLibrary.Instance.Logger.Info("Error here! $5"); return; }
+            c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
                 ushort value = orig;
@@ -161,7 +162,8 @@ namespace AltLibrary.Core
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(402))) { AltLibrary.Instance.Logger.Info("Error here! $6"); return; } c.Index++;
+            if (!c.TryGotoNext(i => i.MatchLdcI4(402))) { AltLibrary.Instance.Logger.Info("Error here! $6"); return; }
+            c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
                 ushort value = orig;
@@ -171,7 +173,8 @@ namespace AltLibrary.Core
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(109))) { AltLibrary.Instance.Logger.Info("Error here! $7"); return; } c.Index++;
+            if (!c.TryGotoNext(i => i.MatchLdcI4(109))) { AltLibrary.Instance.Logger.Info("Error here! $7"); return; }
+            c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
                 ushort value = orig;
@@ -181,7 +184,8 @@ namespace AltLibrary.Core
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(117))) { AltLibrary.Instance.Logger.Info("Error here! $8"); return; } c.Index++;
+            if (!c.TryGotoNext(i => i.MatchLdcI4(117))) { AltLibrary.Instance.Logger.Info("Error here! $8"); return; }
+            c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
                 ushort value = orig;
@@ -191,7 +195,8 @@ namespace AltLibrary.Core
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(116))) { AltLibrary.Instance.Logger.Info("Error here! $9"); return; } c.Index++;
+            if (!c.TryGotoNext(i => i.MatchLdcI4(116))) { AltLibrary.Instance.Logger.Info("Error here! $9"); return; }
+            c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
                 ushort value = orig;
@@ -201,7 +206,8 @@ namespace AltLibrary.Core
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(23))) { AltLibrary.Instance.Logger.Info("Error here! $10"); return; } c.Index++;
+            if (!c.TryGotoNext(i => i.MatchLdcI4(23))) { AltLibrary.Instance.Logger.Info("Error here! $10"); return; }
+            c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
                 ushort value = orig;
@@ -211,7 +217,8 @@ namespace AltLibrary.Core
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(199))) { AltLibrary.Instance.Logger.Info("Error here! $11"); return; } c.Index++;
+            if (!c.TryGotoNext(i => i.MatchLdcI4(199))) { AltLibrary.Instance.Logger.Info("Error here! $11"); return; }
+            c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
                 ushort value = orig;
@@ -221,7 +228,8 @@ namespace AltLibrary.Core
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(109))) { AltLibrary.Instance.Logger.Info("Error here! $12"); return; } c.Index++;
+            if (!c.TryGotoNext(i => i.MatchLdcI4(109))) { AltLibrary.Instance.Logger.Info("Error here! $12"); return; }
+            c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
                 ushort value = orig;
@@ -231,7 +239,8 @@ namespace AltLibrary.Core
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(25))) { AltLibrary.Instance.Logger.Info("Error here! $13"); return; } c.Index++;
+            if (!c.TryGotoNext(i => i.MatchLdcI4(25))) { AltLibrary.Instance.Logger.Info("Error here! $13"); return; }
+            c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
                 ushort value = orig;
@@ -241,7 +250,8 @@ namespace AltLibrary.Core
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(203))) { AltLibrary.Instance.Logger.Info("Error here! $14"); return; } c.Index++;
+            if (!c.TryGotoNext(i => i.MatchLdcI4(203))) { AltLibrary.Instance.Logger.Info("Error here! $14"); return; }
+            c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
                 ushort value = orig;
@@ -251,7 +261,8 @@ namespace AltLibrary.Core
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(109))) { AltLibrary.Instance.Logger.Info("Error here! $15"); return; } c.Index++;
+            if (!c.TryGotoNext(i => i.MatchLdcI4(117))) { AltLibrary.Instance.Logger.Info("Error here! $15"); return; }
+            c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
                 ushort value = orig;
@@ -261,7 +272,8 @@ namespace AltLibrary.Core
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(112))) { AltLibrary.Instance.Logger.Info("Error here! $16"); return; } c.Index++;
+            if (!c.TryGotoNext(i => i.MatchLdcI4(112))) { AltLibrary.Instance.Logger.Info("Error here! $16"); return; }
+            c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
                 ushort value = orig;
@@ -271,8 +283,8 @@ namespace AltLibrary.Core
                 }
                 return value;
             });
-            // Crimsand cant be found for whatever reason is???
-            /*if (!c.TryGotoNext(i => i.MatchLdcI4(234))) { AltLibrary.Instance.Logger.Info("Error here! $17"); return; } c.Index++;
+            if (!c.TryGotoNext(i => i.MatchLdcI4(234))) { AltLibrary.Instance.Logger.Info("Error here! $17"); return; }
+            c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
                 ushort value = orig;
@@ -281,8 +293,9 @@ namespace AltLibrary.Core
                     value = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeSand.Value;
                 }
                 return value;
-            });*/
-            if (!c.TryGotoNext(i => i.MatchLdcI4(116))) { AltLibrary.Instance.Logger.Info("Error here! $18"); return; } c.Index++;
+            });
+            if (!c.TryGotoNext(i => i.MatchLdcI4(116))) { AltLibrary.Instance.Logger.Info("Error here! $18"); return; }
+            c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
                 ushort value = orig;
@@ -292,7 +305,8 @@ namespace AltLibrary.Core
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(163))) { AltLibrary.Instance.Logger.Info("Error here! $19"); return; } c.Index++;
+            if (!c.TryGotoNext(i => i.MatchLdcI4(163))) { AltLibrary.Instance.Logger.Info("Error here! $19"); return; }
+            c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
                 ushort value = orig;
@@ -302,8 +316,7 @@ namespace AltLibrary.Core
                 }
                 return value;
             });
-            // Red Ice can't be found for whatever reason is
-            /*if (!c.TryGotoNext(i => i.MatchLdcI4(200))) { AltLibrary.Instance.Logger.Info("Error here! $20"); return; } c.Index++;
+            if (!c.TryGotoNext(i => i.MatchLdcI4(200))) { AltLibrary.Instance.Logger.Info("Error here! $20"); return; } c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
                 ushort value = orig;
@@ -342,11 +355,11 @@ namespace AltLibrary.Core
                     value = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeHardenedSand.Value;
                 }
                 return value;
-            });*/
+            });
             #endregion
 
             #region Crimson
-            /*if (!c.TryGotoNext(i => i.MatchLdcI4(109))) { AltLibrary.Instance.Logger.Info("Error here! $24"); return; } c.Index++;
+            if (!c.TryGotoNext(i => i.MatchLdcI4(109))) { AltLibrary.Instance.Logger.Info("Error here! $24"); return; } c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
                 ushort value = orig;
@@ -385,11 +398,11 @@ namespace AltLibrary.Core
                     value = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeIce.Value;
                 }
                 return value;
-            });*/
+            });
             #endregion
 
             #region Corruption (and custom)
-            /*if (!c.TryGotoNext(i => i.MatchLdcI4(69))) { AltLibrary.Instance.Logger.Info("Error here! $28"); return; } c.Index++;
+            if (!c.TryGotoNext(i => i.MatchLdcI4(69))) { AltLibrary.Instance.Logger.Info("Error here! $28"); return; } c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
                 ushort value = orig;
@@ -428,8 +441,9 @@ namespace AltLibrary.Core
                     value = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeStone.Value;
                 }
                 return value;
-            });*/
-            if (!c.TryGotoNext(i => i.MatchLdcI4(398))) { AltLibrary.Instance.Logger.Info("Error here! $32"); return; } c.Index++;
+            });
+            if (!c.TryGotoNext(i => i.MatchLdcI4(398))) { AltLibrary.Instance.Logger.Info("Error here! $32"); return; }
+            c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
                 ushort value = orig;
@@ -439,7 +453,7 @@ namespace AltLibrary.Core
                 }
                 return value;
             });
-            /*if (!c.TryGotoNext(i => i.MatchLdcI4(23))) { AltLibrary.Instance.Logger.Info("Error here! $33"); return; } c.Index++;
+            if (!c.TryGotoNext(i => i.MatchLdcI4(23))) { AltLibrary.Instance.Logger.Info("Error here! $33"); return; } c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
                 ushort value = orig;
@@ -568,7 +582,7 @@ namespace AltLibrary.Core
                     value = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeHardenedSand.Value;
                 }
                 return value;
-            });*/
+            });
             #endregion
         }
 
