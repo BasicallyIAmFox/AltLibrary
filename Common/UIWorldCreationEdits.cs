@@ -8,18 +8,13 @@ using MonoMod.Cil;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
-using Terraria.IO;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
 using Terraria.UI;
-using Terraria.Utilities;
 
 namespace AltLibrary.Common
 {
@@ -39,6 +34,16 @@ namespace AltLibrary.Common
             Ore
         }
 
+        public static void Init()
+        {
+            IL.Terraria.GameContent.UI.States.UIWorldCreation.MakeInfoMenu += ILMakeInfoMenu;
+            On.Terraria.GameContent.UI.States.UIWorldCreation.AddWorldEvilOptions += OnAddWorldEvilOptions;
+            On.Terraria.GameContent.UI.States.UIWorldCreation.SetDefaultOptions += UIWorldCreation_SetDefaultOptions;
+            On.Terraria.GameContent.UI.States.UIWorldCreation.BuildPage += UIWorldCreation_BuildPage;
+            IL.Terraria.GameContent.UI.States.UIWorldCreation.FinishCreatingWorld += UIWorldCreation_FinishCreatingWorld;
+            On.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf += UIWorldCreationPreview_DrawSelf;
+        }
+
         public static void UIWorldCreation_BuildPage(On.Terraria.GameContent.UI.States.UIWorldCreation.orig_BuildPage orig, UIWorldCreation self)
         {
             chosenOption = CurrentAltOption.Biome;
@@ -51,8 +56,8 @@ namespace AltLibrary.Common
             orig(self);
             UIText text = new("No alt ores yet! Sorry!", 1f, true);
             text.Width = StyleDimension.FromPercent(1f);
-			text.Left = StyleDimension.FromPixels(500);
-			text.Top = StyleDimension.FromPixels(350);
+            text.Left = StyleDimension.FromPixels(500);
+            text.Top = StyleDimension.FromPixels(350);
             text.OnUpdate += Text_OnUpdate;
             self.Append(text);
 
@@ -167,7 +172,7 @@ namespace AltLibrary.Common
         public static void UIWorldCreation_FinishCreatingWorld(ILContext il)
         {
             ILCursor c = new(il);
-            if(!c.TryGotoNext(i => i.MatchRet()))
+            if (!c.TryGotoNext(i => i.MatchRet()))
                 return;
             if (!c.TryGotoPrev(i => i.MatchLdnull()))
                 return;

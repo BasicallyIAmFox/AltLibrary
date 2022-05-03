@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
-using AltLibrary.Common.AltBiomes;
+﻿using AltLibrary.Common.AltBiomes;
 using AltLibrary.Common.Systems;
+using System.Collections.Generic;
+using Terraria;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace AltLibrary.Common
 {
@@ -14,10 +12,10 @@ namespace AltLibrary.Common
     {
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
-            List<AltBiome> HallowList = new List<AltBiome>();
-            List<AltBiome> HellList = new List<AltBiome>();
-            List<AltBiome> JungleList = new List<AltBiome>();
-            List<AltBiome> EvilList = new List<AltBiome>();
+            List<AltBiome> HallowList = new();
+            List<AltBiome> HellList = new();
+            List<AltBiome> JungleList = new();
+            List<AltBiome> EvilList = new();
             foreach (AltBiome biome in AltLibrary.biomes)
             {
                 switch (biome.BiomeType)
@@ -50,8 +48,8 @@ namespace AltLibrary.Common
             }
             void RegisterAltEvilDrops(LeadingConditionRule condition, int itemType, int chanceDenominator, int dropMin, int dropMax, NPCLoot loot)
             {
-                    var altDropRule = condition.OnSuccess(ItemDropRule.Common(itemType, chanceDenominator, dropMin, dropMax));
-                    loot.Add(altDropRule);
+                var altDropRule = condition.OnSuccess(ItemDropRule.Common(itemType, chanceDenominator, dropMin, dropMax));
+                loot.Add(altDropRule);
             }
 
             var entries = npcLoot.Get(false);
@@ -61,8 +59,8 @@ namespace AltLibrary.Common
                 {
                     if (entry is ItemDropWithConditionRule conditionRule)
                     {
-                        if (conditionRule.itemId == ItemID.DemoniteOre || conditionRule.itemId == ItemID.CrimtaneOre || 
-                            conditionRule.itemId == ItemID.CorruptSeeds || conditionRule.itemId == ItemID.CrimsonSeeds 
+                        if (conditionRule.itemId == ItemID.DemoniteOre || conditionRule.itemId == ItemID.CrimtaneOre ||
+                            conditionRule.itemId == ItemID.CorruptSeeds || conditionRule.itemId == ItemID.CrimsonSeeds
                             || conditionRule.itemId == ItemID.UnholyArrow)
                         {
                             npcLoot.Remove(entry);
@@ -79,7 +77,7 @@ namespace AltLibrary.Common
                 corroCondition.OnSuccess(ItemDropRule.Common(ItemID.DemoniteOre, 1, 30, 90));
                 corroCondition.OnSuccess(ItemDropRule.Common(ItemID.CorruptSeeds, 1, 1, 3));
                 corroCondition.OnSuccess(ItemDropRule.Common(ItemID.UnholyArrow, 1, 20, 50));
-                
+
                 crimCondition.OnSuccess(ItemDropRule.Common(ItemID.CrimtaneOre, 1, 30, 90));
                 crimCondition.OnSuccess(ItemDropRule.Common(ItemID.CrimsonSeeds, 1, 1, 3));
 
@@ -99,7 +97,7 @@ namespace AltLibrary.Common
             }
             if (npc.type == NPCID.Retinazer || npc.type == NPCID.Spazmatism)
             {
-                
+
                 foreach (var entry in entries)
                 {
                     if (entry is LeadingConditionRule leadingRule)
@@ -239,7 +237,7 @@ namespace AltLibrary.Common
 
         public bool CanDrop(DropAttemptInfo info) // why? why is this always returning true? 
         {
-            if (!info.IsInSimulation && (BiomeType != null && BiomeType != "")) 
+            if (!info.IsInSimulation && (BiomeType != null && BiomeType != ""))
             {
                 if (WorldBiomeManager.worldEvil != null && WorldBiomeManager.worldEvil != "") return WorldBiomeManager.worldEvil == BiomeType;
             }

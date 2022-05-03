@@ -17,7 +17,7 @@ namespace AltLibrary.Common.Systems
                     {
                         recipe.RemoveRecipe();
                         i--;
-                    } 
+                    }
                     else if (recipe.HasIngredient(ItemID.DemoniteBar))
                     {
                         recipe.TryGetIngredient(ItemID.DemoniteBar, out Item ing);
@@ -80,7 +80,8 @@ namespace AltLibrary.Common.Systems
                     {
                         recipe.RemoveRecipe();
                         i--;
-                    } else if (recipe.HasIngredient(ItemID.LightsBane)) 
+                    }
+                    else if (recipe.HasIngredient(ItemID.LightsBane))
                     {
                         recipe.TryGetIngredient(ItemID.LightsBane, out Item ing);
                         recipe.RemoveIngredient(ing);
@@ -121,7 +122,7 @@ namespace AltLibrary.Common.Systems
                     {
                         recipe.RemoveRecipe();
                         i--;
-                    } 
+                    }
                     else if (recipe.HasIngredient(ItemID.RottenChunk))
                     {
                         recipe.TryGetIngredient(ItemID.RottenChunk, out Item ing);
@@ -214,7 +215,7 @@ namespace AltLibrary.Common.Systems
                     recipe.RemoveIngredient(ing);
                     recipe.AddRecipeGroup("AltLibrary:PixieDusts", 10);
                 }
-                int[] phasesabers = new int[] {ItemID.BluePhasesaber, ItemID.GreenPhasesaber, ItemID.PurplePhasesaber, ItemID.OrangePhasesaber, ItemID.RedPhasesaber, ItemID.YellowPhaseblade};
+                int[] phasesabers = new int[] { ItemID.BluePhasesaber, ItemID.GreenPhasesaber, ItemID.PurplePhasesaber, ItemID.OrangePhasesaber, ItemID.RedPhasesaber, ItemID.YellowPhaseblade };
                 foreach (int j in phasesabers)
                 {
                     if (recipe.HasResult(j) && recipe.HasIngredient(ItemID.CrystalShard))
