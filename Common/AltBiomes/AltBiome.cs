@@ -2,12 +2,15 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System.Collections.Generic;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace AltLibrary.Common.AltBiomes
 {
     public abstract class AltBiome : ModType
     {
+        internal int specialValueForWorldUIDoNotTouchElseYouCanBreakStuff { get; set; }
+
         public BiomeType BiomeType { get; set; }
         public ModBiome Biome { get; private set; }
         internal int Type { get; set; }
@@ -15,7 +18,7 @@ namespace AltLibrary.Common.AltBiomes
         /// <summary>
         /// The name of this biome that will display on the selection screen.
         /// </summary>
-        public virtual ModTranslation DisplayName
+        public virtual LocalizedText DisplayName
         {
             get;
             private set;
@@ -23,7 +26,7 @@ namespace AltLibrary.Common.AltBiomes
         /// <summary>
         /// The description for this biome that will appear on the biome selection screen.
         /// </summary>
-        public virtual ModTranslation Description
+        public virtual LocalizedText Description
         {
             get;
             private set;
@@ -148,7 +151,6 @@ namespace AltLibrary.Common.AltBiomes
         /// For Underworld alts, this is the TileID of this biome's equivalent to Hellforges.
         /// </summary>
         public int? AltarTile = null;
-        public int? OrbTile = null;
 
         /// <summary>
         /// The path to the texture of the large icon that will appear on the biome selection screen to represent this biome.
@@ -175,11 +177,12 @@ namespace AltLibrary.Common.AltBiomes
         public virtual string OuterTexture => "AltLibrary/Assets/WorldIcons/Outer Empty";
 
         public virtual Color OuterColor => new(127, 127, 127);
-
+        public virtual Color NameColor => new(255, 255, 255);
         public virtual Color AltUnderworldColor => Color.Black;
         public virtual Asset<Texture2D>[] AltUnderworldBackgrounds => new Asset<Texture2D>[14];
 
         public virtual WallContext WallContext => new();
+        public virtual List<int> HardmodeWalls => new();
 
         public sealed override void SetupContent()
         {

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using Terraria.ModLoader.Config;
 
@@ -17,6 +18,15 @@ namespace AltLibrary
             public string worldHell;
             public string worldJungle;
         }
+
+        [Label("$Mods.AltLibrary.Config.BiomeIconsVisibleOutsideBiomeUI.Label")]
+        [Tooltip("$Mods.AltLibrary.Config.BiomeIconsVisibleOutsideBiomeUI.Tooltip")]
+        [DefaultValue(true)]
+        public bool BiomeIconsVisibleOutsideBiomeUI;
+        [Label("$Mods.AltLibrary.Config.OreIconsVisibleOutsideOreUI.Label")]
+        [Tooltip("$Mods.AltLibrary.Config.OreIconsVisibleOutsideOreUI.Tooltip")]
+        [DefaultValue(true)]
+        public bool OreIconsVisibleOutsideOreUI;
 
         public override void OnLoaded()
         {

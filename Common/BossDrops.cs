@@ -65,7 +65,6 @@ namespace AltLibrary.Common
                         {
                             npcLoot.Remove(entry);
                         }
-
                     }
                 }
                 var corroCondition = new LeadingConditionRule(new CorroCrimDropCondition());
@@ -239,7 +238,7 @@ namespace AltLibrary.Common
         {
             if (!info.IsInSimulation && (BiomeType != null && BiomeType != ""))
             {
-                if (WorldBiomeManager.worldEvil != null && WorldBiomeManager.worldEvil != "") return WorldBiomeManager.worldEvil == BiomeType;
+                if (WorldBiomeManager.worldEvil != "") return WorldBiomeManager.worldEvil == BiomeType;
             }
             return false;
         }

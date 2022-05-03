@@ -25,6 +25,11 @@ namespace AltLibrary.Common.Systems
 
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
         {
+            int resetIndex = tasks.FindIndex(genpass => genpass.Name == "Reset");
+            if (resetIndex != -1)
+            {
+                tasks.Insert(resetIndex + 1, new PassLegacy("Avalon Setup", new WorldGenLegacyMethod(WorldSetupTask)));
+            }
             int corruptionIndex = tasks.FindIndex(i => i.Name.Equals("Corruption"));
             if (WorldBiomeManager.worldEvil != "" && corruptionIndex != -1)
             {
@@ -43,6 +48,53 @@ namespace AltLibrary.Common.Systems
                     tasks[hellforgeIndex] = new PassLegacy("Hellforge", new WorldGenLegacyMethod(WorldHellForgeAlt));
                 }
             }
+        }
+
+        private void WorldSetupTask(GenerationProgress progress, GameConfiguration configuration)
+        {
+            if (WorldBiomeManager.Copper == 0)
+            {
+                WorldGen.SavedOreTiers.Copper = TileID.Copper;
+                WorldGen.copperBar = ItemID.CopperBar;
+            }
+            else
+            {
+                WorldGen.SavedOreTiers.Copper = TileID.Tin;
+                WorldGen.copperBar = ItemID.TinBar;
+            }
+            if (WorldBiomeManager.Iron == 0)
+            {
+                WorldGen.SavedOreTiers.Iron = TileID.Iron;
+                WorldGen.ironBar = ItemID.IronBar;
+            }
+            else
+            {
+                WorldGen.SavedOreTiers.Iron = TileID.Lead;
+                WorldGen.ironBar = ItemID.LeadBar;
+            }
+            if (WorldBiomeManager.Silver == 0)
+            {
+                WorldGen.SavedOreTiers.Silver = TileID.Silver;
+                WorldGen.silverBar = ItemID.SilverBar;
+            }
+            else
+            {
+                WorldGen.SavedOreTiers.Silver = TileID.Tungsten;
+                WorldGen.silverBar = ItemID.TungstenBar;
+            }
+            if (WorldBiomeManager.Gold == 0)
+            {
+                WorldGen.SavedOreTiers.Gold = TileID.Gold;
+                WorldGen.goldBar = ItemID.GoldBar;
+            }
+            else
+            {
+                WorldGen.SavedOreTiers.Gold = TileID.Platinum;
+                WorldGen.goldBar = ItemID.PlatinumBar;
+            }
+            WorldGen.SavedOreTiers.Cobalt = WorldBiomeManager.Cobalt == 0 ? TileID.Cobalt : TileID.Palladium;
+            WorldGen.SavedOreTiers.Mythril = WorldBiomeManager.Mythril == 0 ? TileID.Mythril : TileID.Orichalcum;
+            WorldGen.SavedOreTiers.Adamantite = WorldBiomeManager.Adamantite == 0 ? TileID.Adamantite : TileID.Titanium;
         }
 
         private void WorldHellForgeAlt(GenerationProgress progress, GameConfiguration configuration)
@@ -1401,55 +1453,6 @@ namespace AltLibrary.Common.Systems
                                         {
                                             tile59 = Main.tile[i2, num727];
                                             tile59.TileType = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeHardenedSand.Value;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    for (int num728 = num715; num728 < num716; num728++)
-                    {
-                        for (int num729 = 0; num729 < Main.maxTilesY - 50; num729++)
-                        {
-                            tile59 = Main.tile[num728, num729];
-                            if (tile59.HasTile)
-                            {
-                                tile59 = Main.tile[num728, num729];
-                                if (ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).OrbTile.HasValue && tile59.TileType == ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).OrbTile.Value)
-                                {
-                                    int num730 = num728 - 13;
-                                    int num731 = num728 + 13;
-                                    int num732 = num729 - 13;
-                                    int num733 = num729 + 13;
-                                    for (int num734 = num730; num734 < num731; num734++)
-                                    {
-                                        if (num734 > 10 && num734 < Main.maxTilesX - 10)
-                                        {
-                                            for (int num735 = num732; num735 < num733; num735++)
-                                            {
-                                                if (Math.Abs(num734 - num728) + Math.Abs(num735 - num729) < 9 + WorldGen.genRand.Next(11) && !WorldGen.genRand.NextBool(3))
-                                                {
-                                                    tile59 = Main.tile[num734, num735];
-                                                    if (tile59.TileType != ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).OrbTile.Value && ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeStone.HasValue)
-                                                    {
-                                                        tile59 = Main.tile[num734, num735];
-                                                        tile59.HasTile = true;
-                                                        tile59 = Main.tile[num734, num735];
-                                                        tile59.TileType = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeStone.Value;
-                                                        if (Math.Abs(num734 - num728) <= 1 && Math.Abs(num735 - num729) <= 1)
-                                                        {
-                                                            tile59 = Main.tile[num734, num735];
-                                                            tile59.HasTile = false;
-                                                        }
-                                                    }
-                                                }
-                                                tile59 = Main.tile[num734, num735];
-                                                if (tile59.TileType != ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).OrbTile.Value && Math.Abs(num734 - num728) <= 2 + WorldGen.genRand.Next(3) && Math.Abs(num735 - num729) <= 2 + WorldGen.genRand.Next(3))
-                                                {
-                                                    tile59 = Main.tile[num734, num735];
-                                                    tile59.HasTile = false;
-                                                }
-                                            }
                                         }
                                     }
                                 }

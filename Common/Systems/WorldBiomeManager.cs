@@ -1,5 +1,4 @@
-﻿using AltLibrary.Common.AltBiomes;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.ModLoader;
@@ -13,54 +12,13 @@ namespace AltLibrary.Common.Systems
         public static string worldHallow = "";
         public static string worldHell = "";
         public static string worldJungle = "";
-
-        public override void PreWorldGen()
-        {
-            List<string> HallowList = new() { "" };
-            List<string> HellList = new() { "" };
-            List<string> JungleList = new() { "" };
-            List<string> EvilList = new() { "", "" };
-            foreach (AltBiome biome in AltLibrary.biomes)
-            {
-                if (biome.BiomeType == BiomeType.Hallow)
-                {
-                    HallowList.Add(biome.FullName);
-                }
-                if (biome.BiomeType == BiomeType.Hell)
-                {
-                    HellList.Add(biome.FullName);
-                }
-                if (biome.BiomeType == BiomeType.Jungle)
-                {
-                    JungleList.Add(biome.FullName);
-                }
-                if (biome.BiomeType == BiomeType.Evil)
-                {
-                    EvilList.Add(biome.FullName);
-                }
-            }
-            worldHallow = HallowList[WorldGen.genRand.Next(HallowList.Count)];
-            worldHell = HellList[WorldGen.genRand.Next(HellList.Count)];
-            worldJungle = JungleList[WorldGen.genRand.Next(JungleList.Count)];
-
-            WorldGen.crimson = WorldGen.genRand.NextBool(2);
-            if (WorldGen.WorldGenParam_Evil == 0)
-            {
-                WorldGen.crimson = false;
-            }
-            if (WorldGen.WorldGenParam_Evil == 1)
-            {
-                WorldGen.crimson = true;
-            }
-            if (WorldGen.WorldGenParam_Evil == -1)
-            {
-                worldEvil = EvilList[WorldGen.genRand.Next(EvilList.Count)];
-                if (worldEvil != "")
-                {
-                    WorldGen.crimson = false;
-                }
-            }
-        }
+        public static int Copper;
+        public static int Iron;
+        public static int Silver;
+        public static int Gold;
+        public static int Cobalt;
+        public static int Mythril;
+        public static int Adamantite;
 
         public override void SaveWorldData(TagCompound tag)
         {
@@ -68,6 +26,13 @@ namespace AltLibrary.Common.Systems
             tag.Add("AltLibrary:WorldHallow", worldHallow);
             tag.Add("AltLibrary:WorldHell", worldHell);
             tag.Add("AltLibrary:WorldJungle", worldJungle);
+            tag.Add("AltLibrary:Copper", Copper);
+            tag.Add("AltLibrary:Iron", Iron);
+            tag.Add("AltLibrary:Silver", Silver);
+            tag.Add("AltLibrary:Gold", Gold);
+            tag.Add("AltLibrary:Cobalt", Cobalt);
+            tag.Add("AltLibrary:Mythril", Mythril);
+            tag.Add("AltLibrary:Adamantite", Adamantite);
 
             Dictionary<string, AltLibraryConfig.WorldDataValues> tempDict = AltLibraryConfig.Config.GetWorldData();
             AltLibraryConfig.WorldDataValues worldData;
@@ -89,6 +54,13 @@ namespace AltLibrary.Common.Systems
             worldHallow = tag.GetString("AltLibrary:WorldHallow");
             worldHell = tag.GetString("AltLibrary:WorldHell");
             worldJungle = tag.GetString("AltLibrary:WorldJungle");
+            Copper = tag.GetInt("AltLibrary:Copper");
+            Iron = tag.GetInt("AltLibrary:Iron");
+            Silver = tag.GetInt("AltLibrary:Silver");
+            Gold = tag.GetInt("AltLibrary:Gold");
+            Cobalt = tag.GetInt("AltLibrary:Cobalt");
+            Mythril = tag.GetInt("AltLibrary:Mythril");
+            Adamantite = tag.GetInt("AltLibrary:Adamantite");
         }
 
         public override void NetSend(BinaryWriter writer)
@@ -97,6 +69,13 @@ namespace AltLibrary.Common.Systems
             writer.Write(worldHallow);
             writer.Write(worldHell);
             writer.Write(worldJungle);
+            writer.Write(Copper);
+            writer.Write(Iron);
+            writer.Write(Silver);
+            writer.Write(Gold);
+            writer.Write(Cobalt);
+            writer.Write(Mythril);
+            writer.Write(Adamantite);
         }
 
         public override void NetReceive(BinaryReader reader)
@@ -105,6 +84,13 @@ namespace AltLibrary.Common.Systems
             worldHallow = reader.ReadString();
             worldHell = reader.ReadString();
             worldJungle = reader.ReadString();
+            Copper = reader.ReadInt32();
+            Iron = reader.ReadInt32();
+            Silver = reader.ReadInt32();
+            Gold = reader.ReadInt32();
+            Cobalt = reader.ReadInt32();
+            Mythril = reader.ReadInt32();
+            Adamantite = reader.ReadInt32();
         }
     }
 }

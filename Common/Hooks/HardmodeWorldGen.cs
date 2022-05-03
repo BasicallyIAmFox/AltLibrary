@@ -29,7 +29,7 @@ namespace AltLibrary.Common.Hooks
             c.Emit(OpCodes.Ldloc, 5);
             c.EmitDelegate<Func<int, Tile, int>>((orig, tile) =>
             {
-                if (WorldBiomeManager.worldHallow != "" &&
+                if (WorldBiomeManager.worldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).HardmodeWalls.Count > 0 &&
                     ((ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeGrass.HasValue &&
                         tile.TileType == ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeGrass.Value) ||
                     (ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeStone.HasValue &&
@@ -45,9 +45,9 @@ namespace AltLibrary.Common.Hooks
                     // Vine here!
                     )
                 {
-                    orig = (ushort)(168 + WorldGen.genRand.Next(4));
+                    orig = ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).HardmodeWalls[WorldGen.genRand.Next(ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).HardmodeWalls.Count)];
                 }
-                if (WorldBiomeManager.worldEvil != "" &&
+                if (WorldBiomeManager.worldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).HardmodeWalls.Count > 0 &&
                     ((ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeGrass.HasValue &&
                         tile.TileType == ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeGrass.Value) ||
                     (ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeStone.HasValue &&
@@ -63,7 +63,7 @@ namespace AltLibrary.Common.Hooks
                     // Vine here!
                     )
                 {
-                    orig = (ushort)(153 + WorldGen.genRand.Next(4));
+                    orig = ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).HardmodeWalls[WorldGen.genRand.Next(ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).HardmodeWalls.Count)];
                 }
                 return orig;
             });

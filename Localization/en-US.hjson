@@ -2,6 +2,66 @@ Mods: {
 	AltLibrary: {
 		ChooseBiome: "Choose Biomes"
 		ChooseOre: "Choose Ores"
+		Config: {
+			BiomeIconsVisibleOutsideBiomeUI: {
+				Label: "Biome Icons visible outside Biome UI"
+				Tooltip: "When true, you will be able to see Biome Icons any time on World Creation"
+			}
+			OreIconsVisibleOutsideOreUI: {
+				Label: "Ore Icons visible outside Ore UI"
+				Tooltip: "When true, you will be able to see Ore Icons any time on World Creation"
+			}
+		}
+		Ores: {
+			Ore0Name: "Random Copper-Tier"
+			Ore0Desc: "Chooses random copper-tier ore for you!"
+			Ore1Name: "Random Iron-Tier"
+			Ore1Desc: "Chooses random iron-tier ore for you!"
+			Ore2Name: "Random Silver-Tier"
+			Ore2Desc: "Chooses random silver-tier ore for you!"
+			Ore3Name: "Random Gold-Tier"
+			Ore3Desc: "Chooses random gold-tier ore for you!"
+			Ore4Name: "Random Cobalt-Tier"
+			Ore4Desc: "Chooses random cobalt-tier ore for you!"
+			Ore5Name: "Random Mythril-Tier"
+			Ore5Desc: "Chooses random mythril-tier ore for you!"
+			Ore6Name: "Random Adamantite-Tier"
+			Ore6Desc: "Chooses random Adamantite-tier ore for you!"
+			Ore7Name: "Copper"
+			Ore8Name: "Tin"
+			Ore9Name: "Iron"
+			Ore10Name: "Lead"
+			Ore11Name: "Silver"
+			Ore12Name: "Tungsten"
+			Ore13Name: "Gold"
+			Ore14Name: "Platinum"
+			Ore15Name: "Cobalt"
+			Ore16Name: "Palladium"
+			Ore17Name: "Mythril"
+			Ore18Name: "Orichalcum"
+			Ore19Name: "Adamantite"
+			Ore20Name: "Titanium"
+		}
+		Biomes: {
+			RandomEvilBiomeName: "Random Evil"
+			RandomEvilBiomeDesc: "Chooses random evil biome for you!"
+			RandomHallowBiomeName: "Random Hallow"
+			RandomHallowBiomeDesc: "Chooses random good biome for you!"
+			RandomJungleBiomeName: "Random Jungle"
+			RandomJungleBiomeDesc: "Chooses random tropical biome for you!"
+			RandomUnderworldBiomeName: "Random Underworld"
+			RandomUnderworldBiomeDesc: "Chooses random hell biome for you!"
+			CorruptName: "Corruption"
+			CorruptDesc: "A purple biome that consists of rotting enemies that will protect its landscape at all costs."
+			CrimsonName: "Crimson"
+			CrimsonDesc: "A blood red biome that consists of bloody creatures manifested by the land that will protect the biome at all costs."
+			HallowName: "Hallow"
+			HallowDesc: "A holy landscape filled with hopes, dreams and real unicorns and fairies."
+			JungleName: "Jungle"
+			JungleDesc: "A flourishing place full of dense trees and lots of bees. There is a ancient temple deep below the jungles surface."
+			UnderworldName: "Underworld"
+			UnderworldDesc: "A molten hot landscape ruined to time, filled with lava and demons to roam the ruined landscape."
+		}
 		RecipeGroups: {
 			EvilBars: "Evil Bar"
 			HallowBars: "Light Bar"
