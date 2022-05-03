@@ -28,7 +28,7 @@ namespace AltLibrary.Common.Systems
             int resetIndex = tasks.FindIndex(genpass => genpass.Name == "Reset");
             if (resetIndex != -1)
             {
-                tasks.Insert(resetIndex + 1, new PassLegacy("Avalon Setup", new WorldGenLegacyMethod(WorldSetupTask)));
+                tasks.Insert(resetIndex + 1, new PassLegacy("Alt Library Setup", new WorldGenLegacyMethod(WorldSetupTask)));
             }
             int corruptionIndex = tasks.FindIndex(i => i.Name.Equals("Corruption"));
             if (WorldBiomeManager.worldEvil != "" && corruptionIndex != -1)
@@ -43,9 +43,9 @@ namespace AltLibrary.Common.Systems
                     tasks[underworldIndex] = new PassLegacy("Underworld", new WorldGenLegacyMethod(WorldHellAltTask));
                 }
                 int hellforgeIndex = tasks.FindIndex(i => i.Name.Equals("Hellforge"));
-                if (hellforgeIndex != -1 && ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).AltarTile.HasValue)
+                if (hellforgeIndex != -1)
                 {
-                    tasks[hellforgeIndex] = new PassLegacy("Hellforge", new WorldGenLegacyMethod(WorldHellForgeAlt));
+                    tasks.RemoveAt(hellforgeIndex);
                 }
             }
         }
@@ -95,72 +95,6 @@ namespace AltLibrary.Common.Systems
             WorldGen.SavedOreTiers.Cobalt = WorldBiomeManager.Cobalt == 0 ? TileID.Cobalt : TileID.Palladium;
             WorldGen.SavedOreTiers.Mythril = WorldBiomeManager.Mythril == 0 ? TileID.Mythril : TileID.Orichalcum;
             WorldGen.SavedOreTiers.Adamantite = WorldBiomeManager.Adamantite == 0 ? TileID.Adamantite : TileID.Titanium;
-        }
-
-        private void WorldHellForgeAlt(GenerationProgress progress, GameConfiguration configuration)
-        {
-            progress.Message = Lang.gen[36].Value;
-            for (int num371 = 0; num371 < Main.maxTilesX / 200; num371++)
-            {
-                float value2 = num371 / (Main.maxTilesX / 200);
-                progress.Set(value2);
-                bool flag23 = false;
-                int num372 = 0;
-                while (!flag23)
-                {
-                    int num373 = WorldGen.genRand.Next(1, Main.maxTilesX);
-                    int num374 = WorldGen.genRand.Next(Main.maxTilesY - 250, Main.maxTilesY - 30);
-                    try
-                    {
-                        Tile tile30 = Main.tile[num373, num374];
-                        if (tile30.WallType != 13)
-                        {
-                            tile30 = Main.tile[num373, num374];
-                            if (tile30.WallType == 14)
-                            {
-                                goto IL_00aa;
-                            }
-                            goto end_IL_006a;
-                        }
-                        goto IL_00aa;
-                    IL_00aa:
-                        while (true)
-                        {
-                            tile30 = Main.tile[num373, num374];
-                            if (!tile30.HasTile && num374 < Main.maxTilesY - 20)
-                            {
-                                num374++;
-                                continue;
-                            }
-                            break;
-                        }
-                        num374--;
-                        WorldGen.PlaceTile(num373, num374, ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).AltarTile.Value, false, false, -1, 0);
-                        tile30 = Main.tile[num373, num374];
-                        if (tile30.TileType == ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).AltarTile.Value)
-                        {
-                            flag23 = true;
-                        }
-                        else
-                        {
-                            num372++;
-                            if (num372 >= 10000)
-                            {
-                                flag23 = true;
-                            }
-                        }
-                    end_IL_006a:;
-                    }
-                    catch
-                    {
-                        num372++;
-                        if (num372 >= 10000)
-                        {
-                            flag23 = true;
-                        }
-                    }
-                }
-            }
         }
 
         private void WorldHellAltTask(GenerationProgress progress, GameConfiguration configuration)

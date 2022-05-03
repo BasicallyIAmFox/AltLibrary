@@ -154,22 +154,22 @@ namespace AltLibrary.Core.UIs
             {
                 if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff < 0) _achievement.Type = -1;
                 if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff <= -2) _achievement.Type = -2;
-                UIWorldCreationEdits.AltEvilBiomeChosenType = _achievement.Type;
+                UIWorldCreationEdits.AltEvilBiomeChosenType = _achievement.Type - 1;
             }
             if (_achievement.BiomeType == BiomeType.Hallow)
             {
                 if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff < 0) _achievement.Type = -3;
-                UIWorldCreationEdits.AltHallowBiomeChosenType = _achievement.Type;
+                UIWorldCreationEdits.AltHallowBiomeChosenType = _achievement.Type - 1;
             }
             if (_achievement.BiomeType == BiomeType.Hell)
             {
                 if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff < 0) _achievement.Type = -5;
-                UIWorldCreationEdits.AltHellBiomeChosenType = _achievement.Type;
+                UIWorldCreationEdits.AltHellBiomeChosenType = _achievement.Type - 1;
             }
             if (_achievement.BiomeType == BiomeType.Jungle)
             {
                 if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff < 0) _achievement.Type = -4;
-                UIWorldCreationEdits.AltJungleBiomeChosenType = _achievement.Type;
+                UIWorldCreationEdits.AltJungleBiomeChosenType = _achievement.Type - 1;
             }
         }
 
