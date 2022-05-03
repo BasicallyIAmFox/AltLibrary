@@ -16,6 +16,8 @@ namespace AltLibrary.Content
             BiomeOre = TileID.Palladium;
             BiomeSand = TileID.HallowedIce;
             BiomeSandstone = TileID.SnowBrick;
+            BiomeOreItem = ItemID.SillyBalloonGreen;
+            SeedType = ItemID.JungleSpores;
         }
 
         public override string IconLarge => "AltLibrary/Assets/WorldIcons/Pur";
