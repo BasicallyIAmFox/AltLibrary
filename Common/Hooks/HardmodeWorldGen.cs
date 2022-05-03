@@ -386,7 +386,7 @@ namespace AltLibrary.Common.Hooks
                 ushort value = orig;
                 if (WorldBiomeManager.worldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).WallContext.wallsReplacement.ContainsKey(69))
                 {
-                    ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).WallContext.wallsReplacement.TryGetValue(69, out value);
+                    ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).WallContext.wallsReplacement.TryGetValue(69, out value);
                 }
                 return value;
             });

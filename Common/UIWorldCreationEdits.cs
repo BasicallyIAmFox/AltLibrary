@@ -57,16 +57,16 @@ namespace AltLibrary.Common
         {
             chosenOption = (CurrentAltOption)(-1);
             List<int> evilBiomeTypes = new() { -1, -2 };
-            AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Evil).ToList().ForEach(x => evilBiomeTypes.Add(x.Type));
+            AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Evil).ToList().ForEach(x => evilBiomeTypes.Add(x.Type - 1));
             AltEvilBiomeChosenType = evilBiomeTypes[Main.rand.Next(evilBiomeTypes.Count)];
             List<int> hallowBiomeTypes = new() { -3 };
-            AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Hallow).ToList().ForEach(x => hallowBiomeTypes.Add(x.Type));
+            AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Hallow).ToList().ForEach(x => hallowBiomeTypes.Add(x.Type - 1));
             AltHallowBiomeChosenType = hallowBiomeTypes[Main.rand.Next(hallowBiomeTypes.Count)];
             List<int> hellBiomeTypes = new() { -5 };
-            AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Hell).ToList().ForEach(x => hellBiomeTypes.Add(x.Type));
+            AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Hell).ToList().ForEach(x => hellBiomeTypes.Add(x.Type - 1));
             AltHellBiomeChosenType = hellBiomeTypes[Main.rand.Next(hellBiomeTypes.Count)];
             List<int> jungleBiomeTypes = new() { -4 };
-            AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Jungle).ToList().ForEach(x => jungleBiomeTypes.Add(x.Type));
+            AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Jungle).ToList().ForEach(x => jungleBiomeTypes.Add(x.Type - 1));
             AltJungleBiomeChosenType = jungleBiomeTypes[Main.rand.Next(jungleBiomeTypes.Count)];
             Copper = Main.rand.Next(2);
             Iron = Main.rand.Next(2);
@@ -456,10 +456,10 @@ namespace AltLibrary.Common
                 for (int i = 0; i < 4; i++)
                 {
                     Asset<Texture2D> asset = ModContent.Request<Texture2D>("Terraria/Images/UI/Bestiary/Icon_Tags_Shadow");
-                    if (i == 0 && AltHallowBiomeChosenType != -3) asset = ModContent.Request<Texture2D>(AltLibrary.biomes[AltHallowBiomeChosenType].IconSmall ?? "AltLibrary/Assets/WorldIcons/ButtonHallow");
+                    if (i == 0 && AltHallowBiomeChosenType >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.biomes[AltHallowBiomeChosenType].IconSmall ?? "AltLibrary/Assets/WorldIcons/ButtonHallow");
                     if (i == 1 && AltEvilBiomeChosenType > -1) asset = ModContent.Request<Texture2D>(AltLibrary.biomes[AltEvilBiomeChosenType].IconSmall ?? "AltLibrary/Assets/WorldIcons/ButtonCorrupt");
-                    if (i == 2 && AltHellBiomeChosenType != -5) asset = ModContent.Request<Texture2D>(AltLibrary.biomes[AltHellBiomeChosenType].IconSmall ?? "AltLibrary/Assets/WorldIcons/ButtonHell");
-                    if (i == 3 && AltJungleBiomeChosenType != -4) asset = ModContent.Request<Texture2D>(AltLibrary.biomes[AltJungleBiomeChosenType].IconSmall ?? "AltLibrary/Assets/WorldIcons/ButtonJungle");
+                    if (i == 2 && AltHellBiomeChosenType >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.biomes[AltHellBiomeChosenType].IconSmall ?? "AltLibrary/Assets/WorldIcons/ButtonHell");
+                    if (i == 3 && AltJungleBiomeChosenType >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.biomes[AltJungleBiomeChosenType].IconSmall ?? "AltLibrary/Assets/WorldIcons/ButtonJungle");
                     Rectangle? rectangle = null;
                     if (i == 0 && AltHallowBiomeChosenType < 0) rectangle = new(30, 30, 30, 30);
                     if (i == 1 && AltEvilBiomeChosenType == -1) rectangle = new(210, 0, 30, 30);
