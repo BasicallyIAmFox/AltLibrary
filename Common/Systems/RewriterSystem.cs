@@ -13,7 +13,7 @@ namespace AltLibrary.Common.Systems
             string hallow = WorldBiomeManager.worldHallow;
             string hell = WorldBiomeManager.worldHell;
             string jungle = WorldBiomeManager.worldJungle;
-            int causedIssueBy = -1;
+            int[] causedIssueBy = new int[4] { -1, -1, -1, -1 };
             if (evil != "" && ModContent.Find<AltBiome>(evil).BiomeType != BiomeType.Evil)
             {
                 List<string> checks = new() { hallow, hell, jungle };
@@ -21,7 +21,7 @@ namespace AltLibrary.Common.Systems
                 {
                     if (check != "" && ModContent.Find<AltBiome>(check).BiomeType == BiomeType.Evil)
                     {
-                        causedIssueBy = (int)AltLibrary.biomes.First(x => x.FullName == check).BiomeType;
+                        causedIssueBy[0] = (int)AltLibrary.biomes.First(x => x.FullName == check).BiomeType;
                         break;
                     }
                 }
@@ -33,7 +33,7 @@ namespace AltLibrary.Common.Systems
                 {
                     if (check != "" && ModContent.Find<AltBiome>(check).BiomeType == BiomeType.Hallow)
                     {
-                        causedIssueBy = (int)AltLibrary.biomes.First(x => x.FullName == check).BiomeType;
+                        causedIssueBy[1] = (int)AltLibrary.biomes.First(x => x.FullName == check).BiomeType;
                         break;
                     }
                 }
@@ -45,7 +45,7 @@ namespace AltLibrary.Common.Systems
                 {
                     if (check != "" && ModContent.Find<AltBiome>(check).BiomeType == BiomeType.Hell)
                     {
-                        causedIssueBy = (int)AltLibrary.biomes.First(x => x.FullName == check).BiomeType;
+                        causedIssueBy[2] = (int)AltLibrary.biomes.First(x => x.FullName == check).BiomeType;
                         break;
                     }
                 }
@@ -57,150 +57,153 @@ namespace AltLibrary.Common.Systems
                 {
                     if (check != "" && ModContent.Find<AltBiome>(check).BiomeType == BiomeType.Jungle)
                     {
-                        causedIssueBy = (int)AltLibrary.biomes.First(x => x.FullName == check).BiomeType;
+                        causedIssueBy[3] = (int)AltLibrary.biomes.First(x => x.FullName == check).BiomeType;
                         break;
                     }
                 }
             }
-            if (causedIssueBy == -1)
+            for (int i = 0; i < 4; i++)
             {
-                AltLibrary.Instance.Logger.Info("Checking issues done! Enjoy game!");
-            }
-            else
-            {
-                string inside = causedIssueBy == 0 ? "evil" : (causedIssueBy == 1 ? "hallow" : (causedIssueBy == 2 ? "hell" : "jungle"));
-
-                AltLibrary.Instance.Logger.Info($"Found error in {inside}! Fixing...");
-
-                switch (inside)
+                if (causedIssueBy[i] == -1)
                 {
-                    case "evil":
-                        {
-                            switch (causedIssueBy)
-                            {
-                                case 1:
-                                    {
-                                        string evil2 = evil;
-                                        string hallow2 = hallow;
-                                        WorldBiomeManager.worldHallow = evil2;
-                                        WorldBiomeManager.worldEvil = hallow2;
-                                        break;
-                                    }
-                                case 2:
-                                    {
-                                        string evil2 = evil;
-                                        string hallow2 = hell;
-                                        WorldBiomeManager.worldHell = evil2;
-                                        WorldBiomeManager.worldEvil = hallow2;
-                                        break;
-                                    }
-                                case 3:
-                                    {
-                                        string evil2 = evil;
-                                        string hallow2 = jungle;
-                                        WorldBiomeManager.worldJungle = evil2;
-                                        WorldBiomeManager.worldEvil = hallow2;
-                                        break;
-                                    }
-                            }
-                            break;
-                        }
-                    case "hallow":
-                        {
-                            switch (causedIssueBy)
-                            {
-                                case 0:
-                                    {
-                                        string evil2 = evil;
-                                        string hallow2 = hallow;
-                                        WorldBiomeManager.worldHallow = evil2;
-                                        WorldBiomeManager.worldEvil = hallow2;
-                                        break;
-                                    }
-                                case 2:
-                                    {
-                                        string evil2 = hell;
-                                        string hallow2 = hallow;
-                                        WorldBiomeManager.worldHallow = evil2;
-                                        WorldBiomeManager.worldHell = hallow2;
-                                        break;
-                                    }
-                                case 3:
-                                    {
-                                        string evil2 = jungle;
-                                        string hallow2 = hallow;
-                                        WorldBiomeManager.worldHallow = evil2;
-                                        WorldBiomeManager.worldJungle = hallow2;
-                                        break;
-                                    }
-                            }
-                            break;
-                        }
-                    case "hell":
-                        {
-                            switch (causedIssueBy)
-                            {
-                                case 0:
-                                    {
-                                        string evil2 = evil;
-                                        string hallow2 = hell;
-                                        WorldBiomeManager.worldHell = evil2;
-                                        WorldBiomeManager.worldEvil = hallow2;
-                                        break;
-                                    }
-                                case 1:
-                                    {
-                                        string evil2 = hell;
-                                        string hallow2 = hallow;
-                                        WorldBiomeManager.worldHallow = evil2;
-                                        WorldBiomeManager.worldHell = hallow2;
-                                        break;
-                                    }
-                                case 3:
-                                    {
-                                        string evil2 = jungle;
-                                        string hallow2 = hell;
-                                        WorldBiomeManager.worldHell = evil2;
-                                        WorldBiomeManager.worldJungle = hallow2;
-                                        break;
-                                    }
-                            }
-                            break;
-                        }
-                    case "jungle":
-                        {
-                            switch (causedIssueBy)
-                            {
-                                case 0:
-                                    {
-                                        string evil2 = evil;
-                                        string hallow2 = jungle;
-                                        WorldBiomeManager.worldJungle = evil2;
-                                        WorldBiomeManager.worldEvil = hallow2;
-                                        break;
-                                    }
-                                case 1:
-                                    {
-                                        string evil2 = jungle;
-                                        string hallow2 = hallow;
-                                        WorldBiomeManager.worldHallow = evil2;
-                                        WorldBiomeManager.worldJungle = hallow2;
-                                        break;
-                                    }
-                                case 2:
-                                    {
-                                        string evil2 = jungle;
-                                        string hallow2 = hell;
-                                        WorldBiomeManager.worldHell = evil2;
-                                        WorldBiomeManager.worldJungle = hallow2;
-                                        break;
-                                    }
-                            }
-                            break;
-                        }
+                    AltLibrary.Instance.Logger.Info("Checking issues done! Enjoy game!");
                 }
+                else
+                {
+                    string inside = causedIssueBy[i] == 0 ? "evil" : (causedIssueBy[i] == 1 ? "hallow" : (causedIssueBy[i] == 2 ? "hell" : "jungle"));
 
-                AltLibrary.Instance.Logger.Info($"Error fixed! Report it if it's wrong.");
+                    AltLibrary.Instance.Logger.Info($"Found error in {inside}! Fixing...");
+
+                    switch (inside)
+                    {
+                        case "evil":
+                            {
+                                switch (causedIssueBy[i])
+                                {
+                                    case 1:
+                                        {
+                                            string evil2 = evil;
+                                            string hallow2 = hallow;
+                                            WorldBiomeManager.worldHallow = evil2;
+                                            WorldBiomeManager.worldEvil = hallow2;
+                                            break;
+                                        }
+                                    case 2:
+                                        {
+                                            string evil2 = evil;
+                                            string hallow2 = hell;
+                                            WorldBiomeManager.worldHell = evil2;
+                                            WorldBiomeManager.worldEvil = hallow2;
+                                            break;
+                                        }
+                                    case 3:
+                                        {
+                                            string evil2 = evil;
+                                            string hallow2 = jungle;
+                                            WorldBiomeManager.worldJungle = evil2;
+                                            WorldBiomeManager.worldEvil = hallow2;
+                                            break;
+                                        }
+                                }
+                                break;
+                            }
+                        case "hallow":
+                            {
+                                switch (causedIssueBy[i])
+                                {
+                                    case 0:
+                                        {
+                                            string evil2 = evil;
+                                            string hallow2 = hallow;
+                                            WorldBiomeManager.worldHallow = evil2;
+                                            WorldBiomeManager.worldEvil = hallow2;
+                                            break;
+                                        }
+                                    case 2:
+                                        {
+                                            string evil2 = hell;
+                                            string hallow2 = hallow;
+                                            WorldBiomeManager.worldHallow = evil2;
+                                            WorldBiomeManager.worldHell = hallow2;
+                                            break;
+                                        }
+                                    case 3:
+                                        {
+                                            string evil2 = jungle;
+                                            string hallow2 = hallow;
+                                            WorldBiomeManager.worldHallow = evil2;
+                                            WorldBiomeManager.worldJungle = hallow2;
+                                            break;
+                                        }
+                                }
+                                break;
+                            }
+                        case "hell":
+                            {
+                                switch (causedIssueBy[i])
+                                {
+                                    case 0:
+                                        {
+                                            string evil2 = evil;
+                                            string hallow2 = hell;
+                                            WorldBiomeManager.worldHell = evil2;
+                                            WorldBiomeManager.worldEvil = hallow2;
+                                            break;
+                                        }
+                                    case 1:
+                                        {
+                                            string evil2 = hell;
+                                            string hallow2 = hallow;
+                                            WorldBiomeManager.worldHallow = evil2;
+                                            WorldBiomeManager.worldHell = hallow2;
+                                            break;
+                                        }
+                                    case 3:
+                                        {
+                                            string evil2 = jungle;
+                                            string hallow2 = hell;
+                                            WorldBiomeManager.worldHell = evil2;
+                                            WorldBiomeManager.worldJungle = hallow2;
+                                            break;
+                                        }
+                                }
+                                break;
+                            }
+                        case "jungle":
+                            {
+                                switch (causedIssueBy[i])
+                                {
+                                    case 0:
+                                        {
+                                            string evil2 = evil;
+                                            string hallow2 = jungle;
+                                            WorldBiomeManager.worldJungle = evil2;
+                                            WorldBiomeManager.worldEvil = hallow2;
+                                            break;
+                                        }
+                                    case 1:
+                                        {
+                                            string evil2 = jungle;
+                                            string hallow2 = hallow;
+                                            WorldBiomeManager.worldHallow = evil2;
+                                            WorldBiomeManager.worldJungle = hallow2;
+                                            break;
+                                        }
+                                    case 2:
+                                        {
+                                            string evil2 = jungle;
+                                            string hallow2 = hell;
+                                            WorldBiomeManager.worldHell = evil2;
+                                            WorldBiomeManager.worldJungle = hallow2;
+                                            break;
+                                        }
+                                }
+                                break;
+                            }
+                    }
+
+                    AltLibrary.Instance.Logger.Info($"Error fixed! Report it if it's wrong.");
+                }
             }
         }
     }
