@@ -23,6 +23,8 @@ namespace AltLibrary.Core
             UIWorldCreationEdits.Init();
             HardmodeWorldGen.Init();
             TwinsRules.Init();
+            DungeonChests.Init();
+            SmashAltarInfection.Init();
         }
 
         private static void Main_EraseWorld(On.Terraria.Main.orig_EraseWorld orig, int i)
