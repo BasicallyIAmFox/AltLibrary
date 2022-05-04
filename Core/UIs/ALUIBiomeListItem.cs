@@ -23,6 +23,8 @@ namespace AltLibrary.Core.UIs
 
         private UIImageButton button;
 
+        //private UIImage warn;
+
         private Asset<Texture2D> _innerPanelTopTexture;
 
         private Asset<Texture2D> _innerPanelBottomTexture;
@@ -42,6 +44,12 @@ namespace AltLibrary.Core.UIs
             base.Width.Set(0f, 1f);
             base.PaddingTop = 8f;
             base.PaddingLeft = 9f;
+            UIImage image = new(ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Button2", AssetRequestMode.ImmediateLoad));
+            image.Left.Set(-50f, 0f);
+            image.Width.Set(-50f, 0f);
+            image.Left.Set(num7 - 1f, 0f);
+            image.Top.Set(num6 - 1f, 0f);
+            Append(image);
             string ifUnknown = "AltLibrary/Assets/WorldIcons/ButtonCorrupt";
             if (achievement.BiomeType == BiomeType.Hallow) ifUnknown = "AltLibrary/Assets/WorldIcons/ButtonHallow";
             if (achievement.BiomeType == BiomeType.Hell) ifUnknown = "AltLibrary/Assets/WorldIcons/ButtonHell";
@@ -68,6 +76,13 @@ namespace AltLibrary.Core.UIs
             {
                 _innerPanelBottomTexture = Main.Assets.Request<Texture2D>("Images/UI/Achievement_InnerPanelBottom");
             }
+            /*warn = new(ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/ButtonWarn", AssetRequestMode.ImmediateLoad));
+            warn.Left.Set(-50f, 0f);
+            warn.Width.Set(-50f, 0f);
+            warn.Left.Set(num7, 0f);
+            warn.Top.Set(num6 - 50f, 0f);
+            warn.OnMouseOver += Warn_OnMouseOver;
+            Append(warn);*/
         }
 
         private void _achievementIcon_OnUpdate(UIElement affectedElement)
@@ -119,8 +134,7 @@ namespace AltLibrary.Core.UIs
                     };
                     AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Evil).ToList().ForEach((x) => values.Add(x.Type - 1));
                     UIWorldCreationEdits.AltEvilBiomeChosenType = values[Main.rand.Next(values.Count)];
-                    if (UIWorldCreationEdits.AltEvilBiomeChosenType == -666) UIWorldCreationEdits.isCrimson = true;
-                    else UIWorldCreationEdits.isCrimson = false;
+                    UIWorldCreationEdits.isCrimson = UIWorldCreationEdits.AltEvilBiomeChosenType == -666;
                 }
                 if (_achievement.Name.StartsWith("RandomHallow"))
                 {
@@ -154,17 +168,11 @@ namespace AltLibrary.Core.UIs
 
             if (_achievement.BiomeType == BiomeType.Evil)
             {
-                AltLibrary.Instance.Logger.Info("a");
-                AltLibrary.Instance.Logger.Info(UIWorldCreationEdits.AltEvilBiomeChosenType);
-                AltLibrary.Instance.Logger.Info(UIWorldCreationEdits.isCrimson.ToInt());
                 if (_achievement.isForCrimsonOrCorruptWorldUIFix.HasValue && _achievement.isForCrimsonOrCorruptWorldUIFix.Value.Equals(false))
                 {
                     UIWorldCreationEdits.isCrimson = false;
                     UIWorldCreationEdits.AltEvilBiomeChosenType = -333;
                     _achievement.Type = -333;
-                    AltLibrary.Instance.Logger.Info("b");
-                    AltLibrary.Instance.Logger.Info(UIWorldCreationEdits.AltEvilBiomeChosenType);
-                    AltLibrary.Instance.Logger.Info(UIWorldCreationEdits.isCrimson.ToInt());
                     return;
                 }
                 if (_achievement.isForCrimsonOrCorruptWorldUIFix.HasValue && _achievement.isForCrimsonOrCorruptWorldUIFix.Value.Equals(true))
@@ -172,16 +180,10 @@ namespace AltLibrary.Core.UIs
                     UIWorldCreationEdits.isCrimson = true;
                     UIWorldCreationEdits.AltEvilBiomeChosenType = -666;
                     _achievement.Type = -666;
-                    AltLibrary.Instance.Logger.Info("c");
-                    AltLibrary.Instance.Logger.Info(UIWorldCreationEdits.AltEvilBiomeChosenType);
-                    AltLibrary.Instance.Logger.Info(UIWorldCreationEdits.isCrimson.ToInt());
                     return;
                 }
-                AltLibrary.Instance.Logger.Info("d");
                 UIWorldCreationEdits.AltEvilBiomeChosenType = _achievement.Type > 0 ? _achievement.Type - 1 : _achievement.Type;
                 UIWorldCreationEdits.isCrimson = false;
-                AltLibrary.Instance.Logger.Info(UIWorldCreationEdits.AltEvilBiomeChosenType);
-                AltLibrary.Instance.Logger.Info(UIWorldCreationEdits.isCrimson.ToInt());
             }
             if (_achievement.BiomeType == BiomeType.Hallow)
             {

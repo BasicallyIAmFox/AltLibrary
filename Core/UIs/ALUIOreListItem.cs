@@ -40,6 +40,12 @@ namespace AltLibrary.Core.UIs
             base.Width.Set(0f, 1f);
             base.PaddingTop = 8f;
             base.PaddingLeft = 9f;
+            UIImage image = new(ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Button2", AssetRequestMode.ImmediateLoad));
+            image.Left.Set(-50f, 0f);
+            image.Width.Set(-50f, 0f);
+            image.Left.Set(num7 - 1f, 0f);
+            image.Top.Set(num6 - 1f, 0f);
+            Append(image);
             Rectangle frame = new(0, 0, 30, 30);
             this._achievementIcon = new UIImageFramed(ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/OreIcons"), frame);
             _achievementIcon.Left.Set(-50f, 0f);

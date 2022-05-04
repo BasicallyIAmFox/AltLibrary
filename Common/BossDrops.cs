@@ -34,7 +34,7 @@ namespace AltLibrary.Common
                         break;
                 }
             }
-            
+
             //void RegisterAltHallowDrops(NPCLoot loot)
             //{
             //    foreach (AltBiome biome in HallowList)
@@ -90,7 +90,6 @@ namespace AltLibrary.Common
             }
             if (npc.type == NPCID.Retinazer || npc.type == NPCID.Spazmatism) // fuck the twins lmfao
             {
-
                 //var expertCondition = new LeadingConditionRule(new Conditions.NotExpert());
                 //var hallowBarCondition = new LeadingConditionRule(new HallowedBarDropCondition());
                 //expertCondition.OnSuccess(hallowBarCondition);
@@ -241,7 +240,7 @@ namespace AltLibrary.Common
         {
             if (!info.IsInSimulation && (BiomeType.FullName != null && BiomeType.FullName != ""))
             {
-                if (WorldBiomeManager.worldHallow != null && WorldBiomeManager.worldHallow != "") return WorldBiomeManager.worldHallow == BiomeType.FullName;
+                if (WorldBiomeManager.worldHallow == BiomeType.FullName) return WorldBiomeManager.worldHallow == BiomeType.FullName;
             }
             return false;
         }
@@ -291,11 +290,11 @@ namespace AltLibrary.Common
         {
             if (arg == ItemID.TwinsBossBag || arg == ItemID.SkeletronPrimeBossBag || arg == ItemID.DestroyerBossBag)
             {
-                if (!(WorldBiomeManager.worldHallow == "" || WorldBiomeManager.worldHallow == null)) NPCLoader.blockLoot.Add(ItemID.HallowedBar);
+                if (WorldBiomeManager.worldHallow != "") NPCLoader.blockLoot.Add(ItemID.HallowedBar);
             }
             if (arg == ItemID.EyeOfCthulhuBossBag)
             {
-                if (WorldBiomeManager.worldEvil != "" && WorldBiomeManager.worldEvil != null)
+                if (WorldBiomeManager.worldEvil != "")
                 {
                     NPCLoader.blockLoot.Add(ItemID.DemoniteOre);
                     NPCLoader.blockLoot.Add(ItemID.CrimtaneOre);
@@ -311,15 +310,15 @@ namespace AltLibrary.Common
         public override void OpenVanillaBag(string context, Player player, int arg)
         {
             var source = player.GetSource_OpenItem(arg);
-            if ((arg == ItemID.TwinsBossBag || arg == ItemID.SkeletronPrimeBossBag || arg == ItemID.DestroyerBossBag) && 
-                !(WorldBiomeManager.worldHallow == "" || WorldBiomeManager.worldHallow == null))
+            if ((arg == ItemID.TwinsBossBag || arg == ItemID.SkeletronPrimeBossBag || arg == ItemID.DestroyerBossBag) &&
+                WorldBiomeManager.worldHallow != "")
             {
                 var biome = ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow);
                 var amount = Main.rand.Next(15, 31);
                 player.QuickSpawnItem(source, (int)biome.MechDropItemType, amount);
             }
 
-            if (arg == ItemID.EyeOfCthulhuBossBag && !(WorldBiomeManager.worldEvil == "" || WorldBiomeManager.worldEvil == null))
+            if (arg == ItemID.EyeOfCthulhuBossBag && WorldBiomeManager.worldEvil != "")
             {
                 var biome = ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil);
                 if (biome.BiomeOreItem != null)

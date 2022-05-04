@@ -1,5 +1,4 @@
 ﻿using AltLibrary.Common.AltBiomes;
-using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
