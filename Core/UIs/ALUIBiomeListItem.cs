@@ -240,31 +240,6 @@ namespace AltLibrary.Core.UIs
             position.X += 8f;
             position.Y += 4f;
             ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, text3, position, value5, 0f, Vector2.Zero, baseScale4, -1f, 2f);
-            /*if (flag)
-			{
-				Vector2 vector2 = vector + Vector2.UnitX * num7 + Vector2.UnitY;
-				int num10 = (int)trackerValues.Item1;
-				string str = num10.ToString();
-				num10 = (int)trackerValues.Item2;
-				string text2 = str + "/" + num10.ToString();
-				Vector2 baseScale3 = new Vector2(0.75f);
-				Vector2 stringSize2 = ChatManager.GetStringSize(FontAssets.ItemStack.Value, text2, baseScale3, -1f);
-				float progress = (float)(trackerValues.Item1 / trackerValues.Item2);
-				float num5 = 80f;
-				Color color4 = new Color(100, 255, 100);
-				if (!base.IsMouseHovering)
-				{
-					color4 = Color.Lerp(color4, Color.Black, 0.25f);
-				}
-				Color color3 = new Color(255, 255, 255);
-				if (!base.IsMouseHovering)
-				{
-					color3 = Color.Lerp(color3, Color.Black, 0.25f);
-				}
-				this.DrawProgressBar(spriteBatch, progress, vector2 - Vector2.UnitX * num5 * 0.7f, num5, color3, color4, color4.MultiplyRGBA(new Color(new Vector4(1f, 1f, 1f, 0.5f))));
-				vector2.X -= num5 * 1.4f + stringSize2.X;
-				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, text2, vector2, value7, 0f, new Vector2(0f, 0f), baseScale3, 90f, 2f);
-			}*/
             Rectangle mouseRectangle = Utils.CenteredRectangle(Main.MouseScreen, Vector2.One * 2f);
             float num10 = this._large.ToInt() * 4;
             float num11 = this._large.ToInt() * 58;
@@ -303,41 +278,6 @@ namespace AltLibrary.Core.UIs
             base.MouseOut(evt);
             base.BackgroundColor = new Color(26, 40, 89) * 0.8f;
             base.BorderColor = new Color(13, 20, 44) * 0.8f;
-        }
-
-        private void DrawProgressBar(SpriteBatch spriteBatch, float progress, Vector2 spot, float Width = 169f, Color BackColor = default(Color), Color FillingColor = default(Color), Color BlipColor = default(Color))
-        {
-            if (BlipColor == Color.Transparent)
-            {
-                BlipColor = new Color(255, 165, 0, 127);
-            }
-            if (FillingColor == Color.Transparent)
-            {
-                FillingColor = new Color(255, 241, 51);
-            }
-            if (BackColor == Color.Transparent)
-            {
-                FillingColor = new Color(255, 255, 255);
-            }
-            Texture2D value3 = TextureAssets.ColorBar.Value;
-            Texture2D value4 = TextureAssets.ColorBlip.Value;
-            Texture2D value2 = TextureAssets.MagicPixel.Value;
-            float num7 = MathHelper.Clamp(progress, 0f, 1f);
-            float num6 = Width * 1f;
-            float num5 = 8f;
-            float num4 = num6 / 169f;
-            Vector2 position = spot + Vector2.UnitY * num5 + Vector2.UnitX * 1f;
-            spriteBatch.Draw(value3, spot, new Rectangle(5, 0, value3.Width - 9, value3.Height), BackColor, 0f, new Vector2(84.5f, 0f), new Vector2(num4, 1f), SpriteEffects.None, 0f);
-            spriteBatch.Draw(value3, spot + new Vector2((0f - num4) * 84.5f - 5f, 0f), new Rectangle(0, 0, 5, value3.Height), BackColor, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
-            spriteBatch.Draw(value3, spot + new Vector2(num4 * 84.5f, 0f), new Rectangle(value3.Width - 4, 0, 4, value3.Height), BackColor, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
-            position += Vector2.UnitX * (num7 - 0.5f) * num6;
-            position.X -= 1f;
-            spriteBatch.Draw(value2, position, new Rectangle(0, 0, 1, 1), FillingColor, 0f, new Vector2(1f, 0.5f), new Vector2(num6 * num7, num5), SpriteEffects.None, 0f);
-            if (progress != 0f)
-            {
-                spriteBatch.Draw(value2, position, new Rectangle(0, 0, 1, 1), BlipColor, 0f, new Vector2(1f, 0.5f), new Vector2(2f, num5), SpriteEffects.None, 0f);
-            }
-            spriteBatch.Draw(value2, position, new Rectangle(0, 0, 1, 1), Color.Black, 0f, new Vector2(0f, 0.5f), new Vector2(num6 * (1f - num7), num5), SpriteEffects.None, 0f);
         }
     }
 }

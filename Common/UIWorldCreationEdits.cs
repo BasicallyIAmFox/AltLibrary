@@ -99,7 +99,7 @@ namespace AltLibrary.Common
             #region Ore UI List
             {
                 UIElement uIElement3 = new();
-                uIElement3.Left = StyleDimension.FromPixels(100f);
+                uIElement3.Left = StyleDimension.FromPixels(Main.screenWidth - (Main.screenWidth - 100f));
                 uIElement3.Width.Set(0f, 0.8f);
                 uIElement3.MaxWidth.Set(450, 0f);
                 uIElement3.MinWidth.Set(350, 0f);
@@ -126,7 +126,7 @@ namespace AltLibrary.Common
 
                 UIScrollbar uIScrollbar = new();
                 uIScrollbar.SetView(100f, 100f);
-                uIScrollbar.Left = StyleDimension.FromPixels(75f);
+                uIScrollbar.Left = StyleDimension.FromPixels(Main.screenWidth - (Main.screenWidth - 75f));
                 uIScrollbar.Height.Set(-250f, 1f);
                 uIScrollbar.Top.Set(150f, 0f);
                 uIScrollbar.HAlign = 1f;
@@ -180,7 +180,7 @@ namespace AltLibrary.Common
             #region Biome UI List
             {
                 UIElement uIElement3 = new();
-                uIElement3.Left = StyleDimension.FromPixels(-1100f);
+                uIElement3.Left = StyleDimension.FromPixels(Main.screenWidth - (Main.screenWidth + 100f));
                 uIElement3.Width.Set(0f, 0.8f);
                 uIElement3.MaxWidth.Set(450, 0f);
                 uIElement3.MinWidth.Set(350, 0f);
@@ -207,7 +207,7 @@ namespace AltLibrary.Common
 
                 UIScrollbar uIScrollbar = new();
                 uIScrollbar.SetView(100f, 100f);
-                uIScrollbar.Left = StyleDimension.FromPixels(-1075f);
+                uIScrollbar.Left = StyleDimension.FromPixels(Main.screenWidth - (Main.screenWidth + 75f));
                 uIScrollbar.Height.Set(-250f, 1f);
                 uIScrollbar.Top.Set(150f, 0f);
                 uIScrollbar.HAlign = 1f;
@@ -332,7 +332,7 @@ namespace AltLibrary.Common
             }
             else
             {
-                scrollbar.Left = StyleDimension.FromPixels(-100000f);
+                scrollbar.Left = StyleDimension.FromPixels(-Main.screenWidth + 500f);
                 scrollbar.Height.Set(-250f, 1f);
                 scrollbar.Top.Set(150f, 0f);
             }
@@ -367,7 +367,7 @@ namespace AltLibrary.Common
             }
             else
             {
-                element.Left = StyleDimension.FromPixels(-1100f);
+                element.Left = StyleDimension.FromPixels(-Main.screenWidth + 475f);
                 element.Width.Set(0f, 0.8f);
                 element.MaxWidth.Set(450, 0f);
                 element.MinWidth.Set(350, 0f);
@@ -463,6 +463,7 @@ namespace AltLibrary.Common
             Vector2 position = new(dimensions.X + 4f, dimensions.Y + 4f);
             Color color = Color.White;
             int x = 0;
+            Rectangle mouseRectangle = Utils.CenteredRectangle(Main.MouseScreen, Vector2.One * 2f);
             if (chosenOption == CurrentAltOption.Biome || AltLibraryConfig.Config.BiomeIconsVisibleOutsideBiomeUI)
             {
                 for (int i = 0; i < 4; i++)
@@ -481,6 +482,31 @@ namespace AltLibrary.Common
                     ValueTuple<Asset<Texture2D>, Rectangle?> valueTuple = new(asset, rectangle);
                     spriteBatch.Draw(ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Button").Value, new Vector2(position.X + 96f, position.Y + 26f * i), color * 0.8f);
                     spriteBatch.Draw(valueTuple.Item1.Value, new Vector2(position.X + 99f, position.Y + 26f * i + 3f), valueTuple.Item2, color, 0f, new Vector2(0f, 0f), 0.5f, SpriteEffects.None, 0f);
+                    Vector2 vector2 = new(position.X + 96f, position.Y + 26f * i);
+                    if (mouseRectangle.Intersects(Utils.CenteredRectangle(vector2 + new Vector2(16f, 16f), Utils.Size(new Rectangle(0, 0, 30, 30)))))
+                    {
+                        string line1 = "";
+                        if (i == 0 && AltHallowBiomeChosenType < 0) line1 = Language.GetTextValue("Mods.AltLibrary.Biomes.HallowName");
+                        if (i == 0 && AltHallowBiomeChosenType >= 0) line1 = AltLibrary.biomes[AltHallowBiomeChosenType].Name;
+                        if (i == 1 && AltEvilBiomeChosenType == -333) line1 = Language.GetTextValue("Mods.AltLibrary.Biomes.CorruptName");
+                        if (i == 1 && AltEvilBiomeChosenType == -666) line1 = Language.GetTextValue("Mods.AltLibrary.Biomes.CrimsonName");
+                        if (i == 1 && AltEvilBiomeChosenType >= 0) line1 = AltLibrary.biomes[AltEvilBiomeChosenType].Name;
+                        if (i == 2 && AltHellBiomeChosenType < 0) line1 = Language.GetTextValue("Mods.AltLibrary.Biomes.UnderworldName");
+                        if (i == 2 && AltHellBiomeChosenType >= 0) line1 = AltLibrary.biomes[AltHellBiomeChosenType].Name;
+                        if (i == 3 && AltJungleBiomeChosenType < 0) line1 = Language.GetTextValue("Mods.AltLibrary.Biomes.JungleName");
+                        if (i == 3 && AltJungleBiomeChosenType >= 0) line1 = AltLibrary.biomes[AltJungleBiomeChosenType].Name;
+                        string line2 = Language.GetTextValue("Mods.AltLibrary.AddedBy") + " ";
+                        if (i == 0 && AltHallowBiomeChosenType < 0) line2 += "Terraria";
+                        if (i == 0 && AltHallowBiomeChosenType >= 0) line2 += AltLibrary.biomes[AltHallowBiomeChosenType].Mod.Name;
+                        if (i == 1 && AltEvilBiomeChosenType < 0) line2 += "Terraria";
+                        if (i == 1 && AltEvilBiomeChosenType >= 0) line2 += AltLibrary.biomes[AltEvilBiomeChosenType].Mod.Name;
+                        if (i == 2 && AltHellBiomeChosenType < 0) line2 += "Terraria";
+                        if (i == 2 && AltHellBiomeChosenType >= 0) line2 += AltLibrary.biomes[AltHellBiomeChosenType].Mod.Name;
+                        if (i == 3 && AltJungleBiomeChosenType < 0) line2 += "Terraria";
+                        if (i == 3 && AltJungleBiomeChosenType >= 0) line2 += AltLibrary.biomes[AltJungleBiomeChosenType].Mod.Name;
+                        string line = line1 + '\n' + line2;
+                        Main.instance.MouseText(line);
+                    }
                 }
                 x = 4;
             }
@@ -514,6 +540,49 @@ namespace AltLibrary.Common
                     ValueTuple<Asset<Texture2D>, Rectangle?> valueTuple = new(asset, rectangle);
                     spriteBatch.Draw(ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Button").Value, new Vector2(position.X + 96f, position.Y + 26f * (i + x)), color * 0.8f);
                     spriteBatch.Draw(valueTuple.Item1.Value, new Vector2(position.X + 99f, position.Y + 26f * (i + x) + 3f), valueTuple.Item2, color, 0f, new Vector2(0f, 0f), 0.5f, SpriteEffects.None, 0f);
+                    Vector2 vector2 = new(position.X + 96f, position.Y + 26f * (i + x));
+                    if (mouseRectangle.Intersects(Utils.CenteredRectangle(vector2 + new Vector2(16f, 16f), Utils.Size(new Rectangle(0, 0, 30, 30)))))
+                    {
+                        string line1 = "";
+                        if (i == 0 && Copper == -1) line1 = Language.GetTextValue("Mods.AltLibrary.Ores.CopperName");
+                        if (i == 0 && Copper == -2) line1 = Language.GetTextValue("Mods.AltLibrary.Ores.TinName");
+                        if (i == 0 && Copper >= 0) line1 = AltLibrary.ores[Copper - 1].Name;
+                        if (i == 1 && Iron == -3) line1 = Language.GetTextValue("Mods.AltLibrary.Ores.IronName");
+                        if (i == 1 && Iron == -4) line1 = Language.GetTextValue("Mods.AltLibrary.Ores.LeadName");
+                        if (i == 1 && Iron >= 0) line1 = AltLibrary.ores[Iron - 1].Name;
+                        if (i == 2 && Silver == -5) line1 = Language.GetTextValue("Mods.AltLibrary.Ores.SilverName");
+                        if (i == 2 && Silver == -6) line1 = Language.GetTextValue("Mods.AltLibrary.Ores.TungstenName");
+                        if (i == 2 && Silver >= 0) line1 = AltLibrary.ores[Silver - 1].Name;
+                        if (i == 3 && Gold == -7) line1 = Language.GetTextValue("Mods.AltLibrary.Ores.GoldName");
+                        if (i == 3 && Gold == -8) line1 = Language.GetTextValue("Mods.AltLibrary.Ores.PlatinumName");
+                        if (i == 3 && Gold >= 0) line1 = AltLibrary.ores[Gold - 1].Name;
+                        if (i == 4 && Cobalt == -9) line1 = Language.GetTextValue("Mods.AltLibrary.Ores.CobaltName");
+                        if (i == 4 && Cobalt == -10) line1 = Language.GetTextValue("Mods.AltLibrary.Ores.PalladiumName");
+                        if (i == 4 && Cobalt >= 0) line1 = AltLibrary.ores[Cobalt - 1].Name;
+                        if (i == 5 && Mythril == -11) line1 = Language.GetTextValue("Mods.AltLibrary.Ores.MythrilName");
+                        if (i == 5 && Mythril == -12) line1 = Language.GetTextValue("Mods.AltLibrary.Ores.OrichalcumName");
+                        if (i == 5 && Mythril >= 0) line1 = AltLibrary.ores[Mythril - 1].Name;
+                        if (i == 6 && Adamantite == -13) line1 = Language.GetTextValue("Mods.AltLibrary.Ores.AdamantiteName");
+                        if (i == 6 && Adamantite == -14) line1 = Language.GetTextValue("Mods.AltLibrary.Ores.TitaniumName");
+                        if (i == 6 && Adamantite >= 0) line1 = AltLibrary.ores[Adamantite - 1].Name;
+                        string line2 = Language.GetTextValue("Mods.AltLibrary.AddedBy") + " ";
+                        if (i == 0 && Copper < 0) line2 += "Terraria";
+                        if (i == 0 && Copper >= 0) line2 += AltLibrary.ores[Copper - 1].Mod.Name;
+                        if (i == 1 && Iron < 0) line2 += "Terraria";
+                        if (i == 1 && Iron >= 0) line2 += AltLibrary.ores[Iron - 1].Mod.Name;
+                        if (i == 2 && Silver < 0) line2 += "Terraria";
+                        if (i == 2 && Silver >= 0) line2 += AltLibrary.ores[Silver - 1].Mod.Name;
+                        if (i == 3 && Gold < 0) line2 += "Terraria";
+                        if (i == 3 && Gold >= 0) line2 += AltLibrary.ores[Gold - 1].Mod.Name;
+                        if (i == 4 && Cobalt < 0) line2 += "Terraria";
+                        if (i == 4 && Cobalt >= 0) line2 += AltLibrary.ores[Cobalt - 1].Mod.Name;
+                        if (i == 5 && Mythril < 0) line2 += "Terraria";
+                        if (i == 5 && Mythril >= 0) line2 += AltLibrary.ores[Mythril - 1].Mod.Name;
+                        if (i == 6 && Adamantite < 0) line2 += "Terraria";
+                        if (i == 7 && Adamantite >= 0) line2 += AltLibrary.ores[Adamantite - 1].Mod.Name;
+                        string line = line1 + '\n' + line2;
+                        Main.instance.MouseText(line);
+                    }
                 }
             }
         }

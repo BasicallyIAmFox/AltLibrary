@@ -1,5 +1,6 @@
 Mods: {
 	AltLibrary: {
+		AddedBy: "Added By:"
 		ChooseBiome: "Choose Biomes"
 		ChooseOre: "Choose Ores"
 		Config: {
@@ -13,6 +14,34 @@ Mods: {
 			}
 		}
 		Ores: {
+			RandomCopperName: "Random Copper-Tier"
+			RandomCopperDesc: "Chooses random copper-tier ore for you!"
+			RandomIronName: "Random Iron-Tier"
+			RandomIronDesc: "Chooses random iron-tier ore for you!"
+			RandomSilverName: "Random Silver-Tier"
+			RandomSilverDesc: "Chooses random silver-tier ore for you!"
+			RandomGoldName: "Random Gold-Tier"
+			RandomGoldDesc: "Chooses random gold-tier ore for you!"
+			RandomCobaltName: "Random Cobalt-Tier"
+			RandomCobaltDesc: "Chooses random cobalt-tier ore for you!"
+			RandomMythrilName: "Random Mythril-Tier"
+			RandomMythrilDesc: "Chooses random mythril-tier ore for you!"
+			RandomAdamantiteName: "Random Adamantite-Tier"
+			RandomAdamantiteDesc: "Chooses random adamantite-tier ore for you!"
+			CopperName: "Copper"
+			TinName: "Tin"
+			IronName: "Iron"
+			LeadName: "Lead"
+			SilverName: "Silver"
+			TungstenName: "Tungsten"
+			GoldName: "Gold"
+			PlatinumName: "Platinum"
+			CobaltName: "Cobalt"
+			PalladiumName: "Palladium"
+			MythrilName: "Mythril"
+			OrichalcumName: "Orichalcum"
+			AdamantiteName: "Adamantite"
+			TitaniumName: "Titanium"
 		}
 		Biomes: {
 			RandomEvilBiomeName: "Random Evil"
