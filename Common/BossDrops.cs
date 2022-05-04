@@ -284,4 +284,60 @@ namespace AltLibrary.Common
             return "Drops in worlds with a specific biome type"; // TODO: translate this and make it use the biomes display name
         }
     }
+
+    internal class BossBags : GlobalItem
+    {
+        public override bool PreOpenVanillaBag(string context, Player player, int arg)
+        {
+            if (arg == ItemID.TwinsBossBag || arg == ItemID.SkeletronPrimeBossBag || arg == ItemID.DestroyerBossBag)
+            {
+                if (!(WorldBiomeManager.worldHallow == "" || WorldBiomeManager.worldHallow == null)) NPCLoader.blockLoot.Add(ItemID.HallowedBar);
+            }
+            if (arg == ItemID.EyeOfCthulhuBossBag)
+            {
+                if (WorldBiomeManager.worldEvil != "" && WorldBiomeManager.worldEvil != null)
+                {
+                    NPCLoader.blockLoot.Add(ItemID.DemoniteOre);
+                    NPCLoader.blockLoot.Add(ItemID.CrimtaneOre);
+                    NPCLoader.blockLoot.Add(ItemID.CorruptSeeds);
+                    NPCLoader.blockLoot.Add(ItemID.CrimsonSeeds);
+                    NPCLoader.blockLoot.Add(ItemID.UnholyArrow);
+                }
+            }
+
+            return base.PreOpenVanillaBag(context, player, arg);
+        }
+
+        public override void OpenVanillaBag(string context, Player player, int arg)
+        {
+            var source = player.GetSource_OpenItem(arg);
+            if ((arg == ItemID.TwinsBossBag || arg == ItemID.SkeletronPrimeBossBag || arg == ItemID.DestroyerBossBag) && 
+                !(WorldBiomeManager.worldHallow == "" || WorldBiomeManager.worldHallow == null))
+            {
+                var biome = ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow);
+                var amount = Main.rand.Next(15, 31);
+                player.QuickSpawnItem(source, (int)biome.MechDropItemType, amount);
+            }
+
+            if (arg == ItemID.EyeOfCthulhuBossBag && !(WorldBiomeManager.worldEvil == "" || WorldBiomeManager.worldEvil == null))
+            {
+                var biome = ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil);
+                if (biome.BiomeOreItem != null)
+                {
+                    var amount = Main.rand.Next(30, 90);
+                    player.QuickSpawnItem(source, (int)biome.BiomeOreItem, amount);
+                }
+                if (biome.SeedType != null)
+                {
+                    var amount = Main.rand.Next(1, 4);
+                    player.QuickSpawnItem(source, (int)biome.SeedType, amount);
+                }
+                if (biome.ArrowType != null)
+                {
+                    var amount = Main.rand.Next(20, 51);
+                    player.QuickSpawnItem(source, (int)biome.ArrowType, amount);
+                }
+            }
+        }
+    }
 }
