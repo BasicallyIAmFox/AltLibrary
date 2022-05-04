@@ -1,9 +1,13 @@
 ﻿using AltLibrary.Common.AltBiomes;
 using AltLibrary.Common.Systems;
+using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Hooks
@@ -51,21 +55,106 @@ namespace AltLibrary.Common.Hooks
         private static void GenPasses_HookGenPassReset(ILContext il)
         {
             ILCursor c = new(il);
+            FieldReference copper = null;
+            FieldReference iron = null;
+            FieldReference silver = null;
+            FieldReference gold = null;
+
             if (!c.TryGotoNext(i => i.MatchStsfld<WorldGen>(nameof(WorldGen.crimson))))
                 return;
-            if (!c.TryGotoNext(i => i.MatchLdfld(out _)))
+            if (!c.TryGotoPrev(i => i.MatchLdcI4(166)))
                 return;
-            /*c.EmitDelegate(() =>
+            if (!c.TryGotoPrev(i => i.MatchLdcI4(166)))
+                return;
+            if (!c.TryGotoNext(i => i.MatchStfld(out copper)))
+                return;
+            if (!c.TryGotoPrev(i => i.MatchLdcI4(167)))
+                return;
+            if (!c.TryGotoNext(i => i.MatchStfld(out iron)))
+                return;
+            if (!c.TryGotoPrev(i => i.MatchLdcI4(168)))
+                return;
+            if (!c.TryGotoNext(i => i.MatchStfld(out silver)))
+                return;
+            if (!c.TryGotoPrev(i => i.MatchLdcI4(169)))
+                return;
+            if (!c.TryGotoNext(i => i.MatchStfld(out gold)))
+                return;
+            if (!c.TryGotoNext(i => i.MatchStsfld<WorldGen>(nameof(WorldGen.crimson))))
+                return;
+
+            c.Index++;
+            c.Emit(OpCodes.Ldfld, copper);
+            c.EmitDelegate<Func<int, int>>((copper) =>
             {
-                if (WorldBiomeManager.worldEvil == "")
+                if (WorldBiomeManager.Copper == -1)
                 {
-                    WorldGen.crimson = true;
+                    return TileID.Copper;
+                }
+                else if (WorldBiomeManager.Copper == -2)
+                {
+                    return TileID.Tin;
                 }
                 else
                 {
-                    WorldGen.crimson = false;
+                    return AltLibrary.ores[WorldBiomeManager.Copper - 1].ore;
                 }
-            });*/
+            });
+            c.Emit(OpCodes.Stsfld, copper);
+            c.Emit(OpCodes.Ldfld, iron);
+            c.EmitDelegate<Func<int, int>>((iron) =>
+            {
+                if (WorldBiomeManager.Iron == -3)
+                {
+                    return TileID.Iron;
+                }
+                else if (WorldBiomeManager.Iron == -4)
+                {
+                    return TileID.Lead;
+                }
+                else
+                {
+                    return AltLibrary.ores[WorldBiomeManager.Iron - 1].ore;
+                }
+            });
+            c.Emit(OpCodes.Stsfld, iron);
+            c.Emit(OpCodes.Ldfld, silver);
+            c.EmitDelegate<Func<int, int>>((silver) =>
+            {
+                if (WorldBiomeManager.Silver == -5)
+                {
+                    return TileID.Silver;
+                }
+                else if (WorldBiomeManager.Silver == -6)
+                {
+                    return TileID.Tungsten;
+                }
+                else
+                {
+                    return AltLibrary.ores[WorldBiomeManager.Silver - 1].ore;
+                }
+            });
+            c.Emit(OpCodes.Stsfld, silver);
+            c.Emit(OpCodes.Ldfld, gold);
+            c.EmitDelegate<Func<int, int>>((gold) =>
+            {
+                if (WorldBiomeManager.Gold == -5)
+                {
+                    return TileID.Gold;
+                }
+                else if (WorldBiomeManager.Gold == -6)
+                {
+                    return TileID.Platinum;
+                }
+                else
+                {
+                    return AltLibrary.ores[WorldBiomeManager.Gold - 1].ore;
+                }
+            });
+            c.Emit(OpCodes.Stsfld, gold);
+
+            if (!c.TryGotoNext(i => i.MatchLdfld(out _)))
+                return;
             if (!c.TryGotoNext(i => i.MatchRet()))
                 return;
             if (!c.TryGotoPrev(i => i.MatchBneUn(out _)))
@@ -93,6 +182,98 @@ namespace AltLibrary.Common.Hooks
         private static void GenPasses_HookGenPassShinies(ILContext il)
         {
             ILCursor c = new(il);
+            for (int j = 0; j < 3; j++)
+            {
+                if (!c.TryGotoNext(i => i.MatchLdsfld<WorldGen>(nameof(WorldGen.drunkWorldGen))))
+                    return;
+                if (!c.TryGotoNext(i => i.MatchLdcI4(2)))
+                    return;
+                c.Remove();
+                c.Emit(OpCodes.Ldc_I4, 1);
+                if (!c.TryGotoNext(i => i.MatchLdcI4(7)))
+                    return;
+                c.Index++;
+                c.EmitDelegate<Func<int, int>>((value) =>
+                {
+                    List<int> list = new();
+                    list.Add(7);
+                    list.Add(166);
+                    AltLibrary.ores.Where(x => x.OreType == OreType.Copper)
+                                   .ToList()
+                                   .ForEach(x => list.Add(x.ore));
+                    return list[WorldGen.genRand.Next(list.Count)];
+                });
+            }
+
+            for (int j = 0; j < 3; j++)
+            {
+                if (!c.TryGotoNext(i => i.MatchLdsfld<WorldGen>(nameof(WorldGen.drunkWorldGen))))
+                    return;
+                if (!c.TryGotoNext(i => i.MatchLdcI4(2)))
+                    return;
+                c.Remove();
+                c.Emit(OpCodes.Ldc_I4, 1);
+                if (!c.TryGotoNext(i => i.MatchLdcI4(6)))
+                    return;
+                c.Index++;
+                c.EmitDelegate<Func<int, int>>((value) =>
+                {
+                    List<int> list = new();
+                    list.Add(6);
+                    list.Add(167);
+                    AltLibrary.ores.Where(x => x.OreType == OreType.Iron)
+                                   .ToList()
+                                   .ForEach(x => list.Add(x.ore));
+                    return list[WorldGen.genRand.Next(list.Count)];
+                });
+            }
+
+            for (int j = 0; j < 3; j++)
+            {
+                if (!c.TryGotoNext(i => i.MatchLdsfld<WorldGen>(nameof(WorldGen.drunkWorldGen))))
+                    return;
+                if (!c.TryGotoNext(i => i.MatchLdcI4(2)))
+                    return;
+                c.Remove();
+                c.Emit(OpCodes.Ldc_I4, 1);
+                if (!c.TryGotoNext(i => i.MatchLdcI4(9)))
+                    return;
+                c.Index++;
+                c.EmitDelegate<Func<int, int>>((value) =>
+                {
+                    List<int> list = new();
+                    list.Add(9);
+                    list.Add(168);
+                    AltLibrary.ores.Where(x => x.OreType == OreType.Silver)
+                                   .ToList()
+                                   .ForEach(x => list.Add(x.ore));
+                    return list[WorldGen.genRand.Next(list.Count)];
+                });
+            }
+
+            for (int j = 0; j < 2; j++)
+            {
+                if (!c.TryGotoNext(i => i.MatchLdsfld<WorldGen>(nameof(WorldGen.drunkWorldGen))))
+                    return;
+                if (!c.TryGotoNext(i => i.MatchLdcI4(2)))
+                    return;
+                c.Remove();
+                c.Emit(OpCodes.Ldc_I4, 1);
+                if (!c.TryGotoNext(i => i.MatchLdcI4(8)))
+                    return;
+                c.Index++;
+                c.EmitDelegate<Func<int, int>>((value) =>
+                {
+                    List<int> list = new();
+                    list.Add(8);
+                    list.Add(169);
+                    AltLibrary.ores.Where(x => x.OreType == OreType.Gold)
+                                   .ToList()
+                                   .ForEach(x => list.Add(x.ore));
+                    return list[WorldGen.genRand.Next(list.Count)];
+                });
+            }
+
             if (!c.TryGotoNext(i => i.MatchRet()))
                 return;
             if (!c.TryGotoPrev(i => i.MatchLdsfld<WorldGen>(nameof(WorldGen.drunkWorldGen))))
