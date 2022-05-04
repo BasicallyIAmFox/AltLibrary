@@ -34,23 +34,17 @@ namespace AltLibrary.Common
                         break;
                 }
             }
-            var hallowBarCondition = new LeadingConditionRule(new HallowedBarDropCondition());
-            var hallowBarRule = hallowBarCondition.OnSuccess(ItemDropRule.Common(ItemID.HallowedBar, 1, 15, 30));
-            void RegisterAltHallowDrops(NPCLoot loot)
-            {
-                foreach (AltBiome biome in HallowList)
-                {
-                    var altCondition = new LeadingConditionRule(new HallowedBarAltDropCondition(biome.FullName));
-                    var altItemType = biome.MechDropItemType == null ? ItemID.HallowedBar : (int)biome.MechDropItemType;
-                    var altDropRule = altCondition.OnSuccess(ItemDropRule.Common(altItemType, 1, 15, 30));
-                    loot.Add(altDropRule);
-                }
-            }
-            void RegisterAltEvilDrops(LeadingConditionRule condition, int itemType, int chanceDenominator, int dropMin, int dropMax, NPCLoot loot)
-            {
-                var altDropRule = condition.OnSuccess(ItemDropRule.Common(itemType, chanceDenominator, dropMin, dropMax));
-                loot.Add(altDropRule);
-            }
+            
+            //void RegisterAltHallowDrops(NPCLoot loot)
+            //{
+            //    foreach (AltBiome biome in HallowList)
+            //    {
+            //        var altCondition = new LeadingConditionRule(new HallowedBarAltDropCondition(biome.FullName));
+            //        var altItemType = biome.MechDropItemType == null ? ItemID.HallowedBar : (int)biome.MechDropItemType;
+            //        var altDropRule = altCondition.OnSuccess(ItemDropRule.Common(altItemType, 1, 15, 30));
+            //        loot.Add(altDropRule);
+            //    }
+            //}
 
             var entries = npcLoot.Get(false);
             if (npc.type == NPCID.EyeofCthulhu)
@@ -82,51 +76,79 @@ namespace AltLibrary.Common
 
                 npcLoot.Add(corroCrimCondition);
 
-                //foreach (var biome in EvilList)
-                //{
-                //    var altCondition = new LeadingConditionRule(new EvilAltDropCondition(biome.FullName));
-                //    var altItemType = biome.BiomeOreItem == null ? ItemID.DemoniteOre : (int)biome.BiomeOreItem;
-                //    RegisterAltEvilDrops(altCondition, altItemType, 1, 30, 90, npcLoot);
-                //    altItemType = biome.SeedType == null ? ItemID.CorruptSeeds : (int)biome.SeedType;
-                //    RegisterAltEvilDrops(altCondition, altItemType, 1, 1, 3, npcLoot);
-                //    altItemType = biome.ArrowType == null ? 0 : (int)biome.ArrowType;
-                //    if (altItemType != 0) RegisterAltEvilDrops(altCondition, altItemType, 1, 20, 50, npcLoot);
-                //}
+                var expertCondition = new LeadingConditionRule(new Conditions.NotExpert());
+
+                foreach (AltBiome biome in EvilList)
+                {
+                    var biomeDropRule = new LeadingConditionRule(new EvilAltDropCondition(biome));
+                    if (biome.BiomeOreItem != null) biomeDropRule.OnSuccess(ItemDropRule.Common((int)biome.BiomeOreItem, 1, 30, 90));
+                    if (biome.SeedType != null) biomeDropRule.OnSuccess(ItemDropRule.Common((int)biome.SeedType, 1, 1, 3));
+                    if (biome.ArrowType != null) biomeDropRule.OnSuccess(ItemDropRule.Common((int)biome.ArrowType, 20, 50));
+                    expertCondition.OnSuccess(biomeDropRule);
+                }
+                npcLoot.Add(expertCondition);
             }
-            if (npc.type == NPCID.Retinazer || npc.type == NPCID.Spazmatism)
+            if (npc.type == NPCID.Retinazer || npc.type == NPCID.Spazmatism) // fuck the twins lmfao
             {
 
-                foreach (var entry in entries)
-                {
-                    if (entry is LeadingConditionRule leadingRule)
-                    {
-                        foreach (var chainedRule in leadingRule.ChainedRules)
-                        {
-                            if (chainedRule is LeadingConditionRule leadingRule2)
-                            {
-                                if (leadingRule2.condition is Conditions.NotExpert)
-                                {
-                                    foreach (var chainedRule2 in leadingRule2.ChainedRules)
-                                    {
-                                        if (chainedRule2 is CommonDrop normalDropRule && normalDropRule.itemId == ItemID.HallowedBar)
-                                        {
-                                            leadingRule2.ChainedRules.Remove(chainedRule2);
-                                            leadingRule2.OnSuccess(hallowBarRule);
+                //var expertCondition = new LeadingConditionRule(new Conditions.NotExpert());
+                //var hallowBarCondition = new LeadingConditionRule(new HallowedBarDropCondition());
+                //expertCondition.OnSuccess(hallowBarCondition);
+                //hallowBarCondition.OnSuccess(ItemDropRule.Common(ItemID.HallowedBar, 1, 15, 30));
 
-                                            foreach (AltBiome biome in HallowList)
-                                            {
-                                                var altHallowBarCondition = new LeadingConditionRule(new HallowedBarAltDropCondition(biome.FullName));
-                                                var altHallowBarType = biome.MechDropItemType == null ? ItemID.HallowedBar : (int)biome.MechDropItemType;
-                                                var altHallowBarRule = altHallowBarCondition.OnSuccess(ItemDropRule.Common(altHallowBarType, 1, 15, 30));
-                                                leadingRule2.OnSuccess(altHallowBarRule);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                //foreach (AltBiome biome in HallowList)
+                //{
+                //    var biomeDropRule = new LeadingConditionRule(new HallowedBarAltDropCondition(biome));
+                //    if (biome.MechDropItemType != null) biomeDropRule.OnSuccess(ItemDropRule.Common((int)biome.MechDropItemType, 1, 15, 30));
+                //    expertCondition.OnSuccess(biomeDropRule);
+                //}
+                //npcLoot.Add(expertCondition);
+
+                //foreach (var entry in entries)
+                //{
+                //    if (entry is LeadingConditionRule leadingRule && leadingRule.condition is Conditions.MissingTwin)
+                //    {
+                //        foreach (var entry2 in leadingRule.ChainedRules) if (entry2 is LeadingConditionRule leadingRule2 && leadingRule2.condition is Conditions.NotExpert)
+                //            {
+                //                foreach (var entry3 in leadingRule2.ChainedRules) if (entry3 is CommonDrop drop)
+                //                    {
+                //                        if (drop.itemId == ItemID.HallowedBar) leadingRule2.ChainedRules.Remove(entry3);
+                //                    }
+                //            }
+                //    }
+                //}
+
+                //foreach (var entry in entries)
+                //{
+                //    if (entry is LeadingConditionRule leadingRule)
+                //    {
+                //        foreach (var chainedRule in leadingRule.ChainedRules)
+                //        {
+                //            if (chainedRule is LeadingConditionRule leadingRule2)
+                //            {
+                //                if (leadingRule2.condition is Conditions.MissingTwin)
+                //                {
+                //                    foreach (var chainedRule2 in leadingRule2.ChainedRules)
+                //                    {
+                //                        if (chainedRule2 is CommonDrop normalDropRule && normalDropRule.itemId == ItemID.HallowedBar)
+                //                        {
+                //                            leadingRule2.ChainedRules.Remove(chainedRule2);
+                //                            leadingRule2.OnSuccess(hallowBarRule);
+
+                //                            foreach (AltBiome biome in HallowList)
+                //                            {
+                //                                var altHallowBarCondition = new LeadingConditionRule(new HallowedBarAltDropCondition(biome.FullName));
+                //                                var altHallowBarType = biome.MechDropItemType == null ? ItemID.HallowedBar : (int)biome.MechDropItemType;
+                //                                var altHallowBarRule = altHallowBarCondition.OnSuccess(ItemDropRule.Common(altHallowBarType, 1, 15, 30));
+                //                                leadingRule2.OnSuccess(altHallowBarRule);
+                //                            }
+                //                        }
+                //                    }
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
             }
             if (npc.type == NPCID.TheDestroyer || npc.type == NPCID.SkeletronPrime)
             {
@@ -138,8 +160,18 @@ namespace AltLibrary.Common
                         break;
                     }
                 }
-                npcLoot.Add(hallowBarRule);
-                RegisterAltHallowDrops(npcLoot);
+                var expertCondition = new LeadingConditionRule(new Conditions.NotExpert());
+                var hallowBarCondition = new LeadingConditionRule(new HallowedBarDropCondition());
+                expertCondition.OnSuccess(hallowBarCondition);
+                hallowBarCondition.OnSuccess(ItemDropRule.Common(ItemID.HallowedBar, 1, 15, 30));
+
+                foreach (AltBiome biome in HallowList)
+                {
+                    var biomeDropRule = new LeadingConditionRule(new HallowedBarAltDropCondition(biome));
+                    if (biome.MechDropItemType != null) biomeDropRule.OnSuccess(ItemDropRule.Common((int)biome.MechDropItemType, 1, 15, 30));
+                    expertCondition.OnSuccess(biomeDropRule);
+                }
+                npcLoot.Add(expertCondition);
             }
         }
     }
@@ -147,9 +179,9 @@ namespace AltLibrary.Common
     {
         public bool CanDrop(DropAttemptInfo info)
         {
-            if (!info.IsInSimulation)
+            if (!info.IsInSimulation && (WorldBiomeManager.worldHallow == "" || WorldBiomeManager.worldHallow == null))
             {
-                return (WorldBiomeManager.worldHallow == "" || WorldBiomeManager.worldHallow == null);
+                return true;
             }
             return false;
         }
@@ -199,24 +231,24 @@ namespace AltLibrary.Common
 
     internal class HallowedBarAltDropCondition : IItemDropRuleCondition
     {
-        public string BiomeType;
-        public HallowedBarAltDropCondition(string biomeType)
+        public AltBiome BiomeType;
+        public HallowedBarAltDropCondition(AltBiome biomeType)
         {
             BiomeType = biomeType;
         }
 
         public bool CanDrop(DropAttemptInfo info) // this may have the same issue as EvilAltDropCondition
         {
-            if (!info.IsInSimulation && !(BiomeType != null && BiomeType != ""))
+            if (!info.IsInSimulation && (BiomeType.FullName != null && BiomeType.FullName != ""))
             {
-                if (WorldBiomeManager.worldHallow != null && WorldBiomeManager.worldHallow != "") return WorldBiomeManager.worldHallow == BiomeType;
+                if (WorldBiomeManager.worldHallow != null && WorldBiomeManager.worldHallow != "") return WorldBiomeManager.worldHallow == BiomeType.FullName;
             }
             return false;
         }
 
         public bool CanShowItemDropInUI()
         {
-            return WorldBiomeManager.worldHallow == BiomeType;
+            return WorldBiomeManager.worldHallow == BiomeType.FullName;
         }
 
         public string GetConditionDescription()
@@ -227,24 +259,24 @@ namespace AltLibrary.Common
 
     internal class EvilAltDropCondition : IItemDropRuleCondition
     {
-        public string BiomeType;
-        public EvilAltDropCondition(string biomeType)
+        public AltBiome BiomeType;
+        public EvilAltDropCondition(AltBiome biomeType)
         {
             BiomeType = biomeType;
         }
 
-        public bool CanDrop(DropAttemptInfo info) // why? why is this always returning true? 
+        public bool CanDrop(DropAttemptInfo info)
         {
-            if (!info.IsInSimulation && (BiomeType != null && BiomeType != ""))
+            if (!info.IsInSimulation && (BiomeType.FullName != null && BiomeType.FullName != ""))
             {
-                if (WorldBiomeManager.worldEvil != "") return WorldBiomeManager.worldEvil == BiomeType;
+                if (WorldBiomeManager.worldEvil != "") return WorldBiomeManager.worldEvil == BiomeType.FullName;
             }
             return false;
         }
 
         public bool CanShowItemDropInUI()
         {
-            return WorldBiomeManager.worldEvil == BiomeType;
+            return WorldBiomeManager.worldEvil == BiomeType.FullName;
         }
 
         public string GetConditionDescription()
