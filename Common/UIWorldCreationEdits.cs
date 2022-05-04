@@ -12,6 +12,7 @@ using System.Linq;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -60,7 +61,7 @@ namespace AltLibrary.Common
             List<int> evilBiomeTypes = new() { -333, -666 };
             AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Evil).ToList().ForEach(x => evilBiomeTypes.Add(x.Type - 1));
             AltEvilBiomeChosenType = evilBiomeTypes[Main.rand.Next(evilBiomeTypes.Count)];
-            isCrimson = AltEvilBiomeChosenType == -333 ? false : true;
+            isCrimson = AltEvilBiomeChosenType != -333;
             List<int> hallowBiomeTypes = new() { -3 };
             AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Hallow).ToList().ForEach(x => hallowBiomeTypes.Add(x.Type - 1));
             AltHallowBiomeChosenType = hallowBiomeTypes[Main.rand.Next(hallowBiomeTypes.Count)];
@@ -70,13 +71,27 @@ namespace AltLibrary.Common
             List<int> jungleBiomeTypes = new() { -4 };
             AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Jungle).ToList().ForEach(x => jungleBiomeTypes.Add(x.Type - 1));
             AltJungleBiomeChosenType = jungleBiomeTypes[Main.rand.Next(jungleBiomeTypes.Count)];
-            Copper = Main.rand.Next(2);
-            Iron = Main.rand.Next(2);
-            Silver = Main.rand.Next(2);
-            Gold = Main.rand.Next(2);
-            Cobalt = Main.rand.Next(2);
-            Mythril = Main.rand.Next(2);
-            Adamantite = Main.rand.Next(2);
+            List<int> ores = new() { -1, -2 };
+            AltLibrary.ores.Where(x => x.OreType == OreType.Copper).ToList().ForEach(x => ores.Add(x.Type));
+            Copper = ores[Main.rand.Next(ores.Count)];
+            ores = new() { -3, -4 };
+            AltLibrary.ores.Where(x => x.OreType == OreType.Iron).ToList().ForEach(x => ores.Add(x.Type));
+            Iron = ores[Main.rand.Next(ores.Count)];
+            ores = new() { -5, -6 };
+            AltLibrary.ores.Where(x => x.OreType == OreType.Silver).ToList().ForEach(x => ores.Add(x.Type));
+            Silver = ores[Main.rand.Next(ores.Count)];
+            ores = new() { -7, -8 };
+            AltLibrary.ores.Where(x => x.OreType == OreType.Gold).ToList().ForEach(x => ores.Add(x.Type));
+            Gold = ores[Main.rand.Next(ores.Count)];
+            ores = new() { -9, -10 };
+            AltLibrary.ores.Where(x => x.OreType == OreType.Cobalt).ToList().ForEach(x => ores.Add(x.Type));
+            Cobalt = ores[Main.rand.Next(ores.Count)];
+            ores = new() { -11, -12 };
+            AltLibrary.ores.Where(x => x.OreType == OreType.Mythril).ToList().ForEach(x => ores.Add(x.Type));
+            Mythril = ores[Main.rand.Next(ores.Count)];
+            ores = new() { -13, -14 };
+            AltLibrary.ores.Where(x => x.OreType == OreType.Adamantite).ToList().ForEach(x => ores.Add(x.Type));
+            Adamantite = ores[Main.rand.Next(ores.Count)];
             _oreElements.Clear();
             _oreList = null;
             orig(self);
@@ -119,34 +134,40 @@ namespace AltLibrary.Common
                 self.Append(uIScrollbar);
                 _oreList.SetScrollbar(uIScrollbar);
 
-                List<int> list = new();
+                List<AltOre> list = new();
                 list.Clear();
-                list.Add(0);
-                list.Add(1);
-                list.Add(2);
-                list.Add(3);
-                list.Add(4);
-                list.Add(5);
-                list.Add(6);
-                list.Add(7);
-                list.Add(8);
-                list.Add(9);
-                list.Add(10);
-                list.Add(11);
-                list.Add(12);
-                list.Add(13);
-                list.Add(14);
-                list.Add(15);
-                list.Add(16);
-                list.Add(17);
-                list.Add(18);
-                list.Add(19);
-                list.Add(20);
-                list.Sort((n, t) => n > t ? 1 : -1);
-                for (int i = 0; i < list.Count; i++)
+                list.Add(new RandomOptionOre("RandomCopper"));
+                list.Add(new RandomOptionOre("RandomIron"));
+                list.Add(new RandomOptionOre("RandomSilver"));
+                list.Add(new RandomOptionOre("RandomGold"));
+                list.Add(new RandomOptionOre("RandomCobalt"));
+                list.Add(new RandomOptionOre("RandomMythril"));
+                list.Add(new RandomOptionOre("RandomAdamantite"));
+                list.Add(new VanillaOre("Copper", -1, TileID.Copper, ItemID.CopperBar));
+                list.Add(new VanillaOre("Tin", -2, TileID.Tin, ItemID.TinBar));
+                list.AddRange(AltLibrary.ores.Where(x => x.OreType == OreType.Copper));
+                list.Add(new VanillaOre("Iron", -3, TileID.Iron, ItemID.IronBar));
+                list.Add(new VanillaOre("Lead", -4, TileID.Lead, ItemID.LeadBar));
+                list.AddRange(AltLibrary.ores.Where(x => x.OreType == OreType.Iron));
+                list.Add(new VanillaOre("Silver", -5, TileID.Silver, ItemID.SilverBar));
+                list.Add(new VanillaOre("Tungsten", -6, TileID.Tungsten, ItemID.TungstenBar));
+                list.AddRange(AltLibrary.ores.Where(x => x.OreType == OreType.Silver));
+                list.Add(new VanillaOre("Gold", -7, TileID.Gold, ItemID.GoldBar));
+                list.Add(new VanillaOre("Platinum", -8, TileID.Platinum, ItemID.PlatinumBar));
+                list.AddRange(AltLibrary.ores.Where(x => x.OreType == OreType.Gold));
+                list.Add(new VanillaOre("Cobalt", -9, TileID.Cobalt, ItemID.CobaltBar));
+                list.Add(new VanillaOre("Palladium", -10, TileID.Palladium, ItemID.PalladiumBar));
+                list.AddRange(AltLibrary.ores.Where(x => x.OreType == OreType.Cobalt));
+                list.Add(new VanillaOre("Mythril", -11, TileID.Mythril, ItemID.MythrilBar));
+                list.Add(new VanillaOre("Orichalcum", -12, TileID.Orichalcum, ItemID.OrichalcumBar));
+                list.AddRange(AltLibrary.ores.Where(x => x.OreType == OreType.Mythril));
+                list.Add(new VanillaOre("Adamantite", -13, TileID.Adamantite, ItemID.AdamantiteBar));
+                list.Add(new VanillaOre("Titanium", -14, TileID.Titanium, ItemID.TitaniumBar));
+                list.AddRange(AltLibrary.ores.Where(x => x.OreType == OreType.Adamantite));
+                //list.Sort((n, t) => n.Type > t.Type ? 1 : -1);
+                foreach (AltOre biome in list)
                 {
-                    int biome = list[i];
-                    ALUIOreListItem item = new(biome, true);
+                    ALUIOreListItem item = new(biome, false);
                     _oreList.Add(item);
                     _oreElements.Add(item);
                 }
@@ -211,28 +232,16 @@ namespace AltLibrary.Common
                 }
                 list.Add(new VanillaBiome("CorruptBiome", BiomeType.Evil, -333, Color.MediumPurple, Language.GetText("Mods.AltLibrary.Biomes.CorruptName"), Language.GetText("Mods.AltLibrary.Biomes.CorruptDesc"), false));
                 list.Add(new VanillaBiome("CrimsonBiome", BiomeType.Evil, -666, Color.IndianRed, Language.GetText("Mods.AltLibrary.Biomes.CrimsonName"), Language.GetText("Mods.AltLibrary.Biomes.CrimsonDesc"), true));
-                foreach (AltBiome biome in AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Evil))
-                {
-                    list.Add(biome);
-                }
+                list.AddRange(AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Evil));
                 list.Add(new VanillaBiome("HallowBiome", BiomeType.Hallow, -3, Color.HotPink, Language.GetText("Mods.AltLibrary.Biomes.HallowName"), Language.GetText("Mods.AltLibrary.Biomes.HallowDesc")));
-                foreach (AltBiome biome in AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Hallow))
-                {
-                    list.Add(biome);
-                }
+                list.AddRange(AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Hallow));
                 list.Add(new VanillaBiome("JungleBiome", BiomeType.Jungle, -4, Color.SpringGreen, Language.GetText("Mods.AltLibrary.Biomes.JungleName"), Language.GetText("Mods.AltLibrary.Biomes.JungleDesc")));
-                foreach (AltBiome biome in AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Jungle))
-                {
-                    list.Add(biome);
-                }
+                list.AddRange(AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Jungle));
                 list.Add(new VanillaBiome("UnderworldBiome", BiomeType.Hell, -5, Color.OrangeRed, Language.GetText("Mods.AltLibrary.Biomes.UnderworldName"), Language.GetText("Mods.AltLibrary.Biomes.UnderworldDesc")));
-                foreach (AltBiome biome in AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Hell))
-                {
-                    list.Add(biome);
-                }
+                list.AddRange(AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Hell));
                 foreach (AltBiome biome in list)
                 {
-                    ALUIBiomeListItem item = new(biome, true);
+                    ALUIBiomeListItem item = new(biome, false);
                     _biomeList.Add(item);
                     _biomeElements.Add(item);
                 }
@@ -480,14 +489,28 @@ namespace AltLibrary.Common
                 for (int i = 0; i < 7; i++)
                 {
                     Asset<Texture2D> asset = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/OreIcons");
+                    if (i == 0 && Copper >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.ores[Copper - 1].Texture);
+                    if (i == 1 && Iron >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.ores[Iron - 1].Texture);
+                    if (i == 2 && Silver >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.ores[Silver - 1].Texture);
+                    if (i == 3 && Gold >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.ores[Gold - 1].Texture);
+                    if (i == 4 && Cobalt >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.ores[Cobalt - 1].Texture);
+                    if (i == 5 && Mythril >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.ores[Mythril - 1].Texture);
+                    if (i == 6 && Adamantite >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.ores[Adamantite - 1].Texture);
                     Rectangle? rectangle = null;
-                    if (i == 0) rectangle = new(Copper * 30, 0, 30, 30);
-                    if (i == 1) rectangle = new((Iron + 2) * 30, 0, 30, 30);
-                    if (i == 2) rectangle = new((Silver + 4) * 30, 0, 30, 30);
-                    if (i == 3) rectangle = new((Gold + 6) * 30, 0, 30, 30);
-                    if (i == 4) rectangle = new(Cobalt * 30, 30, 30, 30);
-                    if (i == 5) rectangle = new((Mythril + 2) * 30, 30, 30, 30);
-                    if (i == 6) rectangle = new((Adamantite + 4) * 30, 30, 30, 30);
+                    if (i == 0 && Copper == -1) rectangle = new(0, 0, 30, 30);
+                    if (i == 0 && Copper == -2) rectangle = new(30, 0, 30, 30);
+                    if (i == 1 && Iron == -3) rectangle = new(60, 0, 30, 30);
+                    if (i == 1 && Iron == -4) rectangle = new(90, 0, 30, 30);
+                    if (i == 2 && Silver == -5) rectangle = new(120, 0, 30, 30);
+                    if (i == 2 && Silver == -6) rectangle = new(150, 0, 30, 30);
+                    if (i == 3 && Gold == -7) rectangle = new(180, 0, 30, 30);
+                    if (i == 3 && Gold == -8) rectangle = new(210, 0, 30, 30);
+                    if (i == 4 && Cobalt == -9) rectangle = new(0, 30, 30, 30);
+                    if (i == 4 && Cobalt == -10) rectangle = new(30, 30, 30, 30);
+                    if (i == 5 && Mythril == -11) rectangle = new(60, 30, 30, 30);
+                    if (i == 5 && Mythril == -12) rectangle = new(90, 30, 30, 30);
+                    if (i == 6 && Adamantite == -13) rectangle = new(120, 30, 30, 30);
+                    if (i == 6 && Adamantite == -14) rectangle = new(150, 30, 30, 30);
                     ValueTuple<Asset<Texture2D>, Rectangle?> valueTuple = new(asset, rectangle);
                     spriteBatch.Draw(ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Button").Value, new Vector2(position.X + 96f, position.Y + 26f * (i + x)), color * 0.8f);
                     spriteBatch.Draw(valueTuple.Item1.Value, new Vector2(position.X + 99f, position.Y + 26f * (i + x) + 3f), valueTuple.Item2, color, 0f, new Vector2(0f, 0f), 0.5f, SpriteEffects.None, 0f);

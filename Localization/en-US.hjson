@@ -13,34 +13,6 @@ Mods: {
 			}
 		}
 		Ores: {
-			Ore0Name: "Random Copper-Tier"
-			Ore0Desc: "Chooses random copper-tier ore for you!"
-			Ore1Name: "Random Iron-Tier"
-			Ore1Desc: "Chooses random iron-tier ore for you!"
-			Ore2Name: "Random Silver-Tier"
-			Ore2Desc: "Chooses random silver-tier ore for you!"
-			Ore3Name: "Random Gold-Tier"
-			Ore3Desc: "Chooses random gold-tier ore for you!"
-			Ore4Name: "Random Cobalt-Tier"
-			Ore4Desc: "Chooses random cobalt-tier ore for you!"
-			Ore5Name: "Random Mythril-Tier"
-			Ore5Desc: "Chooses random mythril-tier ore for you!"
-			Ore6Name: "Random Adamantite-Tier"
-			Ore6Desc: "Chooses random Adamantite-tier ore for you!"
-			Ore7Name: "Copper"
-			Ore8Name: "Tin"
-			Ore9Name: "Iron"
-			Ore10Name: "Lead"
-			Ore11Name: "Silver"
-			Ore12Name: "Tungsten"
-			Ore13Name: "Gold"
-			Ore14Name: "Platinum"
-			Ore15Name: "Cobalt"
-			Ore16Name: "Palladium"
-			Ore17Name: "Mythril"
-			Ore18Name: "Orichalcum"
-			Ore19Name: "Adamantite"
-			Ore20Name: "Titanium"
 		}
 		Biomes: {
 			RandomEvilBiomeName: "Random Evil"
@@ -61,6 +33,12 @@ Mods: {
 			JungleDesc: "A flourishing place full of dense trees and lots of bees. There is a ancient temple deep below the jungles surface."
 			UnderworldName: "Underworld"
 			UnderworldDesc: "A molten hot landscape ruined to time, filled with lava and demons to roam the ruined landscape."
+		}
+		Warn: {
+			VanillaBiome: "This biome is from Vanilla"
+			ModdedBiome: "This biome is from {0}"
+			VanillaOre: "This ore is from Vanilla"
+			ModdedOre: "This ore is added by {0}"
 		}
 		RecipeGroups: {
 			EvilBars: "Evil Bar"

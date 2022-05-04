@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
@@ -15,7 +16,7 @@ namespace AltLibrary.Core.UIs
 {
     internal class ALUIOreListItem : UIPanel
     {
-        private int _achievement;
+        private AltOre _achievement;
 
         private UIImageFramed _achievementIcon;
 
@@ -27,7 +28,7 @@ namespace AltLibrary.Core.UIs
 
         private bool _large;
 
-        public ALUIOreListItem(int ore, bool largeForOtherLanguages)
+        public ALUIOreListItem(AltOre ore, bool largeForOtherLanguages)
         {
             this._large = largeForOtherLanguages;
             base.BackgroundColor = new Color(26, 40, 89) * 0.8f;
@@ -72,81 +73,168 @@ namespace AltLibrary.Core.UIs
 
         private void _achievementIcon_OnUpdate(UIElement affectedElement)
         {
-            if (_achievement < 7)
+            if (_achievement.Name.StartsWith("Random"))
             {
                 (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Random"), new(0, 0, 30, 30));
                 return;
             }
 
-            int index = _achievement - 7;
-            (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/OreIcons"), new(index % 8 * 30, index / 8 * 30, 30, 30));
+            if (_achievement.Type == -1)
+            {
+                set(0);
+            }
+            else if (_achievement.Type == -2)
+            {
+                set(1);
+            }
+            else if (_achievement.Type == -3)
+            {
+                set(2);
+            }
+            else if (_achievement.Type == -4)
+            {
+                set(3);
+            }
+            else if (_achievement.Type == -5)
+            {
+                set(4);
+            }
+            else if (_achievement.Type == -6)
+            {
+                set(5);
+            }
+            else if (_achievement.Type == -7)
+            {
+                set(6);
+            }
+            else if (_achievement.Type == -8)
+            {
+                set(7);
+            }
+            else if (_achievement.Type == -9)
+            {
+                set(8);
+            }
+            else if (_achievement.Type == -10)
+            {
+                set(9);
+            }
+            else if (_achievement.Type == -11)
+            {
+                set(10);
+            }
+            else if (_achievement.Type == -12)
+            {
+                set(11);
+            }
+            else if (_achievement.Type == -13)
+            {
+                set(12);
+            }
+            else if (_achievement.Type == -14)
+            {
+                set(13);
+            }
+            else if (_achievement.Type == -15)
+            {
+                set(14);
+            }
+            if (_achievement.Type >= 0 && _achievement.Mod != null)
+            {
+                (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>(_achievement.Texture), new(0, 0, 30, 30));
+            }
+
+            void set(int i)
+            {
+                (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/OreIcons"), new(i % 8 * 30, i / 8 * 30, 30, 30));
+            }
         }
 
         private void _achievementIcon_OnClick(UIMouseEvent evt, UIElement listeningElement)
         {
-            if (_achievement < 7)
+            if (_achievement.Name.StartsWith("Random"))
             {
-                List<int> values = new()
+                List<int> values = new();
+                switch (_achievement.Name)
                 {
-                    0,
-                    1
-                };
-                switch (_achievement)
-                {
-                    case 0:
+                    case "RandomCopper":
+                        values.Add(-1);
+                        values.Add(-2);
+                        AltLibrary.ores.Where(x => x.OreType == OreType.Copper).ToList().ForEach(x => values.Add(x.Type));
                         UIWorldCreationEdits.Copper = values[Main.rand.Next(values.Count)];
                         break;
-                    case 1:
+                    case "RandomIron":
+                        values.Add(-3);
+                        values.Add(-4);
+                        AltLibrary.ores.Where(x => x.OreType == OreType.Iron).ToList().ForEach(x => values.Add(x.Type));
                         UIWorldCreationEdits.Iron = values[Main.rand.Next(values.Count)];
                         break;
-                    case 2:
+                    case "RandomSilver":
+                        values.Add(-5);
+                        values.Add(-6);
+                        AltLibrary.ores.Where(x => x.OreType == OreType.Silver).ToList().ForEach(x => values.Add(x.Type));
                         UIWorldCreationEdits.Silver = values[Main.rand.Next(values.Count)];
                         break;
-                    case 3:
+                    case "RandomGold":
+                        values.Add(-7);
+                        values.Add(-8);
+                        AltLibrary.ores.Where(x => x.OreType == OreType.Gold).ToList().ForEach(x => values.Add(x.Type));
                         UIWorldCreationEdits.Gold = values[Main.rand.Next(values.Count)];
                         break;
-                    case 4:
+                    case "RandomCobalt":
+                        values.Add(-9);
+                        values.Add(-10);
+                        AltLibrary.ores.Where(x => x.OreType == OreType.Cobalt).ToList().ForEach(x => values.Add(x.Type));
                         UIWorldCreationEdits.Cobalt = values[Main.rand.Next(values.Count)];
                         break;
-                    case 5:
+                    case "RandomMythril":
+                        values.Add(-11);
+                        values.Add(-12);
+                        AltLibrary.ores.Where(x => x.OreType == OreType.Mythril).ToList().ForEach(x => values.Add(x.Type));
                         UIWorldCreationEdits.Mythril = values[Main.rand.Next(values.Count)];
                         break;
-                    case 6:
+                    case "RandomAdamantite":
+                        values.Add(-13);
+                        values.Add(-14);
+                        AltLibrary.ores.Where(x => x.OreType == OreType.Adamantite).ToList().ForEach(x => values.Add(x.Type));
                         UIWorldCreationEdits.Adamantite = values[Main.rand.Next(values.Count)];
                         break;
                 }
                 return;
             }
 
-            switch (_achievement - 7)
+            if (_achievement.Type <= -1 && _achievement.Type >= -2) UIWorldCreationEdits.Copper = _achievement.Type;
+            if (_achievement.Type <= -3 && _achievement.Type >= -4) UIWorldCreationEdits.Iron = _achievement.Type;
+            if (_achievement.Type <= -5 && _achievement.Type >= -6) UIWorldCreationEdits.Silver = _achievement.Type;
+            if (_achievement.Type <= -7 && _achievement.Type >= -8) UIWorldCreationEdits.Gold = _achievement.Type;
+            if (_achievement.Type <= -9 && _achievement.Type >= -10) UIWorldCreationEdits.Cobalt = _achievement.Type;
+            if (_achievement.Type <= -11 && _achievement.Type >= -12) UIWorldCreationEdits.Mythril = _achievement.Type;
+            if (_achievement.Type <= -13 && _achievement.Type >= -14) UIWorldCreationEdits.Adamantite = _achievement.Type;
+
+            if (_achievement.Type < 0)
+                return;
+            switch (_achievement.OreType)
             {
-                case 0:
-                case 1:
-                    UIWorldCreationEdits.Copper = _achievement - 7;
+                case OreType.Copper:
+                    UIWorldCreationEdits.Copper = _achievement.Type;
                     break;
-                case 2:
-                case 3:
-                    UIWorldCreationEdits.Iron = _achievement - 9;
+                case OreType.Iron:
+                    UIWorldCreationEdits.Iron = _achievement.Type;
                     break;
-                case 4:
-                case 5:
-                    UIWorldCreationEdits.Silver = _achievement - 11;
+                case OreType.Silver:
+                    UIWorldCreationEdits.Silver = _achievement.Type;
                     break;
-                case 6:
-                case 7:
-                    UIWorldCreationEdits.Gold = _achievement - 13;
+                case OreType.Gold:
+                    UIWorldCreationEdits.Gold = _achievement.Type;
                     break;
-                case 8:
-                case 9:
-                    UIWorldCreationEdits.Cobalt = _achievement - 15;
+                case OreType.Cobalt:
+                    UIWorldCreationEdits.Cobalt = _achievement.Type;
                     break;
-                case 10:
-                case 11:
-                    UIWorldCreationEdits.Mythril = _achievement - 17;
+                case OreType.Mythril:
+                    UIWorldCreationEdits.Mythril = _achievement.Type;
                     break;
-                case 12:
-                case 13:
-                    UIWorldCreationEdits.Adamantite = _achievement - 19;
+                case OreType.Adamantite:
+                    UIWorldCreationEdits.Adamantite = _achievement.Type;
                     break;
             }
         }
@@ -163,20 +251,21 @@ namespace AltLibrary.Core.UIs
             float num7 = innerDimensions.Width - dimensions.Width + 1f - num9 * 2;
             Vector2 baseScale5 = new(0.85f);
             Vector2 baseScale4 = new(0.92f);
-            string descValue3 = $"Mods.AltLibrary.Ores.Ore{(_achievement >= 0 ? _achievement : _achievement.ToString().Replace("-", "Minus"))}Desc";
+            string descValue3 = $"Mods.{(_achievement.Mod != null ? _achievement.Mod.Name : "AltLibrary")}.Ores.{_achievement.Name}Desc";
             string descValue2 = LanguageManager.Instance.Exists(descValue3) ? Language.GetTextValue(descValue3) : "";
-            string text3 = FontAssets.ItemStack.Value.CreateWrappedText(descValue2, (num7 - 20f) * (1f / baseScale4.X), Language.ActiveCulture.CultureInfo);
+            string descValue = _achievement.Description != null ? _achievement.Description.Value : descValue2;
+            string text3 = FontAssets.ItemStack.Value.CreateWrappedText(descValue, (num7 - 20f) * (1f / baseScale4.X), Language.ActiveCulture.CultureInfo);
             Vector2 stringSize3 = ChatManager.GetStringSize(FontAssets.ItemStack.Value, text3, baseScale4, num7);
             if (!this._large)
             {
-                stringSize3 = ChatManager.GetStringSize(FontAssets.ItemStack.Value, descValue2, baseScale4, num7);
+                stringSize3 = ChatManager.GetStringSize(FontAssets.ItemStack.Value, descValue, baseScale4, num7);
             }
             float num6 = 38f + (this._large ? 20 : 0);
             if (stringSize3.Y > num6)
             {
                 baseScale4.Y *= num6 / stringSize3.Y;
             }
-            Color value7 = Color.White;
+            Color value7 = _achievement.NameColor;
             value7 = Color.Lerp(value7, Color.White, base.IsMouseHovering ? 0.25f : 0f);
             Color value5 = Color.White;
             value5 = Color.Lerp(value5, Color.White, base.IsMouseHovering ? 0.5f : 0f);
@@ -187,9 +276,10 @@ namespace AltLibrary.Core.UIs
             vector.X += 4f;
             vector.X += 4f;
             vector.X += 17f;
-            string displayNameValue3 = $"Mods.AltLibrary.Ores.Ore{(_achievement >= 0 ? _achievement.ToString() : _achievement.ToString().Replace("-", "Minus"))}Name";
-            string displayNameValue2 = LanguageManager.Instance.Exists(displayNameValue3) ? Language.GetTextValue(displayNameValue3) : _achievement.ToString();
-            ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, displayNameValue2, vector, value7, 0f, Vector2.Zero, baseScale5, num7, 2f);
+            string displayNameValue3 = $"Mods.{(_achievement.Mod != null ? _achievement.Mod.Name : "AltLibrary")}.Ores.{_achievement.Name}Name";
+            string displayNameValue2 = LanguageManager.Instance.Exists(displayNameValue3) ? Language.GetTextValue(displayNameValue3) : _achievement.Name;
+            string displayNameValue = _achievement.DisplayName != null ? _achievement.DisplayName.Value : displayNameValue2;
+            ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, displayNameValue, vector, value7, 0f, Vector2.Zero, baseScale5, num7, 2f);
             vector.X -= 17f;
             Vector2 position = value9 + Vector2.UnitY * 25f + value8;
             this.DrawPanelBottom(spriteBatch, position, num7, color5);
@@ -221,6 +311,16 @@ namespace AltLibrary.Core.UIs
 				vector2.X -= num5 * 1.4f + stringSize2.X;
 				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, text2, vector2, value7, 0f, new Vector2(0f, 0f), baseScale3, 90f, 2f);
 			}*/
+            Rectangle mouseRectangle = Utils.CenteredRectangle(Main.MouseScreen, Vector2.One * 2f);
+            float num10 = this._large.ToInt() * 4;
+            float num11 = this._large.ToInt() * 58;
+            Vector2 vector2 = new(dimensions.X + num10, dimensions.Y - num11);
+            Texture2D texture = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/ButtonWarn").Value;
+            spriteBatch.Draw(texture, vector2, Color.White);
+            if (mouseRectangle.Intersects(Utils.CenteredRectangle(vector2 + new Vector2(11f, 11f), Utils.Size(texture))))
+            {
+                Main.instance.MouseText(_achievement.Mod == null ? Language.GetTextValue("Mods.AltLibrary.Warn.VanillaOre") : Language.GetTextValue("Mods.AltLibrary.Warn.ModdedOre", _achievement.Mod.Name));
+            }
         }
 
         private void DrawPanelTop(SpriteBatch spriteBatch, Vector2 position, float width, Color color)

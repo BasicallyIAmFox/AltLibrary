@@ -23,8 +23,6 @@ namespace AltLibrary.Core.UIs
 
         private UIImageButton button;
 
-        //private UIImage warn;
-
         private Asset<Texture2D> _innerPanelTopTexture;
 
         private Asset<Texture2D> _innerPanelBottomTexture;
@@ -33,7 +31,7 @@ namespace AltLibrary.Core.UIs
 
         public ALUIBiomeListItem(AltBiome achievement, bool largeForOtherLanguages)
         {
-            this._large = largeForOtherLanguages;
+            this._large = !largeForOtherLanguages;
             base.BackgroundColor = new Color(26, 40, 89) * 0.8f;
             base.BorderColor = new Color(13, 20, 44) * 0.8f;
             float num5 = 16 + this._large.ToInt() * 20;
@@ -76,13 +74,6 @@ namespace AltLibrary.Core.UIs
             {
                 _innerPanelBottomTexture = Main.Assets.Request<Texture2D>("Images/UI/Achievement_InnerPanelBottom");
             }
-            /*warn = new(ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/ButtonWarn", AssetRequestMode.ImmediateLoad));
-            warn.Left.Set(-50f, 0f);
-            warn.Width.Set(-50f, 0f);
-            warn.Left.Set(num7, 0f);
-            warn.Top.Set(num6 - 50f, 0f);
-            warn.OnMouseOver += Warn_OnMouseOver;
-            Append(warn);*/
         }
 
         private void _achievementIcon_OnUpdate(UIElement affectedElement)
@@ -274,6 +265,16 @@ namespace AltLibrary.Core.UIs
 				vector2.X -= num5 * 1.4f + stringSize2.X;
 				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, text2, vector2, value7, 0f, new Vector2(0f, 0f), baseScale3, 90f, 2f);
 			}*/
+            Rectangle mouseRectangle = Utils.CenteredRectangle(Main.MouseScreen, Vector2.One * 2f);
+            float num10 = this._large.ToInt() * 4;
+            float num11 = this._large.ToInt() * 58;
+            Vector2 vector2 = new(dimensions.X + num10, dimensions.Y - num11);
+            Texture2D texture = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/ButtonWarn", AssetRequestMode.ImmediateLoad).Value;
+            spriteBatch.Draw(texture, vector2, Color.White);
+            if (mouseRectangle.Intersects(Utils.CenteredRectangle(vector2 + new Vector2(11f, 11f), Utils.Size(texture))))
+            {
+                Main.instance.MouseText(_achievement.Mod == null ? Language.GetTextValue("Mods.AltLibrary.Warn.VanillaBiome") : Language.GetTextValue("Mods.AltLibrary.Warn.ModdedBiome", _achievement.Mod.Name));
+            }
         }
 
         private void DrawPanelTop(SpriteBatch spriteBatch, Vector2 position, float width, Color color)

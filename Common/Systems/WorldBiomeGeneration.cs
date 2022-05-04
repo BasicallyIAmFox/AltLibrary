@@ -51,49 +51,102 @@ namespace AltLibrary.Common.Systems
 
         private void WorldSetupTask(GenerationProgress progress, GameConfiguration configuration)
         {
-            if (WorldBiomeManager.Copper == 0)
+            if (WorldBiomeManager.Copper == -1)
             {
                 WorldGen.SavedOreTiers.Copper = TileID.Copper;
                 WorldGen.copperBar = ItemID.CopperBar;
             }
-            else
+            else if (WorldBiomeManager.Copper == -2)
             {
                 WorldGen.SavedOreTiers.Copper = TileID.Tin;
                 WorldGen.copperBar = ItemID.TinBar;
             }
-            if (WorldBiomeManager.Iron == 0)
+            else
+            {
+                WorldGen.SavedOreTiers.Copper = AltLibrary.ores[WorldBiomeManager.Copper - 1].ore;
+                WorldGen.copperBar = AltLibrary.ores[WorldBiomeManager.Copper - 1].bar;
+            }
+            if (WorldBiomeManager.Iron == -3)
             {
                 WorldGen.SavedOreTiers.Iron = TileID.Iron;
                 WorldGen.ironBar = ItemID.IronBar;
             }
-            else
+            else if (WorldBiomeManager.Iron == -4)
             {
                 WorldGen.SavedOreTiers.Iron = TileID.Lead;
                 WorldGen.ironBar = ItemID.LeadBar;
             }
-            if (WorldBiomeManager.Silver == 0)
+            else
+            {
+                WorldGen.SavedOreTiers.Iron = AltLibrary.ores[WorldBiomeManager.Iron - 1].ore;
+                WorldGen.ironBar = AltLibrary.ores[WorldBiomeManager.Iron - 1].bar;
+            }
+            if (WorldBiomeManager.Silver == -5)
             {
                 WorldGen.SavedOreTiers.Silver = TileID.Silver;
                 WorldGen.silverBar = ItemID.SilverBar;
             }
-            else
+            else if (WorldBiomeManager.Silver == -6)
             {
                 WorldGen.SavedOreTiers.Silver = TileID.Tungsten;
                 WorldGen.silverBar = ItemID.TungstenBar;
             }
-            if (WorldBiomeManager.Gold == 0)
+            else
+            {
+                WorldGen.SavedOreTiers.Silver = AltLibrary.ores[WorldBiomeManager.Silver - 1].ore;
+                WorldGen.silverBar = AltLibrary.ores[WorldBiomeManager.Silver - 1].bar;
+            }
+            if (WorldBiomeManager.Gold == -7)
             {
                 WorldGen.SavedOreTiers.Gold = TileID.Gold;
                 WorldGen.goldBar = ItemID.GoldBar;
             }
-            else
+            else if (WorldBiomeManager.Gold == -8)
             {
                 WorldGen.SavedOreTiers.Gold = TileID.Platinum;
                 WorldGen.goldBar = ItemID.PlatinumBar;
             }
-            WorldGen.SavedOreTiers.Cobalt = WorldBiomeManager.Cobalt == 0 ? TileID.Cobalt : TileID.Palladium;
-            WorldGen.SavedOreTiers.Mythril = WorldBiomeManager.Mythril == 0 ? TileID.Mythril : TileID.Orichalcum;
-            WorldGen.SavedOreTiers.Adamantite = WorldBiomeManager.Adamantite == 0 ? TileID.Adamantite : TileID.Titanium;
+            else
+            {
+                WorldGen.SavedOreTiers.Gold = AltLibrary.ores[WorldBiomeManager.Gold - 1].ore;
+                WorldGen.goldBar = AltLibrary.ores[WorldBiomeManager.Gold - 1].bar;
+            }
+            if (WorldBiomeManager.Cobalt == -9)
+            {
+                WorldGen.SavedOreTiers.Cobalt = TileID.Cobalt;
+            }
+            else if (WorldBiomeManager.Cobalt == -10)
+            {
+                WorldGen.SavedOreTiers.Cobalt = TileID.Palladium;
+            }
+            else
+            {
+                WorldGen.SavedOreTiers.Cobalt = AltLibrary.ores[WorldBiomeManager.Cobalt - 1].ore;
+            }
+            if (WorldBiomeManager.Mythril == -11)
+            {
+                WorldGen.SavedOreTiers.Mythril = TileID.Mythril;
+            }
+            else if (WorldBiomeManager.Mythril == -12)
+            {
+                WorldGen.SavedOreTiers.Mythril = TileID.Orichalcum;
+            }
+            else
+            {
+                WorldGen.SavedOreTiers.Mythril = AltLibrary.ores[WorldBiomeManager.Mythril - 1].ore;
+            }
+            if (WorldBiomeManager.Adamantite == -13)
+            {
+                WorldGen.SavedOreTiers.Adamantite = TileID.Adamantite;
+            }
+            else if (WorldBiomeManager.Adamantite == -14)
+            {
+                WorldGen.SavedOreTiers.Adamantite = TileID.Titanium;
+            }
+            else
+            {
+                WorldGen.SavedOreTiers.Adamantite = AltLibrary.ores[WorldBiomeManager.Adamantite - 1].ore;
+            }
         }
 
         private void WorldHellAltTask(GenerationProgress progress, GameConfiguration configuration)

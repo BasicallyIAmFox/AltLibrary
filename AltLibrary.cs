@@ -1,3 +1,4 @@
+using AltLibrary.Common;
 using AltLibrary.Common.AltBiomes;
 using AltLibrary.Core;
 using System.Collections.Generic;
@@ -12,6 +13,8 @@ namespace AltLibrary
         public static AltLibrary Instance { get => instance; set => instance = value; }
 
         public static List<AltBiome> biomes = new();
+
+        public static List<AltOre> ores = new();
 
         public static Dictionary<string, float> hellAltTrans = new();
 
