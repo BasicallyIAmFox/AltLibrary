@@ -59,7 +59,7 @@ namespace AltLibrary.Common.AltBiomes
         /// <summary>
         /// For Jungle and Evil alts. The TileID of the biome's associated ore brick.
         /// For Jungle alts, this block will slow down the spread of nearby evil biome blocks. 
-        /// For Evil alts, this is the block that will surround the loot of the Underworld boss.
+        /// For Evil alts, this is the block that will surround the loot of the Underworld boss. (WoF or Alt)
         /// </summary>
         public int? BiomeOreBrick = null;
         /// <summary>
@@ -72,7 +72,7 @@ namespace AltLibrary.Common.AltBiomes
         /// For Hallow alts. The TileID of the biome's mowed grass block. 
         /// You can also use this field for Evil or Jungle alts if you desire to make the grass able to be mowed.
         /// </summary>
-        public int? BiomeMowedGrass = null; // TODO: IL Edit Player.MowGrassTile()
+        public int? BiomeMowedGrass = null; 
 
         /// <summary>
         /// For Evil and Hallow alts. The tile which convertable stone will be turned into.

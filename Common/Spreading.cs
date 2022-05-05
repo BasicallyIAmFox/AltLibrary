@@ -10,13 +10,6 @@ namespace AltLibrary.Common
     {
         public override void RandomUpdate(int i, int j, int type)
         {
-            // REMOVE THIS 'RETURN' WHEN FIXING SPREADING OR/AND FIXED
-            // REMOVE THIS 'RETURN' WHEN FIXING SPREADING OR/AND FIXED
-            // REMOVE THIS 'RETURN' WHEN FIXING SPREADING OR/AND FIXED
-            // REMOVE THIS 'RETURN' WHEN FIXING SPREADING OR/AND FIXED
-            // REMOVE THIS 'RETURN' WHEN FIXING SPREADING OR/AND FIXED
-            return;
-
             if (Main.tile[i, j].IsActuated)
             {
                 return;
@@ -68,40 +61,62 @@ namespace AltLibrary.Common
                         var target = Main.tile[targetX, targetY];
                         var canSpread = target.HasUnactuatedTile;
                         var oldTileType = target.TileType;
-                        ushort newTileType = 0;
+                        int newTileType = -1;
 
                         if (biomeToSpread.BiomeType == BiomeType.Evil && (WorldGen.CountNearBlocksTypes(targetX, targetY, 2, 1, TileID.Sunflower) > 0) && NearbyEvilSlowingOres(targetX, targetY)) continue;
                         // TODO: IL edit vanilla Evils to also check for Chlorophyte alts in addition to Chlorophyte 
                         if (canSpread)
                         {
                             if (biomeToSpread.SpecialConversion.ContainsKey(oldTileType)) newTileType = (ushort)biomeToSpread.SpecialConversion[oldTileType];
-                            else if (biomeToSpread.MudToDirt)
+                            else if (oldTileType == TileID.Mud)
                             {
-                                if (oldTileType == TileID.Mud) newTileType = TileID.Dirt;
+                                if (biomeToSpread.MudToDirt) newTileType = TileID.Dirt;
                             }
+                            else if (AltLibrary.jungleGrass.Contains(oldTileType) && biomeToSpread.BiomeJungleGrass != null)
+                            {
+                                newTileType = (ushort)biomeToSpread.BiomeJungleGrass;
+                            }
+                            else if (AltLibrary.jungleThorns.Contains(oldTileType) && biomeToSpread.BiomeThornBush != null)
+                            {
+                                newTileType = (ushort)biomeToSpread.BiomeThornBush;
+                            } 
                             else
                             {
-                                if (oldTileType == TileID.IceBlock) newTileType = (ushort)biomeToSpread.BiomeIce; // if I knew of a better way to do this, believe me, I would use it
-                                if (oldTileType == TileID.HardenedSand) newTileType = (ushort)biomeToSpread.BiomeHardenedSand; // hey jackass use a switch case its literally just ints
-                                if (oldTileType == TileID.Sandstone) newTileType = (ushort)biomeToSpread.BiomeSandstone;
-                                if (oldTileType == TileID.Sand) newTileType = (ushort)biomeToSpread.BiomeSand;
-                                if (oldTileType == TileID.Stone) newTileType = (ushort)biomeToSpread.BiomeStone;
-                                if (oldTileType == TileID.Grass) newTileType = (ushort)biomeToSpread.BiomeGrass;
-                                if (oldTileType == TileID.GolfGrass)
+                                switch (oldTileType)
                                 {
-                                    if (biomeToSpread.BiomeMowedGrass != null) newTileType = (ushort)biomeToSpread.BiomeMowedGrass;
-                                    else newTileType = (ushort)biomeToSpread.BiomeGrass;
+                                    case TileID.IceBlock:
+                                        newTileType = biomeToSpread.BiomeIce ?? -1;
+                                        break;
+                                    case TileID.HardenedSand:
+                                        newTileType = biomeToSpread.BiomeHardenedSand ?? -1;
+                                        break;
+                                    case TileID.Sandstone:
+                                        newTileType = biomeToSpread.BiomeSandstone ?? -1;
+                                        break;
+                                    case TileID.Sand:
+                                        newTileType = biomeToSpread.BiomeSand ?? -1;
+                                        break;
+                                    case TileID.Stone:
+                                        newTileType = biomeToSpread.BiomeStone ?? -1;
+                                        break;
+                                    case TileID.Grass:
+                                        newTileType = biomeToSpread.BiomeGrass ?? -1;
+                                        break;
+                                    case TileID.GolfGrass:
+                                        if (biomeToSpread.BiomeMowedGrass.HasValue) newTileType = (int)biomeToSpread.BiomeMowedGrass;
+                                        else newTileType = biomeToSpread.BiomeGrass ?? -1;
+                                        break;
+                                    default: 
+                                        newTileType = -1;
+                                        break;
                                 }
-
-                                if (AltLibrary.jungleGrass.Contains(oldTileType) && biomeToSpread.BiomeJungleGrass != null) newTileType = (ushort)biomeToSpread.BiomeJungleGrass;
-                                if (AltLibrary.jungleThorns.Contains(oldTileType) && biomeToSpread.BiomeThornBush != null) newTileType = (ushort)biomeToSpread.BiomeThornBush;
                             }
 
 
-                            if (newTileType != 0 && newTileType != oldTileType)
+                            if (newTileType != -1 && newTileType != oldTileType)
                             {
                                 if (WorldGen.genRand.NextBool(2)) flag = true;
-                                target.TileType = newTileType;
+                                target.TileType = (ushort)newTileType;
                                 WorldGen.SquareTileFrame(targetX, targetY);
                                 if (Main.netMode == NetmodeID.Server) NetMessage.SendTileSquare(-1, targetX, targetY);
                             }
@@ -114,15 +129,17 @@ namespace AltLibrary.Common
             {
                 if (biomeToSpread.BiomeType == BiomeType.Jungle)
                 {
-                    SpreadGrass(i, j, TileID.Mud, (int)biomeToSpread.BiomeJungleGrass);
+                    SpreadGrass(i, j, TileID.Mud, (int)biomeToSpread.BiomeJungleGrass.Value, false);
                 }
                 else
                 {
+                    var blockedBySunflowers = false;
+                    if (biomeToSpread.BiomeType == BiomeType.Evil) blockedBySunflowers = true;
                     if  (j < (Main.worldSurface + Main.rockLayer) / 2)
                     {
-                        SpreadGrass(i, j, TileID.Dirt, (int)biomeToSpread.BiomeGrass);
+                        SpreadGrass(i, j, TileID.Dirt, type, blockedBySunflowers);
                     }
-                    if (WorldGen.AllowedToSpreadInfections) SpreadGrass(i, j, TileID.Grass, (int)biomeToSpread.BiomeGrass);
+                    if (WorldGen.AllowedToSpreadInfections) SpreadGrass(i, j, TileID.Grass, type, blockedBySunflowers);
                 }
             }
 
@@ -142,7 +159,7 @@ namespace AltLibrary.Common
                         {
                             if (Main.tile[targetX, targetY - 1].IsActuated || 
                                 (Main.tile[targetX, targetY - 1].TileType != TileID.Trees && Main.tile[targetX, targetY - 1].TileType != TileID.LifeFruit 
-                                && !AltLibrary.planteraBulbs.Contains(Main.tile[targetX, targetY - 1].TileType))) // TODO: recreate vanilla WorldGen.Chlorophyte method for alts
+                                && !AltLibrary.planteraBulbs.Contains(Main.tile[targetX, targetY - 1].TileType))) 
                             {
                                 target.TileType = 211;
                                 WorldGen.SquareTileFrame(targetX, targetY);
@@ -251,13 +268,13 @@ namespace AltLibrary.Common
             return false;
         }
 
-        public static void SpreadGrass(int i, int j, int dirt, int grass) // I made this grass spreading code years ago, and its probably not great but it works so /shrug 
+        public static void SpreadGrass(int i, int j, int dirt, int grass, bool blockedBySunflowers) // I made this grass spreading code years ago, and its probably not great but it works so /shrug 
         {
             int left = i - 1; // defining the bounds of the 3x3 space which will be checked for dirt
             int right = i + 1;
             int top = j - 1;
             int bottom = j + 1;
-            if (left < 0) // making sure the coords to detect obstacles to are within the bounds of the world
+            if (left < 0) // making sure the coords to detect dirt are within the bounds of the world
             {
                 left = 0;
             }
@@ -277,11 +294,11 @@ namespace AltLibrary.Common
             {
                 for (int l = top; l <= bottom; l++)
                 {
-                    SpreadGrassPhase2(k, l, dirt, grass);
+                    SpreadGrassPhase2(k, l, dirt, grass, blockedBySunflowers);
                 }
             }
         }
-        public static void SpreadGrassPhase2(int i, int j, int dirt, int grass)
+        public static void SpreadGrassPhase2(int i, int j, int dirt, int grass, bool blockedBySunflowers)
         {
             int left = i - 1; // defining the bounds of the 3x3 space which will be checked for lava and air
             int right = i + 1;
@@ -321,6 +338,10 @@ namespace AltLibrary.Common
                     }
                 } // effectively, what was just done is this; grass is halted by default, but if even one adjacent tile has air (or furniture, etc) then
             }     // grass is no longer halted. the lava check then comes after the air check so that if there *is* any lava touching the block, the grass will not spread
+            if (Main.tile[i, j - 1].TileType == TileID.Sunflower && blockedBySunflowers)
+            {
+                haltSpread = true;
+            }
             if (!haltSpread && Main.tile[i, j].TileType == dirt) // checking if the grass is allowed to spread and if the block in question is dirt
             {                                                // add && (grass != <ID of evil grass> || Main.tile[i, j - 1].type != 27) to disallow spreading when a sunflower is on top
                 Main.tile[i, j].TileType = (ushort)grass;
