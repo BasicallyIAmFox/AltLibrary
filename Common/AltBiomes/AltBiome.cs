@@ -139,15 +139,24 @@ namespace AltLibrary.Common.AltBiomes
         /// </summary>
         public int? BossBulb = null;
 
-        public int? BloodBunny = null;
-
-        public int? BloodGoldfish = null;
-
-        public int? BloodPenguin = null;
-
         public virtual WallContext WallContext => new();
 
         public virtual List<int> HardmodeWalls => new();
+        #endregion
+
+        #region Blood Moon
+        /// <summary>
+        /// For Evil alts, the NPCID of the creature Bunnies will turn into during a blood moon.
+        /// </summary>
+        public int? BloodBunny = null;
+        /// <summary>
+        /// For Evil alts, the NPCID of the creature Goldfish will turn into during a blood moon.
+        /// </summary>
+        public int? BloodGoldfish = null;
+        /// <summary>
+        /// For Evil alts, the NPCID of the creature Penguins will turn into during a blood moon.
+        /// </summary>
+        public int? BloodPenguin = null;
         #endregion
 
         #region Mimic
@@ -222,7 +231,7 @@ namespace AltLibrary.Common.AltBiomes
         public virtual Color NameColor => new(255, 255, 255);
         public bool Selectable = true;
         #endregion
-        public virtual Color AltUnderworldColor => Color.Black; // does this do ui stuff?
+        public virtual Color AltUnderworldColor => Color.Black;
         public virtual Asset<Texture2D>[] AltUnderworldBackgrounds => new Asset<Texture2D>[14];
 
         public sealed override void SetupContent()
