@@ -64,6 +64,7 @@ namespace AltLibrary.Core.UIs
             _achievementIcon.Width.Set(0f, 1f);
             _achievementIcon.Height.Set(0, 1f);
             button.OnClick += _achievementIcon_OnClick;
+            button.SetVisibility(0f, 0f);
             _achievementIcon.Append(button);
             _innerPanelTopTexture = Main.Assets.Request<Texture2D>("Images/UI/Achievement_InnerPanelTop");
             if (_large)
