@@ -207,7 +207,7 @@ namespace AltLibrary.Common.AltBiomes
         /// <summary>
         /// The path to the texture that will serve as one of the layers of the tree on the world selection screen.
         /// </summary>
-        public virtual string WorldIcon => "AltLibrary/Assets/WorldIcons/NullBiome/";
+        public virtual string WorldIcon => "AltLibrary/Assets/WorldIcons/NullBiome/NullBiome";
         /// <summary>
         /// For Evil biomes. The texture that appears around the loading bar on world creation.
         /// </summary>
