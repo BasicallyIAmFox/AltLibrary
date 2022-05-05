@@ -1,4 +1,5 @@
 ﻿using AltLibrary.Common;
+using AltLibrary.Common.AltOres;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -41,21 +42,21 @@ namespace AltLibrary.Core.UIs
             base.Width.Set(0f, 1f);
             base.PaddingTop = 8f;
             base.PaddingLeft = 9f;
-            UIImage image = new(ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Button2", AssetRequestMode.ImmediateLoad));
+            UIImage image = new(ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/Button2", AssetRequestMode.ImmediateLoad));
             image.Left.Set(-50f, 0f);
             image.Width.Set(-50f, 0f);
             image.Left.Set(num7 - 1f, 0f);
             image.Top.Set(num6 - 1f, 0f);
             Append(image);
             Rectangle frame = new(0, 0, 30, 30);
-            this._achievementIcon = new UIImageFramed(ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/OreIcons"), frame);
+            this._achievementIcon = new UIImageFramed(ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/OreIcons"), frame);
             _achievementIcon.Left.Set(-50f, 0f);
             _achievementIcon.Width.Set(-50f, 0f);
             this._achievementIcon.Left.Set(num7, 0f);
             this._achievementIcon.Top.Set(num6, 0f);
             _achievementIcon.OnUpdate += _achievementIcon_OnUpdate;
             Append(_achievementIcon);
-            button = new(ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Empty", AssetRequestMode.ImmediateLoad));
+            button = new(ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/Empty", AssetRequestMode.ImmediateLoad));
             _achievementIcon.Width.Set(0f, 1f);
             _achievementIcon.Height.Set(0, 1f);
             button.OnClick += _achievementIcon_OnClick;
@@ -75,7 +76,7 @@ namespace AltLibrary.Core.UIs
         {
             if (_achievement.Name.StartsWith("Random"))
             {
-                (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Random"), new(0, 0, 30, 30));
+                (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/Random"), new(0, 0, 30, 30));
                 return;
             }
 
@@ -146,7 +147,7 @@ namespace AltLibrary.Core.UIs
 
             void set(int i)
             {
-                (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/OreIcons"), new(i % 8 * 30, i / 8 * 30, 30, 30));
+                (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/OreIcons"), new(i % 8 * 30, i / 8 * 30, 30, 30));
             }
         }
 
@@ -290,7 +291,7 @@ namespace AltLibrary.Core.UIs
             float num10 = this._large.ToInt() * 4 + 4;
             float num11 = this._large.ToInt() * 58 - 42;
             Vector2 vector2 = new(dimensions.X + num10, dimensions.Y - num11);
-            Texture2D texture = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/ButtonWarn").Value;
+            Texture2D texture = ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/ButtonWarn").Value;
             spriteBatch.Draw(texture, vector2, new Rectangle(0, 0, 22, 22), Color.White);
             if (mouseRectangle.Intersects(Utils.CenteredRectangle(vector2 + new Vector2(11f, 11f), Utils.Size(texture))))
             {

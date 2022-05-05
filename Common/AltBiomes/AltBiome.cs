@@ -72,7 +72,7 @@ namespace AltLibrary.Common.AltBiomes
         /// For Hallow alts. The TileID of the biome's mowed grass block. 
         /// You can also use this field for Evil or Jungle alts if you desire to make the grass able to be mowed.
         /// </summary>
-        public int? BiomeMowedGrass = null; 
+        public int? BiomeMowedGrass = null;
 
         /// <summary>
         /// For Evil and Hallow alts. The tile which convertable stone will be turned into.
@@ -211,8 +211,8 @@ namespace AltLibrary.Common.AltBiomes
         /// <summary>
         /// For Evil biomes. The texture that appears around the loading bar on world creation.
         /// </summary>
-        public virtual string OuterTexture => "AltLibrary/Assets/WorldIcons/Outer Empty"; // TODO: create a default/template sprite to make the bar look less ugly when no bar is specified
-        public virtual string LowerTexture => "AltLibrary/Assets/WorldIcons/Outer Lower";
+        public virtual string OuterTexture => "AltLibrary/Assets/Loading/Outer Empty"; // TODO: create a default/template sprite to make the bar look less ugly when no bar is specified
+        public virtual string LowerTexture => "AltLibrary/Assets/Loading/Outer Lower";
 
         public virtual Color OuterColor => new(127, 127, 127);
         public virtual Color NameColor => new(255, 255, 255);

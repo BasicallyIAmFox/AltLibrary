@@ -377,7 +377,7 @@ namespace AltLibrary.Common.Hooks
                 if (i == 2 && tempDict[path2].worldHell == "") rectangle = new(30, 60, 30, 30);
                 if (i == 3 && tempDict[path2].worldJungle == "") rectangle = new(180, 30, 30, 30);
                 ValueTuple<Asset<Texture2D>, Rectangle?> valueTuple = new(asset, rectangle);
-                spriteBatch.Draw(ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Button").Value, new Vector2(num7 - 26f * (i + 1), dimensions.Y - 2f), Color.White);
+                spriteBatch.Draw(ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/Button").Value, new Vector2(num7 - 26f * (i + 1), dimensions.Y - 2f), Color.White);
                 spriteBatch.Draw(valueTuple.Item1.Value, new Vector2(num7 - 26f * (i + 1) + 3f, dimensions.Y + 1f), valueTuple.Item2, Color.White, 0f, new Vector2(0f, 0f), 0.5f, SpriteEffects.None, 0f);
             }
 
@@ -409,7 +409,7 @@ namespace AltLibrary.Common.Hooks
             if (!valid)
             {
                 Rectangle mouseRectangle = Utils.CenteredRectangle(Main.MouseScreen, Vector2.One * 2f);
-                Asset<Texture2D> asset = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/ButtonWarn");
+                Asset<Texture2D> asset = ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/ButtonWarn");
                 int num = WarnUpdate % 120;
                 int num2 = num < 60 ? 0 : 1;
                 Rectangle rectangle = new(num2 * 22, 0, 22, 22);

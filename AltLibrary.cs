@@ -1,9 +1,9 @@
-using AltLibrary.Common;
 using AltLibrary.Common.AltBiomes;
+using AltLibrary.Common.AltOres;
 using AltLibrary.Core;
 using System.Collections.Generic;
-using Terraria.ModLoader;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace AltLibrary
 {

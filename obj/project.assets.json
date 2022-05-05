@@ -31,19 +31,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\emfr3\\.nuget\\packages\\": {}
+    "C:\\Users\\palma\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\emfr3\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\AltLibrary\\AltLibrary.csproj",
+      "projectUniqueName": "C:\\Users\\palma\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\AltLibrary\\AltLibrary.csproj",
       "projectName": "AltLibrary",
-      "projectPath": "C:\\Users\\emfr3\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\AltLibrary\\AltLibrary.csproj",
-      "packagesPath": "C:\\Users\\emfr3\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\emfr3\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\AltLibrary\\obj\\",
+      "projectPath": "C:\\Users\\palma\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\AltLibrary\\AltLibrary.csproj",
+      "packagesPath": "C:\\Users\\palma\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\palma\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\AltLibrary\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\emfr3\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\palma\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

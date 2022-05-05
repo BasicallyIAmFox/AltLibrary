@@ -1,8 +1,7 @@
-﻿using Terraria;
-using Terraria.ModLoader;
+﻿using AltLibrary.Common.AltBiomes;
+using Terraria;
 using Terraria.ID;
-using AltLibrary.Common.AltBiomes;
-using System;
+using Terraria.ModLoader;
 
 namespace AltLibrary.Common
 {
@@ -19,7 +18,7 @@ namespace AltLibrary.Common
             bool isJungleSpreadingOre = false;
             bool isGrass = false;
             AltBiome biomeToSpread = null;
-            foreach (AltBiome biome in AltLibrary.biomes) 
+            foreach (AltBiome biome in AltLibrary.biomes)
             {
                 if ((biome.BiomeType == BiomeType.Evil || biome.BiomeType == BiomeType.Hallow))
                 {
@@ -38,14 +37,14 @@ namespace AltLibrary.Common
                         isOreGrowingTile = true;
                         biomeToSpread = biome;
                         break;
-                    } 
+                    }
                     else if (type == biome.BiomeOre)
                     {
                         isJungleSpreadingOre = true;
                         biomeToSpread = biome;
                         break;
                     }
-                    
+
                 }
             }
             if (isSpreadingTile && Main.hardMode && WorldGen.AllowedToSpreadInfections && !(NPC.downedPlantBoss && !WorldGen.genRand.NextBool(2)))
@@ -82,7 +81,7 @@ namespace AltLibrary.Common
                             else if (AltLibrary.jungleThorns.Contains(oldTileType) && biomeToSpread.BiomeThornBush != null)
                             {
                                 newTileType = (ushort)biomeToSpread.BiomeThornBush;
-                            } 
+                            }
                             else
                             {
                                 switch (oldTileType)
@@ -109,7 +108,7 @@ namespace AltLibrary.Common
                                         if (biomeToSpread.BiomeMowedGrass.HasValue) newTileType = (int)biomeToSpread.BiomeMowedGrass;
                                         else newTileType = biomeToSpread.BiomeGrass ?? -1;
                                         break;
-                                    default: 
+                                    default:
                                         newTileType = -1;
                                         break;
                                 }
@@ -127,18 +126,18 @@ namespace AltLibrary.Common
                     }
                 }
             }
-            
+
             if (isGrass)
             {
                 if (biomeToSpread.BiomeType == BiomeType.Jungle)
                 {
-                    SpreadGrass(i, j, TileID.Mud, (int)biomeToSpread.BiomeJungleGrass.Value, false);
+                    SpreadGrass(i, j, TileID.Mud, biomeToSpread.BiomeJungleGrass.Value, false);
                 }
                 else
                 {
                     var blockedBySunflowers = false;
                     if (biomeToSpread.BiomeType == BiomeType.Evil) blockedBySunflowers = true;
-                    if  (j < (Main.worldSurface + Main.rockLayer) / 2)
+                    if (j < (Main.worldSurface + Main.rockLayer) / 2)
                     {
                         SpreadGrass(i, j, TileID.Dirt, type, blockedBySunflowers);
                     }
@@ -147,7 +146,7 @@ namespace AltLibrary.Common
             }
 
             if (isOreGrowingTile || isJungleSpreadingOre)
-            {  
+            {
                 if (j > (Main.worldSurface + Main.rockLayer) / 2.0)
                 {
                     if (isOreGrowingTile && WorldGen.genRand.NextBool(300))
@@ -160,9 +159,9 @@ namespace AltLibrary.Common
 
                         if (WorldGen.InWorld(targetX, targetY) && Main.tile[targetX, targetY].TileType == TileID.Mud)
                         {
-                            if (Main.tile[targetX, targetY - 1].IsActuated || 
-                                (Main.tile[targetX, targetY - 1].TileType != TileID.Trees && Main.tile[targetX, targetY - 1].TileType != TileID.LifeFruit 
-                                && !AltLibrary.planteraBulbs.Contains(Main.tile[targetX, targetY - 1].TileType))) 
+                            if (Main.tile[targetX, targetY - 1].IsActuated ||
+                                (Main.tile[targetX, targetY - 1].TileType != TileID.Trees && Main.tile[targetX, targetY - 1].TileType != TileID.LifeFruit
+                                && !AltLibrary.planteraBulbs.Contains(Main.tile[targetX, targetY - 1].TileType)))
                             {
                                 target.TileType = 211;
                                 WorldGen.SquareTileFrame(targetX, targetY);
@@ -264,7 +263,7 @@ namespace AltLibrary.Common
                     }
                 }
             }
-            if (count > 0f && (float)WorldGen.genRand.Next(5) < count)
+            if (count > 0f && WorldGen.genRand.Next(5) < count)
             {
                 return true;
             }

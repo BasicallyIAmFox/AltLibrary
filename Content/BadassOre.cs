@@ -1,4 +1,4 @@
-﻿using AltLibrary.Common;
+﻿using AltLibrary.Common.AltOres;
 using Terraria.ID;
 
 namespace AltLibrary.Content

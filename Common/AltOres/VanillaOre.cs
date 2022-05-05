@@ -1,7 +1,7 @@
 ﻿using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace AltLibrary.Common
+namespace AltLibrary.Common.AltOres
 {
     internal sealed class VanillaOre : AltOre
     {

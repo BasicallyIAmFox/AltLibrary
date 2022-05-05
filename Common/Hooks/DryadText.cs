@@ -2,7 +2,6 @@
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using System;
 using Terraria;
 using Terraria.Localization;
 
@@ -87,25 +86,25 @@ namespace AltLibrary.Common.Hooks
                 string text2 = "";
                 int tGood = WorldGen.tGood;
                 int tEvil = WorldGen.tEvil + WorldGen.tBlood;
-				if (tGood > 0 && tEvil > 0)
-				{
-					text2 = Language.GetTextValue("Mods.AltLibrary.DryadSpecialText.WorldStatusGoodEvil", Main.worldName, tGood, tEvil);
-				}
-				else if (tEvil > 0)
-				{
-					text2 = Language.GetTextValue("Mods.AltLibrary.DryadSpecialText.WorldStatusEvil", Main.worldName, tEvil);
-				}
-				else
-				{
-					if (tGood <= 0)
-					{
-						return Language.GetTextValue("DryadSpecialText.WorldStatusPure", Main.worldName);
-					}
-					text2 = Language.GetTextValue("Mods.AltLibrary.DryadSpecialText.WorldStatusGood", Main.worldName, tGood);
-				}
-				string arg = (tGood * 1.2 >= tEvil && tGood * 0.8 <= tEvil) ? Language.GetTextValue("DryadSpecialText.WorldDescriptionBalanced") : ((tGood >= tEvil) ? Language.GetTextValue("DryadSpecialText.WorldDescriptionFairyTale") : ((tEvil > tGood + 20) ? Language.GetTextValue("DryadSpecialText.WorldDescriptionGrim") : ((tEvil <= 5) ? Language.GetTextValue("DryadSpecialText.WorldDescriptionClose") : Language.GetTextValue("DryadSpecialText.WorldDescriptionWork"))));
-				return text2 + " " + arg;
-			});
+                if (tGood > 0 && tEvil > 0)
+                {
+                    text2 = Language.GetTextValue("Mods.AltLibrary.DryadSpecialText.WorldStatusGoodEvil", Main.worldName, tGood, tEvil);
+                }
+                else if (tEvil > 0)
+                {
+                    text2 = Language.GetTextValue("Mods.AltLibrary.DryadSpecialText.WorldStatusEvil", Main.worldName, tEvil);
+                }
+                else
+                {
+                    if (tGood <= 0)
+                    {
+                        return Language.GetTextValue("DryadSpecialText.WorldStatusPure", Main.worldName);
+                    }
+                    text2 = Language.GetTextValue("Mods.AltLibrary.DryadSpecialText.WorldStatusGood", Main.worldName, tGood);
+                }
+                string arg = (tGood * 1.2 >= tEvil && tGood * 0.8 <= tEvil) ? Language.GetTextValue("DryadSpecialText.WorldDescriptionBalanced") : ((tGood >= tEvil) ? Language.GetTextValue("DryadSpecialText.WorldDescriptionFairyTale") : ((tEvil > tGood + 20) ? Language.GetTextValue("DryadSpecialText.WorldDescriptionGrim") : ((tEvil <= 5) ? Language.GetTextValue("DryadSpecialText.WorldDescriptionClose") : Language.GetTextValue("DryadSpecialText.WorldDescriptionWork"))));
+                return text2 + " " + arg;
+            });
             c.Emit(OpCodes.Ret);
             c.Emit(OpCodes.Ldstr, "");
         }

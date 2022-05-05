@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
-using Terraria.ModLoader;
 using Terraria.Localization;
+using Terraria.ModLoader;
 
 namespace AltLibrary.Common
 {

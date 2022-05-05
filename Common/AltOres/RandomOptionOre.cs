@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria.ModLoader;
 
-namespace AltLibrary.Common
+namespace AltLibrary.Common.AltOres
 {
     internal sealed class RandomOptionOre : AltOre
     {
