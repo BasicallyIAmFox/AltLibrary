@@ -242,10 +242,10 @@ namespace AltLibrary.Core.UIs
             ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, text3, position, value5, 0f, Vector2.Zero, baseScale4, -1f, 2f);
             Rectangle mouseRectangle = Utils.CenteredRectangle(Main.MouseScreen, Vector2.One * 2f);
             float num10 = this._large.ToInt() * 4;
-            float num11 = this._large.ToInt() * 58;
+            float num11 = this._large.ToInt() * 58 - 102;
             Vector2 vector2 = new(dimensions.X + num10, dimensions.Y - num11);
             Texture2D texture = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/ButtonWarn", AssetRequestMode.ImmediateLoad).Value;
-            spriteBatch.Draw(texture, vector2, Color.White);
+            spriteBatch.Draw(texture, vector2, new Rectangle(0, 0, 22, 22), Color.White);
             if (mouseRectangle.Intersects(Utils.CenteredRectangle(vector2 + new Vector2(11f, 11f), Utils.Size(texture))))
             {
                 Main.instance.MouseText(_achievement.Mod == null ? Language.GetTextValue("Mods.AltLibrary.Warn.VanillaBiome") : Language.GetTextValue("Mods.AltLibrary.Warn.ModdedBiome", _achievement.Mod.Name));

@@ -2,15 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Linq;
 using Terraria;
 using Terraria.GameContent.Generation;
 using Terraria.ID;
 using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
-
-// TODO:
-// Make in Drunk Gen generate 1 additional random evil biome (1 chosen and second is random)
 
 namespace AltLibrary.Common.Systems
 {
@@ -21,6 +19,10 @@ namespace AltLibrary.Common.Systems
         private static readonly int beachSandRandomCenter = beachBordersWidth + 45;
         private static readonly int evilBiomeBeachAvoidance = beachSandRandomCenter + 60;
         private static readonly int evilBiomeAvoidanceMidFixer = 50;
+
+        internal static int worldCrimson;
+        internal static bool worldCrimson2;
+        internal static AltBiome worldCrimson3;
 
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
         {
@@ -146,6 +148,26 @@ namespace AltLibrary.Common.Systems
             else
             {
                 WorldGen.SavedOreTiers.Adamantite = AltLibrary.ores[WorldBiomeManager.Adamantite - 1].ore;
+            }
+
+            if (WorldGen.drunkWorldGen)
+            {
+                List<int> vs = new() { -333, -666 };
+                AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Evil && x.Selectable).ToList().ForEach(x => vs.Add(x.Type - 1));
+                int index = WorldGen.genRand.Next(vs.Count);
+                int current = !WorldGen.crimson ? (WorldBiomeManager.worldEvil == "" ? -333 : AltLibrary.biomes.FindIndex(x => x.Type == vs[index] + 1)) : -666;
+                while (vs[index] == current)
+                {
+                    index = WorldGen.genRand.Next(vs.Count);
+                    current = !WorldGen.crimson ? (WorldBiomeManager.worldEvil == "" ? -333 : AltLibrary.biomes.FindIndex(x => x.Type == vs[index] + 1)) : -666;
+                }
+                int worldCrimson = vs[index];
+                bool worldCrimson2 = worldCrimson < 0;
+                AltBiome worldCrimson3 = worldCrimson >= 0 ? AltLibrary.biomes[worldCrimson] : null;
+                WorldBiomeManager.drunkEvil = worldCrimson3 != null ? worldCrimson3.FullName : (worldCrimson == -333 ? "Terraria/Corruption" : "Terraria/Crimson");
+                WorldBiomeGeneration.worldCrimson = worldCrimson;
+                WorldBiomeGeneration.worldCrimson2 = worldCrimson2;
+                WorldBiomeGeneration.worldCrimson3 = worldCrimson3;
             }
         }
 
@@ -326,8 +348,6 @@ namespace AltLibrary.Common.Systems
             }
         }
 
-        // Remove obsolete mark once added drunk worldgen
-        [Obsolete]
         private void WorldEvilAltTask(GenerationProgress progress, GameConfiguration configuration)
         {
             int num677 = Main.maxTilesX;
@@ -397,12 +417,333 @@ namespace AltLibrary.Common.Systems
             double num686 = Main.maxTilesX * 0.00045;
             if (WorldGen.drunkWorldGen)
             {
-                //flag46 = true;
+                flag46 = true;
                 num686 /= 2.0;
                 if (WorldGen.genRand.NextBool(2))
                 {
                     flag47 = false;
                 }
+            }
+            if (flag46)
+            {
+                progress.Message = Lang.gen[72].Value;
+                for (int num687 = 0; num687 < num686; num687++)
+                {
+                    int num688 = num679;
+                    int num689 = num680;
+                    int num690 = num677;
+                    int num691 = num678;
+                    float value15 = (float)(num687 / num686);
+                    progress.Set(value15);
+                    bool flag48 = false;
+                    int num692 = 0;
+                    int num693 = 0;
+                    int num694 = 0;
+                    while (!flag48)
+                    {
+                        flag48 = true;
+                        int num695 = Main.maxTilesX / 2;
+                        int num696 = 200;
+                        if (WorldGen.drunkWorldGen)
+                        {
+                            num696 = 100;
+                            num692 = (!flag47) ? WorldGen.genRand.Next((int)(Main.maxTilesX * 0.5), Main.maxTilesX - num684) : WorldGen.genRand.Next(num684, (int)(Main.maxTilesX * 0.5));
+                        }
+                        else
+                        {
+                            num692 = WorldGen.genRand.Next(num684, Main.maxTilesX - num684);
+                        }
+                        num693 = num692 - WorldGen.genRand.Next(200) - 100;
+                        num694 = num692 + WorldGen.genRand.Next(200) + 100;
+                        if (num693 < evilBiomeBeachAvoidance)
+                        {
+                            num693 = evilBiomeBeachAvoidance;
+                        }
+                        if (num694 > Main.maxTilesX - evilBiomeBeachAvoidance)
+                        {
+                            num694 = Main.maxTilesX - evilBiomeBeachAvoidance;
+                        }
+                        if (num692 < num693 + evilBiomeAvoidanceMidFixer)
+                        {
+                            num692 = num693 + evilBiomeAvoidanceMidFixer;
+                        }
+                        if (num692 > num694 - evilBiomeAvoidanceMidFixer)
+                        {
+                            num692 = num694 - evilBiomeAvoidanceMidFixer;
+                        }
+                        if (dungeonLocation < 0 && num693 < 400)
+                        {
+                            num693 = 400;
+                        }
+                        else if (dungeonLocation > 0 && num693 > Main.maxTilesX - 400)
+                        {
+                            num693 = Main.maxTilesX - 400;
+                        }
+                        if (num692 > num695 - num696 && num692 < num695 + num696)
+                        {
+                            flag48 = false;
+                        }
+                        if (num693 > num695 - num696 && num693 < num695 + num696)
+                        {
+                            flag48 = false;
+                        }
+                        if (num694 > num695 - num696 && num694 < num695 + num696)
+                        {
+                            flag48 = false;
+                        }
+                        if (num692 > WorldGen.UndergroundDesertLocation.X && num692 < WorldGen.UndergroundDesertLocation.X + WorldGen.UndergroundDesertLocation.Width)
+                        {
+                            flag48 = false;
+                        }
+                        if (num693 > WorldGen.UndergroundDesertLocation.X && num693 < WorldGen.UndergroundDesertLocation.X + WorldGen.UndergroundDesertLocation.Width)
+                        {
+                            flag48 = false;
+                        }
+                        if (num694 > WorldGen.UndergroundDesertLocation.X && num694 < WorldGen.UndergroundDesertLocation.X + WorldGen.UndergroundDesertLocation.Width)
+                        {
+                            flag48 = false;
+                        }
+                        if (num693 < dungeonLocation + num685 && num694 > dungeonLocation - num685)
+                        {
+                            flag48 = false;
+                        }
+                        if (num693 < num689 && num694 > num688)
+                        {
+                            num688++;
+                            num689--;
+                            flag48 = false;
+                        }
+                        if (num693 < num691 && num694 > num690)
+                        {
+                            num690++;
+                            num691--;
+                            flag48 = false;
+                        }
+                    }
+                    for (int num697 = num693; num697 < num694; num697++)
+                    {
+                        for (int num698 = (int)WorldGen.worldSurfaceLow; num698 < Main.worldSurface - 1.0; num698++)
+                        {
+                            tile59 = Main.tile[num697, num698];
+                            if (tile59.HasTile)
+                            {
+                                int num699 = num698 + WorldGen.genRand.Next(10, 14);
+                                for (int num700 = num698; num700 < num699; num700++)
+                                {
+                                    tile59 = Main.tile[num697, num700];
+                                    if (tile59.TileType != 59)
+                                    {
+                                        tile59 = Main.tile[num697, num700];
+                                        bool bl = tile59.TileType == TileID.JungleGrass;
+                                        foreach (AltBiome biome in AltLibrary.biomes)
+                                        {
+                                            if (biome.BiomeType == BiomeType.Jungle)
+                                                bl |= tile59.TileType != biome.BiomeGrass;
+                                        }
+                                        if (bl)
+                                        {
+                                            goto IL_0487;
+                                        }
+                                        continue;
+                                    }
+                                    goto IL_0487;
+                                IL_0487:
+                                    if (num697 >= num693 + WorldGen.genRand.Next(5) && num697 < num694 - WorldGen.genRand.Next(5))
+                                    {
+                                        tile59 = Main.tile[num697, num700];
+                                        tile59.TileType = TileID.Dirt;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    double num701 = Main.worldSurface + 40.0;
+                    for (int num702 = num693; num702 < num694; num702++)
+                    {
+                        num701 += WorldGen.genRand.Next(-2, 3);
+                        if (num701 < Main.worldSurface + 30.0)
+                        {
+                            num701 = Main.worldSurface + 30.0;
+                        }
+                        if (num701 > Main.worldSurface + 50.0)
+                        {
+                            num701 = Main.worldSurface + 50.0;
+                        }
+                        int i2 = num702;
+                        bool flag49 = false;
+                        for (int num703 = (int)WorldGen.worldSurfaceLow; num703 < num701; num703++)
+                        {
+                            tile59 = Main.tile[i2, num703];
+                            if (tile59.HasTile)
+                            {
+                                tile59 = Main.tile[i2, num703];
+                                if (tile59.TileType == TileID.Sand && i2 >= num693 + WorldGen.genRand.Next(5) && i2 <= num694 - WorldGen.genRand.Next(5))
+                                {
+                                    tile59 = Main.tile[i2, num703];
+                                    int value1 = TileID.Crimsand;
+                                    int value2 = TileID.Ebonsand;
+                                    int value3 = worldCrimson3 != null ? (worldCrimson3.BiomeSand ?? TileID.Sand) : TileID.Sand;
+                                    tile59.TileType = (ushort)(worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                                }
+                                tile59 = Main.tile[i2, num703];
+                                if (tile59.TileType == TileID.Dirt && num703 < Main.worldSurface - 1.0 && !flag49 && worldCrimson3 != null && worldCrimson3.BiomeGrass.HasValue)
+                                {
+                                    typeof(WorldGen).GetField("grassSpread", BindingFlags.NonPublic | BindingFlags.Static).SetValue(null, 0);
+                                    WorldGen.SpreadGrass(i2, num703, 0, worldCrimson3.BiomeGrass.Value, true, 0);
+                                }
+                                flag49 = true;
+                                tile59 = Main.tile[i2, num703];
+                                if (tile59.WallType == 216)
+                                {
+                                    tile59 = Main.tile[i2, num703];
+                                    tile59.WallType = 218;
+                                }
+                                else
+                                {
+                                    tile59 = Main.tile[i2, num703];
+                                    if (tile59.WallType == 187)
+                                    {
+                                        tile59 = Main.tile[i2, num703];
+                                        tile59.WallType = 221;
+                                    }
+                                }
+                                tile59 = Main.tile[i2, num703];
+                                if (tile59.TileType == TileID.Stone)
+                                {
+                                    if (i2 >= num693 + WorldGen.genRand.Next(5) && i2 <= num694 - WorldGen.genRand.Next(5))
+                                    {
+                                        tile59 = Main.tile[i2, num703];
+                                        int value1 = TileID.Crimstone;
+                                        int value2 = TileID.Ebonstone;
+                                        int value3 = worldCrimson3 != null ? (worldCrimson3.BiomeStone ?? TileID.Stone) : TileID.Stone;
+                                        tile59.TileType = (ushort)(worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                                    }
+                                }
+                                else
+                                {
+                                    tile59 = Main.tile[i2, num703];
+                                    if (tile59.TileType == TileID.Grass)
+                                    {
+                                        tile59 = Main.tile[i2, num703];
+                                        int value1 = TileID.CrimsonGrass;
+                                        int value2 = TileID.CorruptGrass;
+                                        int value3 = worldCrimson3 != null ? (worldCrimson3.BiomeGrass ?? TileID.Grass) : TileID.Grass;
+                                        tile59.TileType = (ushort)(worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                                    }
+                                    else
+                                    {
+                                        tile59 = Main.tile[i2, num703];
+                                        if (tile59.TileType == TileID.IceBlock)
+                                        {
+                                            tile59 = Main.tile[i2, num703];
+                                            int value1 = 200;
+                                            int value2 = TileID.CorruptIce;
+                                            int value3 = worldCrimson3 != null ? (worldCrimson3.BiomeIce ?? TileID.IceBlock) : TileID.IceBlock;
+                                            tile59.TileType = (ushort)(worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                                        }
+                                        else
+                                        {
+                                            tile59 = Main.tile[i2, num703];
+                                            if (tile59.TileType == TileID.Sandstone)
+                                            {
+                                                tile59 = Main.tile[i2, num703];
+                                                int value1 = TileID.CrimsonSandstone;
+                                                int value2 = TileID.CorruptSandstone;
+                                                int value3 = worldCrimson3 != null ? (worldCrimson3.BiomeSandstone ?? TileID.Sandstone) : TileID.Sandstone;
+                                                tile59.TileType = (ushort)(worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                                            }
+                                            else
+                                            {
+                                                tile59 = Main.tile[i2, num703];
+                                                if (tile59.TileType == TileID.HardenedSand)
+                                                {
+                                                    tile59 = Main.tile[i2, num703];
+                                                    int value1 = TileID.CrimsonHardenedSand;
+                                                    int value2 = TileID.CorruptHardenedSand;
+                                                    int value3 = worldCrimson3 != null ? (worldCrimson3.BiomeHardenedSand ?? TileID.HardenedSand) : TileID.HardenedSand;
+                                                    tile59.TileType = (ushort)(worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    int num704 = WorldGen.genRand.Next(10, 15);
+                    for (int num705 = 0; num705 < num704; num705++)
+                    {
+                        int num706 = 0;
+                        bool flag50 = false;
+                        int num707 = 0;
+                        while (!flag50)
+                        {
+                            num706++;
+                            int x27 = WorldGen.genRand.Next(num693 - num707, num694 + num707);
+                            int num708 = WorldGen.genRand.Next((int)(Main.worldSurface - num707 / 2), (int)(Main.worldSurface + 100.0 + num707));
+                            while (WorldGen.oceanDepths(x27, num708))
+                            {
+                                x27 = WorldGen.genRand.Next(num693 - num707, num694 + num707);
+                                num708 = WorldGen.genRand.Next((int)(Main.worldSurface - num707 / 2), (int)(Main.worldSurface + 100.0 + num707));
+                            }
+                            if (num706 > 100)
+                            {
+                                num707++;
+                                num706 = 0;
+                            }
+                            tile59 = Main.tile[x27, num708];
+                            if (!tile59.HasTile)
+                            {
+                                while (true)
+                                {
+                                    tile59 = Main.tile[x27, num708];
+                                    if (!tile59.HasTile)
+                                    {
+                                        num708++;
+                                        continue;
+                                    }
+                                    break;
+                                }
+                                num708--;
+                            }
+                            else
+                            {
+                                while (true)
+                                {
+                                    tile59 = Main.tile[x27, num708];
+                                    if (tile59.HasTile && num708 > Main.worldSurface)
+                                    {
+                                        num708--;
+                                        continue;
+                                    }
+                                    break;
+                                }
+                            }
+                            if (num707 <= 10)
+                            {
+                                tile59 = Main.tile[x27, num708 + 1];
+                                if (tile59.HasTile)
+                                {
+                                    tile59 = Main.tile[x27, num708 + 1];
+                                    if (worldCrimson3 != null && worldCrimson3.BiomeStone.HasValue && tile59.TileType == worldCrimson3.BiomeStone.Value)
+                                    {
+                                    }
+                                }
+                                goto IL_0a59;
+                            }
+                        IL_0a59:
+                            if (num707 > 100)
+                            {
+                                flag50 = true;
+                            }
+                        }
+                    }
+                }
+            }
+            if (WorldGen.drunkWorldGen)
+            {
+                flag46 = false;
             }
             if (!flag46)
             {

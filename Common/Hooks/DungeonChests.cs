@@ -42,7 +42,7 @@ namespace AltLibrary.Common.Hooks
                 return contain;
             });
 
-            if (!c.TryGotoPrev(i => i.MatchLdloc(99)))
+            if (!c.TryGotoNext(i => i.MatchLdloc(99)))
                 return;
 
             c.Index++;
@@ -64,12 +64,12 @@ namespace AltLibrary.Common.Hooks
                 return style;
             });
 
-            if (!c.TryGotoPrev(i => i.MatchLdloc(97)))
+            if (!c.TryGotoNext(i => i.MatchLdloc(97)))
                 return;
 
             c.Index++;
             c.Emit(OpCodes.Ldloc, 93);
-            c.EmitDelegate<Func<int, int, int>>((contain, chests) =>
+            c.EmitDelegate<Func<int, int, int>>((chestTileType, chests) =>
             {
                 if (chests == 0 && WorldBiomeManager.worldJungle != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldJungle).BiomeChestTile.HasValue)
                 {
@@ -83,7 +83,7 @@ namespace AltLibrary.Common.Hooks
                 {
                     return ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeChestTile.Value;
                 }
-                return contain;
+                return chestTileType;
             });
         }
     }

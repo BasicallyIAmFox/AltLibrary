@@ -11,6 +11,7 @@ namespace AltLibrary.Common
     {
         private static MethodBase ResetInfo;
         private static MethodBase ShiniesInfo;
+        private static MethodBase CorruptionInfo;
         private static MethodBase AltarsInfo;
         private static MethodBase HardmodeWallsInfo;
 
@@ -24,6 +25,12 @@ namespace AltLibrary.Common
         {
             add => HookEndpointManager.Modify(ShiniesInfo, value);
             remove => HookEndpointManager.Unmodify(ShiniesInfo, value);
+        }
+
+        public static event ILContext.Manipulator HookGenPassCorruption
+        {
+            add => HookEndpointManager.Modify(CorruptionInfo, value);
+            remove => HookEndpointManager.Unmodify(CorruptionInfo, value);
         }
 
         public static event ILContext.Manipulator HookGenPassAltars
@@ -42,6 +49,7 @@ namespace AltLibrary.Common
         {
             ResetInfo = GetGenPassInfo(il, "Reset");
             ShiniesInfo = GetGenPassInfo(il, "Shinies");
+            CorruptionInfo = GetGenPassInfo(il, "Corruption");
             AltarsInfo = GetGenPassInfo(il, "Altars");
         }
 

@@ -7,6 +7,7 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using ReLogic.Content;
 using System;
+using System.Linq;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
@@ -35,11 +36,17 @@ namespace AltLibrary.Common.Hooks
                 if (WorldGen.crimson) worldGenStep = 1;
                 if (WorldBiomeManager.worldEvil != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).Type + 2;
 
-                if (WorldGen.drunkWorldGen && Main.rand.NextBool(2)) worldGenStep = Main.rand.Next(AltLibrary.biomes.Count + 2);
+                if (WorldGen.drunkWorldGen && Main.rand.NextBool(2)) worldGenStep = Main.rand.Next(AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Evil).ToList().Count + 2);
 
                 Color expected = new(95, 242, 86);
                 if (worldGenStep == 1) expected = new Color(255, 237, 131);
-                if (WorldBiomeManager.worldEvil != "") expected = ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).OuterColor;
+                foreach (AltBiome biome in AltLibrary.biomes)
+                {
+                    if (worldGenStep == biome.Type + 2 && biome.BiomeType == BiomeType.Evil)
+                    {
+                        expected = biome.OuterColor;
+                    }
+                }
 
                 Color result = expected;
                 return result;
@@ -50,14 +57,28 @@ namespace AltLibrary.Common.Hooks
             c.Remove();
             c.EmitDelegate<Func<UIGenProgressBar, Asset<Texture2D>>>((unusedVariableLeftInForLoading) =>
             {
-                return ILHooks.EmptyAsset;
+                int worldGenStep = 0;
+                if (WorldGen.crimson) worldGenStep = 1;
+                if (WorldBiomeManager.worldEvil != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).Type + 2;
+
+                Asset<Texture2D> asset = ILHooks.EmptyAsset;
+                return worldGenStep <= 1 ? (worldGenStep == 0 ?
+                    Main.Assets.Request<Texture2D>("Images/UI/WorldGen/Outer_Corrupt") :
+                    Main.Assets.Request<Texture2D>("Images/UI/WorldGen/Outer_Crimson")) : asset;
             });
             if (!c.TryGotoNext(i => i.MatchLdfld<UIGenProgressBar>("_texOuterCrimson")))
                 return;
             c.Remove();
             c.EmitDelegate<Func<UIGenProgressBar, Asset<Texture2D>>>((unusedVariableLeftInForLoading) =>
             {
-                return ILHooks.EmptyAsset;
+                int worldGenStep = 0;
+                if (WorldGen.crimson) worldGenStep = 1;
+                if (WorldBiomeManager.worldEvil != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).Type + 2;
+
+                Asset<Texture2D> asset = ILHooks.EmptyAsset;
+                return worldGenStep <= 1 ? (worldGenStep == 0 ?
+                    Main.Assets.Request<Texture2D>("Images/UI/WorldGen/Outer_Corrupt") :
+                    Main.Assets.Request<Texture2D>("Images/UI/WorldGen/Outer_Crimson")) : asset;
             });
             if (!c.TryGotoNext(i => i.MatchCallvirt(out _)))
                 return;
@@ -71,11 +92,18 @@ namespace AltLibrary.Common.Hooks
                 int worldGenStep = 0;
                 if (WorldGen.crimson) worldGenStep = 1;
                 if (WorldBiomeManager.worldEvil != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).Type + 2;
-                if (WorldGen.drunkWorldGen && Main.rand.NextBool(2)) worldGenStep = Main.rand.Next(AltLibrary.biomes.Count + 2);
+                if (WorldGen.drunkWorldGen && Main.rand.NextBool(2)) worldGenStep = Main.rand.Next(AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Evil).ToList().Count + 2);
                 Asset<Texture2D> asset = ILHooks.EmptyAsset;
                 if (worldGenStep == 0) asset = Main.Assets.Request<Texture2D>("Images/UI/WorldGen/Outer_Corrupt");
                 if (worldGenStep == 1) asset = Main.Assets.Request<Texture2D>("Images/UI/WorldGen/Outer_Crimson");
-                if (WorldBiomeManager.worldEvil != "") asset = ModContent.Request<Texture2D>(ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).OuterTexture ?? "AltLibrary/Assets/WorldIcons/Outer Empty");
+                foreach (AltBiome biome in AltLibrary.biomes)
+                {
+                    if (worldGenStep == biome.Type + 2 && biome.BiomeType == BiomeType.Evil)
+                    {
+                        asset = ModContent.Request<Texture2D>(ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).OuterTexture)
+                            ?? ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Outer Empty");
+                    }
+                }
                 spriteBatch.Draw(asset.Value, r.TopLeft(), Color.White);
             });
         }

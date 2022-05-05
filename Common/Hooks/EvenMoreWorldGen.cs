@@ -19,7 +19,271 @@ namespace AltLibrary.Common.Hooks
             IL.Terraria.WorldGen.GenerateWorld += GenPasses.ILGenerateWorld;
             GenPasses.HookGenPassReset += GenPasses_HookGenPassReset;
             GenPasses.HookGenPassShinies += GenPasses_HookGenPassShinies;
+            GenPasses.HookGenPassCorruption += GenPasses_HookGenPassCorruption;
             GenPasses.HookGenPassAltars += ILGenPassAltars;
+        }
+
+        private static void GenPasses_HookGenPassCorruption(ILContext il)
+        {
+            ILCursor c = new(il);
+            if (!c.TryGotoNext(i => i.MatchCall<WorldGen>(nameof(WorldGen.CrimStart))))
+                return;
+
+            #region Crimson
+            if (!c.TryGotoNext(i => i.MatchLdcI4(60)))
+                return;
+
+            c.Remove();
+            c.EmitDelegate(() =>
+            {
+                foreach (AltBiome biome in AltLibrary.biomes)
+                {
+                    if (biome.BiomeType == BiomeType.Jungle && biome.BiomeGrass.HasValue)
+                        return biome.BiomeGrass.Value;
+                }
+                return 60;
+            });
+
+            if (!c.TryGotoNext(i => i.MatchLdcI4(234)))
+                return;
+
+            c.Index++;
+            c.EmitDelegate<Func<int, int>>((orig) =>
+            {
+                if (WorldGen.drunkWorldGen)
+                {
+                    int value1 = TileID.Crimsand;
+                    int value2 = TileID.Ebonsand;
+                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeSand ?? TileID.Sand) : TileID.Sand;
+                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                }
+                return orig;
+            });
+
+            if (!c.TryGotoNext(i => i.MatchLdcI4(199)))
+                return;
+
+            c.Index++;
+            c.EmitDelegate<Func<int, int>>((orig) =>
+            {
+                if (WorldGen.drunkWorldGen)
+                {
+                    int value1 = TileID.CrimsonGrass;
+                    int value2 = TileID.CorruptGrass;
+                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeGrass ?? TileID.Grass) : TileID.Grass;
+                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                }
+                return orig;
+            });
+
+            if (!c.TryGotoNext(i => i.MatchLdcI4(203)))
+                return;
+
+            c.Index++;
+            c.EmitDelegate<Func<int, int>>((orig) =>
+            {
+                if (WorldGen.drunkWorldGen)
+                {
+                    int value1 = TileID.Crimstone;
+                    int value2 = TileID.Ebonstone;
+                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeStone ?? TileID.Stone) : TileID.Stone;
+                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                }
+                return orig;
+            });
+
+            if (!c.TryGotoNext(i => i.MatchLdcI4(199)))
+                return;
+
+            c.Index++;
+            c.EmitDelegate<Func<int, int>>((orig) =>
+            {
+                if (WorldGen.drunkWorldGen)
+                {
+                    int value1 = TileID.CrimsonGrass;
+                    int value2 = TileID.CorruptGrass;
+                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeGrass ?? TileID.Grass) : TileID.Grass;
+                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                }
+                return orig;
+            });
+
+            if (!c.TryGotoNext(i => i.MatchLdcI4(200)))
+                return;
+
+            c.Index++;
+            c.EmitDelegate<Func<int, int>>((orig) =>
+            {
+                if (WorldGen.drunkWorldGen)
+                {
+                    int value1 = orig;
+                    int value2 = TileID.CorruptIce;
+                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeIce ?? TileID.IceBlock) : TileID.IceBlock;
+                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                }
+                return orig;
+            });
+
+            if (!c.TryGotoNext(i => i.MatchLdcI4(401)))
+                return;
+
+            c.Index++;
+            c.EmitDelegate<Func<int, int>>((orig) =>
+            {
+                if (WorldGen.drunkWorldGen)
+                {
+                    int value1 = TileID.CrimsonSandstone;
+                    int value2 = TileID.CorruptSandstone;
+                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeSandstone ?? TileID.Sandstone) : TileID.Sandstone;
+                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                }
+                return orig;
+            });
+
+            if (!c.TryGotoNext(i => i.MatchLdcI4(399)))
+                return;
+
+            c.Index++;
+            c.EmitDelegate<Func<int, int>>((orig) =>
+            {
+                if (WorldGen.drunkWorldGen)
+                {
+                    int value1 = TileID.CrimsonHardenedSand;
+                    int value2 = TileID.CorruptHardenedSand;
+                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeHardenedSand ?? TileID.HardenedSand) : TileID.HardenedSand;
+                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                }
+                return orig;
+            });
+            #endregion
+
+            #region Corrupt
+            if (!c.TryGotoNext(i => i.MatchLdcI4(60)))
+                return;
+
+            c.Remove();
+            c.EmitDelegate(() =>
+            {
+                foreach (AltBiome biome in AltLibrary.biomes)
+                {
+                    if (biome.BiomeType == BiomeType.Jungle && biome.BiomeGrass.HasValue)
+                        return biome.BiomeGrass.Value;
+                }
+                return 60;
+            });
+
+            if (!c.TryGotoNext(i => i.MatchLdcI4(112)))
+                return;
+
+            c.Index++;
+            c.EmitDelegate<Func<int, int>>((orig) =>
+            {
+                if (WorldGen.drunkWorldGen)
+                {
+                    int value1 = TileID.Crimsand;
+                    int value2 = TileID.Ebonsand;
+                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeSand ?? TileID.Sand) : TileID.Sand;
+                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                }
+                return orig;
+            });
+
+            if (!c.TryGotoNext(i => i.MatchLdcI4(23)))
+                return;
+
+            c.Index++;
+            c.EmitDelegate<Func<int, int>>((orig) =>
+            {
+                if (WorldGen.drunkWorldGen)
+                {
+                    int value1 = TileID.CrimsonGrass;
+                    int value2 = TileID.CorruptGrass;
+                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeGrass ?? TileID.Grass) : TileID.Grass;
+                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                }
+                return orig;
+            });
+
+            if (!c.TryGotoNext(i => i.MatchLdcI4(25)))
+                return;
+
+            c.Index++;
+            c.EmitDelegate<Func<int, int>>((orig) =>
+            {
+                if (WorldGen.drunkWorldGen)
+                {
+                    int value1 = TileID.Crimstone;
+                    int value2 = TileID.Ebonstone;
+                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeStone ?? TileID.Stone) : TileID.Stone;
+                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                }
+                return orig;
+            });
+
+            if (!c.TryGotoNext(i => i.MatchLdcI4(23)))
+                return;
+
+            c.Index++;
+            c.EmitDelegate<Func<int, int>>((orig) =>
+            {
+                if (WorldGen.drunkWorldGen)
+                {
+                    int value1 = TileID.CrimsonGrass;
+                    int value2 = TileID.CorruptGrass;
+                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeGrass ?? TileID.Grass) : TileID.Grass;
+                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                }
+                return orig;
+            });
+
+            if (!c.TryGotoNext(i => i.MatchLdcI4(163)))
+                return;
+
+            c.Index++;
+            c.EmitDelegate<Func<int, int>>((orig) =>
+            {
+                if (WorldGen.drunkWorldGen)
+                {
+                    int value1 = TileID.FleshIce;
+                    int value2 = TileID.CorruptIce;
+                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeIce ?? TileID.IceBlock) : TileID.IceBlock;
+                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                }
+                return orig;
+            });
+
+            if (!c.TryGotoNext(i => i.MatchLdcI4(400)))
+                return;
+
+            c.Index++;
+            c.EmitDelegate<Func<int, int>>((orig) =>
+            {
+                if (WorldGen.drunkWorldGen)
+                {
+                    int value1 = TileID.CrimsonSandstone;
+                    int value2 = TileID.CorruptSandstone;
+                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeSand ?? TileID.Sandstone) : TileID.Sandstone;
+                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                }
+                return orig;
+            });
+
+            if (!c.TryGotoNext(i => i.MatchLdcI4(398)))
+                return;
+
+            c.Index++;
+            c.EmitDelegate<Func<int, int>>((orig) =>
+            {
+                if (WorldGen.drunkWorldGen)
+                {
+                    int value1 = TileID.CrimsonHardenedSand;
+                    int value2 = TileID.CorruptHardenedSand;
+                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeHardenedSand ?? TileID.HardenedSand) : TileID.HardenedSand;
+                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                }
+                return orig;
+            });
+            #endregion
         }
 
         public static void ILGenPassAltars(ILContext il)
@@ -138,11 +402,11 @@ namespace AltLibrary.Common.Hooks
             c.Emit(OpCodes.Ldfld, gold);
             c.EmitDelegate<Func<int, int>>((gold) =>
             {
-                if (WorldBiomeManager.Gold == -5)
+                if (WorldBiomeManager.Gold == -7)
                 {
                     return TileID.Gold;
                 }
-                else if (WorldBiomeManager.Gold == -6)
+                else if (WorldBiomeManager.Gold == -8)
                 {
                     return TileID.Platinum;
                 }
@@ -298,7 +562,7 @@ namespace AltLibrary.Common.Hooks
             if (!c.TryGotoNext(i => i.MatchBr(out _)))
                 return;
             ILLabel startCorruptionGen = c.DefineLabel();
-            c.EmitDelegate(() => !WorldGen.crimson && WorldBiomeManager.worldEvil == "");
+            c.EmitDelegate(() => !WorldGen.crimson && WorldBiomeManager.worldEvil != "");
             c.Emit(OpCodes.Brfalse, startCorruptionGen);
             c.EmitDelegate(() =>
             {

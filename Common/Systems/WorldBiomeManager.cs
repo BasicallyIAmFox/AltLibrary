@@ -12,6 +12,7 @@ namespace AltLibrary.Common.Systems
         public static string worldHallow = "";
         public static string worldHell = "";
         public static string worldJungle = "";
+        internal static string drunkEvil = "";
         public static int Copper;
         public static int Iron;
         public static int Silver;
@@ -26,6 +27,7 @@ namespace AltLibrary.Common.Systems
             tag.Add("AltLibrary:WorldHallow", worldHallow);
             tag.Add("AltLibrary:WorldHell", worldHell);
             tag.Add("AltLibrary:WorldJungle", worldJungle);
+            tag.Add("AltLibrary:DrunkEvil", drunkEvil);
             /*tag.Add("AltLibrary:Copper", Copper);
             tag.Add("AltLibrary:Iron", Iron);
             tag.Add("AltLibrary:Silver", Silver);
@@ -41,6 +43,7 @@ namespace AltLibrary.Common.Systems
             worldData.worldHallow = worldHallow;
             worldData.worldHell = worldHell;
             worldData.worldJungle = worldJungle;
+            worldData.drunkEvil = drunkEvil;
 
             string path = Path.ChangeExtension(Main.worldPathName, ".twld");
             tempDict[path] = worldData;
@@ -54,6 +57,7 @@ namespace AltLibrary.Common.Systems
             worldHallow = tag.GetString("AltLibrary:WorldHallow");
             worldHell = tag.GetString("AltLibrary:WorldHell");
             worldJungle = tag.GetString("AltLibrary:WorldJungle");
+            drunkEvil = tag.GetString("AltLibrary:DrunkEvil");
             /*Copper = tag.GetInt("AltLibrary:Copper");
             Iron = tag.GetInt("AltLibrary:Iron");
             Silver = tag.GetInt("AltLibrary:Silver");
@@ -69,6 +73,7 @@ namespace AltLibrary.Common.Systems
             writer.Write(worldHallow);
             writer.Write(worldHell);
             writer.Write(worldJungle);
+            writer.Write(drunkEvil);
             /*writer.Write(Copper);
             writer.Write(Iron);
             writer.Write(Silver);
@@ -84,6 +89,7 @@ namespace AltLibrary.Common.Systems
             worldHallow = reader.ReadString();
             worldHell = reader.ReadString();
             worldJungle = reader.ReadString();
+            drunkEvil = reader.ReadString();
             /*Copper = reader.ReadInt32();
             Iron = reader.ReadInt32();
             Silver = reader.ReadInt32();

@@ -17,6 +17,7 @@ namespace AltLibrary
             public string worldHallow;
             public string worldHell;
             public string worldJungle;
+            public string drunkEvil;
         }
 
         [Label("$Mods.AltLibrary.Config.BiomeIconsVisibleOutsideBiomeUI.Label")]

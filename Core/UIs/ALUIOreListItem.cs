@@ -291,7 +291,7 @@ namespace AltLibrary.Core.UIs
             float num11 = this._large.ToInt() * 58 - 42;
             Vector2 vector2 = new(dimensions.X + num10, dimensions.Y - num11);
             Texture2D texture = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/ButtonWarn").Value;
-            spriteBatch.Draw(texture, vector2, Color.White);
+            spriteBatch.Draw(texture, vector2, new Rectangle(0, 0, 22, 22), Color.White);
             if (mouseRectangle.Intersects(Utils.CenteredRectangle(vector2 + new Vector2(11f, 11f), Utils.Size(texture))))
             {
                 Main.instance.MouseText(_achievement.Mod == null ? Language.GetTextValue("Mods.AltLibrary.Warn.VanillaOre") : Language.GetTextValue("Mods.AltLibrary.Warn.ModdedOre", _achievement.Mod.Name));

@@ -8,14 +8,19 @@ using MonoMod.Cil;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
 using Terraria.ID;
+using Terraria.IO;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 using Terraria.UI;
+using Terraria.Utilities;
 
 namespace AltLibrary.Common
 {
@@ -53,6 +58,92 @@ namespace AltLibrary.Common
             On.Terraria.GameContent.UI.States.UIWorldCreation.BuildPage += UIWorldCreation_BuildPage;
             IL.Terraria.GameContent.UI.States.UIWorldCreation.FinishCreatingWorld += UIWorldCreation_FinishCreatingWorld;
             On.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf += UIWorldCreationPreview_DrawSelf;
+            On.Terraria.GameContent.UI.Elements.UIWorldListItem.PlayGame += UIWorldListItem_PlayGame;
+        }
+
+        private static void UIWorldListItem_PlayGame(On.Terraria.GameContent.UI.Elements.UIWorldListItem.orig_PlayGame orig, UIWorldListItem self, UIMouseEvent evt, UIElement listeningElement)
+        {
+            if ((WorldFileData)typeof(UIWorldListItem).GetField("_data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self) == null)
+                return;
+            WorldFileData data = (WorldFileData)typeof(UIWorldListItem).GetField("_data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self);
+            string path2 = Path.ChangeExtension(data.Path, ".twld");
+            Dictionary<string, AltLibraryConfig.WorldDataValues> tempDict = AltLibraryConfig.Config.GetWorldData();
+            if (!tempDict.ContainsKey(path2))
+            {
+                if (!FileUtilities.Exists(path2, data.IsCloudSave))
+                {
+                    return;
+                }
+                byte[] buf = FileUtilities.ReadAllBytes(path2, data.IsCloudSave);
+                if (buf[0] != 31 || buf[1] != 139)
+                {
+                    return;
+                }
+                var stream = new MemoryStream(buf);
+                var tag = TagIO.FromStream(stream);
+                bool containsMod = false;
+                if (tag.ContainsKey("modData"))
+                {
+                    foreach (TagCompound modDataTag in tag.GetList<TagCompound>("modData").Skip(2))
+                    {
+                        if (modDataTag.Get<string>("mod") == AltLibrary.Instance.Name)
+                        {
+                            TagCompound dataTag = modDataTag.Get<TagCompound>("data");
+                            AltLibraryConfig.WorldDataValues worldData;
+                            worldData.worldEvil = dataTag.Get<string>("AltLibrary:WorldEvil");
+                            worldData.worldHallow = dataTag.Get<string>("AltLibrary:WorldHallow");
+                            worldData.worldHell = dataTag.Get<string>("AltLibrary:WorldHell");
+                            worldData.worldJungle = dataTag.Get<string>("AltLibrary:WorldJungle");
+                            worldData.drunkEvil = dataTag.Get<string>("AltLibrary:DrunkEvil");
+                            tempDict[path2] = worldData;
+                            containsMod = true;
+                            break;
+                        }
+                    }
+                    if (!containsMod)
+                    {
+                        AltLibraryConfig.WorldDataValues worldData;
+                        worldData.worldHallow = "";
+                        worldData.worldEvil = "";
+                        worldData.worldHell = "";
+                        worldData.worldJungle = "";
+                        worldData.drunkEvil = "";
+                        tempDict[path2] = worldData;
+                    }
+                    AltLibraryConfig.Config.SetWorldData(tempDict);
+                    AltLibraryConfig.Save(AltLibraryConfig.Config);
+                }
+            }
+
+            bool valid = true;
+            if (tempDict.ContainsKey(path2))
+            {
+                if (tempDict[path2].worldHallow != "" && !ModContent.TryFind<AltBiome>(tempDict[path2].worldHallow, out _))
+                {
+                    valid = false;
+                }
+                if (tempDict[path2].worldEvil != "" && !ModContent.TryFind<AltBiome>(tempDict[path2].worldEvil, out _))
+                {
+                    valid = false;
+                }
+                if (tempDict[path2].worldHell != "" && !ModContent.TryFind<AltBiome>(tempDict[path2].worldHell, out _))
+                {
+                    valid = false;
+                }
+                if (tempDict[path2].worldJungle != "" && !ModContent.TryFind<AltBiome>(tempDict[path2].worldJungle, out _))
+                {
+                    valid = false;
+                }
+                if (tempDict[path2].drunkEvil != "" && !ModContent.TryFind<AltBiome>(tempDict[path2].drunkEvil, out _))
+                {
+                    valid = false;
+                }
+            }
+
+            if (valid)
+            {
+                orig(self, evt, listeningElement);
+            }
         }
 
         public static void UIWorldCreation_BuildPage(On.Terraria.GameContent.UI.States.UIWorldCreation.orig_BuildPage orig, UIWorldCreation self)
@@ -384,6 +475,7 @@ namespace AltLibrary.Common
                 return;
             c.EmitDelegate(() =>
             {
+                WorldGen.WorldGenParam_Evil = 0;
                 if (AltHallowBiomeChosenType <= -1)
                 {
                     WorldBiomeManager.worldHallow = "";
@@ -425,6 +517,8 @@ namespace AltLibrary.Common
                 WorldBiomeManager.Cobalt = Cobalt;
                 WorldBiomeManager.Mythril = Mythril;
                 WorldBiomeManager.Adamantite = Adamantite;
+
+                AltLibrary.Instance.Logger.Info(string.Concat("On creating world - Hallow: {0} Corrupt: {1} Jungle: {2} Underworld: {3}", AltHallowBiomeChosenType, AltEvilBiomeChosenType, AltJungleBiomeChosenType, AltHellBiomeChosenType));
             });
         }
 
