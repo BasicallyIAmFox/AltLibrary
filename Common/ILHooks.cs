@@ -12,7 +12,7 @@ namespace AltLibrary.Core
     internal class ILHooks
     {
         public static Asset<Texture2D> EmptyAsset => ModContent.Request<Texture2D>("AltLibrary/Assets/Loading/Outer Empty");
-        public static Asset<Texture2D> EmptyLower => ModContent.Request<Texture2D>("AltLibrary/Assets/Loading/Outer Lower");
+        public static Asset<Texture2D> EmptyLower => ModContent.Request<Texture2D>("AltLibrary/Assets/Loading/Outer Lower Empty");
 
         public static void OnInitialize()
         {

@@ -24,6 +24,6 @@ namespace AltLibrary.Content
         }
         public override List<int> SpreadingTiles => new List<int> { TileID.GoldBrick, TileID.Gold };
 
-        public override string IconLarge => "AltLibrary/Assets/WorldIcons/EpicSwag";
+        public override string WorldIcon => "AltLibrary/Assets/WorldIcons/EpicSwag";
     }
 }

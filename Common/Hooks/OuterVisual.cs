@@ -101,7 +101,7 @@ namespace AltLibrary.Common.Hooks
                     if (worldGenStep == biome.Type + 2 && biome.BiomeType == BiomeType.Evil)
                     {
                         asset = ModContent.Request<Texture2D>(ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).OuterTexture)
-                            ?? ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Outer Empty");
+                            ?? ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Outer Lower Empty");
                     }
                 }
                 spriteBatch.Draw(asset.Value, r.TopLeft(), Color.White);
@@ -135,7 +135,7 @@ namespace AltLibrary.Common.Hooks
                     if (worldGenStep == biome.Type + 1 && biome.BiomeType == BiomeType.Hell)
                     {
                         asset = ModContent.Request<Texture2D>(ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).LowerTexture)
-                            ?? ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Outer Lower");
+                            ?? ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Outer Lower Empty");
                     }
                 }
                 spriteBatch.Draw(asset.Value, r.TopLeft() + new Vector2(44f, 60f), Color.White);

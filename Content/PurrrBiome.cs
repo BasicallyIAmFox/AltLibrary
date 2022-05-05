@@ -20,6 +20,6 @@ namespace AltLibrary.Content
             SeedType = ItemID.JungleSpores;
         }
 
-        public override string IconLarge => "AltLibrary/Assets/WorldIcons/Pur";
+        public override string WorldIcon => "AltLibrary/Assets/WorldIcons/Pur";
     }
 }
