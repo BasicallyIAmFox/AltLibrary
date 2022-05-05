@@ -475,7 +475,6 @@ namespace AltLibrary.Common
                 return;
             c.EmitDelegate(() =>
             {
-                WorldGen.WorldGenParam_Evil = 0;
                 if (AltHallowBiomeChosenType <= -1)
                 {
                     WorldBiomeManager.worldHallow = "";
@@ -487,11 +486,13 @@ namespace AltLibrary.Common
                 if (AltEvilBiomeChosenType <= -1)
                 {
                     WorldBiomeManager.worldEvil = "";
+                    WorldGen.WorldGenParam_Evil = isCrimson ? 1 : 0;
                     WorldGen.crimson = isCrimson;
                 }
                 else
                 {
                     WorldBiomeManager.worldEvil = AltLibrary.biomes[AltEvilBiomeChosenType].FullName;
+                    WorldGen.WorldGenParam_Evil = 0;
                     WorldGen.crimson = false;
                 }
                 if (AltJungleBiomeChosenType <= -1)
