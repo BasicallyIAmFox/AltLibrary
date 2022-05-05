@@ -4,6 +4,7 @@ using AltLibrary.Common.Systems;
 using AltLibrary.Core.UIs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using ReLogic.Content;
@@ -58,8 +59,41 @@ namespace AltLibrary.Common
             On.Terraria.GameContent.UI.States.UIWorldCreation.SetDefaultOptions += UIWorldCreation_SetDefaultOptions;
             On.Terraria.GameContent.UI.States.UIWorldCreation.BuildPage += UIWorldCreation_BuildPage;
             IL.Terraria.GameContent.UI.States.UIWorldCreation.FinishCreatingWorld += UIWorldCreation_FinishCreatingWorld;
+            IL.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf += UIWorldCreationPreview_DrawSelf1;
             On.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf += UIWorldCreationPreview_DrawSelf;
             On.Terraria.GameContent.UI.Elements.UIWorldListItem.PlayGame += UIWorldListItem_PlayGame;
+        }
+
+        private static void UIWorldCreationPreview_DrawSelf1(ILContext il)
+        {
+            ILCursor c = new(il);
+            FieldReference corrupt = null;
+            FieldReference crimson = null;
+
+            if (!c.TryGotoNext(i => i.MatchLdfld<UIWorldCreationPreview>("_EvilRandomTexture")))
+                return;
+            if (!c.TryGotoNext(i => i.MatchLdfld(out corrupt)))
+                return; ;
+            if (!c.TryGotoNext(i => i.MatchLdfld(out crimson)))
+                return;
+            if (!c.TryGotoPrev(i => i.MatchLdfld<UIWorldCreationPreview>("_EvilRandomTexture")))
+                return;
+
+            c.Index++;
+            c.Emit(OpCodes.Ldarg, 0);
+            c.Emit(OpCodes.Ldfld, corrupt);
+            c.Emit(OpCodes.Ldarg, 0);
+            c.Emit(OpCodes.Ldfld, crimson);
+            c.EmitDelegate<Func<Asset<Texture2D>, Asset<Texture2D>, Asset<Texture2D>, Asset<Texture2D>>>((orig, corrupt, crimson) =>
+            {
+                return AltEvilBiomeChosenType switch
+                {
+                    -333 => corrupt,
+                    -666 => crimson,
+                    > -1 => ModContent.Request<Texture2D>(AltLibrary.biomes[AltEvilBiomeChosenType].IconLarge ?? "AltLibrary/Assets/Menu/NullBiomePreview"),
+                    _ => orig
+                };
+            });
         }
 
         private static void UIWorldListItem_PlayGame(On.Terraria.GameContent.UI.Elements.UIWorldListItem.orig_PlayGame orig, UIWorldListItem self, UIMouseEvent evt, UIElement listeningElement)

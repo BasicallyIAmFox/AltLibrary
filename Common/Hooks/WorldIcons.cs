@@ -226,7 +226,7 @@ namespace AltLibrary.Common.Hooks
                 worldIcon.Width.Set(0, 1);
                 image.Append(worldIcon);
             }
-            if (data.HasCorruption && bl2 && tempDict[path2].worldEvil != "" && ModContent.RequestIfExists(ModContent.Find<AltBiome>(tempDict[path2].worldEvil).IconLarge + "DrunkBase", out Asset<Texture2D> newAsset1))
+            if (data.HasCorruption && bl2 && tempDict[path2].worldEvil != "" && ModContent.RequestIfExists(ModContent.Find<AltBiome>(tempDict[path2].worldEvil).WorldIcon + "DrunkBase", out Asset<Texture2D> newAsset1))
             {
                 UIImage worldIcon = new(newAsset1);
                 worldIcon.Height.Set(0, 1);
@@ -286,7 +286,7 @@ namespace AltLibrary.Common.Hooks
                 string path = $"AltLibrary/Assets/WorldIcons/Drunk/{entry.Key.Replace("Terraria/", "")}";
                 if (entry.Key != "Corrupt" && entry.Key != "Crimson" && entry.Key != "Hallow")
                 {
-                    path = ModContent.Find<AltBiome>(entry.Key).IconLarge + "Drunk";
+                    path = ModContent.Find<AltBiome>(entry.Key).WorldIcon + "Drunk";
                 }
                 if (bl && entry.Value.Invoke(data) && ModContent.RequestIfExists(path, out Asset<Texture2D> newAsset))
                 {
@@ -467,7 +467,7 @@ namespace AltLibrary.Common.Hooks
                 string path = $"AltLibrary/Assets/WorldIcons/{forWhich}/{entry.Key}";
                 if (entry.Key != "Corrupt" && entry.Key != "Crimson" && entry.Key != "Hallow")
                 {
-                    path = ModContent.Find<AltBiome>(entry.Key).IconLarge + forWhich;
+                    path = ModContent.Find<AltBiome>(entry.Key).WorldIcon + forWhich;
                 }
                 if (bl && entry.Value.Invoke(data) && ModContent.RequestIfExists(path, out Asset<Texture2D> newAsset))
                 {
