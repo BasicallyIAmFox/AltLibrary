@@ -40,11 +40,6 @@ namespace AltLibrary.Common.AltBiomes
         public int? BiomeChestItem = null;
 
         /// <summary>
-        /// For Jungle, Evil, and Hallow alts. The ItemID of the key which is dropped by monsters in this biome and is used to unlock the dungeon chest.
-        /// </summary>
-        public int? BiomeChestKey = null;
-
-        /// <summary>
         /// For Jungle, Evil, and Hallow alts. The TileID of the special biome chest which will generate in the dungeon.
         /// </summary>
         public int? BiomeChestTile = null;
@@ -168,10 +163,6 @@ namespace AltLibrary.Common.AltBiomes
         /// For Evil and Hallow alts. The NPC ID to be spawned when placing a Key of Night or Light respectively in a chest.
         /// </summary>
         public int? MimicKeyType = null;
-        /// <summary>
-        /// For Evil and Hallow alts. The item to be dropped by underground monsters during Hardmode.
-        /// </summary>
-        public int? SoulItem = null;
         #endregion
 
         #region Boss Loot
@@ -193,10 +184,6 @@ namespace AltLibrary.Common.AltBiomes
         /// If you have a comparable item you wish for EoC to drop, define it here.
         /// </summary>
         public int? ArrowType = null;
-        /// <summary>
-        /// For Evil alts. If you wish for the Underworld boss's loot cage to be made of a material other than the ore bricks, go fucking set ore bricks to that tile or something idfk. We dont make the recipes for that using the library.
-        /// </summary>
-        public int? LootCageTile => BiomeOreBrick; 
         #endregion
 
         #region Menu Graphics
