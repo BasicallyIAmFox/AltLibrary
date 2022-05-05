@@ -21,14 +21,17 @@ namespace AltLibrary.Common
             AltBiome biomeToSpread = null;
             foreach (AltBiome biome in AltLibrary.biomes) 
             {
-                if (type == biome.BiomeGrass) isGrass = true;
-                if ((biome.BiomeType == BiomeType.Evil || biome.BiomeType == BiomeType.Hallow) && biome.SpreadingTiles.Contains(type))
+                if ((biome.BiomeType == BiomeType.Evil || biome.BiomeType == BiomeType.Hallow))
                 {
-                    isSpreadingTile = true;
+                    if (type == biome.BiomeGrass) isGrass = true;
+                    if (biome.SpreadingTiles.Contains(type))
+                    {
+                        isSpreadingTile = true;
+                    }
                     biomeToSpread = biome;
                     break;
                 }
-                if (biome.BiomeType == BiomeType.Jungle && biome.BiomeGrass == type)
+                if (biome.BiomeType == BiomeType.Jungle)
                 {
                     if (type == biome.BiomeGrass)
                     {
@@ -59,7 +62,7 @@ namespace AltLibrary.Common
                     if (WorldGen.InWorld(targetX, targetY))
                     {
                         var target = Main.tile[targetX, targetY];
-                        var canSpread = target.HasUnactuatedTile;
+                        var canSpread = target.HasUnactuatedTile && Main.tileSolid[target.TileType];
                         var oldTileType = target.TileType;
                         int newTileType = -1;
 
@@ -327,7 +330,7 @@ namespace AltLibrary.Common
             {
                 for (int l = top; l <= bottom; l++)
                 {
-                    if (!Main.tile[k, l].IsActuated || !Main.tileSolid[Main.tile[k, l].TileType]) // checking that at least one adjacent tile is air
+                    if (!Main.tile[k, l].HasUnactuatedTile || !Main.tileSolid[Main.tile[k, l].TileType]) // checking that at least one adjacent tile is air
                     {
                         haltSpread = false;
                     }
@@ -337,7 +340,7 @@ namespace AltLibrary.Common
                         break; // stops checking adjacent blocks if even one is lava
                     }
                 } // effectively, what was just done is this; grass is halted by default, but if even one adjacent tile has air (or furniture, etc) then
-            }     // grass is no longer halted. the lava check then comes after the air check so that if there *is* any lava touching the block, the grass will not spread
+            }     // grass is no longer halted. the lava check then comes after the air check so that if there *is* any lava touching the block, the grass will not 
             if (Main.tile[i, j - 1].TileType == TileID.Sunflower && blockedBySunflowers)
             {
                 haltSpread = true;
@@ -345,6 +348,8 @@ namespace AltLibrary.Common
             if (!haltSpread && Main.tile[i, j].TileType == dirt) // checking if the grass is allowed to spread and if the block in question is dirt
             {                                                // add && (grass != <ID of evil grass> || Main.tile[i, j - 1].type != 27) to disallow spreading when a sunflower is on top
                 Main.tile[i, j].TileType = (ushort)grass;
+                WorldGen.SquareTileFrame(i, j);
+                if (Main.netMode == NetmodeID.Server) NetMessage.SendTileSquare(-1, i, j);
             }
         }
     }

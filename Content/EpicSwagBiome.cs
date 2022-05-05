@@ -1,4 +1,5 @@
 ﻿using AltLibrary.Common.AltBiomes;
+using System.Collections.Generic;
 using Terraria.ID;
 
 namespace AltLibrary.Content
@@ -21,6 +22,7 @@ namespace AltLibrary.Content
             MimicKeyType = ItemID.GoldCrown;
             MimicType = NPCID.GoldenSlime;
         }
+        public override List<int> SpreadingTiles => new List<int> { TileID.GoldBrick, TileID.Gold };
 
         public override string IconLarge => "AltLibrary/Assets/WorldIcons/EpicSwag";
     }
