@@ -86,7 +86,16 @@ namespace AltLibrary.Core.UIs
 
             if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff == 0)
             {
-                (affectedElement as UIImageFramed).SetImage(_achievement.IconSmall != null ? ModContent.Request<Texture2D>(_achievement.IconSmall) : ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/ButtonForest"), new(0, 0, 30, 30));
+                string hallow = "AltLibrary/Assets/Menu/ButtonHallow";
+                string hell = "AltLibrary/Assets/Menu/ButtonHell";
+                string jungle = "AltLibrary/Assets/Menu/ButtonJungle";
+                string corrupt = "AltLibrary/Assets/Menu/ButtonCorrupt";
+                string path = "";
+                if (_achievement.BiomeType == BiomeType.Hallow) path = hallow;
+                if (_achievement.BiomeType == BiomeType.Hell) path = hell;
+                if (_achievement.BiomeType == BiomeType.Jungle) path = jungle;
+                if (_achievement.BiomeType == BiomeType.Evil) path = corrupt;
+                (affectedElement as UIImageFramed).SetImage(_achievement.IconSmall != null ? ModContent.Request<Texture2D>(_achievement.IconSmall) : ModContent.Request<Texture2D>(path), new(0, 0, 30, 30));
                 return;
             }
 
