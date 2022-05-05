@@ -15,6 +15,8 @@ namespace AltLibrary.Content
             BiomeSandstone = TileID.PlatinumBrick;
             MechDropItemType = ItemID.GoldBar;
             BiomeChestItem = ItemID.ReflectiveGoldDye;
+            MimicKeyType = ItemID.GoldCrown;
+            MimicType = NPCID.GoldenSlime;
         }
 
         public override string IconLarge => "AltLibrary/Assets/WorldIcons/EpicSwag";

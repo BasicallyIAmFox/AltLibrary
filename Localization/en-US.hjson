@@ -59,7 +59,7 @@ Mods: {
 			HallowName: "Hallow"
 			HallowDesc: "A holy landscape filled with hopes, dreams and real unicorns and fairies."
 			JungleName: "Jungle"
-			JungleDesc: "A flourishing place full of dense trees and lots of bees. There is a ancient temple deep below the jungles surface."
+			JungleDesc: "A flourishing place full of dense trees and lots of bees. There is an ancient temple deep below the jungles surface."
 			UnderworldName: "Underworld"
 			UnderworldDesc: "A molten hot landscape ruined to time, filled with lava and demons to roam the ruined landscape."
 		}
@@ -94,6 +94,10 @@ Mods: {
 			Moonglow: "Tropical Herb"
 			Hellforges: "Underworld Forge"
 		}
+		DryadSpecialText: {
+			WorldStatusGoodEvil: "{0} is {1}% good and {2}% evil."
+			WorldStatusGood: "{0} is {1}% good."
+			WorldStatusEvil: "{0} is {1}% evil."
+		}
 	}
-  
 }

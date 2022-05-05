@@ -123,7 +123,7 @@ namespace AltLibrary.Core.UIs
                         -666,
                         -333
                     };
-                    AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Evil).ToList().ForEach((x) => values.Add(x.Type - 1));
+                    AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Evil && x.Selectable).ToList().ForEach((x) => values.Add(x.Type - 1));
                     UIWorldCreationEdits.AltEvilBiomeChosenType = values[Main.rand.Next(values.Count)];
                     UIWorldCreationEdits.isCrimson = UIWorldCreationEdits.AltEvilBiomeChosenType == -666;
                 }
@@ -133,7 +133,7 @@ namespace AltLibrary.Core.UIs
                     {
                         -3
                     };
-                    AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Hallow).ToList().ForEach((x) => values.Add(x.Type - 1));
+                    AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Hallow && x.Selectable).ToList().ForEach((x) => values.Add(x.Type - 1));
                     UIWorldCreationEdits.AltHallowBiomeChosenType = values[Main.rand.Next(values.Count)];
                 }
                 if (_achievement.Name.StartsWith("RandomJungle"))
@@ -142,7 +142,7 @@ namespace AltLibrary.Core.UIs
                     {
                         -4
                     };
-                    AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Jungle).ToList().ForEach((x) => values.Add(x.Type - 1));
+                    AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Jungle && x.Selectable).ToList().ForEach((x) => values.Add(x.Type - 1));
                     UIWorldCreationEdits.AltJungleBiomeChosenType = values[Main.rand.Next(values.Count)];
                 }
                 if (_achievement.Name.StartsWith("RandomUnderworld"))
@@ -151,7 +151,7 @@ namespace AltLibrary.Core.UIs
                     {
                         -5
                     };
-                    AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Hell).ToList().ForEach((x) => values.Add(x.Type - 1));
+                    AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Hell && x.Selectable).ToList().ForEach((x) => values.Add(x.Type - 1));
                     UIWorldCreationEdits.AltHellBiomeChosenType = values[Main.rand.Next(values.Count)];
                 }
                 return;

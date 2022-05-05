@@ -177,9 +177,9 @@ namespace AltLibrary.Common.Hooks
         private static void LayeredIcons(string forWhich, WorldFileData data, ref UIImage image, Dictionary<string, AltLibraryConfig.WorldDataValues> tempDict, string path2)
         {
             Dictionary<string, Func<WorldFileData, bool>> assets = new();
-            assets.Add("Corrupt", new Func<WorldFileData, bool>((ourData) => ourData.HasCorruption));
-            assets.Add("Crimson", new Func<WorldFileData, bool>((ourData) => ourData.HasCrimson));
-            assets.Add("Hallow", new Func<WorldFileData, bool>((ourData) => ourData.IsHardMode));
+            assets.Add("Corrupt", new Func<WorldFileData, bool>((ourData) => ourData.HasCorruption && tempDict.ContainsKey(path2) && tempDict[path2].worldEvil == ""));
+            assets.Add("Crimson", new Func<WorldFileData, bool>((ourData) => ourData.HasCrimson && tempDict.ContainsKey(path2) && tempDict[path2].worldEvil == ""));
+            assets.Add("Hallow", new Func<WorldFileData, bool>((ourData) => ourData.IsHardMode && tempDict.ContainsKey(path2) && tempDict[path2].worldHallow == ""));
             foreach (AltBiome biomes in AltLibrary.biomes)
             {
                 if (!biomes.FullName.StartsWith("Terraria/"))

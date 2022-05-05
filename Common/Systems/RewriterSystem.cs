@@ -1,6 +1,7 @@
 ﻿using AltLibrary.Common.AltBiomes;
 using System.Collections.Generic;
 using System.Linq;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Systems
@@ -204,6 +205,11 @@ namespace AltLibrary.Common.Systems
 
                     AltLibrary.Instance.Logger.Info($"Error fixed! Report it if it's wrong.");
                 }
+            }
+
+            if (WorldBiomeManager.worldEvil != "" && WorldGen.crimson)
+            {
+                WorldGen.crimson = false;
             }
         }
     }

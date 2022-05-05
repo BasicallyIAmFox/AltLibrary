@@ -138,6 +138,16 @@ namespace AltLibrary.Common.AltBiomes
         /// For Jungle alts, if you use a mechanic similar to Plantera's bulb, list the TileID of that tile here.
         /// </summary>
         public int? BossBulb = null;
+
+        public int? BloodBunny = null;
+
+        public int? BloodGoldfish = null;
+
+        public int? BloodPenguin = null;
+
+        public virtual WallContext WallContext => new();
+
+        public virtual List<int> HardmodeWalls => new();
         #endregion
 
         #region Mimic
@@ -210,12 +220,10 @@ namespace AltLibrary.Common.AltBiomes
 
         public virtual Color OuterColor => new(127, 127, 127);
         public virtual Color NameColor => new(255, 255, 255);
+        public bool Selectable = true;
         #endregion
         public virtual Color AltUnderworldColor => Color.Black; // does this do ui stuff?
         public virtual Asset<Texture2D>[] AltUnderworldBackgrounds => new Asset<Texture2D>[14];
-
-        public virtual WallContext WallContext => new(); // fox, when you see this, put these into whichever region you think applies best
-        public virtual List<int> HardmodeWalls => new();
 
         public sealed override void SetupContent()
         {

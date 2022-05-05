@@ -10,6 +10,13 @@ namespace AltLibrary.Common
     {
         public override void RandomUpdate(int i, int j, int type)
         {
+            // REMOVE THIS 'RETURN' WHEN FIXING SPREADING OR/AND FIXED
+            // REMOVE THIS 'RETURN' WHEN FIXING SPREADING OR/AND FIXED
+            // REMOVE THIS 'RETURN' WHEN FIXING SPREADING OR/AND FIXED
+            // REMOVE THIS 'RETURN' WHEN FIXING SPREADING OR/AND FIXED
+            // REMOVE THIS 'RETURN' WHEN FIXING SPREADING OR/AND FIXED
+            return;
+
             if (Main.tile[i, j].IsActuated)
             {
                 return;
@@ -45,7 +52,7 @@ namespace AltLibrary.Common
                     
                 }
             }
-            if (isSpreadingTile && Main.hardMode && WorldGen.AllowedToSpreadInfections && !(NPC.downedPlantBoss && WorldGen.genRand.Next(2) != 0))
+            if (isSpreadingTile && Main.hardMode && WorldGen.AllowedToSpreadInfections && !(NPC.downedPlantBoss && !WorldGen.genRand.NextBool(2)))
             {
                 var flag = true;
                 while (flag)
@@ -93,7 +100,7 @@ namespace AltLibrary.Common
 
                             if (newTileType != 0 && newTileType != oldTileType)
                             {
-                                if (WorldGen.genRand.Next(2) == 0) flag = true;
+                                if (WorldGen.genRand.NextBool(2)) flag = true;
                                 target.TileType = newTileType;
                                 WorldGen.SquareTileFrame(targetX, targetY);
                                 if (Main.netMode == NetmodeID.Server) NetMessage.SendTileSquare(-1, targetX, targetY);
@@ -123,7 +130,7 @@ namespace AltLibrary.Common
             {  
                 if (j > (Main.worldSurface + Main.rockLayer) / 2.0)
                 {
-                    if (isOreGrowingTile && WorldGen.genRand.Next(300) == 0)
+                    if (isOreGrowingTile && WorldGen.genRand.NextBool(300))
                     {
                         var xdif = WorldGen.genRand.Next(-10, 11);
                         var ydif = WorldGen.genRand.Next(-10, 11);
@@ -139,11 +146,11 @@ namespace AltLibrary.Common
                             {
                                 target.TileType = 211;
                                 WorldGen.SquareTileFrame(targetX, targetY);
-                                if (Main.netMode == 2) NetMessage.SendTileSquare(-1, targetX, targetY);
+                                if (Main.netMode == NetmodeID.Server) NetMessage.SendTileSquare(-1, targetX, targetY);
                             }
                         }
                     }
-                    if (isJungleSpreadingOre && WorldGen.genRand.Next(3) != 0)
+                    if (isJungleSpreadingOre && !WorldGen.genRand.NextBool(3))
                     {
                         var targX = i;
                         var targY = j;

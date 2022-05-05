@@ -8,6 +8,7 @@ namespace AltLibrary.Common
     {
         public int ore;
         public int bar;
+        public bool Selectable = true;
         public virtual Color NameColor => new(255, 255, 255);
 
         public OreType OreType;

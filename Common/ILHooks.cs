@@ -25,6 +25,10 @@ namespace AltLibrary.Core
             TwinsRules.Init();
             DungeonChests.Init();
             SmashAltarInfection.Init();
+            MowingGrassTile.Init();
+            MimicSummon.Init();
+            BloodMoonCritterTransformations.Init();
+            DryadText.Init();
         }
 
         private static void Main_EraseWorld(On.Terraria.Main.orig_EraseWorld orig, int i)
