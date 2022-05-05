@@ -33,6 +33,7 @@ namespace AltLibrary.Common.AltBiomes
             private set;
         }
 
+        #region Dungeon Chest
         /// <summary>
         /// For Jungle, Evil, and Hallow alts. The ItemID for the rare item that will be found inside this biome's dungeon chest.
         /// </summary>
@@ -52,17 +53,31 @@ namespace AltLibrary.Common.AltBiomes
         /// For Jungle, Evil, and Hallow alts. The style number of the biome chest tile to be placed. Defaults to 0.
         /// </summary>
         public int? BiomeChestTileStyle = 0;
+        #endregion
 
+        #region Blocks and Convertables
         /// <summary>
         /// For Jungle and Evil alts. The TileID of the biome's associated ore.
         /// For Jungle alts, this block will begin to appear during hardmode and slow down the spread of nearby evil biome blocks. 
         /// </summary>
         public int? BiomeOre = null;
         /// <summary>
-        /// For Jungle, Evil, and Hallow alts. The TileID of the biome's grass block, which will also spread to dirt (mud for Jungle alts) in a 1 block radius.
+        /// For Jungle and Evil alts. The TileID of the biome's associated ore brick.
+        /// For Jungle alts, this block will slow down the spread of nearby evil biome blocks. 
+        /// For Evil alts, this is the block that will surround the loot of the Underworld boss.
+        /// </summary>
+        public int? BiomeOreBrick = null;
+        /// <summary>
+        /// For Jungle, Evil, and Hallow alts. The TileID of the biome's grass block, which will also spread to dirt in a 1 block radius.
         /// For Evil and Hallow alts, this is the block that grass blocks will be converted into.
+        /// For Jungle alts, this will block will spread to mud instead of dirt.
         /// </summary>
         public int? BiomeGrass = null;
+        /// <summary>
+        /// For Hallow alts. The TileID of the biome's mowed grass block. 
+        /// You can also use this field for Evil or Jungle alts if you desire to make the grass able to be mowed.
+        /// </summary>
+        public int? BiomeMowedGrass = null; // TODO: IL Edit Player.MowGrassTile()
 
         /// <summary>
         /// For Evil and Hallow alts. The tile which convertable stone will be turned into.
@@ -93,6 +108,7 @@ namespace AltLibrary.Common.AltBiomes
         /// For Evil and Hallow alts. The tile that this biome will convert jungle grass into. Leave null to not convert Jungle grass.
         /// For Evil alts, this should be the same as biomeGrass.
         /// For Hallow alts, this should remain null.
+        /// DO NOT USE FOR JUNGLE ALTS.
         /// </summary>
         public int? BiomeJungleGrass = null;
         /// <summary>
@@ -113,6 +129,19 @@ namespace AltLibrary.Common.AltBiomes
         public virtual Dictionary<int, int> SpecialConversion => new();
 
         /// <summary>
+        /// For Evil alts, this is the TileID of this biome's equivalent to Demon Altars.
+        /// For Underworld alts, this is the TileID of this biome's equivalent to Hellforges.
+        /// </summary>
+        public int? AltarTile = null;
+
+        /// <summary>
+        /// For Jungle alts, if you use a mechanic similar to Plantera's bulb, list the TileID of that tile here.
+        /// </summary>
+        public int? BossBulb = null;
+        #endregion
+
+        #region Mimic
+        /// <summary>
         /// For Evil and Hallow alts. The NPC ID to be spawned when placing a Key of Night or Light respectively in a chest.
         /// </summary>
         public int? MimicType = null;
@@ -124,7 +153,9 @@ namespace AltLibrary.Common.AltBiomes
         /// For Evil and Hallow alts. The item to be dropped by underground monsters during Hardmode.
         /// </summary>
         public int? SoulItem = null;
+        #endregion
 
+        #region Boss Loot
         /// <summary>
         /// For Hallow alts. The ItemID of the metal that the mechanical bosses will drop in place of Hallowed Bars.
         /// </summary>
@@ -144,15 +175,12 @@ namespace AltLibrary.Common.AltBiomes
         /// </summary>
         public int? ArrowType = null;
         /// <summary>
-        /// For Evil alts. The TileID of the block that Wall of Flesh's loot is caged inside of. This is usually the brick associated with the biome's ore.
+        /// For Evil alts. If you wish for the Underworld boss's loot cage to be made of a material other than the ore bricks, go fucking set ore bricks to that tile or something idfk. We dont make the recipes for that using the library.
         /// </summary>
-        public int? LootCageTile = null;
-        /// <summary>
-        /// For Evil alts, this is the TileID of this biome's equivalent to Demon Altars.
-        /// For Underworld alts, this is the TileID of this biome's equivalent to Hellforges.
-        /// </summary>
-        public int? AltarTile = null;
+        public int? LootCageTile => BiomeOreBrick; 
+        #endregion
 
+        #region Menu Graphics
         /// <summary>
         /// The path to the texture of the large icon that will appear on the biome selection screen to represent this biome.
         /// </summary>
@@ -174,15 +202,19 @@ namespace AltLibrary.Common.AltBiomes
         /// The path to the texture that will serve as one of the layers of the tree on the world selection screen.
         /// </summary>
         public virtual string WorldIcon => null;
-
-        public virtual string OuterTexture => "AltLibrary/Assets/WorldIcons/Outer Empty";
+        /// <summary>
+        /// For Evil biomes. The texture that appears around the loading bar on world creation.
+        /// </summary>
+        public virtual string OuterTexture => "AltLibrary/Assets/WorldIcons/Outer Empty"; // TODO: create a default/template sprite to make the bar look less ugly when no bar is specified
+        // TODO: Underworld section of loading bar. perhaps a separate field for it? 
 
         public virtual Color OuterColor => new(127, 127, 127);
         public virtual Color NameColor => new(255, 255, 255);
-        public virtual Color AltUnderworldColor => Color.Black;
+        #endregion
+        public virtual Color AltUnderworldColor => Color.Black; // does this do ui stuff?
         public virtual Asset<Texture2D>[] AltUnderworldBackgrounds => new Asset<Texture2D>[14];
 
-        public virtual WallContext WallContext => new();
+        public virtual WallContext WallContext => new(); // fox, when you see this, put these into whichever region you think applies best
         public virtual List<int> HardmodeWalls => new();
 
         public sealed override void SetupContent()
@@ -194,6 +226,15 @@ namespace AltLibrary.Common.AltBiomes
         {
             ModTypeLookup<AltBiome>.Register(this);
             AltLibrary.biomes.Add(this);
+            if (BossBulb != null) AltLibrary.planteraBulbs.Add((int)BossBulb);
+            if (BiomeType == BiomeType.Jungle)
+            {
+                if (BiomeGrass != null) AltLibrary.jungleGrass.Add((int)BiomeGrass);
+                if (BiomeMowedGrass != null) AltLibrary.jungleGrass.Add((int)BiomeGrass);
+                if (BiomeThornBush != null) AltLibrary.jungleThorns.Add((int)BiomeGrass);
+                if (BiomeOre != null) AltLibrary.evilStoppingOres.Add((int)BiomeOre);
+                if (BiomeOreBrick != null) AltLibrary.evilStoppingOres.Add((int)BiomeOreBrick);
+            }
             AltLibrary.hellAltTrans.Add(FullName, 0f);
             Type = AltLibrary.biomes.Count;
         }

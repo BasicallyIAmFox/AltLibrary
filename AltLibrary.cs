@@ -3,6 +3,7 @@ using AltLibrary.Common.AltBiomes;
 using AltLibrary.Core;
 using System.Collections.Generic;
 using Terraria.ModLoader;
+using Terraria.ID;
 
 namespace AltLibrary
 {
@@ -17,6 +18,12 @@ namespace AltLibrary
         public static List<AltOre> ores = new();
 
         public static Dictionary<string, float> hellAltTrans = new();
+
+        // Spreading related lists.
+        public static List<int> planteraBulbs = new List<int> { TileID.PlanteraBulb };
+        public static List<int> jungleGrass = new List<int> { TileID.JungleGrass };
+        public static List<int> jungleThorns = new List<int> { TileID.JungleThorns };
+        public static List<int> evilStoppingOres = new List<int> { TileID.Chlorophyte, TileID.ChlorophyteBrick };
 
         public AltLibrary()
         {
