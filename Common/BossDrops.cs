@@ -5,6 +5,7 @@ using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.Localization;
 
 namespace AltLibrary.Common
 {
@@ -190,7 +191,7 @@ namespace AltLibrary.Common
         }
         public string GetConditionDescription()
         {
-            return "Drops in Hallowed worlds."; // TODO: translate
+            return $"{Language.GetTextValue("Mods.AltLibrary.DropRule.Base")} {Language.GetTextValue("Mods.AltLibrary.Biomes.HallowName")}";
         }
     }
 
@@ -222,9 +223,9 @@ namespace AltLibrary.Common
         public string GetConditionDescription()
         {
             string biome;
-            if (WorldGen.crimson) biome = "Crimson";
-            else biome = "Corruption";
-            return "Drops in worlds with " + biome;
+            if (WorldGen.crimson) biome = Language.GetTextValue("Mods.AltLibrary.Biomes.CrimsonName");
+            else biome = Language.GetTextValue("Mods.AltLibrary.Biomes.CorruptName");
+            return Language.GetTextValue("Mods.AltLibrary.DropRule.Base") + " " + biome;
         }
     }
 
@@ -252,7 +253,7 @@ namespace AltLibrary.Common
 
         public string GetConditionDescription()
         {
-            return "Drops in worlds with a specific biome type"; // TODO: translate this and make it use the biomes display name
+            return $"{Language.GetTextValue("Mods.AltLibrary.DropRule.Base")} {BiomeType.DisplayName}";
         }
     }
 
@@ -280,7 +281,7 @@ namespace AltLibrary.Common
 
         public string GetConditionDescription()
         {
-            return "Drops in worlds with a specific biome type"; // TODO: translate this and make it use the biomes display name
+            return $"{Language.GetTextValue("Mods.AltLibrary.DropRule.Base")} {BiomeType.DisplayName}";
         }
     }
 

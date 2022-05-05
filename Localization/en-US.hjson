@@ -15,19 +15,19 @@ Mods: {
 		}
 		Ores: {
 			RandomCopperName: "Random Copper-Tier"
-			RandomCopperDesc: "Chooses random copper-tier ore for you!"
+			RandomCopperDesc: "Chooses a random copper-tier ore for you!"
 			RandomIronName: "Random Iron-Tier"
-			RandomIronDesc: "Chooses random iron-tier ore for you!"
+			RandomIronDesc: "Chooses a random iron-tier ore for you!"
 			RandomSilverName: "Random Silver-Tier"
-			RandomSilverDesc: "Chooses random silver-tier ore for you!"
+			RandomSilverDesc: "Chooses a random silver-tier ore for you!"
 			RandomGoldName: "Random Gold-Tier"
-			RandomGoldDesc: "Chooses random gold-tier ore for you!"
+			RandomGoldDesc: "Chooses a random gold-tier ore for you!"
 			RandomCobaltName: "Random Cobalt-Tier"
-			RandomCobaltDesc: "Chooses random cobalt-tier ore for you!"
+			RandomCobaltDesc: "Chooses a random cobalt-tier ore for you!"
 			RandomMythrilName: "Random Mythril-Tier"
-			RandomMythrilDesc: "Chooses random mythril-tier ore for you!"
+			RandomMythrilDesc: "Chooses a random mythril-tier ore for you!"
 			RandomAdamantiteName: "Random Adamantite-Tier"
-			RandomAdamantiteDesc: "Chooses random adamantite-tier ore for you!"
+			RandomAdamantiteDesc: "Chooses a random adamantite-tier ore for you!"
 			CopperName: "Copper"
 			TinName: "Tin"
 			IronName: "Iron"
@@ -45,13 +45,13 @@ Mods: {
 		}
 		Biomes: {
 			RandomEvilBiomeName: "Random Evil"
-			RandomEvilBiomeDesc: "Chooses random evil biome for you!"
+			RandomEvilBiomeDesc: "Chooses a random evil biome for you!"
 			RandomHallowBiomeName: "Random Hallow"
-			RandomHallowBiomeDesc: "Chooses random good biome for you!"
+			RandomHallowBiomeDesc: "Chooses a random good biome for you!"
 			RandomJungleBiomeName: "Random Jungle"
-			RandomJungleBiomeDesc: "Chooses random tropical biome for you!"
+			RandomJungleBiomeDesc: "Chooses a random tropical biome for you!"
 			RandomUnderworldBiomeName: "Random Underworld"
-			RandomUnderworldBiomeDesc: "Chooses random hell biome for you!"
+			RandomUnderworldBiomeDesc: "Chooses a random underworld biome for you!"
 			CorruptName: "Corruption"
 			CorruptDesc: "A purple biome that consists of rotting enemies that will protect its landscape at all costs."
 			CrimsonName: "Crimson"
@@ -98,6 +98,9 @@ Mods: {
 			WorldStatusGoodEvil: "{0} is {1}% good and {2}% evil."
 			WorldStatusGood: "{0} is {1}% good."
 			WorldStatusEvil: "{0} is {1}% evil."
+		}
+		DropRule: {
+		Base: "Drops in worlds with"
 		}
 	}
 }
