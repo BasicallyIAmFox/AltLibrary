@@ -106,6 +106,40 @@ namespace AltLibrary.Common.Hooks
                 }
                 spriteBatch.Draw(asset.Value, r.TopLeft(), Color.White);
             });
+            if (!c.TryGotoNext(i => i.MatchLdfld<UIGenProgressBar>("_texOuterLower")))
+                return;
+            c.Remove();
+            c.EmitDelegate<Func<UIGenProgressBar, Asset<Texture2D>>>((unusedVariableLeftInForLoading) =>
+            {
+                int worldGenStep = 0;
+                if (WorldBiomeManager.worldHell != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).Type + 1;
+                Asset<Texture2D> asset = ILHooks.EmptyLower;
+                return worldGenStep <= 0 ? Main.Assets.Request<Texture2D>("Images/UI/WorldGen/Outer_Lower") : asset;
+            });
+            if (!c.TryGotoNext(i => i.MatchCallvirt(out _)))
+                return;
+            if (!c.TryGotoNext(i => i.MatchCallvirt(out _)))
+                return;
+            c.Index++;
+            c.Emit(OpCodes.Ldarg, 1);
+            c.Emit(OpCodes.Ldloc, 6);
+            c.EmitDelegate<Action<SpriteBatch, Rectangle>>((spriteBatch, r) =>
+            {
+                int worldGenStep = 0;
+                if (WorldBiomeManager.worldHell != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).Type + 1;
+                if (WorldGen.drunkWorldGen && Main.rand.NextBool(2)) worldGenStep = Main.rand.Next(AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Hell).ToList().Count + 1);
+                Asset<Texture2D> asset = ILHooks.EmptyLower;
+                if (worldGenStep == 0) asset = Main.Assets.Request<Texture2D>("Images/UI/WorldGen/Outer_Lower");
+                foreach (AltBiome biome in AltLibrary.biomes)
+                {
+                    if (worldGenStep == biome.Type + 1 && biome.BiomeType == BiomeType.Hell)
+                    {
+                        asset = ModContent.Request<Texture2D>(ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).LowerTexture)
+                            ?? ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Outer Lower");
+                    }
+                }
+                spriteBatch.Draw(asset.Value, r.TopLeft() + new Vector2(44f, 60f), Color.White);
+            });
         }
     }
 }

@@ -212,7 +212,7 @@ namespace AltLibrary.Common.AltBiomes
         /// For Evil biomes. The texture that appears around the loading bar on world creation.
         /// </summary>
         public virtual string OuterTexture => "AltLibrary/Assets/WorldIcons/Outer Empty"; // TODO: create a default/template sprite to make the bar look less ugly when no bar is specified
-        // TODO: Underworld section of loading bar. perhaps a separate field for it? 
+        public virtual string LowerTexture => "AltLibrary/Assets/WorldIcons/Outer Lower";
 
         public virtual Color OuterColor => new(127, 127, 127);
         public virtual Color NameColor => new(255, 255, 255);
