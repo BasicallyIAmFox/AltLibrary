@@ -15,6 +15,8 @@ namespace AltLibrary.Content
             BiomeSandstone = TileID.PlatinumBrick;
             MechDropItemType = ItemID.GoldBar;
             BiomeChestItem = ItemID.ReflectiveGoldDye;
+            BiomeChestTileStyle = 17;
+            BiomeMowedGrass = TileID.Platinum;
             MimicKeyType = ItemID.GoldCrown;
             MimicType = NPCID.GoldenSlime;
         }
