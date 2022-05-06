@@ -111,9 +111,9 @@ Mods: {
 			DevTooltip: "Great for impersonating mod devs!"
 		}
 		ItemTooltip: {
-			FoxShirt: "{$Mods.ExampleMod.Common.DevTooltip}"
-			FoxMask: "{$Mods.ExampleMod.Common.DevTooltip}"
-			FoxPants: "{$Mods.ExampleMod.Common.DevTooltip}"
+			FoxShirt: "{$Mods.AltLibrary.Common.DevTooltip}"
+			FoxMask: "{$Mods.AtLibrary.Common.DevTooltip}"
+			FoxPants: "{$Mods.AltLibrary.Common.DevTooltip}"
 		}
 		ItemName: {
 			FoxShirt: "Fox's Sweater"
