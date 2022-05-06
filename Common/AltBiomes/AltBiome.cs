@@ -19,7 +19,7 @@ namespace AltLibrary.Common.AltBiomes
         /// <summary>
         /// The name of this biome that will display on the selection screen.
         /// </summary>
-        public virtual LocalizedText DisplayName
+        public virtual ModTranslation DisplayName
         {
             get;
             private set;
@@ -27,7 +27,7 @@ namespace AltLibrary.Common.AltBiomes
         /// <summary>
         /// The description for this biome that will appear on the biome selection screen.
         /// </summary>
-        public virtual LocalizedText Description
+        public virtual ModTranslation Description
         {
             get;
             private set;
