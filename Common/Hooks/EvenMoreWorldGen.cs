@@ -65,7 +65,7 @@ namespace AltLibrary.Common.Hooks
             {
                 foreach (AltBiome biome in AltLibrary.biomes)
                 {
-                    if (biome.BiomeType == BiomeType.Jungle && biome.BiomeGrass.HasValue)
+                    if (WorldBiomeManager.worldJungle == biome.FullName && biome.BiomeType == BiomeType.Jungle && biome.BiomeGrass.HasValue)
                         return biome.BiomeGrass.Value;
                 }
                 return 60;
@@ -193,7 +193,7 @@ namespace AltLibrary.Common.Hooks
             {
                 foreach (AltBiome biome in AltLibrary.biomes)
                 {
-                    if (biome.BiomeType == BiomeType.Jungle && biome.BiomeGrass.HasValue)
+                    if (WorldBiomeManager.worldJungle == biome.FullName && biome.BiomeType == BiomeType.Jungle && biome.BiomeGrass.HasValue)
                         return biome.BiomeGrass.Value;
                 }
                 return 60;

@@ -120,5 +120,13 @@ Mods: {
 			FoxMask: "Fox's Face Mask"
 			FoxPants: "Fox's Slacks"
 		}
+		BunReason: {
+			0: "{0} was devoured by bunnies."
+			1: "{0} was destroyed by the cruel rules of the game."
+			2: "{0} was annihilated by bunnies."
+			3: "{0} fell down the rabbithole."
+			4: "{0} had a cuteness overload."
+			5: "{0} was killed by their own creation."
+		}
 	}
 }

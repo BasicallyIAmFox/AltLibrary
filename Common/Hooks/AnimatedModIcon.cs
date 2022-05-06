@@ -105,8 +105,9 @@ namespace AltLibrary.Common.Hooks
         private static void Image_OnUpdate(UIElement affectedElement)
         {
             UIImageFramed e = affectedElement as UIImageFramed;
+            int time = 3600;
 
-            if (AltLibrary.TimeHoveringOnIcon >= 161)
+            if (AltLibrary.TimeHoveringOnIcon >= time + 1)
             {
                 e.SetFrame(new Rectangle(80, 0, 80, 80));
                 AltLibrary.HallowBunnyUnlocked = true;
@@ -124,13 +125,13 @@ namespace AltLibrary.Common.Hooks
                 {
                     e.SetFrame(new Rectangle(0, 160, 80, 80));
                 }
-                if (++AltLibrary.TimeHoveringOnIcon == 160)
+                if (++AltLibrary.TimeHoveringOnIcon == time)
                 {
                     SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen);
                     e.SetFrame(new Rectangle(80, 0, 80, 80));
-                    AltLibrary.TimeHoveringOnIcon = 161;
+                    AltLibrary.TimeHoveringOnIcon = time + 1;
                 }
-                if (AltLibrary.TimeHoveringOnIcon >= 160)
+                if (AltLibrary.TimeHoveringOnIcon >= time)
                 {
                     AltLibrary.HallowBunnyUnlocked = true;
                 }
