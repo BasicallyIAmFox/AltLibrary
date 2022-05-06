@@ -270,10 +270,11 @@ namespace AltLibrary.Common.Hooks
                                 BiomeType.Hallow => tempDict[path2].worldHallow,
                                 BiomeType.Jungle => tempDict[path2].worldJungle,
                                 BiomeType.Hell => tempDict[path2].worldHell,
-                                _ => tempDict[path2].worldHallow,
+                                _ => "",
                             };
                             bool bl = ourData.DrunkWorld && equals == biome.FullName;
                             if (biome.BiomeType == BiomeType.Hallow) bl &= ourData.IsHardMode;
+                            if (biome.BiomeType == BiomeType.Hell) bl &= false;
                             return bl;
                         }));
                     }
@@ -444,10 +445,11 @@ namespace AltLibrary.Common.Hooks
                                 BiomeType.Hell => tempDict[path2].worldHell,
                                 BiomeType.Jungle => tempDict[path2].worldJungle,
                                 BiomeType.Evil => tempDict[path2].worldEvil,
-                                _ => tempDict[path2].worldEvil,
+                                _ => "",
                             };
                             bool bl = equals == biome.FullName;
                             if (biome.BiomeType == BiomeType.Hallow) bl &= ourData.IsHardMode;
+                            if (biome.BiomeType == BiomeType.Hell) bl &= false;
                             return bl;
                         }));
                     }

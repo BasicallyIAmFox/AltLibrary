@@ -210,6 +210,7 @@ namespace AltLibrary.Common.AltBiomes
         public virtual Color NameColor => new(255, 255, 255);
         public bool Selectable = true;
         #endregion
+
         public virtual Color AltUnderworldColor => Color.Black;
         public virtual Asset<Texture2D>[] AltUnderworldBackgrounds => new Asset<Texture2D>[14];
 
