@@ -159,7 +159,7 @@ namespace AltLibrary.Common
 
                         if (WorldGen.InWorld(targetX, targetY) && Main.tile[targetX, targetY].TileType == TileID.Mud)
                         {
-                            if (Main.tile[targetX, targetY - 1].IsActuated ||
+                            if (Main.tile[targetX, targetY].IsActuated ||
                                 (Main.tile[targetX, targetY - 1].TileType != TileID.Trees && Main.tile[targetX, targetY - 1].TileType != TileID.LifeFruit
                                 && !AltLibrary.planteraBulbs.Contains(Main.tile[targetX, targetY - 1].TileType)))
                             {

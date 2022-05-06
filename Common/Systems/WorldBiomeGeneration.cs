@@ -54,7 +54,12 @@ namespace AltLibrary.Common.Systems
                 int jungleIndex = tasks.FindIndex(i => i.Name.Equals("Wet Jungle"));
                 if (jungleIndex != -1)
                 {
-                    tasks[jungleIndex] = new PassLegacy("Wet Jungle", new WorldGenLegacyMethod(JunglesWetTask));
+                    tasks[jungleIndex] = new PassLegacy("Wet Jungle", new WorldGenLegacyMethod(JunglesWetTask)); // TODO: translatable genpass names. pass in display name of biome? 
+                }
+                jungleIndex = tasks.FindIndex(i => i.Name.Equals("Mud Caves To Grass"));
+                if (jungleIndex != -1)
+                {
+                    tasks[jungleIndex] = new PassLegacy("Jungle Grass", new WorldGenLegacyMethod(JunglesGrassTask));
                 }
                 jungleIndex = tasks.FindIndex(i => i.Name.Equals("Jungle Temple"));
                 if (jungleIndex != -1)
@@ -96,7 +101,7 @@ namespace AltLibrary.Common.Systems
                 {
                     tasks.RemoveAt(jungleIndex);
                 }
-                jungleIndex = tasks.FindIndex(i => i.Name.Equals("Lohzahrd Altars"));
+                jungleIndex = tasks.FindIndex(i => i.Name.Equals("Lihzahrd Altars"));
                 if (jungleIndex != -1)
                 {
                     tasks.RemoveAt(jungleIndex);
@@ -107,15 +112,15 @@ namespace AltLibrary.Common.Systems
         private void JunglesWetTask(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Set(1f);
-            for (int num569 = 0; num569 < Main.maxTilesX; num569++)
+            for (int i = 0; i < Main.maxTilesX; i++)
             {
-                int i2 = num569;
-                for (int num570 = (int)WorldGen.worldSurfaceLow; num570 < Main.worldSurface - 1.0; num570++)
+                int i2 = i;
+                for (int j = (int)WorldGen.worldSurfaceLow; j < Main.worldSurface - 1.0; j++)
                 {
-                    Tile tile49 = Main.tile[i2, num570];
+                    Tile tile49 = Main.tile[i2, j];
                     if (tile49.HasTile)
                     {
-                        tile49 = Main.tile[i2, num570];
+                        tile49 = Main.tile[i2, j];
                         bool bl = tile49.TileType == 60;
                         foreach (AltBiome biome in AltLibrary.biomes)
                         {
@@ -126,14 +131,86 @@ namespace AltLibrary.Common.Systems
                         }
                         if (bl)
                         {
-                            tile49 = Main.tile[i2, num570 - 1];
+                            tile49 = Main.tile[i2, j - 1];
                             tile49.LiquidAmount = 255;
-                            tile49 = Main.tile[i2, num570 - 2];
+                            tile49 = Main.tile[i2, j - 2];
                             tile49.LiquidAmount = 255;
                         }
                         break;
                     }
                 }
+            }
+        }
+
+        private void JunglesGrassTask(GenerationProgress progress, GameConfiguration passConfig)
+        {
+            progress.Message = Lang.gen[77].Value;
+            //WorldGen.NotTheBees(); 
+            // stinky re-logic and their private methods
+            int grass = TileID.JungleGrass;
+            foreach (AltBiome alt in AltLibrary.biomes)
+            {
+                if (alt.BiomeType == BiomeType.Jungle)
+                {
+                    if (alt.BiomeGrass.HasValue)
+                    {
+                        grass = alt.BiomeGrass.Value;
+                    }
+                    else if (alt.BiomeJungleGrass.HasValue)
+                    {
+                        grass = alt.BiomeJungleGrass.Value;
+                    }
+                }
+            }
+            for (int i = 0; i < Main.maxTilesX; i++)
+            {
+                for (int j = 0; j < Main.maxTilesY; j++)
+                {
+                    if (Main.tile[i, j].HasUnactuatedTile)
+                    {
+                        //WorldGen.grassSpread = 0;
+                        
+                        WorldGen.SpreadGrass(i, j, TileID.Mud, grass, repeat: true, 0);
+                    }
+                    progress.Set(0.2f * ((float)(i * Main.maxTilesY + j) / (float)(Main.maxTilesX * Main.maxTilesY)));
+                }
+            }
+            WorldGen.SmallConsecutivesFound = 0;
+            WorldGen.SmallConsecutivesEliminated = 0;
+            float rightBorder = Main.maxTilesX - 20;
+            for (int i = 10; i < Main.maxTilesX - 10; i++)
+            {
+                ScanTileColumnAndRemoveClumps(i);
+                float num835 = (float)(i - 10) / rightBorder;
+                progress.Set(0.2f + num835 * 0.8f);
+            }
+        }
+
+        private static void ScanTileColumnAndRemoveClumps(int x)
+        {
+            int num = 0;
+            int y = 0;
+            for (int i = 10; i < Main.maxTilesY - 10; i++)
+            {
+                if (Main.tile[x, i].HasUnactuatedTile && Main.tileSolid[Main.tile[x, i].TileType] && TileID.Sets.CanBeClearedDuringGeneration[Main.tile[x, i].TileType])
+                {
+                    if (num == 0)
+                    {
+                        y = i;
+                    }
+                    num++;
+                    continue;
+                }
+                if (num > 0 && num < 20)
+                {
+                    WorldGen.SmallConsecutivesFound++;
+                    if (WorldGen.tileCounter(x, y) < 20)
+                    {
+                        WorldGen.SmallConsecutivesEliminated++;
+                        WorldGen.tileCounterKill();
+                    }
+                }
+                num = 0;
             }
         }
 
