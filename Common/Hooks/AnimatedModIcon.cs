@@ -106,7 +106,7 @@ namespace AltLibrary.Common.Hooks
         {
             UIImageFramed e = affectedElement as UIImageFramed;
 
-            if (AltLibrary.TimeHoveringOnIcon >= 160)
+            if (AltLibrary.TimeHoveringOnIcon >= 161)
             {
                 e.SetFrame(new Rectangle(80, 0, 80, 80));
                 AltLibrary.HallowBunnyUnlocked = true;
@@ -126,8 +126,9 @@ namespace AltLibrary.Common.Hooks
                 }
                 if (++AltLibrary.TimeHoveringOnIcon == 160)
                 {
-                    SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen.SoundId);
+                    SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen);
                     e.SetFrame(new Rectangle(80, 0, 80, 80));
+                    AltLibrary.TimeHoveringOnIcon = 161;
                 }
                 if (AltLibrary.TimeHoveringOnIcon >= 160)
                 {
