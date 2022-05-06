@@ -6,12 +6,7 @@ using MonoMod.Cil;
 using MonoMod.RuntimeDetour.HookGen;
 using ReLogic.Content;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
@@ -24,7 +19,6 @@ namespace AltLibrary.Common.Hooks
     internal class AnimatedModIcon
     {
         private static MethodInfo Limits = null;
-        private static Type LocalMod = null;
 
         private static event ILContext.Manipulator ModifyLimits
         {

@@ -13,6 +13,7 @@ namespace AltLibrary.Common
         private static MethodBase ShiniesInfo;
         private static MethodBase CorruptionInfo;
         private static MethodBase AltarsInfo;
+        private static MethodBase MicroBiomesInfo;
         private static MethodBase HardmodeWallsInfo;
 
         public static event ILContext.Manipulator HookGenPassReset
@@ -39,6 +40,12 @@ namespace AltLibrary.Common
             remove => HookEndpointManager.Unmodify(AltarsInfo, value);
         }
 
+        public static event ILContext.Manipulator HookGenPassMicroBiomes
+        {
+            add => HookEndpointManager.Modify(MicroBiomesInfo, value);
+            remove => HookEndpointManager.Unmodify(MicroBiomesInfo, value);
+        }
+
         public static event ILContext.Manipulator HookGenPassHardmodeWalls
         {
             add => HookEndpointManager.Modify(HardmodeWallsInfo, value);
@@ -51,6 +58,7 @@ namespace AltLibrary.Common
             ShiniesInfo = GetGenPassInfo(il, "Shinies");
             CorruptionInfo = GetGenPassInfo(il, "Corruption");
             AltarsInfo = GetGenPassInfo(il, "Altars");
+            MicroBiomesInfo = GetGenPassInfo(il, "Micro Biomes");
         }
 
         public static void ILSMCallBack(ILContext il)

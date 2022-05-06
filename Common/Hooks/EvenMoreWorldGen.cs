@@ -6,9 +6,11 @@ using MonoMod.Cil;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.WorldBuilding;
 
 namespace AltLibrary.Common.Hooks
 {
@@ -21,6 +23,31 @@ namespace AltLibrary.Common.Hooks
             GenPasses.HookGenPassShinies += GenPasses_HookGenPassShinies;
             GenPasses.HookGenPassCorruption += GenPasses_HookGenPassCorruption;
             GenPasses.HookGenPassAltars += ILGenPassAltars;
+            GenPasses.HookGenPassMicroBiomes += GenPasses_HookGenPassMicroBiomes;
+        }
+
+        private static void GenPasses_HookGenPassMicroBiomes(ILContext il)
+        {
+            ILCursor c = new(il);
+            if (!c.TryGotoNext(i => i.MatchLdstr("LivingTreeCount")))
+                return;
+            if (!c.TryGotoPrev(i => i.MatchCallvirt<GenerationProgress>("Set")))
+                return;
+
+            var label = il.DefineLabel();
+
+            c.Index++;
+            c.Emit(OpCodes.Ldsfld, typeof(WorldBiomeManager).GetField(nameof(WorldBiomeManager.worldJungle), BindingFlags.Public | BindingFlags.Static));
+            c.Emit(OpCodes.Ldstr, "");
+            c.Emit(OpCodes.Call, typeof(string).GetMethod("op_Equality", new Type[] { typeof(string), typeof(string) }));
+            c.Emit(OpCodes.Brfalse_S, label);
+
+            if (!c.TryGotoNext(i => i.MatchLdstr("..Long Minecart Tracks")))
+                return;
+            if (!c.TryGotoPrev(i => i.MatchLdarg(1)))
+                return;
+
+            c.MarkLabel(label);
         }
 
         private static void GenPasses_HookGenPassCorruption(ILContext il)
