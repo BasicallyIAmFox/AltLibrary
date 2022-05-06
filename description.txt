@@ -1,1 +1,3 @@
-Alternative Biomes Library is a pretty cool mod, it does...this. Modify this file with a description of your mod.
+Alternative Biomes Library is library mod to enable the creation of alternatives to various vanilla biomes, without the need for complex IL editing knowledge.
+
+This mod is used by developers to reduce the amount of repeated code involved in the process, as well as to ensure a baseline of compatibility between multiple mods that add alternates to vanilla content.
