@@ -30,6 +30,7 @@ namespace AltLibrary.Core
             MimicSummon.Init();
             BloodMoonCritterTransformations.Init();
             DryadText.Init();
+            LivingMahogany.Init();
         }
 
         private static void Main_EraseWorld(On.Terraria.Main.orig_EraseWorld orig, int i)
