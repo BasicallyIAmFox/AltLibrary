@@ -6,6 +6,7 @@ using Terraria.ModLoader.Config;
 
 namespace AltLibrary
 {
+#pragma warning disable CS0649
     internal class AltLibraryConfig : ModConfig
     {
         public override ConfigScope Mode => ConfigScope.ClientSide;
@@ -20,6 +21,11 @@ namespace AltLibrary
             public string drunkEvil;
         }
 
+        [Label("$Mods.AltLibrary.Config.PreviewVisible.Label")]
+        [Tooltip("$Mods.AltLibrary.Config.PreviewVisible.Tooltip")]
+        [OptionStrings(new string[] { "None", "Hallow only", "Jungle only", "Both" })]
+        [DefaultValue("Hallow only")]
+        public string PreviewVisible;
         [Label("$Mods.AltLibrary.Config.BiomeIconsVisibleOutsideBiomeUI.Label")]
         [Tooltip("$Mods.AltLibrary.Config.BiomeIconsVisibleOutsideBiomeUI.Tooltip")]
         [DefaultValue(true)]
@@ -28,6 +34,8 @@ namespace AltLibrary
         [Tooltip("$Mods.AltLibrary.Config.OreIconsVisibleOutsideOreUI.Tooltip")]
         [DefaultValue(true)]
         public bool OreIconsVisibleOutsideOreUI;
+
+#pragma warning restore CS0649
 
         public override void OnLoaded()
         {

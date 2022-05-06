@@ -195,14 +195,6 @@ namespace AltLibrary.Common.AltBiomes
         /// The path to the 30x30 texture of the small icon that will appear on the biome selection screen to represent this biome. This should typically be the same as the biome's main bestiary icon.
         /// </summary>
         public virtual string IconSmall => null;
-        /// <summary>
-        /// For Jungle alts. The path to the 30x30 texture that will appear on the selection screen to preview the counterpart to the Bee Hive.
-        /// </summary>
-        public virtual string IconBeeNest => null;
-        /// <summary>
-        /// For Jungle alts. The path to the 30x30 texture that will appear on the selection screen to preview the counterpart to the Temple.
-        /// </summary>
-        public virtual string IconTemple => null;
 
         /// <summary>
         /// The path to the texture that will serve as one of the layers of the tree on the world selection screen.

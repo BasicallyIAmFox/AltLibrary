@@ -5,6 +5,10 @@ Mods: {
 		ChooseBiome: "Choose Biomes"
 		ChooseOre: "Choose Ores"
 		Config: {
+			PreviewVisible: {
+				Label: "World Creation Preview"
+				Tooltip: "Which layers should be rendered on World Creation Preview"
+			}
 			BiomeIconsVisibleOutsideBiomeUI: {
 				Label: "Biome Icons visible outside Biome UI"
 				Tooltip: "When true, you will be able to see Biome Icons any time on World Creation"

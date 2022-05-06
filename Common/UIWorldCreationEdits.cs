@@ -73,7 +73,7 @@ namespace AltLibrary.Common
             if (!c.TryGotoNext(i => i.MatchLdfld<UIWorldCreationPreview>("_EvilRandomTexture")))
                 return;
             if (!c.TryGotoNext(i => i.MatchLdfld(out corrupt)))
-                return; ;
+                return;
             if (!c.TryGotoNext(i => i.MatchLdfld(out crimson)))
                 return;
             if (!c.TryGotoPrev(i => i.MatchLdfld<UIWorldCreationPreview>("_EvilRandomTexture")))
@@ -94,6 +94,33 @@ namespace AltLibrary.Common
                     _ => orig
                 };
             });
+
+            if (!c.TryGotoNext(i => i.MatchSwitch(out _)))
+                return;
+            if (!c.TryGotoPrev(i => i.MatchLdarg(0)))
+                return;
+
+            c.Index++;
+            c.Emit(OpCodes.Ldarg, 1);
+            c.Emit(OpCodes.Ldloc, 1);
+            c.Emit(OpCodes.Ldloc, 2);
+            c.EmitDelegate<Action<UIWorldCreationPreview, SpriteBatch, Vector2, Color>>((unusedVariableLeftInForLoading, spritebatch, position, color) =>
+            {
+                foreach (AltBiome biome in AltLibrary.biomes)
+                {
+                    if (AltHallowBiomeChosenType == biome.Type - 1 && biome.IconLarge != "" && (AltLibraryConfig.Config.PreviewVisible == "Hallow only" || AltLibraryConfig.Config.PreviewVisible == "Both") && biome.BiomeType == BiomeType.Hallow)
+                    {
+                        if (ModContent.RequestIfExists(biome.IconLarge, out Asset<Texture2D> asset))
+                            spritebatch.Draw(asset.Value, position, color);
+                    }
+                    if (AltJungleBiomeChosenType == biome.Type - 1 && biome.IconLarge != "" && (AltLibraryConfig.Config.PreviewVisible == "Jungle only" || AltLibraryConfig.Config.PreviewVisible == "Both") && biome.BiomeType == BiomeType.Jungle)
+                    {
+                        if (ModContent.RequestIfExists(biome.IconLarge, out Asset<Texture2D> asset))
+                            spritebatch.Draw(asset.Value, position, color);
+                    }
+                }
+            });
+            c.Emit(OpCodes.Ldarg, 0);
         }
 
         private static void UIWorldListItem_PlayGame(On.Terraria.GameContent.UI.Elements.UIWorldListItem.orig_PlayGame orig, UIWorldListItem self, UIMouseEvent evt, UIElement listeningElement)
