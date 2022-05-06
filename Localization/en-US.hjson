@@ -103,5 +103,18 @@ Mods: {
 		DropRule: {
 		Base: "Drops in worlds with"
 		}
+		Common: {
+		DevTooltip: "Great for impersonating mod devs!"
+		}
+		ItemTooltip: {
+		FoxShirt: "{$Mods.ExampleMod.Common.DevTooltip}"
+		FoxMask: "{$Mods.ExampleMod.Common.DevTooltip}"
+		FoxPants: "{$Mods.ExampleMod.Common.DevTooltip}"
+		}
+		ItemName: {
+		FoxShirt: "Fox's Sweater"
+		FoxMask: "Fox's Face Mask"
+		FoxPants: "Fox's Slacks"
+		}
 	}
 }
