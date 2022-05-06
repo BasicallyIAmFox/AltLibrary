@@ -9,7 +9,7 @@ namespace AltLibrary.Content
         public override void SetStaticDefaults()
         {
             BiomeType = BiomeType.Jungle;
-            BiomeGrass = TileID.SandStoneSlab;
+            BiomeGrass = TileID.BubblegumBlock;
         }
 
         public override string WorldIcon => "";
