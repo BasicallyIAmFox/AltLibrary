@@ -1,4 +1,5 @@
 ﻿using AltLibrary.Common.AltBiomes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -46,6 +47,92 @@ namespace AltLibrary.Common.Systems
                 if (hellforgeIndex != -1)
                 {
                     tasks.RemoveAt(hellforgeIndex);
+                }
+            }
+            if (WorldBiomeManager.worldJungle != "")
+            {
+                int jungleIndex = tasks.FindIndex(i => i.Name.Equals("Wet Jungle"));
+                if (jungleIndex != -1)
+                {
+                    tasks[jungleIndex] = new PassLegacy("Wet Jungle", new WorldGenLegacyMethod(JunglesWetTask));
+                }
+                jungleIndex = tasks.FindIndex(i => i.Name.Equals("Jungle Temple"));
+                if (jungleIndex != -1)
+                {
+                    tasks.RemoveAt(jungleIndex);
+                }
+                jungleIndex = tasks.FindIndex(i => i.Name.Equals("Hives"));
+                if (jungleIndex != -1)
+                {
+                    tasks.RemoveAt(jungleIndex);
+                }
+                jungleIndex = tasks.FindIndex(i => i.Name.Equals("Jungle Chests"));
+                if (jungleIndex != -1)
+                {
+                    tasks.RemoveAt(jungleIndex);
+                }
+                jungleIndex = tasks.FindIndex(i => i.Name.Equals("Jungle Chests Placement"));
+                if (jungleIndex != -1)
+                {
+                    tasks.RemoveAt(jungleIndex);
+                }
+                jungleIndex = tasks.FindIndex(i => i.Name.Equals("Temple"));
+                if (jungleIndex != -1)
+                {
+                    tasks.RemoveAt(jungleIndex);
+                }
+                jungleIndex = tasks.FindIndex(i => i.Name.Equals("Jungle Trees"));
+                if (jungleIndex != -1)
+                {
+                    tasks.RemoveAt(jungleIndex);
+                }
+                jungleIndex = tasks.FindIndex(i => i.Name.Equals("Jungle Plants"));
+                if (jungleIndex != -1)
+                {
+                    tasks.RemoveAt(jungleIndex);
+                }
+                jungleIndex = tasks.FindIndex(i => i.Name.Equals("Mud Walls In Jungle"));
+                if (jungleIndex != -1)
+                {
+                    tasks.RemoveAt(jungleIndex);
+                }
+                jungleIndex = tasks.FindIndex(i => i.Name.Equals("Lohzahrd Altars"));
+                if (jungleIndex != -1)
+                {
+                    tasks.RemoveAt(jungleIndex);
+                }
+            }
+        }
+
+        private void JunglesWetTask(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Set(1f);
+            for (int num569 = 0; num569 < Main.maxTilesX; num569++)
+            {
+                int i2 = num569;
+                for (int num570 = (int)WorldGen.worldSurfaceLow; num570 < Main.worldSurface - 1.0; num570++)
+                {
+                    Tile tile49 = Main.tile[i2, num570];
+                    if (tile49.HasTile)
+                    {
+                        tile49 = Main.tile[i2, num570];
+                        bool bl = tile49.TileType == 60;
+                        foreach (AltBiome biome in AltLibrary.biomes)
+                        {
+                            if (biome.BiomeType == BiomeType.Jungle && biome.BiomeGrass.HasValue)
+                            {
+                                bl |= tile49.TileType == biome.BiomeGrass.Value;
+                            }
+                        }
+                        if (bl)
+                        {
+                            tile49 = Main.tile[i2, num570 - 1];
+                            tile49.LiquidAmount = 255;
+                            tile49 = Main.tile[i2, num570 - 2];
+                            tile49.LiquidAmount = 255;
+                        }
+                        break;
+                    }
                 }
             }
         }
