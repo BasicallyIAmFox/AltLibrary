@@ -17,17 +17,17 @@ namespace AltLibrary.Core.UIs
 {
     internal class ALUIBiomeListItem : UIPanel
     {
-        private AltBiome _achievement;
+        private readonly AltBiome _achievement;
 
-        private UIImageFramed _achievementIcon;
+        private readonly UIImageFramed _achievementIcon;
 
-        private UIImageButton button;
+        private readonly UIImageButton button;
 
-        private Asset<Texture2D> _innerPanelTopTexture;
+        private readonly Asset<Texture2D> _innerPanelTopTexture;
 
-        private Asset<Texture2D> _innerPanelBottomTexture;
+        private readonly Asset<Texture2D> _innerPanelBottomTexture;
 
-        private bool _large;
+        private readonly bool _large;
 
         public ALUIBiomeListItem(AltBiome achievement, bool largeForOtherLanguages)
         {

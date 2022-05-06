@@ -101,20 +101,20 @@ Mods: {
 			WorldStatusEvil: "{0} is {1}% evil."
 		}
 		DropRule: {
-		Base: "Drops in worlds with"
+			Base: "Drops in worlds with {0}"
 		}
 		Common: {
-		DevTooltip: "Great for impersonating mod devs!"
+			DevTooltip: "Great for impersonating mod devs!"
 		}
 		ItemTooltip: {
-		FoxShirt: "{$Mods.ExampleMod.Common.DevTooltip}"
-		FoxMask: "{$Mods.ExampleMod.Common.DevTooltip}"
-		FoxPants: "{$Mods.ExampleMod.Common.DevTooltip}"
+			FoxShirt: "{$Mods.ExampleMod.Common.DevTooltip}"
+			FoxMask: "{$Mods.ExampleMod.Common.DevTooltip}"
+			FoxPants: "{$Mods.ExampleMod.Common.DevTooltip}"
 		}
 		ItemName: {
-		FoxShirt: "Fox's Sweater"
-		FoxMask: "Fox's Face Mask"
-		FoxPants: "Fox's Slacks"
+			FoxShirt: "Fox's Sweater"
+			FoxMask: "Fox's Face Mask"
+			FoxPants: "Fox's Slacks"
 		}
 	}
 }

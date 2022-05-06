@@ -17,17 +17,17 @@ namespace AltLibrary.Core.UIs
 {
     internal class ALUIOreListItem : UIPanel
     {
-        private AltOre _achievement;
+        private readonly AltOre _achievement;
 
-        private UIImageFramed _achievementIcon;
+        private readonly UIImageFramed _achievementIcon;
 
-        private UIImageButton button;
+        private readonly UIImageButton button;
 
-        private Asset<Texture2D> _innerPanelTopTexture;
+        private readonly Asset<Texture2D> _innerPanelTopTexture;
 
-        private Asset<Texture2D> _innerPanelBottomTexture;
+        private readonly Asset<Texture2D> _innerPanelBottomTexture;
 
-        private bool _large;
+        private readonly bool _large;
 
         public ALUIOreListItem(AltOre ore, bool largeForOtherLanguages)
         {

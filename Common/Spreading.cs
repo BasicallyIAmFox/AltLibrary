@@ -20,7 +20,7 @@ namespace AltLibrary.Common
             AltBiome biomeToSpread = null;
             foreach (AltBiome biome in AltLibrary.biomes)
             {
-                if ((biome.BiomeType == BiomeType.Evil || biome.BiomeType == BiomeType.Hallow))
+                if (biome.BiomeType == BiomeType.Evil || biome.BiomeType == BiomeType.Hallow)
                 {
                     if (type == biome.BiomeGrass) isGrass = true;
                     if (biome.SpreadingTiles.Contains(type))

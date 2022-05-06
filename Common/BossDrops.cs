@@ -225,7 +225,7 @@ namespace AltLibrary.Common
             string biome;
             if (WorldGen.crimson) biome = Language.GetTextValue("Mods.AltLibrary.Biomes.CrimsonName");
             else biome = Language.GetTextValue("Mods.AltLibrary.Biomes.CorruptName");
-            return Language.GetTextValue("Mods.AltLibrary.DropRule.Base") + " " + biome;
+            return Language.GetTextValue("Mods.AltLibrary.DropRule.Base", biome);
         }
     }
 
@@ -253,7 +253,7 @@ namespace AltLibrary.Common
 
         public string GetConditionDescription()
         {
-            return $"{Language.GetTextValue("Mods.AltLibrary.DropRule.Base")} {BiomeType.DisplayName}";
+            return Language.GetTextValue("Mods.AltLibrary.DropRule.Base", BiomeType.DisplayName != null ? BiomeType.DisplayName : BiomeType.Name);
         }
     }
 
@@ -281,7 +281,7 @@ namespace AltLibrary.Common
 
         public string GetConditionDescription()
         {
-            return $"{Language.GetTextValue("Mods.AltLibrary.DropRule.Base")} {BiomeType.DisplayName}";
+            return Language.GetTextValue("Mods.AltLibrary.DropRule.Base", BiomeType.DisplayName != null ? BiomeType.DisplayName : BiomeType.Name);
         }
     }
 

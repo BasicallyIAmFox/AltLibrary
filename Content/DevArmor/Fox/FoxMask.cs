@@ -1,8 +1,7 @@
 ﻿using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
 using Terraria.GameContent.Creative;
-using Terraria.Localization;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace AltLibrary.Content.DevArmor.Fox
 {

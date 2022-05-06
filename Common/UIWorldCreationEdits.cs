@@ -797,7 +797,6 @@ namespace AltLibrary.Common
 
         private static void RemoveUntilInstruction(ILCursor c, Func<Instruction, bool> predicate)
         {
-            List<Instruction> instructions = new();
             while (!predicate.Invoke(c.Next))
             {
                 c.Remove();
