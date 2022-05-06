@@ -114,11 +114,13 @@ Mods: {
 			FoxShirt: "{$Mods.AltLibrary.Common.DevTooltip}"
 			FoxMask: "{$Mods.AtLibrary.Common.DevTooltip}"
 			FoxPants: "{$Mods.AltLibrary.Common.DevTooltip}"
+			CaceEars: "{$Mods.AltLibrary.Common.DevTooltip}"
 		}
 		ItemName: {
 			FoxShirt: "Fox's Sweater"
 			FoxMask: "Fox's Face Mask"
 			FoxPants: "Fox's Slacks"
+			CaceEars: "Cace's Cat Ears"
 		}
 		BunReason: {
 			0: "{0} was devoured by bunnies."
