@@ -2,7 +2,7 @@ displayName = Alternative Biomes Library
 author = FoxXD_, RQXY // cace
 version = 1.0.0.1
 
-hideCode = true
+hideCode = false
 hideResources = true
 includeSource = false
 
