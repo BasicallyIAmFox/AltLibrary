@@ -96,9 +96,9 @@ namespace AltLibrary.Common.AltBiomes
         public int? BiomeIce = null;
 
         /// <summary>
-        /// For Evil alts. Whether or not this biome will turn mud into dirt, as the Corruption and Crimson do. Defaults to true.
+        /// For Evil alts. Whether or not this biome will turn mud into dirt, as the Corruption and Crimson do. Defaults to false.
         /// </summary>
-        public bool MudToDirt => true;
+        public bool MudToDirt => false;
         /// <summary>
         /// For Evil and Hallow alts. The tile that this biome will convert jungle grass into. Leave null to not convert Jungle grass.
         /// For Evil alts, this should be the same as biomeGrass.
