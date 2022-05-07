@@ -1,4 +1,5 @@
-﻿using AltLibrary.Content.DevArmor.Fox;
+﻿using AltLibrary.Content.DevArmor.Cace;
+using AltLibrary.Content.DevArmor.Fox;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -18,9 +19,12 @@ namespace AltLibrary.Common
                     switch (Main.rand.Next(2))
                     {
                         case 0:
-                            player.QuickSpawnItem(source, ModContent.GetInstance<FoxMask>().Type, 1);
-                            player.QuickSpawnItem(source, ModContent.GetInstance<FoxShirt>().Type, 1);
-                            player.QuickSpawnItem(source, ModContent.GetInstance<FoxPants>().Type, 1);
+                            player.QuickSpawnItem(source, ModContent.ItemType<FoxMask>(), 1);
+                            player.QuickSpawnItem(source, ModContent.ItemType<FoxShirt>(), 1);
+                            player.QuickSpawnItem(source, ModContent.ItemType<FoxPants>(), 1);
+                            break;
+                        case 1:
+                            player.QuickSpawnItem(source, ModContent.ItemType<CaceEars>(), 1);
                             break;
                     }
                 }

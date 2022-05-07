@@ -287,6 +287,15 @@ namespace AltLibrary.Common
                 self.Append(uIScrollbar);
                 _oreList.SetScrollbar(uIScrollbar);
 
+                UIImageButton closeIcon = new(ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/ButtonClose"));
+                closeIcon.Width.Set(22, 0f);
+                closeIcon.Height.Set(22, 0f);
+                closeIcon.Top.Set(5, 0);
+                closeIcon.Left.Set(5, 0);
+                closeIcon.SetVisibility(1f, 1f);
+                closeIcon.OnClick += CloseIcon_OnClick;
+                uIElement3.Append(closeIcon);
+
                 List<AltOre> list = new();
                 list.Clear();
                 list.Add(new RandomOptionOre("RandomCopper"));
@@ -367,6 +376,15 @@ namespace AltLibrary.Common
                 self.Append(uIScrollbar);
                 _biomeList.SetScrollbar(uIScrollbar);
 
+                UIImageButton closeIcon = new(ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/ButtonClose"));
+                closeIcon.Width.Set(22, 0f);
+                closeIcon.Height.Set(22, 0f);
+                closeIcon.Top.Set(5, 0);
+                closeIcon.Left.Set(5, 0);
+                closeIcon.SetVisibility(1f, 1f);
+                closeIcon.OnClick += CloseIcon_OnClick;
+                uIElement3.Append(closeIcon);
+
                 List<AltBiome> list = new();
                 list.Clear();
                 list.Add(new RandomOptionBiome("RandomEvilBiome"));
@@ -399,6 +417,16 @@ namespace AltLibrary.Common
                 }
             }
             #endregion
+        }
+
+        private static void CloseIcon_OnClick(UIMouseEvent evt, UIElement listeningElement)
+        {
+            chosenOption = (CurrentAltOption)(-1);
+            ALGroupOptionButton<CurrentAltOption>[] evilButtons = chosingOption;
+            for (int i = 0; i < evilButtons.Length; i++)
+            {
+                evilButtons[i].SetCurrentOption((CurrentAltOption)(-1));
+            }
         }
 
         private static void _oreList_OnUpdate(UIElement affectedElement)

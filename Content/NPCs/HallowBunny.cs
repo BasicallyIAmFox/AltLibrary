@@ -36,61 +36,70 @@ namespace AltLibrary.Content.NPCs
         private bool firstTick = false;
         public override void AI()
         {
-            if (!firstTick)
+            if (AltLibrary.HallowBunnyUnlocked)
             {
-                List<string> pairs = new();
-                pairs.Add("Charlie");
-                pairs.Add("Freddy");
-                pairs.Add("Kai");
-                pairs.Add("Max");
-                pairs.Add("Mickey");
-                pairs.Add("Mike");
-                pairs.Add("Jack");
-                pairs.Add("Cleo");
-                pairs.Add("Juni");
-                pairs.Add("Nessie");
-                pairs.Add("Betty");
-                pairs.Add("Mary");
-                pairs.Add("Linda");
-                pairs.Add("Tootsie");
-                pairs.Add("Ensie");
-                pairs.Add("Hannah");
-                NPC.GivenName = pairs[Main.rand.Next(pairs.Count)];
-                firstTick = true;
-            }
-
-            for (int i = 0; i < Main.maxPlayers; i++)
-            {
-                Player player = Main.player[i];
-                if (player.active && !player.DeadOrGhost && player.Distance(NPC.position) <= 500f && Main.time % Main.rand.Next(30, 150) == Main.rand.Next(0, 20) && Collision.CanHit(player, NPC))
+                if (!firstTick)
                 {
-                    List<int> pairs = new();
-                    pairs.Add(0);
-                    pairs.Add(1);
-                    pairs.Add(2);
-                    pairs.Add(3);
-                    pairs.Add(4);
-                    if (player.name == "FoxXD_") pairs.Add(5);
+                    List<string> pairs = new();
+                    pairs.Add("Charlie");
+                    pairs.Add("Freddy");
+                    pairs.Add("Kai");
+                    pairs.Add("Max");
+                    pairs.Add("Mickey");
+                    pairs.Add("Mike");
+                    pairs.Add("Jack");
+                    pairs.Add("Cleo");
+                    pairs.Add("Juni");
+                    pairs.Add("Nessie");
+                    pairs.Add("Betty");
+                    pairs.Add("Mary");
+                    pairs.Add("Linda");
+                    pairs.Add("Tootsie");
+                    pairs.Add("Ensie");
+                    pairs.Add("Hannah");
+                    NPC.GivenName = pairs[Main.rand.Next(pairs.Count)];
+                    firstTick = true;
+                }
 
-                    string reason = Language.GetTextValue($"Mods.AltLibrary.BunReason.{pairs[Main.rand.Next(pairs.Count)]}", player.name);
-                    player.Hurt(PlayerDeathReason.ByCustomReason(reason), Main.tenthAnniversaryWorld ? 2 : 100 + Main.rand.Next(0, 100), -1);
-                    player.immuneTime = 2;
+                for (int i = 0; i < Main.maxPlayers; i++)
+                {
+                    Player player = Main.player[i];
+                    if (player.active && !player.DeadOrGhost && player.Distance(NPC.position) <= 500f && Main.time % Main.rand.Next(30, 150) == Main.rand.Next(0, 20) && Collision.CanHit(player, NPC))
+                    {
+                        List<int> pairs = new();
+                        pairs.Add(0);
+                        pairs.Add(1);
+                        pairs.Add(2);
+                        pairs.Add(3);
+                        pairs.Add(4);
+                        if (player.name == "FoxXD_") pairs.Add(5);
+
+                        string reason = Language.GetTextValue($"Mods.AltLibrary.BunReason.{pairs[Main.rand.Next(pairs.Count)]}", player.name);
+                        player.Hurt(PlayerDeathReason.ByCustomReason(reason), Main.tenthAnniversaryWorld ? 2 : 100 + Main.rand.Next(0, 100), -1);
+                        player.immuneTime = 2;
+                    }
                 }
             }
         }
 
         public override void ModifyHitByItem(Player player, Item item, ref int damage, ref float knockback, ref bool crit)
         {
-            knockback = 0f;
-            damage = 1;
-            crit = false;
+            if (AltLibrary.HallowBunnyUnlocked)
+            {
+                knockback = 0f;
+                damage = 1;
+                crit = false;
+            }
         }
 
         public override void ModifyHitByProjectile(Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {
-            knockback = 0f;
-            damage = 1;
-            crit = false;
+            if (AltLibrary.HallowBunnyUnlocked)
+            {
+                knockback = 0f;
+                damage = 1;
+                crit = false;
+            }
         }
 
         public override bool? CanBeHitByItem(Player player, Item item)
