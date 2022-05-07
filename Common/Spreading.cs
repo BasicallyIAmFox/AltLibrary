@@ -34,6 +34,7 @@ namespace AltLibrary.Common
                 {
                     if (type == biome.BiomeGrass)
                     {
+                        isGrass = true;
                         isOreGrowingTile = true;
                         biomeToSpread = biome;
                         break;
