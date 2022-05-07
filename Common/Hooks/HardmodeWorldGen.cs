@@ -134,7 +134,8 @@ namespace AltLibrary.Common.Hooks
             });
 
             #region Hallow
-            if (!c.TryGotoNext(i => i.MatchLdcI4(70))) { AltLibrary.Instance.Logger.Info("Error here! $1"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(70)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -145,7 +146,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(219))) { AltLibrary.Instance.Logger.Info("Error here! $2"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(219)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -156,7 +158,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(222))) { AltLibrary.Instance.Logger.Info("Error here! $3"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(222)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -167,7 +170,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(28))) { AltLibrary.Instance.Logger.Info("Error here! $4"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(28)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -178,7 +182,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(117))) { AltLibrary.Instance.Logger.Info("Error here! $5"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(117)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -189,7 +194,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(402))) { AltLibrary.Instance.Logger.Info("Error here! $6"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(402)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -200,7 +206,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(109))) { AltLibrary.Instance.Logger.Info("Error here! $7"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(109)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -211,7 +218,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(117))) { AltLibrary.Instance.Logger.Info("Error here! $8"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(117)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -222,7 +230,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(116))) { AltLibrary.Instance.Logger.Info("Error here! $9"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(116)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -233,7 +242,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(23))) { AltLibrary.Instance.Logger.Info("Error here! $10"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(23)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -244,7 +254,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(199))) { AltLibrary.Instance.Logger.Info("Error here! $11"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(199)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -255,7 +266,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(109))) { AltLibrary.Instance.Logger.Info("Error here! $12"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(109)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -266,7 +278,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(25))) { AltLibrary.Instance.Logger.Info("Error here! $13"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(25)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -277,7 +290,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(203))) { AltLibrary.Instance.Logger.Info("Error here! $14"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(203)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -288,7 +302,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(117))) { AltLibrary.Instance.Logger.Info("Error here! $15"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(117)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -299,7 +314,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(112))) { AltLibrary.Instance.Logger.Info("Error here! $16"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(112)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -310,7 +326,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(234))) { AltLibrary.Instance.Logger.Info("Error here! $17"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(234)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -321,7 +338,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(116))) { AltLibrary.Instance.Logger.Info("Error here! $18"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(116)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -332,7 +350,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(163))) { AltLibrary.Instance.Logger.Info("Error here! $19"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(163)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -343,7 +362,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(200))) { AltLibrary.Instance.Logger.Info("Error here! $20"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(200)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -354,7 +374,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(164))) { AltLibrary.Instance.Logger.Info("Error here! $21"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(164)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -365,7 +386,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(403))) { AltLibrary.Instance.Logger.Info("Error here! $22"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(403)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -376,7 +398,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(402))) { AltLibrary.Instance.Logger.Info("Error here! $23"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(402)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -390,7 +413,8 @@ namespace AltLibrary.Common.Hooks
             #endregion
 
             #region Crimson
-            if (!c.TryGotoNext(i => i.MatchLdcI4(109))) { AltLibrary.Instance.Logger.Info("Error here! $24"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(109)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -401,7 +425,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(117))) { AltLibrary.Instance.Logger.Info("Error here! $25"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(117)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -412,7 +437,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(116))) { AltLibrary.Instance.Logger.Info("Error here! $26"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(116)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -423,7 +449,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(164))) { AltLibrary.Instance.Logger.Info("Error here! $27"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(164)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -437,7 +464,8 @@ namespace AltLibrary.Common.Hooks
             #endregion
 
             #region Corruption (and custom)
-            if (!c.TryGotoNext(i => i.MatchLdcI4(69))) { AltLibrary.Instance.Logger.Info("Error here! $28"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(69)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -448,7 +476,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(217))) { AltLibrary.Instance.Logger.Info("Error here! $29"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(217)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -459,7 +488,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(220))) { AltLibrary.Instance.Logger.Info("Error here! $30"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(220)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -470,7 +500,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(25))) { AltLibrary.Instance.Logger.Info("Error here! $31"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(25)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -481,7 +512,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(398))) { AltLibrary.Instance.Logger.Info("Error here! $32"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(398)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -492,7 +524,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(23))) { AltLibrary.Instance.Logger.Info("Error here! $33"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(23)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -503,7 +536,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(25))) { AltLibrary.Instance.Logger.Info("Error here! $34"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(25)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -514,7 +548,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(112))) { AltLibrary.Instance.Logger.Info("Error here! $35"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(112)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -525,7 +560,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(109))) { AltLibrary.Instance.Logger.Info("Error here! $36"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(109)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -536,7 +572,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(23))) { AltLibrary.Instance.Logger.Info("Error here! $37"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(23)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -547,7 +584,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(117))) { AltLibrary.Instance.Logger.Info("Error here! $38"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(117)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -558,7 +596,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(25))) { AltLibrary.Instance.Logger.Info("Error here! $39"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(25)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -569,7 +608,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(116))) { AltLibrary.Instance.Logger.Info("Error here! $40"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(116)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -580,7 +620,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(112))) { AltLibrary.Instance.Logger.Info("Error here! $41"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(112)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -591,7 +632,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(164))) { AltLibrary.Instance.Logger.Info("Error here! $42"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(164)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -602,7 +644,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(163))) { AltLibrary.Instance.Logger.Info("Error here! $43"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(163)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -613,7 +656,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(400))) { AltLibrary.Instance.Logger.Info("Error here! $44"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(400)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -624,7 +668,8 @@ namespace AltLibrary.Common.Hooks
                 }
                 return value;
             });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(398))) { AltLibrary.Instance.Logger.Info("Error here! $45"); return; }
+            if (!c.TryGotoNext(i => i.MatchLdcI4(398)))
+                return;
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
