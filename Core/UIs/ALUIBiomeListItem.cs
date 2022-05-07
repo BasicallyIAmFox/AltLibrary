@@ -65,6 +65,7 @@ namespace AltLibrary.Core.UIs
             _achievementIcon.Height.Set(0, 1f);
             button.OnClick += _achievementIcon_OnClick;
             button.SetVisibility(0f, 0f);
+            OnClick += _achievementIcon_OnClick;
             _achievementIcon.Append(button);
             _innerPanelTopTexture = Main.Assets.Request<Texture2D>("Images/UI/Achievement_InnerPanelTop");
             if (_large)
@@ -85,7 +86,7 @@ namespace AltLibrary.Core.UIs
                 return;
             }
 
-            if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff == 0)
+            if (_achievement.SpecialValueForWorldUIDoNotTouchElseYouCanBreakStuff == 0)
             {
                 string hallow = "AltLibrary/Assets/Menu/ButtonHallow";
                 string hell = "AltLibrary/Assets/Menu/ButtonHell";
@@ -100,23 +101,23 @@ namespace AltLibrary.Core.UIs
                 return;
             }
 
-            if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff == -3)
+            if (_achievement.SpecialValueForWorldUIDoNotTouchElseYouCanBreakStuff == -3)
             {
                 (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>("Terraria/Images/UI/Bestiary/Icon_Tags_Shadow"), new(30, 30, 30, 30));
             }
-            if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff == -1)
+            if (_achievement.SpecialValueForWorldUIDoNotTouchElseYouCanBreakStuff == -1)
             {
                 (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>("Terraria/Images/UI/Bestiary/Icon_Tags_Shadow"), new(210, 0, 30, 30));
             }
-            if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff == -2)
+            if (_achievement.SpecialValueForWorldUIDoNotTouchElseYouCanBreakStuff == -2)
             {
                 (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>("Terraria/Images/UI/Bestiary/Icon_Tags_Shadow"), new(360, 0, 30, 30));
             }
-            if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff == -5)
+            if (_achievement.SpecialValueForWorldUIDoNotTouchElseYouCanBreakStuff == -5)
             {
                 (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>("Terraria/Images/UI/Bestiary/Icon_Tags_Shadow"), new(30, 60, 30, 30));
             }
-            if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff == -4)
+            if (_achievement.SpecialValueForWorldUIDoNotTouchElseYouCanBreakStuff == -4)
             {
                 (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>("Terraria/Images/UI/Bestiary/Icon_Tags_Shadow"), new(180, 30, 30, 30));
             }
@@ -169,14 +170,14 @@ namespace AltLibrary.Core.UIs
 
             if (_achievement.BiomeType == BiomeType.Evil)
             {
-                if (_achievement.isForCrimsonOrCorruptWorldUIFix.HasValue && _achievement.isForCrimsonOrCorruptWorldUIFix.Value.Equals(false))
+                if (_achievement.IsForCrimsonOrCorruptWorldUIFix.HasValue && _achievement.IsForCrimsonOrCorruptWorldUIFix.Value.Equals(false))
                 {
                     UIWorldCreationEdits.isCrimson = false;
                     UIWorldCreationEdits.AltEvilBiomeChosenType = -333;
                     _achievement.Type = -333;
                     return;
                 }
-                if (_achievement.isForCrimsonOrCorruptWorldUIFix.HasValue && _achievement.isForCrimsonOrCorruptWorldUIFix.Value.Equals(true))
+                if (_achievement.IsForCrimsonOrCorruptWorldUIFix.HasValue && _achievement.IsForCrimsonOrCorruptWorldUIFix.Value.Equals(true))
                 {
                     UIWorldCreationEdits.isCrimson = true;
                     UIWorldCreationEdits.AltEvilBiomeChosenType = -666;
@@ -188,17 +189,17 @@ namespace AltLibrary.Core.UIs
             }
             if (_achievement.BiomeType == BiomeType.Hallow)
             {
-                if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff < 0) _achievement.Type = -3;
+                if (_achievement.SpecialValueForWorldUIDoNotTouchElseYouCanBreakStuff < 0) _achievement.Type = -3;
                 UIWorldCreationEdits.AltHallowBiomeChosenType = _achievement.Type > 0 ? _achievement.Type - 1 : _achievement.Type;
             }
             if (_achievement.BiomeType == BiomeType.Hell)
             {
-                if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff < 0) _achievement.Type = -5;
+                if (_achievement.SpecialValueForWorldUIDoNotTouchElseYouCanBreakStuff < 0) _achievement.Type = -5;
                 UIWorldCreationEdits.AltHellBiomeChosenType = _achievement.Type > 0 ? _achievement.Type - 1 : _achievement.Type;
             }
             if (_achievement.BiomeType == BiomeType.Jungle)
             {
-                if (_achievement.specialValueForWorldUIDoNotTouchElseYouCanBreakStuff < 0) _achievement.Type = -4;
+                if (_achievement.SpecialValueForWorldUIDoNotTouchElseYouCanBreakStuff < 0) _achievement.Type = -4;
                 UIWorldCreationEdits.AltJungleBiomeChosenType = _achievement.Type > 0 ? _achievement.Type - 1 : _achievement.Type;
             }
         }
@@ -215,9 +216,27 @@ namespace AltLibrary.Core.UIs
             float num7 = innerDimensions.Width - dimensions.Width + 1f - num9 * 2;
             Vector2 baseScale5 = new(0.85f);
             Vector2 baseScale4 = new(0.92f);
-            string descValue3 = $"Mods.{(_achievement.Mod != null ? _achievement.Mod.Name : "AltLibrary")}.Biomes.{_achievement.Name}Desc";
-            string descValue2 = LanguageManager.Instance.Exists(descValue3) ? Language.GetTextValue(descValue3) : "";
-            string descValue = _achievement.Description != null ? _achievement.Description.Value : descValue2;
+            string descValue = _achievement.Description != null ? _achievement.Description.GetTranslation(Language.ActiveCulture) : "";
+            if (descValue == null && _achievement.Description != null)
+            {
+                descValue = "";
+            }
+            if (_achievement.Mod == null)
+            {
+                switch (_achievement.Name)
+                {
+                    case "CorruptBiome": descValue = Language.GetTextValue($"Mods.AltLibrary.BiomeDescription.{_achievement.Name}"); break;
+                    case "CrimsonBiome": descValue = Language.GetTextValue($"Mods.AltLibrary.BiomeDescription.{_achievement.Name}"); break;
+                    case "HallowBiome": descValue = Language.GetTextValue($"Mods.AltLibrary.BiomeDescription.{_achievement.Name}"); break;
+                    case "JungleBiome": descValue = Language.GetTextValue($"Mods.AltLibrary.BiomeDescription.{_achievement.Name}"); break;
+                    case "UnderworldBiome": descValue = Language.GetTextValue($"Mods.AltLibrary.BiomeDescription.{_achievement.Name}"); break;
+                    case "RandomEvilBiome": descValue = Language.GetTextValue($"Mods.AltLibrary.BiomeDescription.{_achievement.Name}"); break;
+                    case "RandomHallowBiome": descValue = Language.GetTextValue($"Mods.AltLibrary.BiomeDescription.{_achievement.Name}"); break;
+                    case "RandomJungleBiome": descValue = Language.GetTextValue($"Mods.AltLibrary.BiomeDescription.{_achievement.Name}"); break;
+                    case "RandomUnderworldBiome": descValue = Language.GetTextValue($"Mods.AltLibrary.BiomeDescription.{_achievement.Name}"); break;
+                    default: break;
+                }
+            }
             string text3 = FontAssets.ItemStack.Value.CreateWrappedText(descValue, (num7 - 20f) * (1f / baseScale4.X), Language.ActiveCulture.CultureInfo);
             Vector2 stringSize3 = ChatManager.GetStringSize(FontAssets.ItemStack.Value, text3, baseScale4, num7);
             if (!this._large)
@@ -240,9 +259,23 @@ namespace AltLibrary.Core.UIs
             vector.X += 4f;
             vector.X += 4f;
             vector.X += 17f;
-            string displayNameValue3 = $"Mods.{(_achievement.Mod != null ? _achievement.Mod.Name : "AltLibrary")}.Biomes.{_achievement.Name}Name";
-            string displayNameValue2 = LanguageManager.Instance.Exists(displayNameValue3) ? Language.GetTextValue(displayNameValue3) : _achievement.Name;
-            string displayNameValue = _achievement.DisplayName != null ? _achievement.DisplayName.Value : displayNameValue2;
+            string displayNameValue = _achievement.DisplayName != null ? _achievement.DisplayName.GetTranslation(Language.ActiveCulture) : _achievement.Name;
+            if (_achievement.Mod == null)
+            {
+                switch (_achievement.Name)
+                {
+                    case "CorruptBiome": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.BiomeName.{_achievement.Name}"); break;
+                    case "CrimsonBiome": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.BiomeName.{_achievement.Name}"); break;
+                    case "HallowBiome": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.BiomeName.{_achievement.Name}"); break;
+                    case "JungleBiome": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.BiomeName.{_achievement.Name}"); break;
+                    case "UnderworldBiome": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.BiomeName.{_achievement.Name}"); break;
+                    case "RandomEvilBiome": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.BiomeName.{_achievement.Name}"); break;
+                    case "RandomHallowBiome": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.BiomeName.{_achievement.Name}"); break;
+                    case "RandomJungleBiome": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.BiomeName.{_achievement.Name}"); break;
+                    case "RandomUnderworldBiome": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.BiomeName.{_achievement.Name}"); break;
+                    default: break;
+                }
+            }
             ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, displayNameValue, vector, value7, 0f, Vector2.Zero, baseScale5, num7, 2f);
             vector.X -= 17f;
             Vector2 position = value9 + Vector2.UnitY * 25f + value8;

@@ -62,6 +62,7 @@ namespace AltLibrary.Core.UIs
             button.OnClick += _achievementIcon_OnClick;
             button.SetVisibility(0f, 0f);
             _achievementIcon.Append(button);
+            OnClick += _achievementIcon_OnClick;
             _innerPanelTopTexture = Main.Assets.Request<Texture2D>("Images/UI/Achievement_InnerPanelTop");
             if (_large)
             {
@@ -253,9 +254,25 @@ namespace AltLibrary.Core.UIs
             float num7 = innerDimensions.Width - dimensions.Width + 1f - num9 * 2;
             Vector2 baseScale5 = new(0.85f);
             Vector2 baseScale4 = new(0.92f);
-            string descValue3 = $"Mods.{(_achievement.Mod != null ? _achievement.Mod.Name : "AltLibrary")}.Ores.{_achievement.Name}Desc";
-            string descValue2 = LanguageManager.Instance.Exists(descValue3) ? Language.GetTextValue(descValue3) : "";
-            string descValue = _achievement.Description != null ? descValue2 : descValue2;
+            string descValue = _achievement.Description != null ? _achievement.Description.GetTranslation(Language.ActiveCulture) : "";
+            if (descValue == null && _achievement.Description != null)
+            {
+                descValue = "";
+            }
+            if (_achievement.Mod == null)
+            {
+                switch (_achievement.Name)
+                {
+                    case "RandomCopper": descValue = Language.GetTextValue($"Mods.AltLibrary.OreDescription.{_achievement.Name}"); break;
+                    case "RandomIron": descValue = Language.GetTextValue($"Mods.AltLibrary.OreDescription.{_achievement.Name}"); break;
+                    case "RandomSilver": descValue = Language.GetTextValue($"Mods.AltLibrary.OreDescription.{_achievement.Name}"); break;
+                    case "RandomGold": descValue = Language.GetTextValue($"Mods.AltLibrary.OreDescription.{_achievement.Name}"); break;
+                    case "RandomCobalt": descValue = Language.GetTextValue($"Mods.AltLibrary.OreDescription.{_achievement.Name}"); break;
+                    case "RandomMythril": descValue = Language.GetTextValue($"Mods.AltLibrary.OreDescription.{_achievement.Name}"); break;
+                    case "RandomAdamantite": descValue = Language.GetTextValue($"Mods.AltLibrary.OreDescription.{_achievement.Name}"); break;
+                    default: break;
+                }
+            }
             string text3 = FontAssets.ItemStack.Value.CreateWrappedText(descValue, (num7 - 20f) * (1f / baseScale4.X), Language.ActiveCulture.CultureInfo);
             Vector2 stringSize3 = ChatManager.GetStringSize(FontAssets.ItemStack.Value, text3, baseScale4, num7);
             if (!this._large)
@@ -278,9 +295,35 @@ namespace AltLibrary.Core.UIs
             vector.X += 4f;
             vector.X += 4f;
             vector.X += 17f;
-            string displayNameValue3 = $"Mods.{(_achievement.Mod != null ? _achievement.Mod.Name : "AltLibrary")}.Ores.{_achievement.Name}Name";
-            string displayNameValue2 = LanguageManager.Instance.Exists(displayNameValue3) ? Language.GetTextValue(displayNameValue3) : _achievement.Name;
-            string displayNameValue = _achievement.DisplayName != null ? _achievement.DisplayName.Value : displayNameValue2;
+            string displayNameValue = _achievement.DisplayName != null ? _achievement.DisplayName.GetTranslation(Language.ActiveCulture) : _achievement.Name;
+            if (_achievement.Mod == null)
+            {
+                switch (_achievement.Name)
+                {
+                    case "Copper": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
+                    case "Tin": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
+                    case "Iron": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
+                    case "Lead": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
+                    case "Silver": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
+                    case "Tungsten": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
+                    case "Gold": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
+                    case "Platinum": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
+                    case "Cobalt": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
+                    case "Palladium": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
+                    case "Mythril": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
+                    case "Orichalcum": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
+                    case "Adamantite": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
+                    case "Titanium": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
+                    case "RandomCopper": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
+                    case "RandomIron": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
+                    case "RandomSilver": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
+                    case "RandomGold": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
+                    case "RandomCobalt": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
+                    case "RandomMythril": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
+                    case "RandomAdamantite": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
+                    default: break;
+                }
+            }
             ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, displayNameValue, vector, value7, 0f, Vector2.Zero, baseScale5, num7, 2f);
             vector.X -= 17f;
             Vector2 position = value9 + Vector2.UnitY * 25f + value8;

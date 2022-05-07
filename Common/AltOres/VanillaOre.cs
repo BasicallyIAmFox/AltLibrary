@@ -1,21 +1,29 @@
-﻿using Terraria.Localization;
-using Terraria.ModLoader;
+﻿using Terraria.ModLoader;
 
 namespace AltLibrary.Common.AltOres
 {
     internal sealed class VanillaOre : AltOre
     {
         public override string Texture => oreTexture;
-        public override LocalizedText DisplayName => Language.GetText($"Mods.AltLibrary.Ores.{oreTexture}Name");
-        public override LocalizedText Description => Language.GetText($"Mods.AltLibrary.Ores.{oreTexture}Desc");
+        public override string Name => oreTexture;
 
         internal readonly string oreTexture;
-        internal VanillaOre(string texture, int type, int ore, int bar)
+        private readonly string name;
+        private readonly string desc;
+        internal VanillaOre(string texture, string name, int type, int ore, int bar, string desc = "")
         {
             oreTexture = texture;
             Type = type;
+            this.name = name;
             this.ore = ore;
             this.bar = bar;
+            this.desc = desc;
+        }
+
+        public override void SetStaticDefaults()
+        {
+            DisplayName.SetDefault(name);
+            Description.SetDefault(desc);
         }
 
         public override bool IsLoadingEnabled(Mod mod)

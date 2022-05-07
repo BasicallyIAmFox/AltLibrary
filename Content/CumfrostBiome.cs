@@ -11,6 +11,8 @@ namespace AltLibrary.Content
         {
             BiomeType = BiomeType.Hell;
             BiomeStone = TileID.Mythril;
+            DisplayName.SetDefault("Cumfrosty");
+            Description.SetDefault("lion loves this biome, that's truth");
         }
     }
 }

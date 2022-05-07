@@ -305,26 +305,26 @@ namespace AltLibrary.Common
                 list.Add(new RandomOptionOre("RandomCobalt"));
                 list.Add(new RandomOptionOre("RandomMythril"));
                 list.Add(new RandomOptionOre("RandomAdamantite"));
-                list.Add(new VanillaOre("Copper", -1, TileID.Copper, ItemID.CopperBar));
-                list.Add(new VanillaOre("Tin", -2, TileID.Tin, ItemID.TinBar));
+                list.Add(new VanillaOre("Copper", "Copper", -1, TileID.Copper, ItemID.CopperBar));
+                list.Add(new VanillaOre("Tin", "Tin", -2, TileID.Tin, ItemID.TinBar));
                 list.AddRange(AltLibrary.ores.Where(x => x.OreType == OreType.Copper && x.Selectable));
-                list.Add(new VanillaOre("Iron", -3, TileID.Iron, ItemID.IronBar));
-                list.Add(new VanillaOre("Lead", -4, TileID.Lead, ItemID.LeadBar));
+                list.Add(new VanillaOre("Iron", "Iron", -3, TileID.Iron, ItemID.IronBar));
+                list.Add(new VanillaOre("Lead", "Lead", -4, TileID.Lead, ItemID.LeadBar));
                 list.AddRange(AltLibrary.ores.Where(x => x.OreType == OreType.Iron && x.Selectable));
-                list.Add(new VanillaOre("Silver", -5, TileID.Silver, ItemID.SilverBar));
-                list.Add(new VanillaOre("Tungsten", -6, TileID.Tungsten, ItemID.TungstenBar));
+                list.Add(new VanillaOre("Silver", "Silver", -5, TileID.Silver, ItemID.SilverBar));
+                list.Add(new VanillaOre("Tungsten", "Tungsten", -6, TileID.Tungsten, ItemID.TungstenBar));
                 list.AddRange(AltLibrary.ores.Where(x => x.OreType == OreType.Silver && x.Selectable));
-                list.Add(new VanillaOre("Gold", -7, TileID.Gold, ItemID.GoldBar));
-                list.Add(new VanillaOre("Platinum", -8, TileID.Platinum, ItemID.PlatinumBar));
+                list.Add(new VanillaOre("Gold", "Gold", -7, TileID.Gold, ItemID.GoldBar));
+                list.Add(new VanillaOre("Platinum", "Platinum", -8, TileID.Platinum, ItemID.PlatinumBar));
                 list.AddRange(AltLibrary.ores.Where(x => x.OreType == OreType.Gold && x.Selectable));
-                list.Add(new VanillaOre("Cobalt", -9, TileID.Cobalt, ItemID.CobaltBar));
-                list.Add(new VanillaOre("Palladium", -10, TileID.Palladium, ItemID.PalladiumBar));
+                list.Add(new VanillaOre("Cobalt", "Cobalt", -9, TileID.Cobalt, ItemID.CobaltBar));
+                list.Add(new VanillaOre("Palladium", "Palladium", -10, TileID.Palladium, ItemID.PalladiumBar));
                 list.AddRange(AltLibrary.ores.Where(x => x.OreType == OreType.Cobalt && x.Selectable));
-                list.Add(new VanillaOre("Mythril", -11, TileID.Mythril, ItemID.MythrilBar));
-                list.Add(new VanillaOre("Orichalcum", -12, TileID.Orichalcum, ItemID.OrichalcumBar));
+                list.Add(new VanillaOre("Mythril", "Mythril", -11, TileID.Mythril, ItemID.MythrilBar));
+                list.Add(new VanillaOre("Orichalcum", "Orichalcum", -12, TileID.Orichalcum, ItemID.OrichalcumBar));
                 list.AddRange(AltLibrary.ores.Where(x => x.OreType == OreType.Mythril && x.Selectable));
-                list.Add(new VanillaOre("Adamantite", -13, TileID.Adamantite, ItemID.AdamantiteBar));
-                list.Add(new VanillaOre("Titanium", -14, TileID.Titanium, ItemID.TitaniumBar));
+                list.Add(new VanillaOre("Adamantite", "Adamantite", -13, TileID.Adamantite, ItemID.AdamantiteBar));
+                list.Add(new VanillaOre("Titanium", "Titanium", -14, TileID.Titanium, ItemID.TitaniumBar));
                 list.AddRange(AltLibrary.ores.Where(x => x.OreType == OreType.Adamantite && x.Selectable));
                 foreach (AltOre biome in list)
                 {
@@ -400,14 +400,14 @@ namespace AltLibrary.Common
                 {
                     list.Add(new RandomOptionBiome("RandomUnderworldBiome"));
                 }
-                list.Add(new VanillaBiome("CorruptBiome", BiomeType.Evil, -333, Color.MediumPurple, Language.GetText("Mods.AltLibrary.Biomes.CorruptName"), Language.GetText("Mods.AltLibrary.Biomes.CorruptDesc"), false));
-                list.Add(new VanillaBiome("CrimsonBiome", BiomeType.Evil, -666, Color.IndianRed, Language.GetText("Mods.AltLibrary.Biomes.CrimsonName"), Language.GetText("Mods.AltLibrary.Biomes.CrimsonDesc"), true));
+                list.Add(new VanillaBiome("CorruptBiome", BiomeType.Evil, -333, Color.MediumPurple, false));
+                list.Add(new VanillaBiome("CrimsonBiome", BiomeType.Evil, -666, Color.IndianRed, true));
                 list.AddRange(AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Evil && x.Selectable));
-                list.Add(new VanillaBiome("HallowBiome", BiomeType.Hallow, -3, Color.HotPink, Language.GetText("Mods.AltLibrary.Biomes.HallowName"), Language.GetText("Mods.AltLibrary.Biomes.HallowDesc")));
+                list.Add(new VanillaBiome("HallowBiome", BiomeType.Hallow, -3, Color.HotPink));
                 list.AddRange(AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Hallow && x.Selectable));
-                list.Add(new VanillaBiome("JungleBiome", BiomeType.Jungle, -4, Color.SpringGreen, Language.GetText("Mods.AltLibrary.Biomes.JungleName"), Language.GetText("Mods.AltLibrary.Biomes.JungleDesc")));
+                list.Add(new VanillaBiome("JungleBiome", BiomeType.Jungle, -4, Color.SpringGreen));
                 list.AddRange(AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Jungle && x.Selectable));
-                list.Add(new VanillaBiome("UnderworldBiome", BiomeType.Hell, -5, Color.OrangeRed, Language.GetText("Mods.AltLibrary.Biomes.UnderworldName"), Language.GetText("Mods.AltLibrary.Biomes.UnderworldDesc")));
+                list.Add(new VanillaBiome("UnderworldBiome", BiomeType.Hell, -5, Color.OrangeRed));
                 list.AddRange(AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Hell && x.Selectable));
                 foreach (AltBiome biome in list)
                 {

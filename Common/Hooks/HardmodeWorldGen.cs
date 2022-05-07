@@ -1,9 +1,11 @@
 ﻿using AltLibrary.Common.AltBiomes;
 using AltLibrary.Common.Systems;
+using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Hooks
@@ -74,6 +76,62 @@ namespace AltLibrary.Common.Hooks
         private static void WorldGen_GERunner(ILContext il)
         {
             ILCursor c = new(il);
+            int good = 0;
+            if (!c.TryGotoNext(i => i.MatchBrfalse(out _)))
+                return;
+            if (!c.TryGotoNext(i => i.MatchBrfalse(out _)))
+                return;
+            if (!c.TryGotoPrev(i => i.MatchLdarg(out good)))
+                return;
+            if (!c.TryGotoPrev(i => i.MatchBgeUn(out _)))
+                return;
+
+            c.Index++;
+            c.Emit(OpCodes.Ldarg, good);
+            c.Emit(OpCodes.Ldloc, 15);
+            c.Emit(OpCodes.Ldloc, 16);
+            c.EmitDelegate<Action<bool, int, int>>((good, m, l) =>
+            {
+                if (!good)
+                {
+                    Tile tile = Main.tile[m, l];
+                    if (WorldBiomeManager.worldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeDirt.HasValue && tile.TileType == TileID.Dirt)
+                    {
+                        tile = Main.tile[m, l];
+                        tile.TileType = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeDirt.Value;
+                        WorldGen.SquareTileFrame(m, l, true);
+                    }
+                    if (WorldBiomeManager.worldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeSnow.HasValue && tile.TileType == TileID.SnowBlock)
+                    {
+                        tile = Main.tile[m, l];
+                        tile.TileType = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeSnow.Value;
+                        WorldGen.SquareTileFrame(m, l, true);
+                    }
+                }
+            });
+
+            if (!c.TryGotoNext(i => i.MatchBrfalse(out _)))
+                return;
+
+            c.Index++;
+            c.Emit(OpCodes.Ldloc, 15);
+            c.Emit(OpCodes.Ldloc, 16);
+            c.EmitDelegate<Action<int, int>>((m, l) =>
+            {
+                Tile tile = Main.tile[m, l];
+                if (WorldBiomeManager.worldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeDirt.HasValue && tile.TileType == TileID.Dirt)
+                {
+                    tile = Main.tile[m, l];
+                    tile.TileType = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeDirt.Value;
+                    WorldGen.SquareTileFrame(m, l, true);
+                }
+                if (WorldBiomeManager.worldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeSnow.HasValue && tile.TileType == TileID.SnowBlock)
+                {
+                    tile = Main.tile[m, l];
+                    tile.TileType = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeSnow.Value;
+                    WorldGen.SquareTileFrame(m, l, true);
+                }
+            });
 
             #region Hallow
             if (!c.TryGotoNext(i => i.MatchLdcI4(70))) { AltLibrary.Instance.Logger.Info("Error here! $1"); return; }

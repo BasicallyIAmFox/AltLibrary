@@ -21,6 +21,8 @@ namespace AltLibrary.Content
             BiomeMowedGrass = TileID.Platinum;
             MimicKeyType = ItemID.GoldCrown;
             MimicType = NPCID.GoldenSlime;
+            BiomeDirt = TileID.AdamantiteBeam;
+            BiomeSnow = TileID.Asphalt;
         }
         public override List<int> SpreadingTiles => new List<int> { TileID.GoldBrick, TileID.Gold };
 

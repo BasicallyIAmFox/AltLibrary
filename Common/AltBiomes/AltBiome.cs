@@ -1,7 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Text.RegularExpressions;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
@@ -9,8 +12,8 @@ namespace AltLibrary.Common.AltBiomes
 {
     public abstract class AltBiome : ModType
     {
-        internal int specialValueForWorldUIDoNotTouchElseYouCanBreakStuff { get; set; }
-        internal bool? isForCrimsonOrCorruptWorldUIFix { get; set; }
+        internal int SpecialValueForWorldUIDoNotTouchElseYouCanBreakStuff { get; set; }
+        internal bool? IsForCrimsonOrCorruptWorldUIFix { get; set; }
 
         public BiomeType BiomeType { get; set; }
         public ModBiome Biome { get; private set; }
@@ -19,18 +22,18 @@ namespace AltLibrary.Common.AltBiomes
         /// <summary>
         /// The name of this biome that will display on the selection screen.
         /// </summary>
-        public virtual LocalizedText DisplayName
+        public virtual ModTranslation DisplayName
         {
             get;
-            private set;
+            internal set;
         }
         /// <summary>
         /// The description for this biome that will appear on the biome selection screen.
         /// </summary>
-        public virtual LocalizedText Description
+        public virtual ModTranslation Description
         {
             get;
-            private set;
+            internal set;
         }
 
         #region Dungeon Chest
@@ -94,6 +97,9 @@ namespace AltLibrary.Common.AltBiomes
         /// For Evil and Hallow alts. The tile which convertable ice will be turned into.
         /// </summary>
         public int? BiomeIce = null;
+
+        public int? BiomeSnow = null;
+        public int? BiomeDirt = null;
 
         /// <summary>
         /// For Evil alts. Whether or not this biome will turn mud into dirt, as the Corruption and Crimson do. Defaults to false.
@@ -216,12 +222,29 @@ namespace AltLibrary.Common.AltBiomes
 
         public sealed override void SetupContent()
         {
+            AutoStaticDefaults();
             SetStaticDefaults();
+        }
+
+        public virtual void AutoStaticDefaults()
+        {
+            if (DisplayName.IsDefault())
+            {
+                DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
+            }
         }
 
         protected sealed override void Register()
         {
             ModTypeLookup<AltBiome>.Register(this);
+
+            DisplayName = (ModTranslation)typeof(LocalizationLoader).GetMethod("GetOrCreateTranslation",
+                BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static,
+                new Type[] { typeof(Mod), typeof(string), typeof(bool) }).Invoke(null, new object[] { Mod, $"BiomeName.{Name}", false });
+            Description = (ModTranslation)typeof(LocalizationLoader).GetMethod("GetOrCreateTranslation",
+                BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static,
+                new Type[] { typeof(Mod), typeof(string), typeof(bool) }).Invoke(null, new object[] { Mod, $"BiomeDescription.{Name}", true });
+
             AltLibrary.biomes.Add(this);
             if (BossBulb != null) AltLibrary.planteraBulbs.Add((int)BossBulb);
             if (BiomeType == BiomeType.Jungle)

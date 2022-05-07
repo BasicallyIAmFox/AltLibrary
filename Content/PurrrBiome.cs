@@ -19,6 +19,8 @@ namespace AltLibrary.Content
             BiomeSandstone = TileID.SnowBrick;
             BiomeOreItem = ItemID.SillyBalloonGreen;
             SeedType = ItemID.JungleSpores;
+            BiomeDirt = TileID.AdamantiteBeam;
+            BiomeSnow = TileID.Asphalt;
         }
         public override Color OuterColor => new(214, 66, 56);
         public override string WorldIcon => "AltLibrary/Assets/WorldIcons/Pur";
