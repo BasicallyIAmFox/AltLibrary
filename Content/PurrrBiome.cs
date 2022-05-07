@@ -1,5 +1,6 @@
 ﻿using AltLibrary.Common.AltBiomes;
 using Terraria.ID;
+using Microsoft.Xna.Framework;
 
 namespace AltLibrary.Content
 {
@@ -19,7 +20,7 @@ namespace AltLibrary.Content
             BiomeOreItem = ItemID.SillyBalloonGreen;
             SeedType = ItemID.JungleSpores;
         }
-
+        public override Color OuterColor => new(214, 66, 56);
         public override string WorldIcon => "AltLibrary/Assets/WorldIcons/Pur";
     }
 }
