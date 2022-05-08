@@ -36,17 +36,6 @@ namespace AltLibrary.Common
                 }
             }
 
-            //void RegisterAltHallowDrops(NPCLoot loot)
-            //{
-            //    foreach (AltBiome biome in HallowList)
-            //    {
-            //        var altCondition = new LeadingConditionRule(new HallowedBarAltDropCondition(biome.FullName));
-            //        var altItemType = biome.MechDropItemType == null ? ItemID.HallowedBar : (int)biome.MechDropItemType;
-            //        var altDropRule = altCondition.OnSuccess(ItemDropRule.Common(altItemType, 1, 15, 30));
-            //        loot.Add(altDropRule);
-            //    }
-            //}
-
             var entries = npcLoot.Get(false);
             if (npc.type == NPCID.EyeofCthulhu)
             {
@@ -89,66 +78,33 @@ namespace AltLibrary.Common
                 }
                 npcLoot.Add(expertCondition);
             }
-            if (npc.type == NPCID.Retinazer || npc.type == NPCID.Spazmatism) // fuck the twins lmfao
+            if (npc.type == NPCID.WallofFlesh)
             {
-                //var expertCondition = new LeadingConditionRule(new Conditions.NotExpert());
-                //var hallowBarCondition = new LeadingConditionRule(new HallowedBarDropCondition());
-                //expertCondition.OnSuccess(hallowBarCondition);
-                //hallowBarCondition.OnSuccess(ItemDropRule.Common(ItemID.HallowedBar, 1, 15, 30));
-
-                //foreach (AltBiome biome in HallowList)
-                //{
-                //    var biomeDropRule = new LeadingConditionRule(new HallowedBarAltDropCondition(biome));
-                //    if (biome.MechDropItemType != null) biomeDropRule.OnSuccess(ItemDropRule.Common((int)biome.MechDropItemType, 1, 15, 30));
-                //    expertCondition.OnSuccess(biomeDropRule);
-                //}
-                //npcLoot.Add(expertCondition);
-
-                //foreach (var entry in entries)
-                //{
-                //    if (entry is LeadingConditionRule leadingRule && leadingRule.condition is Conditions.MissingTwin)
-                //    {
-                //        foreach (var entry2 in leadingRule.ChainedRules) if (entry2 is LeadingConditionRule leadingRule2 && leadingRule2.condition is Conditions.NotExpert)
-                //            {
-                //                foreach (var entry3 in leadingRule2.ChainedRules) if (entry3 is CommonDrop drop)
-                //                    {
-                //                        if (drop.itemId == ItemID.HallowedBar) leadingRule2.ChainedRules.Remove(entry3);
-                //                    }
-                //            }
-                //    }
-                //}
-
-                //foreach (var entry in entries)
-                //{
-                //    if (entry is LeadingConditionRule leadingRule)
-                //    {
-                //        foreach (var chainedRule in leadingRule.ChainedRules)
-                //        {
-                //            if (chainedRule is LeadingConditionRule leadingRule2)
-                //            {
-                //                if (leadingRule2.condition is Conditions.MissingTwin)
-                //                {
-                //                    foreach (var chainedRule2 in leadingRule2.ChainedRules)
-                //                    {
-                //                        if (chainedRule2 is CommonDrop normalDropRule && normalDropRule.itemId == ItemID.HallowedBar)
-                //                        {
-                //                            leadingRule2.ChainedRules.Remove(chainedRule2);
-                //                            leadingRule2.OnSuccess(hallowBarRule);
-
-                //                            foreach (AltBiome biome in HallowList)
-                //                            {
-                //                                var altHallowBarCondition = new LeadingConditionRule(new HallowedBarAltDropCondition(biome.FullName));
-                //                                var altHallowBarType = biome.MechDropItemType == null ? ItemID.HallowedBar : (int)biome.MechDropItemType;
-                //                                var altHallowBarRule = altHallowBarCondition.OnSuccess(ItemDropRule.Common(altHallowBarType, 1, 15, 30));
-                //                                leadingRule2.OnSuccess(altHallowBarRule);
-                //                            }
-                //                        }
-                //                    }
-                //                }
-                //            }
-                //        }
-                //    }
-                //}
+                foreach (var entry in entries)
+                {
+                    if (entry is LeadingConditionRule leadingRule)
+                    {
+                        foreach (var chainedRule in entry.ChainedRules)
+                        {
+                            if (chainedRule is ItemDropWithConditionRule rule && rule.itemId == ItemID.Pwnhammer)
+                            {
+                                npcLoot.Remove(rule);
+                                break;
+                            }
+                        }
+                    }
+                }
+                var expertCondition = new LeadingConditionRule(new Conditions.NotExpert());
+                var hallowBarCondition = new LeadingConditionRule(new HallowedBarDropCondition());
+                expertCondition.OnSuccess(hallowBarCondition);
+                hallowBarCondition.OnSuccess(ItemDropRule.Common(ItemID.Pwnhammer));
+                foreach (AltBiome biome in HallowList)
+                {
+                    var biomeDropRule = new LeadingConditionRule(new HallowedBarAltDropCondition(biome));
+                    biomeDropRule.OnSuccess(ItemDropRule.Common((int)biome.HammerType));
+                    expertCondition.OnSuccess(biomeDropRule);
+                }
+                npcLoot.Add(expertCondition);
             }
             if (npc.type == NPCID.TheDestroyer || npc.type == NPCID.SkeletronPrime)
             {

@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.ID;
 
 namespace AltLibrary.Common.AltBiomes
 {
@@ -190,6 +191,8 @@ namespace AltLibrary.Common.AltBiomes
         /// If you have a comparable item you wish for EoC to drop, define it here.
         /// </summary>
         public int? ArrowType = null;
+
+        public int HammerType = ItemID.Pwnhammer;
         #endregion
 
         #region Menu Graphics
@@ -209,8 +212,8 @@ namespace AltLibrary.Common.AltBiomes
         /// <summary>
         /// For Evil biomes. The texture that appears around the loading bar on world creation.
         /// </summary>
-        public virtual string OuterTexture => "AltLibrary/Assets/Loading/Outer Empty"; // TODO: create a default/template sprite to make the bar look less ugly when no bar is specified
-        public virtual string LowerTexture => "AltLibrary/Assets/Loading/Outer Lower Empty";
+        public virtual string OuterTexture => "AltLibrary/Assets/Loading/Outer Empty"; 
+        public virtual string LowerTexture => "AltLibrary/Assets/Loading/Outer Lower Empty";// TODO: create a default/template sprite to make the bar look less ugly when no bar is specified
 
         public virtual Color OuterColor => new(127, 127, 127);
         public virtual Color NameColor => new(255, 255, 255);
