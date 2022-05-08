@@ -132,7 +132,7 @@ namespace AltLibrary.Common
             {
                 if (biomeToSpread.BiomeType == BiomeType.Jungle)
                 {
-                    SpreadGrass(i, j, TileID.Mud, biomeToSpread.BiomeJungleGrass.Value, false);
+                    if (biomeToSpread.BiomeGrass != null) SpreadGrass(i, j, TileID.Mud, (int)biomeToSpread.BiomeGrass, false);
                 }
                 else
                 {
