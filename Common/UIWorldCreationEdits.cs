@@ -142,7 +142,32 @@ namespace AltLibrary.Common
                 };
                 if (folder != "" && AltLibraryConfig.Config.SpecialSeedWorldPreview)
                 {
-                    spritebatch.Draw(ModContent.Request<Texture2D>($"AltLibrary/Assets/WorldPreviews/{folder}/{var}", AssetRequestMode.ImmediateLoad).Value, position, color);
+                    bool broken = false;
+                    foreach (AltLibrary.CustomPreviews preview in AltLibrary.PreviewWorldIcons)
+                    {
+                        if (preview.seed == seed)
+                        {
+                            switch (size)
+                            {
+                                case 0:
+                                default:
+                                    spritebatch.Draw(ModContent.Request<Texture2D>(preview.pathSmall).Value, position, color);
+                                    break;
+                                case 1:
+                                    spritebatch.Draw(ModContent.Request<Texture2D>(preview.pathMedium).Value, position, color);
+                                    break;
+                                case 2:
+                                    spritebatch.Draw(ModContent.Request<Texture2D>(preview.pathLarge).Value, position, color);
+                                    break;
+                            }
+                            broken = true;
+                            break;
+                        }
+                    }
+                    if (!broken)
+                    {
+                        spritebatch.Draw(ModContent.Request<Texture2D>($"AltLibrary/Assets/WorldPreviews/{folder}/{var}", AssetRequestMode.ImmediateLoad).Value, position, color);
+                    }
                 }
                 else
                 {
