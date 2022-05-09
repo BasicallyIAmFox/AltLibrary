@@ -14,23 +14,11 @@ namespace AltLibrary
 
         public static AltLibrary Instance { get => instance; internal set => instance = value; }
 
-        public static List<AltBiome> Biomes
-        {
-            get => Biomes;
-            internal set => Biomes = value;
-        }
+        public static List<AltBiome> Biomes = new();
 
-        public static List<AltOre> Ores
-        {
-            get => Ores;
-            internal set => Ores = value;
-        }
+        public static List<AltOre> Ores = new();
 
-        public static Dictionary<string, float> HellAltTrans
-        {
-            get => HellAltTrans;
-            internal set => HellAltTrans = value;
-        }
+        public static Dictionary<string, float> HellAltTrans = new();
 
         // Spreading related lists.
         public static List<int> planteraBulbs = new() { TileID.PlanteraBulb };
