@@ -194,7 +194,6 @@ namespace AltLibrary.Common
             }
             return false;
         }
-
         public static void SpreadInfection(int i, int j, AltBiome biome)
         {
             if (Main.hardMode && WorldGen.AllowedToSpreadInfections && !(NPC.downedPlantBoss && !WorldGen.genRand.NextBool(2)))
