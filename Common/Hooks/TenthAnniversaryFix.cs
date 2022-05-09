@@ -91,7 +91,6 @@ namespace AltLibrary.Common.Hooks
                 WorldGen.Place2xX(x, y, type, style);
                 if (type != 207 && Main.tile[x, y].HasTile)
                 {
-                    AltLibrary.Instance.Logger.Info("n");
                     Main.tile[x, y].TileFrameX = frameX;
                     Main.tile[x, y].TileFrameY = frameY;
                 }
