@@ -17,6 +17,14 @@ Mods: {
 				Label: "Ore Icons visible outside Ore UI"
 				Tooltip: "When true, you will be able to see Ore Icons any time on World Creation"
 			}
+			SpecialSeedWorldPreview: {
+				Label: "Special seed previews"
+				Tooltip: "When true, the world preview image will change depending on any secret seed you enter"
+			}
+			SmashingAltarsSpreadsRandom: {
+				Label: "Randomized Altar infections"
+				Tooltip: "When true, the infectious blocks spawned by smashing Demon Altars can be of any installed biome"
+			}
 		}
 		OreName: {
 			RandomCopper: "Random Copper-Tier"
