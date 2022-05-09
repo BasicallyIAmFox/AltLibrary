@@ -1,5 +1,4 @@
 ﻿using AltLibrary.Common.AltBiomes;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -169,10 +168,10 @@ namespace AltLibrary.Common.Systems
                     if (Main.tile[i, j].HasUnactuatedTile)
                     {
                         //WorldGen.grassSpread = 0;
-                        
+
                         WorldGen.SpreadGrass(i, j, TileID.Mud, grass, repeat: true, 0);
                     }
-                    progress.Set(0.2f * ((float)(i * Main.maxTilesY + j) / (float)(Main.maxTilesX * Main.maxTilesY)));
+                    progress.Set(0.2f * ((i * Main.maxTilesY + j) / (float)(Main.maxTilesX * Main.maxTilesY)));
                 }
             }
             WorldGen.SmallConsecutivesFound = 0;
@@ -181,7 +180,7 @@ namespace AltLibrary.Common.Systems
             for (int i = 10; i < Main.maxTilesX - 10; i++)
             {
                 ScanTileColumnAndRemoveClumps(i);
-                float num835 = (float)(i - 10) / rightBorder;
+                float num835 = (i - 10) / rightBorder;
                 progress.Set(0.2f + num835 * 0.8f);
             }
         }

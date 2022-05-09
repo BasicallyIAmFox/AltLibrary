@@ -1,7 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Reflection;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace AltLibrary.Common.AltBiomes

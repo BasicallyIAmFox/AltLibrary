@@ -7,17 +7,13 @@ using MonoMod.Cil;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.IO;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
 using Terraria.UI;
-using Terraria.Utilities;
 
 namespace AltLibrary.Common.Hooks
 {
@@ -46,54 +42,7 @@ namespace AltLibrary.Common.Hooks
                     return value;
                 WorldFileData _data = (WorldFileData)typeof(UIWorldListItem).GetField("_data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self);
                 UIImage _worldIcon = (UIImage)typeof(UIWorldListItem).GetField("_worldIcon", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self);
-                string path2 = Path.ChangeExtension(_data.Path, ".twld");
-                Dictionary<string, AltLibraryConfig.WorldDataValues> tempDict = AltLibraryConfig.Config.GetWorldData();
-                if (!tempDict.ContainsKey(path2))
-                {
-                    if (!FileUtilities.Exists(path2, _data.IsCloudSave))
-                    {
-                        return value;
-                    }
-                    byte[] buf = FileUtilities.ReadAllBytes(path2, _data.IsCloudSave);
-                    if (buf[0] != 31 || buf[1] != 139)
-                    {
-                        return value;
-                    }
-                    var stream = new MemoryStream(buf);
-                    var tag = TagIO.FromStream(stream);
-                    bool containsMod = false;
-                    if (tag.ContainsKey("modData"))
-                    {
-                        foreach (TagCompound modDataTag in tag.GetList<TagCompound>("modData").Skip(2))
-                        {
-                            if (modDataTag.Get<string>("mod") == AltLibrary.Instance.Name)
-                            {
-                                TagCompound dataTag = modDataTag.Get<TagCompound>("data");
-                                AltLibraryConfig.WorldDataValues worldData;
-                                worldData.worldEvil = dataTag.Get<string>("AltLibrary:WorldEvil");
-                                worldData.worldHallow = dataTag.Get<string>("AltLibrary:WorldHallow");
-                                worldData.worldHell = dataTag.Get<string>("AltLibrary:WorldHell");
-                                worldData.worldJungle = dataTag.Get<string>("AltLibrary:WorldJungle");
-                                worldData.drunkEvil = dataTag.Get<string>("AltLibrary:DrunkEvil");
-                                tempDict[path2] = worldData;
-                                containsMod = true;
-                                break;
-                            }
-                        }
-                        if (!containsMod)
-                        {
-                            AltLibraryConfig.WorldDataValues worldData;
-                            worldData.worldHallow = "";
-                            worldData.worldEvil = "";
-                            worldData.worldHell = "";
-                            worldData.worldJungle = "";
-                            worldData.drunkEvil = "";
-                            tempDict[path2] = worldData;
-                        }
-                        AltLibraryConfig.Config.SetWorldData(tempDict);
-                        AltLibraryConfig.Save(AltLibraryConfig.Config);
-                    }
-                }
+                ALUtils.GetWorldData(self, out Dictionary<string, AltLibraryConfig.WorldDataValues> tempDict, out string path2);
 
                 bool valid = true;
                 if (tempDict.ContainsKey(path2))
@@ -143,54 +92,8 @@ namespace AltLibrary.Common.Hooks
             c.EmitDelegate<Action<UIWorldListItem, UIImage>>((uiWorldListItem, _worldIcon) =>
             {
                 WorldFileData data = (WorldFileData)typeof(UIWorldListItem).GetField("_data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(uiWorldListItem);
-                string path2 = Path.ChangeExtension(data.Path, ".twld");
-                Dictionary<string, AltLibraryConfig.WorldDataValues> tempDict = AltLibraryConfig.Config.GetWorldData();
-                if (!tempDict.ContainsKey(path2))
-                {
-                    if (!FileUtilities.Exists(path2, data.IsCloudSave))
-                    {
-                        return;
-                    }
-                    byte[] buf = FileUtilities.ReadAllBytes(path2, data.IsCloudSave);
-                    if (buf[0] != 31 || buf[1] != 139)
-                    {
-                        return;
-                    }
-                    var stream = new MemoryStream(buf);
-                    var tag = TagIO.FromStream(stream);
-                    bool containsMod = false;
-                    if (tag.ContainsKey("modData"))
-                    {
-                        foreach (TagCompound modDataTag in tag.GetList<TagCompound>("modData").Skip(2))
-                        {
-                            if (modDataTag.Get<string>("mod") == AltLibrary.Instance.Name)
-                            {
-                                TagCompound dataTag = modDataTag.Get<TagCompound>("data");
-                                AltLibraryConfig.WorldDataValues worldData;
-                                worldData.worldEvil = dataTag.Get<string>("AltLibrary:WorldEvil");
-                                worldData.worldHallow = dataTag.Get<string>("AltLibrary:WorldHallow");
-                                worldData.worldHell = dataTag.Get<string>("AltLibrary:WorldHell");
-                                worldData.worldJungle = dataTag.Get<string>("AltLibrary:WorldJungle");
-                                worldData.drunkEvil = dataTag.Get<string>("AltLibrary:DrunkEvil");
-                                tempDict[path2] = worldData;
-                                containsMod = true;
-                                break;
-                            }
-                        }
-                        if (!containsMod)
-                        {
-                            AltLibraryConfig.WorldDataValues worldData;
-                            worldData.worldHallow = "";
-                            worldData.worldEvil = "";
-                            worldData.worldHell = "";
-                            worldData.worldJungle = "";
-                            worldData.drunkEvil = "";
-                            tempDict[path2] = worldData;
-                        }
-                        AltLibraryConfig.Config.SetWorldData(tempDict);
-                        AltLibraryConfig.Save(AltLibraryConfig.Config);
-                    }
-                }
+                ALUtils.GetWorldData(uiWorldListItem, out Dictionary<string, AltLibraryConfig.WorldDataValues> tempDict, out string path2);
+
                 ReplaceIcons(data, ref _worldIcon);
                 LayeredIcons("Normal", data, ref _worldIcon, tempDict, path2);
                 LayeredIcons(data, ref _worldIcon, tempDict, path2);
@@ -308,56 +211,9 @@ namespace AltLibrary.Common.Hooks
             }
             if ((WorldFileData)typeof(UIWorldListItem).GetField("_data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self) == null)
                 return;
-            WorldFileData _data = (WorldFileData)typeof(UIWorldListItem).GetField("_data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self);
+            ALUtils.GetWorldData(self, out Dictionary<string, AltLibraryConfig.WorldDataValues> tempDict, out string path2);
             UIImage _worldIcon = (UIImage)typeof(UIWorldListItem).GetField("_worldIcon", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self);
-            string path2 = Path.ChangeExtension(_data.Path, ".twld");
-            Dictionary<string, AltLibraryConfig.WorldDataValues> tempDict = AltLibraryConfig.Config.GetWorldData();
-            if (!tempDict.ContainsKey(path2))
-            {
-                if (!FileUtilities.Exists(path2, _data.IsCloudSave))
-                {
-                    return;
-                }
-                byte[] buf = FileUtilities.ReadAllBytes(path2, _data.IsCloudSave);
-                if (buf[0] != 31 || buf[1] != 139)
-                {
-                    return;
-                }
-                var stream = new MemoryStream(buf);
-                var tag = TagIO.FromStream(stream);
-                bool containsMod = false;
-                if (tag.ContainsKey("modData"))
-                {
-                    foreach (TagCompound modDataTag in tag.GetList<TagCompound>("modData").Skip(2))
-                    {
-                        if (modDataTag.Get<string>("mod") == AltLibrary.Instance.Name)
-                        {
-                            TagCompound dataTag = modDataTag.Get<TagCompound>("data");
-                            AltLibraryConfig.WorldDataValues worldData;
-                            worldData.worldEvil = dataTag.Get<string>("AltLibrary:WorldEvil");
-                            worldData.worldHallow = dataTag.Get<string>("AltLibrary:WorldHallow");
-                            worldData.worldHell = dataTag.Get<string>("AltLibrary:WorldHell");
-                            worldData.worldJungle = dataTag.Get<string>("AltLibrary:WorldJungle");
-                            worldData.drunkEvil = dataTag.Get<string>("AltLibrary:DrunkEvil");
-                            tempDict[path2] = worldData;
-                            containsMod = true;
-                            break;
-                        }
-                    }
-                    if (!containsMod)
-                    {
-                        AltLibraryConfig.WorldDataValues worldData;
-                        worldData.worldHallow = "";
-                        worldData.worldEvil = "";
-                        worldData.worldHell = "";
-                        worldData.worldJungle = "";
-                        worldData.drunkEvil = "";
-                        tempDict[path2] = worldData;
-                    }
-                    AltLibraryConfig.Config.SetWorldData(tempDict);
-                    AltLibraryConfig.Save(AltLibraryConfig.Config);
-                }
-            }
+            WorldFileData _data = (WorldFileData)typeof(UIWorldListItem).GetField("_data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self);
             CalculatedStyle innerDimensions = self.GetInnerDimensions();
             CalculatedStyle dimensions = _worldIcon.GetDimensions();
             float num7 = innerDimensions.X + innerDimensions.Width;

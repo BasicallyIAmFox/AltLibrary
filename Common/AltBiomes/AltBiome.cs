@@ -5,9 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using Terraria.Localization;
-using Terraria.ModLoader;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace AltLibrary.Common.AltBiomes
 {
@@ -209,7 +208,7 @@ namespace AltLibrary.Common.AltBiomes
         /// <summary>
         /// For Evil biomes. The texture that appears around the loading bar on world creation.
         /// </summary>
-        public virtual string OuterTexture => "AltLibrary/Assets/Loading/Outer Empty"; 
+        public virtual string OuterTexture => "AltLibrary/Assets/Loading/Outer Empty";
         public virtual string LowerTexture => "AltLibrary/Assets/Loading/Outer Lower Empty";// TODO: create a default/template sprite to make the bar look less ugly when no bar is specified
 
         public virtual Color OuterColor => new(127, 127, 127);

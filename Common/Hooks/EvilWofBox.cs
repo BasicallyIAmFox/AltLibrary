@@ -2,6 +2,7 @@
 using AltLibrary.Common.Systems;
 using MonoMod.Cil;
 using System;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Hooks
@@ -16,7 +17,7 @@ namespace AltLibrary.Common.Hooks
         private static void NPC_CreateBrickBoxForWallOfFlesh(ILContext il)
         {
             ILCursor c = new(il);
-            if (!c.TryGotoNext(i => i.MatchLdcI4(140)))
+            if (!c.TryGotoNext(i => i.MatchLdcI4(TileID.DemoniteBrick)))
                 return;
             c.Index++;
             c.EmitDelegate<Func<int, int>>((orig) =>

@@ -101,7 +101,7 @@ namespace AltLibrary.Common
                 foreach (AltBiome biome in HallowList)
                 {
                     var biomeDropRule = new LeadingConditionRule(new HallowedBarAltDropCondition(biome));
-                    biomeDropRule.OnSuccess(ItemDropRule.Common((int)biome.HammerType));
+                    biomeDropRule.OnSuccess(ItemDropRule.Common(biome.HammerType));
                     expertCondition.OnSuccess(biomeDropRule);
                 }
                 npcLoot.Add(expertCondition);
