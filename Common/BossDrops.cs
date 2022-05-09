@@ -82,16 +82,9 @@ namespace AltLibrary.Common
             {
                 foreach (var entry in entries)
                 {
-                    if (entry is LeadingConditionRule leadingRule)
+                    if (entry is ItemDropWithConditionRule rule && rule.itemId == ItemID.Pwnhammer)
                     {
-                        foreach (var chainedRule in entry.ChainedRules)
-                        {
-                            if (chainedRule is ItemDropWithConditionRule rule && rule.itemId == ItemID.Pwnhammer)
-                            {
-                                npcLoot.Remove(rule);
-                                break;
-                            }
-                        }
+                        npcLoot.Remove(rule);
                     }
                 }
                 var expertCondition = new LeadingConditionRule(new Conditions.NotExpert());
