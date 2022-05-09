@@ -10,7 +10,11 @@ namespace AltLibrary.Common.Systems
         public static RecipeGroup group;
         public override void AddRecipeGroups()
         {
-            int[] array = new int[] { ItemID.DemoniteBar, ItemID.CrimtaneBar };
+            int[] array = new int[] { ItemID.DemoniteOre, ItemID.CrimtaneOre };
+            group = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.EvilOres")}", array);
+            RecipeGroup.RegisterGroup("AltLibrary:EvilOres", group);
+
+            array = new int[] { ItemID.DemoniteBar, ItemID.CrimtaneBar };
             group = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.EvilBars")}", array);
             RecipeGroup.RegisterGroup("AltLibrary:EvilBars", group);
 
@@ -101,6 +105,30 @@ namespace AltLibrary.Common.Systems
             array = new int[] { ItemID.Hellforge };
             group = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.Hellforges")}", array);
             RecipeGroup.RegisterGroup("AltLibrary:Hellforges", group);
+
+            array = new int[] { ItemID.CopperBar, ItemID.TinBar };
+            group = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.CopperBars")}", array);
+            RecipeGroup.RegisterGroup("AltLibrary:CopperBars", group);
+
+            array = new int[] { ItemID.SilverBar, ItemID.TungstenBar };
+            group = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.SilverBars")}", array);
+            RecipeGroup.RegisterGroup("AltLibrary:SilverBars", group);
+
+            array = new int[] { ItemID.GoldBar, ItemID.PlatinumBar };
+            group = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.GoldBars")}", array);
+            RecipeGroup.RegisterGroup("AltLibrary:GoldBars", group);
+
+            array = new int[] { ItemID.CobaltBar, ItemID.PalladiumBar };
+            group = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.CobaltBars")}", array);
+            RecipeGroup.RegisterGroup("AltLibrary:CobaltBars", group);
+
+            array = new int[] { ItemID.MythrilBar, ItemID.OrichalcumBar };
+            group = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.MythrilBars")}", array);
+            RecipeGroup.RegisterGroup("AltLibrary:MythrilBars", group);
+
+            array = new int[] { ItemID.AdamantiteBar, ItemID.TitaniumBar };
+            group = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.AdamantiteBars")}", array);
+            RecipeGroup.RegisterGroup("AltLibrary:AdamantiteBars", group);
         }
     }
 }
