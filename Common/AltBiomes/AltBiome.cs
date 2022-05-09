@@ -216,6 +216,11 @@ namespace AltLibrary.Common.AltBiomes
         public bool Selectable = true;
         #endregion
 
+        public int? FountainTile = null;
+        public int? FountainTileStyle = null;
+        public int? FountainActiveFrameX = null;
+        public int? FountainActiveFrameY = null;
+
         public int? ShadowKeyAlt = null;
 
         public virtual Color AltUnderworldColor => Color.Black;

@@ -147,7 +147,7 @@ namespace AltLibrary.Common
         }
         public string GetConditionDescription()
         {
-            return $"{Language.GetTextValue("Mods.AltLibrary.DropRule.Base")} {Language.GetTextValue("Mods.AltLibrary.Biomes.HallowName")}";
+            return $"{Language.GetTextValue("Mods.AltLibrary.DropRule.Base")} {Language.GetTextValue("Mods.AltLibrary.BiomeName.HallowBiome")}";
         }
     }
 
@@ -179,8 +179,8 @@ namespace AltLibrary.Common
         public string GetConditionDescription()
         {
             string biome;
-            if (WorldGen.crimson) biome = Language.GetTextValue("Mods.AltLibrary.Biomes.CrimsonName");
-            else biome = Language.GetTextValue("Mods.AltLibrary.Biomes.CorruptName");
+            if (WorldGen.crimson) biome = Language.GetTextValue("Mods.AltLibrary.BiomeName.CrimsonBiome");
+            else biome = Language.GetTextValue("Mods.AltLibrary.BiomeName.CorruptBiome");
             return Language.GetTextValue("Mods.AltLibrary.DropRule.Base", biome);
         }
     }
@@ -209,7 +209,7 @@ namespace AltLibrary.Common
 
         public string GetConditionDescription()
         {
-            return Language.GetTextValue("Mods.AltLibrary.DropRule.Base", BiomeType.DisplayName != null ? BiomeType.DisplayName : BiomeType.Name);
+            return Language.GetTextValue("Mods.AltLibrary.DropRule.Base", BiomeType.DisplayName != null ? Language.GetTextValue(BiomeType.DisplayName.Key) : BiomeType.Name);
         }
     }
 
@@ -237,7 +237,7 @@ namespace AltLibrary.Common
 
         public string GetConditionDescription()
         {
-            return Language.GetTextValue("Mods.AltLibrary.DropRule.Base", BiomeType.DisplayName != null ? BiomeType.DisplayName : BiomeType.Name);
+            return Language.GetTextValue("Mods.AltLibrary.DropRule.Base", BiomeType.DisplayName != null ? Language.GetTextValue(BiomeType.DisplayName.Key) : BiomeType.Name);
         }
     }
 
