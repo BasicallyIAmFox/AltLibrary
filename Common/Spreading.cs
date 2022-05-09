@@ -301,7 +301,7 @@ namespace AltLibrary.Common
                 }
             }
         }
-        public static void SpreadGrassPhase2(int i, int j, int dirt, int grass, bool blockedBySunflowers)
+        private static void SpreadGrassPhase2(int i, int j, int dirt, int grass, bool blockedBySunflowers)
         {
             int left = i - 1; // defining the bounds of the 3x3 space which will be checked for lava and air
             int right = i + 1;
