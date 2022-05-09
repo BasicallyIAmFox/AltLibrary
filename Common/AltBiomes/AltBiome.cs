@@ -14,13 +14,15 @@ namespace AltLibrary.Common.AltBiomes
     {
         internal int SpecialValueForWorldUIDoNotTouchElseYouCanBreakStuff { get; set; }
         internal bool? IsForCrimsonOrCorruptWorldUIFix { get; set; }
-
+        /// <summary>
+        /// Tells the Library what biome this is an alternative to
+        /// </summary>
         public BiomeType BiomeType { get; set; }
         public ModBiome Biome { get; set; }
         internal int Type { get; set; }
 
         /// <summary>
-        /// The name of this biome that will display on the selection screen.
+        /// The name of this biome that will display on the biome selection screen.
         /// </summary>
         public virtual ModTranslation DisplayName
         {
@@ -36,17 +38,20 @@ namespace AltLibrary.Common.AltBiomes
             internal set;
         }
 
-        #region Dungeon Chest
+        #region Dungeon Loot
+        /// <summary>
+        /// For Underworld alts. If your biome uses a different kind of locked chest than a Shadow Chest, set this field to your equivalent to a Shadow Key so that it may appear in the Dungeon
+        /// </summary>
+        public int? ShadowKeyAlt = null;
+        
         /// <summary>
         /// For Jungle, Evil, and Hallow alts. The ItemID for the rare item that will be found inside this biome's dungeon chest.
         /// </summary>
         public int? BiomeChestItem = null;
-
         /// <summary>
         /// For Jungle, Evil, and Hallow alts. The TileID of the special biome chest which will generate in the dungeon.
         /// </summary>
         public int? BiomeChestTile = null;
-
         /// <summary>
         /// For Jungle, Evil, and Hallow alts. The style number of the biome chest tile to be placed. Defaults to 0.
         /// </summary>
@@ -173,6 +178,10 @@ namespace AltLibrary.Common.AltBiomes
         /// For Hallow alts. The ItemID of the metal that the mechanical bosses will drop in place of Hallowed Bars.
         /// </summary>
         public int? MechDropItemType = null;
+        /// <summary>
+        /// For Hallow alts. The ItemID of your biome's counterpart to the Pwnhammer, if it has one. 
+        /// </summary>
+        public int HammerType = ItemID.Pwnhammer;
 
         /// <summary>
         /// For Evil Alts. The ItemID of the seeds that Eye of Cthulhu will drop in worlds with this biome.
@@ -187,8 +196,6 @@ namespace AltLibrary.Common.AltBiomes
         /// If you have a comparable item you wish for EoC to drop, define it here.
         /// </summary>
         public int? ArrowType = null;
-
-        public int HammerType = ItemID.Pwnhammer;
         #endregion
 
         #region Menu Graphics
@@ -209,19 +216,41 @@ namespace AltLibrary.Common.AltBiomes
         /// For Evil biomes. The texture that appears around the loading bar on world creation.
         /// </summary>
         public virtual string OuterTexture => "AltLibrary/Assets/Loading/Outer Empty";
+        /// <summary>
+        /// For Underworld biomes. The texture that appears around the lower loading bar on world creation.
+        /// </summary>
         public virtual string LowerTexture => "AltLibrary/Assets/Loading/Outer Lower Empty";// TODO: create a default/template sprite to make the bar look less ugly when no bar is specified
-
+        /// <summary>
+        /// For Evil biomes. The texture that appears inside the loading bar on world creation.
+        /// </summary>
         public virtual Color OuterColor => new(127, 127, 127);
+        /// <summary>
+        /// The color of this biome's name that will appear on the biome selection menu.
+        /// </summary>
         public virtual Color NameColor => new(255, 255, 255);
+        /// <summary>
+        /// Whether or not this biome will appear on the selection menu.
+        /// </summary>
         public bool Selectable = true;
         #endregion
 
+        /// <summary>
+        /// In CelebrationMk10 worlds, sky islands may generate as the world's Hallow biome, with a corresponding water fountain.
+        /// Set this field to the TileID of your biome's water fountain if you are making a Hallow alt.
+        /// </summary>
         public int? FountainTile = null;
+        /// <summary>
+        /// If your Hallow alt's water fountain is part of a larger tilesheet, specify the style of the appropriate water fountain here.
+        /// </summary>
         public int? FountainTileStyle = null;
+        /// <summary>
+        /// If your Hallow alt's water fountain is part of a larger tilesheet, specify the x frame of the appropriate active water fountain here.
+        /// </summary>
         public int? FountainActiveFrameX = null;
+        /// <summary>
+        /// If your Hallow alt's water fountain is part of a larger tilesheet, specify the y frame of the appropriate active water fountain here.
+        /// </summary>
         public int? FountainActiveFrameY = null;
-
-        public int? ShadowKeyAlt = null;
 
         public virtual Color AltUnderworldColor => Color.Black;
         public virtual Asset<Texture2D>[] AltUnderworldBackgrounds => new Asset<Texture2D>[14];
@@ -255,7 +284,13 @@ namespace AltLibrary.Common.AltBiomes
             if (BossBulb != null) AltLibrary.planteraBulbs.Add((int)BossBulb);
             if (BiomeType == BiomeType.Jungle)
             {
-                if (BiomeGrass != null) AltLibrary.jungleGrass.Add((int)BiomeGrass);
+                if (BiomeGrass != null)
+                {
+                    AltLibrary.jungleGrass.Add((int)BiomeGrass);
+                } else
+                {
+                    if (BiomeJungleGrass != null) AltLibrary.jungleGrass.Add((int)BiomeJungleGrass);
+                }
                 if (BiomeMowedGrass != null) AltLibrary.jungleGrass.Add((int)BiomeGrass);
                 if (BiomeThornBush != null) AltLibrary.jungleThorns.Add((int)BiomeGrass);
                 if (BiomeOre != null) AltLibrary.evilStoppingOres.Add((int)BiomeOre);

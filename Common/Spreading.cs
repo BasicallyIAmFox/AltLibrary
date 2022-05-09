@@ -194,6 +194,12 @@ namespace AltLibrary.Common
             }
             return false;
         }
+        /// <summary>
+        /// Runs the biome spreading function at the given coordinates for the given AltBiome
+        /// </summary>
+        /// <param name="i"></param>
+        /// <param name="j"></param>
+        /// <param name="biome"></param>
         public static void SpreadInfection(int i, int j, AltBiome biome)
         {
             if (Main.hardMode && WorldGen.AllowedToSpreadInfections && !(NPC.downedPlantBoss && !WorldGen.genRand.NextBool(2)))
@@ -275,6 +281,14 @@ namespace AltLibrary.Common
                 }
             }
         }
+        /// <summary>
+        /// Runs the grass growing function for the given coordinates with the given TileIDs
+        /// </summary>
+        /// <param name="i"></param>
+        /// <param name="j"></param>
+        /// <param name="dirt"></param>
+        /// <param name="grass"></param>
+        /// <param name="blockedBySunflowers"></param>
         public static void SpreadGrass(int i, int j, int dirt, int grass, bool blockedBySunflowers) // I made this grass spreading code years ago, and its probably not great but it works so /shrug 
         {
             int left = i - 1; // defining the bounds of the 3x3 space which will be checked for dirt
@@ -305,6 +319,14 @@ namespace AltLibrary.Common
                 }
             }
         }
+        /// <summary>
+        /// should only ever be called as part of the SpreadGrass function
+        /// </summary>
+        /// <param name="i"></param>
+        /// <param name="j"></param>
+        /// <param name="dirt"></param>
+        /// <param name="grass"></param>
+        /// <param name="blockedBySunflowers"></param>
         private static void SpreadGrassPhase2(int i, int j, int dirt, int grass, bool blockedBySunflowers)
         {
             int left = i - 1; // defining the bounds of the 3x3 space which will be checked for lava and air
