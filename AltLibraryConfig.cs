@@ -34,6 +34,10 @@ namespace AltLibrary
         [Tooltip("$Mods.AltLibrary.Config.OreIconsVisibleOutsideOreUI.Tooltip")]
         [DefaultValue(true)]
         public bool OreIconsVisibleOutsideOreUI;
+        [Label("$Mods.AltLibrary.Config.SmashingAltarsSpreadsRandom.Label")]
+        [Tooltip("$Mods.AltLibrary.Config.SmashingAltarsSpreadsRandom.Tooltip")]
+        [DefaultValue(false)]
+        public bool SmashingAltarsSpreadsRandom;
 
 #pragma warning restore CS0649
 

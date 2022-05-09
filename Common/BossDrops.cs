@@ -17,7 +17,7 @@ namespace AltLibrary.Common
             List<AltBiome> HellList = new();
             List<AltBiome> JungleList = new();
             List<AltBiome> EvilList = new();
-            foreach (AltBiome biome in AltLibrary.biomes)
+            foreach (AltBiome biome in AltLibrary.Biomes)
             {
                 switch (biome.BiomeType)
                 {

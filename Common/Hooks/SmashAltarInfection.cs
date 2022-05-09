@@ -2,6 +2,9 @@
 using AltLibrary.Common.Systems;
 using MonoMod.Cil;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Hooks
@@ -22,9 +25,21 @@ namespace AltLibrary.Common.Hooks
             c.Index++;
             c.EmitDelegate<Func<int, int>>((orig) =>
             {
-                if (WorldBiomeManager.worldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeStone.HasValue)
+                if (!AltLibraryConfig.Config.SmashingAltarsSpreadsRandom)
                 {
-                    return ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeStone.Value;
+                    if (WorldBiomeManager.worldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeStone.HasValue)
+                    {
+                        return ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeStone.Value;
+                    }
+                }
+                else
+                {
+                    List<int> indexToUse = new();
+                    indexToUse.Add(orig);
+                    AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Evil && x.BiomeStone.HasValue)
+                                        .ToList()
+                                        .ForEach(x => indexToUse.Add(x.BiomeStone.Value));
+                    return indexToUse[Main.rand.Next(indexToUse.Count)];
                 }
                 return orig;
             });
@@ -35,9 +50,21 @@ namespace AltLibrary.Common.Hooks
             c.Index++;
             c.EmitDelegate<Func<int, int>>((orig) =>
             {
-                if (WorldBiomeManager.worldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeStone.HasValue)
+                if (!AltLibraryConfig.Config.SmashingAltarsSpreadsRandom)
                 {
-                    return ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeStone.Value;
+                    if (WorldBiomeManager.worldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeStone.HasValue)
+                    {
+                        return ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeStone.Value;
+                    }
+                }
+                else
+                {
+                    List<int> indexToUse = new();
+                    indexToUse.Add(orig);
+                    AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow && x.BiomeStone.HasValue)
+                                        .ToList()
+                                        .ForEach(x => indexToUse.Add(x.BiomeStone.Value));
+                    return indexToUse[Main.rand.Next(indexToUse.Count)];
                 }
                 return orig;
             });

@@ -63,7 +63,7 @@ namespace AltLibrary.Common.Hooks
             c.Remove();
             c.EmitDelegate(() =>
             {
-                foreach (AltBiome biome in AltLibrary.biomes)
+                foreach (AltBiome biome in AltLibrary.Biomes)
                 {
                     if (WorldBiomeManager.worldJungle == biome.FullName && biome.BiomeType == BiomeType.Jungle && biome.BiomeGrass.HasValue)
                         return biome.BiomeGrass.Value;
@@ -191,7 +191,7 @@ namespace AltLibrary.Common.Hooks
             c.Remove();
             c.EmitDelegate(() =>
             {
-                foreach (AltBiome biome in AltLibrary.biomes)
+                foreach (AltBiome biome in AltLibrary.Biomes)
                 {
                     if (WorldBiomeManager.worldJungle == biome.FullName && biome.BiomeType == BiomeType.Jungle && biome.BiomeGrass.HasValue)
                         return biome.BiomeGrass.Value;
@@ -388,7 +388,7 @@ namespace AltLibrary.Common.Hooks
                 }
                 else
                 {
-                    return AltLibrary.ores[WorldBiomeManager.Copper - 1].ore;
+                    return AltLibrary.Ores[WorldBiomeManager.Copper - 1].ore;
                 }
             });
             c.Emit(OpCodes.Stsfld, copper);
@@ -405,7 +405,7 @@ namespace AltLibrary.Common.Hooks
                 }
                 else
                 {
-                    return AltLibrary.ores[WorldBiomeManager.Iron - 1].ore;
+                    return AltLibrary.Ores[WorldBiomeManager.Iron - 1].ore;
                 }
             });
             c.Emit(OpCodes.Stsfld, iron);
@@ -422,7 +422,7 @@ namespace AltLibrary.Common.Hooks
                 }
                 else
                 {
-                    return AltLibrary.ores[WorldBiomeManager.Silver - 1].ore;
+                    return AltLibrary.Ores[WorldBiomeManager.Silver - 1].ore;
                 }
             });
             c.Emit(OpCodes.Stsfld, silver);
@@ -439,7 +439,7 @@ namespace AltLibrary.Common.Hooks
                 }
                 else
                 {
-                    return AltLibrary.ores[WorldBiomeManager.Gold - 1].ore;
+                    return AltLibrary.Ores[WorldBiomeManager.Gold - 1].ore;
                 }
             });
             c.Emit(OpCodes.Stsfld, gold);
@@ -489,7 +489,7 @@ namespace AltLibrary.Common.Hooks
                     List<int> list = new();
                     list.Add(7);
                     list.Add(166);
-                    AltLibrary.ores.Where(x => x.OreType == OreType.Copper)
+                    AltLibrary.Ores.Where(x => x.OreType == OreType.Copper)
                                    .ToList()
                                    .ForEach(x => list.Add(x.ore));
                     return list[WorldGen.genRand.Next(list.Count)];
@@ -512,7 +512,7 @@ namespace AltLibrary.Common.Hooks
                     List<int> list = new();
                     list.Add(6);
                     list.Add(167);
-                    AltLibrary.ores.Where(x => x.OreType == OreType.Iron)
+                    AltLibrary.Ores.Where(x => x.OreType == OreType.Iron)
                                    .ToList()
                                    .ForEach(x => list.Add(x.ore));
                     return list[WorldGen.genRand.Next(list.Count)];
@@ -535,7 +535,7 @@ namespace AltLibrary.Common.Hooks
                     List<int> list = new();
                     list.Add(9);
                     list.Add(168);
-                    AltLibrary.ores.Where(x => x.OreType == OreType.Silver)
+                    AltLibrary.Ores.Where(x => x.OreType == OreType.Silver)
                                    .ToList()
                                    .ForEach(x => list.Add(x.ore));
                     return list[WorldGen.genRand.Next(list.Count)];
@@ -558,7 +558,7 @@ namespace AltLibrary.Common.Hooks
                     List<int> list = new();
                     list.Add(8);
                     list.Add(169);
-                    AltLibrary.ores.Where(x => x.OreType == OreType.Gold)
+                    AltLibrary.Ores.Where(x => x.OreType == OreType.Gold)
                                    .ToList()
                                    .ForEach(x => list.Add(x.ore));
                     return list[WorldGen.genRand.Next(list.Count)];

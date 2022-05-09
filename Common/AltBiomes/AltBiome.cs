@@ -17,7 +17,7 @@ namespace AltLibrary.Common.AltBiomes
         internal bool? IsForCrimsonOrCorruptWorldUIFix { get; set; }
 
         public BiomeType BiomeType { get; set; }
-        public ModBiome Biome { get; private set; }
+        public ModBiome Biome { get; set; }
         internal int Type { get; set; }
 
         /// <summary>
@@ -98,9 +98,6 @@ namespace AltLibrary.Common.AltBiomes
         /// For Evil and Hallow alts. The tile which convertable ice will be turned into.
         /// </summary>
         public int? BiomeIce = null;
-
-        public int? BiomeSnow = null;
-        public int? BiomeDirt = null;
 
         /// <summary>
         /// For Evil alts. Whether or not this biome will turn mud into dirt, as the Corruption and Crimson do. Defaults to false.
@@ -220,6 +217,8 @@ namespace AltLibrary.Common.AltBiomes
         public bool Selectable = true;
         #endregion
 
+        public int? ShadowKeyAlt = null;
+
         public virtual Color AltUnderworldColor => Color.Black;
         public virtual Asset<Texture2D>[] AltUnderworldBackgrounds => new Asset<Texture2D>[14];
 
@@ -248,7 +247,7 @@ namespace AltLibrary.Common.AltBiomes
                 BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static,
                 new Type[] { typeof(Mod), typeof(string), typeof(bool) }).Invoke(null, new object[] { Mod, $"BiomeDescription.{Name}", true });
 
-            AltLibrary.biomes.Add(this);
+            AltLibrary.Biomes.Add(this);
             if (BossBulb != null) AltLibrary.planteraBulbs.Add((int)BossBulb);
             if (BiomeType == BiomeType.Jungle)
             {
@@ -258,8 +257,8 @@ namespace AltLibrary.Common.AltBiomes
                 if (BiomeOre != null) AltLibrary.evilStoppingOres.Add((int)BiomeOre);
                 if (BiomeOreBrick != null) AltLibrary.evilStoppingOres.Add((int)BiomeOreBrick);
             }
-            AltLibrary.hellAltTrans.Add(FullName, 0f);
-            Type = AltLibrary.biomes.Count;
+            AltLibrary.HellAltTrans.Add(FullName, 0f);
+            Type = AltLibrary.Biomes.Count;
         }
     }
 

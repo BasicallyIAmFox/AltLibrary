@@ -25,9 +25,9 @@ namespace AltLibrary.Common.Hooks
             c.Emit(OpCodes.Ldloc, 1);
             c.EmitDelegate<Func<int, Tile, int>>((mowedTileType, tile) =>
             {
-                foreach (AltBiome biome in AltLibrary.biomes)
+                foreach (AltBiome biome in AltLibrary.Biomes)
                 {
-                    if (biome.BiomeGrass.HasValue && tile.TileType == biome.BiomeGrass && biome.BiomeMowedGrass.HasValue)
+                    if (biome.BiomeGrass.HasValue && tile.TileType == biome.BiomeGrass.Value && biome.BiomeMowedGrass.HasValue)
                     {
                         return biome.BiomeMowedGrass.Value;
                     }

@@ -26,24 +26,24 @@ namespace AltLibrary.Common.Hooks
             c.Index++;
             c.EmitDelegate(() =>
             {
-                foreach (AltBiome biome in AltLibrary.biomes)
+                foreach (AltBiome biome in AltLibrary.Biomes)
                 {
                     if (biome.Biome != null && biome.BiomeType == BiomeType.Hell)
                     {
                         if (biome.Biome.IsBiomeActive(Main.LocalPlayer))
                         {
-                            AltLibrary.hellAltTrans[biome.FullName] += 0.05f;
-                            if (AltLibrary.hellAltTrans[biome.FullName] > 1f)
+                            AltLibrary.HellAltTrans[biome.FullName] += 0.05f;
+                            if (AltLibrary.HellAltTrans[biome.FullName] > 1f)
                             {
-                                AltLibrary.hellAltTrans[biome.FullName] = 1f;
+                                AltLibrary.HellAltTrans[biome.FullName] = 1f;
                             }
                         }
                         else
                         {
-                            AltLibrary.hellAltTrans[biome.FullName] -= 0.05f;
-                            if (AltLibrary.hellAltTrans[biome.FullName] < 0f)
+                            AltLibrary.HellAltTrans[biome.FullName] -= 0.05f;
+                            if (AltLibrary.HellAltTrans[biome.FullName] < 0f)
                             {
-                                AltLibrary.hellAltTrans[biome.FullName] = 0f;
+                                AltLibrary.HellAltTrans[biome.FullName] = 0f;
                             }
                         }
                     }
@@ -58,7 +58,7 @@ namespace AltLibrary.Common.Hooks
             c.Emit(OpCodes.Ldarg_3);
             c.EmitDelegate<Action<bool, Vector2, float, int>>((flat, screenOffset, pushUp, layerTextureIndex) =>
             {
-                foreach (AltBiome biome in AltLibrary.biomes)
+                foreach (AltBiome biome in AltLibrary.Biomes)
                 {
                     int num27 = Main.underworldBG[layerTextureIndex];
                     Asset<Texture2D>[] assets = new Asset<Texture2D>[TextureAssets.Underworld.Length];
@@ -173,11 +173,11 @@ namespace AltLibrary.Common.Hooks
                     }
                     for (int i = num17 - 2; i <= num17 + 4 + num16; i++)
                     {
-                        Main.spriteBatch.Draw(value5, vector, value3, Color.White * AltLibrary.hellAltTrans[biome.FullName], 0f, Vector2.Zero, num25, SpriteEffects.None, 0f);
+                        Main.spriteBatch.Draw(value5, vector, value3, Color.White * AltLibrary.HellAltTrans[biome.FullName], 0f, Vector2.Zero, num25, SpriteEffects.None, 0f);
                         if (layerTextureIndex == 0)
                         {
                             int num14 = (int)(vector.Y + value3.Height * num25);
-                            Main.spriteBatch.Draw(TextureAssets.BlackTile.Value, new Rectangle((int)vector.X, num14, (int)(value3.Width * num25), Math.Max(0, Main.screenHeight - num14)), biome.AltUnderworldColor * AltLibrary.hellAltTrans[biome.FullName]);
+                            Main.spriteBatch.Draw(TextureAssets.BlackTile.Value, new Rectangle((int)vector.X, num14, (int)(value3.Width * num25), Math.Max(0, Main.screenHeight - num14)), biome.AltUnderworldColor * AltLibrary.HellAltTrans[biome.FullName]);
                         }
                         vector.X += num18;
                     }

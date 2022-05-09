@@ -12,19 +12,31 @@ namespace AltLibrary
     {
         private static AltLibrary instance;
 
-        public static AltLibrary Instance { get => instance; set => instance = value; }
+        public static AltLibrary Instance { get => instance; internal set => instance = value; }
 
-        public static List<AltBiome> biomes = new();
+        public static List<AltBiome> Biomes
+        {
+            get => Biomes;
+            internal set => Biomes = value;
+        }
 
-        public static List<AltOre> ores = new();
+        public static List<AltOre> Ores
+        {
+            get => Ores;
+            internal set => Ores = value;
+        }
 
-        public static Dictionary<string, float> hellAltTrans = new();
+        public static Dictionary<string, float> HellAltTrans
+        {
+            get => HellAltTrans;
+            internal set => HellAltTrans = value;
+        }
 
         // Spreading related lists.
-        public static List<int> planteraBulbs = new List<int> { TileID.PlanteraBulb };
-        public static List<int> jungleGrass = new List<int> { TileID.JungleGrass };
-        public static List<int> jungleThorns = new List<int> { TileID.JungleThorns };
-        public static List<int> evilStoppingOres = new List<int> { TileID.Chlorophyte, TileID.ChlorophyteBrick };
+        public static List<int> planteraBulbs = new() { TileID.PlanteraBulb };
+        public static List<int> jungleGrass = new() { TileID.JungleGrass };
+        public static List<int> jungleThorns = new() { TileID.JungleThorns };
+        public static List<int> evilStoppingOres = new() { TileID.Chlorophyte, TileID.ChlorophyteBrick };
 
         internal static int TimeHoveringOnIcon = 0;
         internal static bool HallowBunnyUnlocked = false;

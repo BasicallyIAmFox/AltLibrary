@@ -3,6 +3,7 @@ using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using Terraria;
+using Terraria.ID;
 using Terraria.Localization;
 
 namespace AltLibrary.Common.Hooks
@@ -29,63 +30,85 @@ namespace AltLibrary.Common.Hooks
             c.Remove();
             c.EmitDelegate(() =>
             {
-                foreach (AltBiome biome in AltLibrary.biomes)
+                WorldGen.totalGood2 += WorldGen.tileCounts[TileID.HallowHardenedSand];
+                WorldGen.totalGood2 += WorldGen.tileCounts[TileID.HallowSandstone];
+                WorldGen.totalEvil2 += WorldGen.tileCounts[TileID.CorruptHardenedSand];
+                WorldGen.totalEvil2 += WorldGen.tileCounts[TileID.CorruptSandstone];
+                WorldGen.totalBlood2 += WorldGen.tileCounts[TileID.CrimsonHardenedSand];
+                WorldGen.totalBlood2 += WorldGen.tileCounts[TileID.CrimsonSandstone];
+                WorldGen.totalSolid2 += WorldGen.tileCounts[TileID.HardenedSand];
+                WorldGen.totalSolid2 += WorldGen.tileCounts[TileID.Sandstone];
+                WorldGen.totalSolid2 += WorldGen.tileCounts[TileID.HallowHardenedSand];
+                WorldGen.totalSolid2 += WorldGen.tileCounts[TileID.HallowSandstone];
+                WorldGen.totalSolid2 += WorldGen.tileCounts[TileID.CorruptHardenedSand];
+                WorldGen.totalSolid2 += WorldGen.tileCounts[TileID.CorruptSandstone];
+                WorldGen.totalSolid2 += WorldGen.tileCounts[TileID.CrimsonHardenedSand];
+                WorldGen.totalSolid2 += WorldGen.tileCounts[TileID.CrimsonSandstone];
+
+                int hallow = 0;
+                int evil = 0;
+
+                foreach (AltBiome biome in AltLibrary.Biomes)
                 {
                     if (biome.BiomeType == BiomeType.Hallow)
                     {
                         if (biome.BiomeIce.HasValue)
                         {
-                            WorldGen.totalGood2 += WorldGen.tileCounts[biome.BiomeIce.Value];
+                            hallow += WorldGen.tileCounts[biome.BiomeIce.Value];
                         }
                         if (biome.BiomeGrass.HasValue)
                         {
-                            WorldGen.totalGood2 += WorldGen.tileCounts[biome.BiomeGrass.Value];
+                            hallow += WorldGen.tileCounts[biome.BiomeGrass.Value];
                         }
                         if (biome.BiomeStone.HasValue)
                         {
-                            WorldGen.totalGood2 += WorldGen.tileCounts[biome.BiomeStone.Value];
+                            hallow += WorldGen.tileCounts[biome.BiomeStone.Value];
                         }
                         if (biome.BiomeSand.HasValue)
                         {
-                            WorldGen.totalGood2 += WorldGen.tileCounts[biome.BiomeSand.Value];
+                            hallow += WorldGen.tileCounts[biome.BiomeSand.Value];
                         }
                         if (biome.BiomeHardenedSand.HasValue)
                         {
-                            WorldGen.totalGood2 += WorldGen.tileCounts[biome.BiomeHardenedSand.Value];
+                            hallow += WorldGen.tileCounts[biome.BiomeHardenedSand.Value];
                         }
                         if (biome.BiomeSandstone.HasValue)
                         {
-                            WorldGen.totalGood2 += WorldGen.tileCounts[biome.BiomeSandstone.Value];
+                            hallow += WorldGen.tileCounts[biome.BiomeSandstone.Value];
                         }
                     }
-                    else if (biome.BiomeType == BiomeType.Evil)
+                    if (biome.BiomeType == BiomeType.Evil)
                     {
                         if (biome.BiomeIce.HasValue)
                         {
-                            WorldGen.totalEvil2 += WorldGen.tileCounts[biome.BiomeIce.Value];
+                            evil += WorldGen.tileCounts[biome.BiomeIce.Value];
                         }
                         if (biome.BiomeGrass.HasValue)
                         {
-                            WorldGen.totalEvil2 += WorldGen.tileCounts[biome.BiomeGrass.Value];
+                            evil += WorldGen.tileCounts[biome.BiomeGrass.Value];
                         }
                         if (biome.BiomeStone.HasValue)
                         {
-                            WorldGen.totalEvil2 += WorldGen.tileCounts[biome.BiomeStone.Value];
+                            evil += WorldGen.tileCounts[biome.BiomeStone.Value];
                         }
                         if (biome.BiomeSand.HasValue)
                         {
-                            WorldGen.totalEvil2 += WorldGen.tileCounts[biome.BiomeSand.Value];
+                            evil += WorldGen.tileCounts[biome.BiomeSand.Value];
                         }
                         if (biome.BiomeHardenedSand.HasValue)
                         {
-                            WorldGen.totalGood2 += WorldGen.tileCounts[biome.BiomeHardenedSand.Value];
+                            evil += WorldGen.tileCounts[biome.BiomeHardenedSand.Value];
                         }
                         if (biome.BiomeSandstone.HasValue)
                         {
-                            WorldGen.totalGood2 += WorldGen.tileCounts[biome.BiomeSandstone.Value];
+                            evil += WorldGen.tileCounts[biome.BiomeSandstone.Value];
                         }
                     }
                 }
+
+                WorldGen.totalGood2 += hallow;
+                WorldGen.totalEvil2 += evil;
+                WorldGen.totalSolid2 += hallow + evil;
             });
             c.Emit(OpCodes.Ldsfld, tileCounts);
         }

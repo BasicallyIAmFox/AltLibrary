@@ -25,9 +25,9 @@ namespace AltLibrary.Common.Hooks
             c.Emit(OpCodes.Ldloc, 1);
             c.EmitDelegate<Func<LeadingConditionRule, LeadingConditionRule>>((leadCond) =>
             {
-                if (AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Hallow).Any())
+                if (AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow).Any())
                 {
-                    foreach (AltBiome biome in AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Hallow))
+                    foreach (AltBiome biome in AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow))
                     {
                         if (biome.MechDropItemType != null)
                         {
@@ -36,7 +36,7 @@ namespace AltLibrary.Common.Hooks
                         }
                     }
                 }
-                foreach (AltBiome biome in AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Hallow))
+                foreach (AltBiome biome in AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow))
                 {
                     if (biome.MechDropItemType != null)
                     {
