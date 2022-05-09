@@ -36,11 +36,11 @@ namespace AltLibrary.Common.Hooks
                 if (WorldGen.crimson) worldGenStep = 1;
                 if (WorldBiomeManager.worldEvil != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).Type + 2;
 
-                if (WorldGen.drunkWorldGen && Main.rand.NextBool(2)) worldGenStep = Main.rand.Next(AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Evil).ToList().Count + 2);
+                if (WorldGen.drunkWorldGen && Main.rand.NextBool(2)) worldGenStep = Main.rand.Next(AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Evil).ToList().Count + 2);
 
                 Color expected = new(95, 242, 86);
                 if (worldGenStep == 1) expected = new Color(255, 237, 131);
-                foreach (AltBiome biome in AltLibrary.biomes)
+                foreach (AltBiome biome in AltLibrary.Biomes)
                 {
                     if (worldGenStep == biome.Type + 2 && biome.BiomeType == BiomeType.Evil)
                     {
@@ -92,11 +92,11 @@ namespace AltLibrary.Common.Hooks
                 int worldGenStep = 0;
                 if (WorldGen.crimson) worldGenStep = 1;
                 if (WorldBiomeManager.worldEvil != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).Type + 2;
-                if (WorldGen.drunkWorldGen && Main.rand.NextBool(2)) worldGenStep = Main.rand.Next(AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Evil).ToList().Count + 2);
+                if (WorldGen.drunkWorldGen && Main.rand.NextBool(2)) worldGenStep = Main.rand.Next(AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Evil).ToList().Count + 2);
                 Asset<Texture2D> asset = ILHooks.EmptyAsset;
                 if (worldGenStep == 0) asset = Main.Assets.Request<Texture2D>("Images/UI/WorldGen/Outer_Corrupt");
                 if (worldGenStep == 1) asset = Main.Assets.Request<Texture2D>("Images/UI/WorldGen/Outer_Crimson");
-                foreach (AltBiome biome in AltLibrary.biomes)
+                foreach (AltBiome biome in AltLibrary.Biomes)
                 {
                     if (worldGenStep == biome.Type + 2 && biome.BiomeType == BiomeType.Evil)
                     {
@@ -127,10 +127,10 @@ namespace AltLibrary.Common.Hooks
             {
                 int worldGenStep = 0;
                 if (WorldBiomeManager.worldHell != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).Type + 1;
-                if (WorldGen.drunkWorldGen && Main.rand.NextBool(2)) worldGenStep = Main.rand.Next(AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Hell).ToList().Count + 1);
+                if (WorldGen.drunkWorldGen && Main.rand.NextBool(2)) worldGenStep = Main.rand.Next(AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hell).ToList().Count + 1);
                 Asset<Texture2D> asset = ILHooks.EmptyLower;
                 if (worldGenStep == 0) asset = Main.Assets.Request<Texture2D>("Images/UI/WorldGen/Outer_Lower");
-                foreach (AltBiome biome in AltLibrary.biomes)
+                foreach (AltBiome biome in AltLibrary.Biomes)
                 {
                     if (worldGenStep == biome.Type + 1 && biome.BiomeType == BiomeType.Hell)
                     {

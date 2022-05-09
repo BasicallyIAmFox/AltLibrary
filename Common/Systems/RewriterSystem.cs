@@ -22,7 +22,7 @@ namespace AltLibrary.Common.Systems
                 {
                     if (check != "" && ModContent.Find<AltBiome>(check).BiomeType == BiomeType.Evil)
                     {
-                        causedIssueBy[0] = (int)AltLibrary.biomes.First(x => x.FullName == check).BiomeType;
+                        causedIssueBy[0] = (int)AltLibrary.Biomes.First(x => x.FullName == check).BiomeType;
                         break;
                     }
                 }
@@ -34,7 +34,7 @@ namespace AltLibrary.Common.Systems
                 {
                     if (check != "" && ModContent.Find<AltBiome>(check).BiomeType == BiomeType.Hallow)
                     {
-                        causedIssueBy[1] = (int)AltLibrary.biomes.First(x => x.FullName == check).BiomeType;
+                        causedIssueBy[1] = (int)AltLibrary.Biomes.First(x => x.FullName == check).BiomeType;
                         break;
                     }
                 }
@@ -46,7 +46,7 @@ namespace AltLibrary.Common.Systems
                 {
                     if (check != "" && ModContent.Find<AltBiome>(check).BiomeType == BiomeType.Hell)
                     {
-                        causedIssueBy[2] = (int)AltLibrary.biomes.First(x => x.FullName == check).BiomeType;
+                        causedIssueBy[2] = (int)AltLibrary.Biomes.First(x => x.FullName == check).BiomeType;
                         break;
                     }
                 }
@@ -58,7 +58,7 @@ namespace AltLibrary.Common.Systems
                 {
                     if (check != "" && ModContent.Find<AltBiome>(check).BiomeType == BiomeType.Jungle)
                     {
-                        causedIssueBy[3] = (int)AltLibrary.biomes.First(x => x.FullName == check).BiomeType;
+                        causedIssueBy[3] = (int)AltLibrary.Biomes.First(x => x.FullName == check).BiomeType;
                         break;
                     }
                 }

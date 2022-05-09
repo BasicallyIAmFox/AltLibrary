@@ -17,9 +17,9 @@ namespace AltLibrary.Core.UIs
 {
     internal class ALUIOreListItem : UIPanel
     {
-        private readonly AltOre _achievement;
+        private readonly AltOre ore;
 
-        private readonly UIImageFramed _achievementIcon;
+        private readonly UIImageFramed oreIcon;
 
         private readonly UIImageButton button;
 
@@ -31,17 +31,17 @@ namespace AltLibrary.Core.UIs
 
         public ALUIOreListItem(AltOre ore, bool largeForOtherLanguages)
         {
-            this._large = largeForOtherLanguages;
-            base.BackgroundColor = new Color(26, 40, 89) * 0.8f;
-            base.BorderColor = new Color(13, 20, 44) * 0.8f;
-            float num5 = 16 + this._large.ToInt() * 20;
-            float num7 = this._large.ToInt() * 6;
-            float num6 = this._large.ToInt() * 12;
-            this._achievement = ore;
-            base.Height.Set(66f + num5, 0f);
-            base.Width.Set(0f, 1f);
-            base.PaddingTop = 8f;
-            base.PaddingLeft = 9f;
+            _large = largeForOtherLanguages;
+            BackgroundColor = new Color(26, 40, 89) * 0.8f;
+            BorderColor = new Color(13, 20, 44) * 0.8f;
+            float num5 = 16 + _large.ToInt() * 20;
+            float num7 = _large.ToInt() * 6;
+            float num6 = _large.ToInt() * 12;
+            this.ore = ore;
+            Height.Set(66f + num5, 0f);
+            Width.Set(0f, 1f);
+            PaddingTop = 8f;
+            PaddingLeft = 9f;
             UIImage image = new(ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/Button2", AssetRequestMode.ImmediateLoad));
             image.Left.Set(-50f, 0f);
             image.Width.Set(-50f, 0f);
@@ -49,19 +49,19 @@ namespace AltLibrary.Core.UIs
             image.Top.Set(num6 - 1f, 0f);
             Append(image);
             Rectangle frame = new(0, 0, 30, 30);
-            this._achievementIcon = new UIImageFramed(ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/OreIcons"), frame);
-            _achievementIcon.Left.Set(-50f, 0f);
-            _achievementIcon.Width.Set(-50f, 0f);
-            this._achievementIcon.Left.Set(num7, 0f);
-            this._achievementIcon.Top.Set(num6, 0f);
-            _achievementIcon.OnUpdate += _achievementIcon_OnUpdate;
-            Append(_achievementIcon);
+            oreIcon = new UIImageFramed(ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/OreIcons"), frame);
+            oreIcon.Left.Set(-50f, 0f);
+            oreIcon.Width.Set(-50f, 0f);
+            oreIcon.Left.Set(num7, 0f);
+            oreIcon.Top.Set(num6, 0f);
+            oreIcon.OnUpdate += _achievementIcon_OnUpdate;
+            Append(oreIcon);
             button = new(ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/Empty", AssetRequestMode.ImmediateLoad));
-            _achievementIcon.Width.Set(0f, 1f);
-            _achievementIcon.Height.Set(0, 1f);
+            oreIcon.Width.Set(0f, 1f);
+            oreIcon.Height.Set(0, 1f);
             button.OnClick += _achievementIcon_OnClick;
             button.SetVisibility(0f, 0f);
-            _achievementIcon.Append(button);
+            oreIcon.Append(button);
             OnClick += _achievementIcon_OnClick;
             _innerPanelTopTexture = Main.Assets.Request<Texture2D>("Images/UI/Achievement_InnerPanelTop");
             if (_large)
@@ -76,75 +76,75 @@ namespace AltLibrary.Core.UIs
 
         private void _achievementIcon_OnUpdate(UIElement affectedElement)
         {
-            if (_achievement.Name.StartsWith("Random"))
+            if (ore.Name.StartsWith("Random"))
             {
                 (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/Random"), new(0, 0, 30, 30));
                 return;
             }
 
-            if (_achievement.Type == -1)
+            if (ore.Type == -1)
             {
                 set(0);
             }
-            else if (_achievement.Type == -2)
+            else if (ore.Type == -2)
             {
                 set(1);
             }
-            else if (_achievement.Type == -3)
+            else if (ore.Type == -3)
             {
                 set(2);
             }
-            else if (_achievement.Type == -4)
+            else if (ore.Type == -4)
             {
                 set(3);
             }
-            else if (_achievement.Type == -5)
+            else if (ore.Type == -5)
             {
                 set(4);
             }
-            else if (_achievement.Type == -6)
+            else if (ore.Type == -6)
             {
                 set(5);
             }
-            else if (_achievement.Type == -7)
+            else if (ore.Type == -7)
             {
                 set(6);
             }
-            else if (_achievement.Type == -8)
+            else if (ore.Type == -8)
             {
                 set(7);
             }
-            else if (_achievement.Type == -9)
+            else if (ore.Type == -9)
             {
                 set(8);
             }
-            else if (_achievement.Type == -10)
+            else if (ore.Type == -10)
             {
                 set(9);
             }
-            else if (_achievement.Type == -11)
+            else if (ore.Type == -11)
             {
                 set(10);
             }
-            else if (_achievement.Type == -12)
+            else if (ore.Type == -12)
             {
                 set(11);
             }
-            else if (_achievement.Type == -13)
+            else if (ore.Type == -13)
             {
                 set(12);
             }
-            else if (_achievement.Type == -14)
+            else if (ore.Type == -14)
             {
                 set(13);
             }
-            else if (_achievement.Type == -15)
+            else if (ore.Type == -15)
             {
                 set(14);
             }
-            if (_achievement.Type >= 0 && _achievement.Mod != null)
+            if (ore.Type >= 0 && ore.Mod != null)
             {
-                (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>(_achievement.Texture), new(0, 0, 30, 30));
+                (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>(ore.Texture), new(0, 0, 30, 30));
             }
 
             void set(int i)
@@ -155,89 +155,89 @@ namespace AltLibrary.Core.UIs
 
         private void _achievementIcon_OnClick(UIMouseEvent evt, UIElement listeningElement)
         {
-            if (_achievement.Name.StartsWith("Random"))
+            if (ore.Name.StartsWith("Random"))
             {
                 List<int> values = new();
-                switch (_achievement.Name)
+                switch (ore.Name)
                 {
                     case "RandomCopper":
                         values.Add(-1);
                         values.Add(-2);
-                        AltLibrary.ores.Where(x => x.OreType == OreType.Copper && x.Selectable).ToList().ForEach(x => values.Add(x.Type));
+                        AltLibrary.Ores.Where(x => x.OreType == OreType.Copper && x.Selectable).ToList().ForEach(x => values.Add(x.Type));
                         UIWorldCreationEdits.Copper = values[Main.rand.Next(values.Count)];
                         break;
                     case "RandomIron":
                         values.Add(-3);
                         values.Add(-4);
-                        AltLibrary.ores.Where(x => x.OreType == OreType.Iron && x.Selectable).ToList().ForEach(x => values.Add(x.Type));
+                        AltLibrary.Ores.Where(x => x.OreType == OreType.Iron && x.Selectable).ToList().ForEach(x => values.Add(x.Type));
                         UIWorldCreationEdits.Iron = values[Main.rand.Next(values.Count)];
                         break;
                     case "RandomSilver":
                         values.Add(-5);
                         values.Add(-6);
-                        AltLibrary.ores.Where(x => x.OreType == OreType.Silver && x.Selectable).ToList().ForEach(x => values.Add(x.Type));
+                        AltLibrary.Ores.Where(x => x.OreType == OreType.Silver && x.Selectable).ToList().ForEach(x => values.Add(x.Type));
                         UIWorldCreationEdits.Silver = values[Main.rand.Next(values.Count)];
                         break;
                     case "RandomGold":
                         values.Add(-7);
                         values.Add(-8);
-                        AltLibrary.ores.Where(x => x.OreType == OreType.Gold && x.Selectable).ToList().ForEach(x => values.Add(x.Type));
+                        AltLibrary.Ores.Where(x => x.OreType == OreType.Gold && x.Selectable).ToList().ForEach(x => values.Add(x.Type));
                         UIWorldCreationEdits.Gold = values[Main.rand.Next(values.Count)];
                         break;
                     case "RandomCobalt":
                         values.Add(-9);
                         values.Add(-10);
-                        AltLibrary.ores.Where(x => x.OreType == OreType.Cobalt && x.Selectable).ToList().ForEach(x => values.Add(x.Type));
+                        AltLibrary.Ores.Where(x => x.OreType == OreType.Cobalt && x.Selectable).ToList().ForEach(x => values.Add(x.Type));
                         UIWorldCreationEdits.Cobalt = values[Main.rand.Next(values.Count)];
                         break;
                     case "RandomMythril":
                         values.Add(-11);
                         values.Add(-12);
-                        AltLibrary.ores.Where(x => x.OreType == OreType.Mythril && x.Selectable).ToList().ForEach(x => values.Add(x.Type));
+                        AltLibrary.Ores.Where(x => x.OreType == OreType.Mythril && x.Selectable).ToList().ForEach(x => values.Add(x.Type));
                         UIWorldCreationEdits.Mythril = values[Main.rand.Next(values.Count)];
                         break;
                     case "RandomAdamantite":
                         values.Add(-13);
                         values.Add(-14);
-                        AltLibrary.ores.Where(x => x.OreType == OreType.Adamantite && x.Selectable).ToList().ForEach(x => values.Add(x.Type));
+                        AltLibrary.Ores.Where(x => x.OreType == OreType.Adamantite && x.Selectable).ToList().ForEach(x => values.Add(x.Type));
                         UIWorldCreationEdits.Adamantite = values[Main.rand.Next(values.Count)];
                         break;
                 }
                 return;
             }
 
-            if (_achievement.Type <= -1 && _achievement.Type >= -2) UIWorldCreationEdits.Copper = _achievement.Type;
-            if (_achievement.Type <= -3 && _achievement.Type >= -4) UIWorldCreationEdits.Iron = _achievement.Type;
-            if (_achievement.Type <= -5 && _achievement.Type >= -6) UIWorldCreationEdits.Silver = _achievement.Type;
-            if (_achievement.Type <= -7 && _achievement.Type >= -8) UIWorldCreationEdits.Gold = _achievement.Type;
-            if (_achievement.Type <= -9 && _achievement.Type >= -10) UIWorldCreationEdits.Cobalt = _achievement.Type;
-            if (_achievement.Type <= -11 && _achievement.Type >= -12) UIWorldCreationEdits.Mythril = _achievement.Type;
-            if (_achievement.Type <= -13 && _achievement.Type >= -14) UIWorldCreationEdits.Adamantite = _achievement.Type;
+            if (ore.Type <= -1 && ore.Type >= -2) UIWorldCreationEdits.Copper = ore.Type;
+            if (ore.Type <= -3 && ore.Type >= -4) UIWorldCreationEdits.Iron = ore.Type;
+            if (ore.Type <= -5 && ore.Type >= -6) UIWorldCreationEdits.Silver = ore.Type;
+            if (ore.Type <= -7 && ore.Type >= -8) UIWorldCreationEdits.Gold = ore.Type;
+            if (ore.Type <= -9 && ore.Type >= -10) UIWorldCreationEdits.Cobalt = ore.Type;
+            if (ore.Type <= -11 && ore.Type >= -12) UIWorldCreationEdits.Mythril = ore.Type;
+            if (ore.Type <= -13 && ore.Type >= -14) UIWorldCreationEdits.Adamantite = ore.Type;
 
-            if (_achievement.Type < 0)
+            if (ore.Type < 0)
                 return;
-            switch (_achievement.OreType)
+            switch (ore.OreType)
             {
                 case OreType.Copper:
-                    UIWorldCreationEdits.Copper = _achievement.Type;
+                    UIWorldCreationEdits.Copper = ore.Type;
                     break;
                 case OreType.Iron:
-                    UIWorldCreationEdits.Iron = _achievement.Type;
+                    UIWorldCreationEdits.Iron = ore.Type;
                     break;
                 case OreType.Silver:
-                    UIWorldCreationEdits.Silver = _achievement.Type;
+                    UIWorldCreationEdits.Silver = ore.Type;
                     break;
                 case OreType.Gold:
-                    UIWorldCreationEdits.Gold = _achievement.Type;
+                    UIWorldCreationEdits.Gold = ore.Type;
                     break;
                 case OreType.Cobalt:
-                    UIWorldCreationEdits.Cobalt = _achievement.Type;
+                    UIWorldCreationEdits.Cobalt = ore.Type;
                     break;
                 case OreType.Mythril:
-                    UIWorldCreationEdits.Mythril = _achievement.Type;
+                    UIWorldCreationEdits.Mythril = ore.Type;
                     break;
                 case OreType.Adamantite:
-                    UIWorldCreationEdits.Adamantite = _achievement.Type;
+                    UIWorldCreationEdits.Adamantite = ore.Type;
                     break;
             }
         }
@@ -248,28 +248,28 @@ namespace AltLibrary.Core.UIs
             int num9 = this._large.ToInt() * 6;
             Vector2 value8 = new(num9, 0f);
             CalculatedStyle innerDimensions = base.GetInnerDimensions();
-            CalculatedStyle dimensions = _achievementIcon.GetDimensions();
+            CalculatedStyle dimensions = oreIcon.GetDimensions();
             float num8 = dimensions.X + dimensions.Width;
             Vector2 value9 = new(num8 + 7f, innerDimensions.Y);
             float num7 = innerDimensions.Width - dimensions.Width + 1f - num9 * 2;
             Vector2 baseScale5 = new(0.85f);
             Vector2 baseScale4 = new(0.92f);
-            string descValue = _achievement.Description != null ? _achievement.Description.GetTranslation(Language.ActiveCulture) : "";
-            if (descValue == null && _achievement.Description != null)
+            string descValue = ore.Description != null ? ore.Description.GetTranslation(Language.ActiveCulture) : "";
+            if (descValue == null && ore.Description != null)
             {
                 descValue = "";
             }
-            if (_achievement.Mod == null)
+            if (ore.Mod == null)
             {
-                switch (_achievement.Name)
+                switch (ore.Name)
                 {
-                    case "RandomCopper": descValue = Language.GetTextValue($"Mods.AltLibrary.OreDescription.{_achievement.Name}"); break;
-                    case "RandomIron": descValue = Language.GetTextValue($"Mods.AltLibrary.OreDescription.{_achievement.Name}"); break;
-                    case "RandomSilver": descValue = Language.GetTextValue($"Mods.AltLibrary.OreDescription.{_achievement.Name}"); break;
-                    case "RandomGold": descValue = Language.GetTextValue($"Mods.AltLibrary.OreDescription.{_achievement.Name}"); break;
-                    case "RandomCobalt": descValue = Language.GetTextValue($"Mods.AltLibrary.OreDescription.{_achievement.Name}"); break;
-                    case "RandomMythril": descValue = Language.GetTextValue($"Mods.AltLibrary.OreDescription.{_achievement.Name}"); break;
-                    case "RandomAdamantite": descValue = Language.GetTextValue($"Mods.AltLibrary.OreDescription.{_achievement.Name}"); break;
+                    case "RandomCopper": descValue = Language.GetTextValue($"Mods.AltLibrary.OreDescription.{ore.Name}"); break;
+                    case "RandomIron": descValue = Language.GetTextValue($"Mods.AltLibrary.OreDescription.{ore.Name}"); break;
+                    case "RandomSilver": descValue = Language.GetTextValue($"Mods.AltLibrary.OreDescription.{ore.Name}"); break;
+                    case "RandomGold": descValue = Language.GetTextValue($"Mods.AltLibrary.OreDescription.{ore.Name}"); break;
+                    case "RandomCobalt": descValue = Language.GetTextValue($"Mods.AltLibrary.OreDescription.{ore.Name}"); break;
+                    case "RandomMythril": descValue = Language.GetTextValue($"Mods.AltLibrary.OreDescription.{ore.Name}"); break;
+                    case "RandomAdamantite": descValue = Language.GetTextValue($"Mods.AltLibrary.OreDescription.{ore.Name}"); break;
                     default: break;
                 }
             }
@@ -284,7 +284,7 @@ namespace AltLibrary.Core.UIs
             {
                 baseScale4.Y *= num6 / stringSize3.Y;
             }
-            Color value7 = _achievement.NameColor;
+            Color value7 = ore.NameColor;
             value7 = Color.Lerp(value7, Color.White, base.IsMouseHovering ? 0.25f : 0f);
             Color value5 = Color.White;
             value5 = Color.Lerp(value5, Color.White, base.IsMouseHovering ? 0.5f : 0f);
@@ -295,32 +295,32 @@ namespace AltLibrary.Core.UIs
             vector.X += 4f;
             vector.X += 4f;
             vector.X += 17f;
-            string displayNameValue = _achievement.DisplayName != null ? _achievement.DisplayName.GetTranslation(Language.ActiveCulture) : _achievement.Name;
-            if (_achievement.Mod == null)
+            string displayNameValue = ore.DisplayName != null ? ore.DisplayName.GetTranslation(Language.ActiveCulture) : ore.Name;
+            if (ore.Mod == null)
             {
-                switch (_achievement.Name)
+                switch (ore.Name)
                 {
-                    case "Copper": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
-                    case "Tin": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
-                    case "Iron": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
-                    case "Lead": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
-                    case "Silver": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
-                    case "Tungsten": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
-                    case "Gold": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
-                    case "Platinum": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
-                    case "Cobalt": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
-                    case "Palladium": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
-                    case "Mythril": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
-                    case "Orichalcum": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
-                    case "Adamantite": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
-                    case "Titanium": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
-                    case "RandomCopper": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
-                    case "RandomIron": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
-                    case "RandomSilver": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
-                    case "RandomGold": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
-                    case "RandomCobalt": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
-                    case "RandomMythril": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
-                    case "RandomAdamantite": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{_achievement.Name}"); break;
+                    case "Copper": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
+                    case "Tin": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
+                    case "Iron": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
+                    case "Lead": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
+                    case "Silver": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
+                    case "Tungsten": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
+                    case "Gold": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
+                    case "Platinum": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
+                    case "Cobalt": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
+                    case "Palladium": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
+                    case "Mythril": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
+                    case "Orichalcum": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
+                    case "Adamantite": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
+                    case "Titanium": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
+                    case "RandomCopper": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
+                    case "RandomIron": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
+                    case "RandomSilver": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
+                    case "RandomGold": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
+                    case "RandomCobalt": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
+                    case "RandomMythril": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
+                    case "RandomAdamantite": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
                     default: break;
                 }
             }
@@ -339,7 +339,7 @@ namespace AltLibrary.Core.UIs
             spriteBatch.Draw(texture, vector2, new Rectangle(0, 0, 22, 22), Color.White);
             if (mouseRectangle.Intersects(Utils.CenteredRectangle(vector2 + new Vector2(11f, 11f), Utils.Size(texture))))
             {
-                Main.instance.MouseText(_achievement.Mod == null ? Language.GetTextValue("Mods.AltLibrary.Warn.VanillaOre") : Language.GetTextValue("Mods.AltLibrary.Warn.ModdedOre", _achievement.Mod.Name));
+                Main.instance.MouseText(ore.Mod == null ? Language.GetTextValue("Mods.AltLibrary.Warn.VanillaOre") : Language.GetTextValue("Mods.AltLibrary.Warn.ModdedOre", ore.Mod.Name));
             }
         }
 

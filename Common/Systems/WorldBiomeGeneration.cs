@@ -122,7 +122,7 @@ namespace AltLibrary.Common.Systems
                     {
                         tile49 = Main.tile[i2, j];
                         bool bl = tile49.TileType == 60;
-                        foreach (AltBiome biome in AltLibrary.biomes)
+                        foreach (AltBiome biome in AltLibrary.Biomes)
                         {
                             if (biome.BiomeType == BiomeType.Jungle && biome.BiomeGrass.HasValue)
                             {
@@ -148,7 +148,7 @@ namespace AltLibrary.Common.Systems
             //WorldGen.NotTheBees(); 
             // stinky re-logic and their private methods
             int grass = TileID.JungleGrass;
-            foreach (AltBiome alt in AltLibrary.biomes)
+            foreach (AltBiome alt in AltLibrary.Biomes)
             {
                 if (alt.BiomeType == BiomeType.Jungle)
                 {
@@ -228,8 +228,8 @@ namespace AltLibrary.Common.Systems
             }
             else
             {
-                WorldGen.SavedOreTiers.Copper = AltLibrary.ores[WorldBiomeManager.Copper - 1].ore;
-                WorldGen.copperBar = AltLibrary.ores[WorldBiomeManager.Copper - 1].bar;
+                WorldGen.SavedOreTiers.Copper = AltLibrary.Ores[WorldBiomeManager.Copper - 1].ore;
+                WorldGen.copperBar = AltLibrary.Ores[WorldBiomeManager.Copper - 1].bar;
             }
             if (WorldBiomeManager.Iron == -3)
             {
@@ -243,8 +243,8 @@ namespace AltLibrary.Common.Systems
             }
             else
             {
-                WorldGen.SavedOreTiers.Iron = AltLibrary.ores[WorldBiomeManager.Iron - 1].ore;
-                WorldGen.ironBar = AltLibrary.ores[WorldBiomeManager.Iron - 1].bar;
+                WorldGen.SavedOreTiers.Iron = AltLibrary.Ores[WorldBiomeManager.Iron - 1].ore;
+                WorldGen.ironBar = AltLibrary.Ores[WorldBiomeManager.Iron - 1].bar;
             }
             if (WorldBiomeManager.Silver == -5)
             {
@@ -258,8 +258,8 @@ namespace AltLibrary.Common.Systems
             }
             else
             {
-                WorldGen.SavedOreTiers.Silver = AltLibrary.ores[WorldBiomeManager.Silver - 1].ore;
-                WorldGen.silverBar = AltLibrary.ores[WorldBiomeManager.Silver - 1].bar;
+                WorldGen.SavedOreTiers.Silver = AltLibrary.Ores[WorldBiomeManager.Silver - 1].ore;
+                WorldGen.silverBar = AltLibrary.Ores[WorldBiomeManager.Silver - 1].bar;
             }
             if (WorldBiomeManager.Gold == -7)
             {
@@ -273,8 +273,8 @@ namespace AltLibrary.Common.Systems
             }
             else
             {
-                WorldGen.SavedOreTiers.Gold = AltLibrary.ores[WorldBiomeManager.Gold - 1].ore;
-                WorldGen.goldBar = AltLibrary.ores[WorldBiomeManager.Gold - 1].bar;
+                WorldGen.SavedOreTiers.Gold = AltLibrary.Ores[WorldBiomeManager.Gold - 1].ore;
+                WorldGen.goldBar = AltLibrary.Ores[WorldBiomeManager.Gold - 1].bar;
             }
             if (WorldBiomeManager.Cobalt == -9)
             {
@@ -286,7 +286,7 @@ namespace AltLibrary.Common.Systems
             }
             else
             {
-                WorldGen.SavedOreTiers.Cobalt = AltLibrary.ores[WorldBiomeManager.Cobalt - 1].ore;
+                WorldGen.SavedOreTiers.Cobalt = AltLibrary.Ores[WorldBiomeManager.Cobalt - 1].ore;
             }
             if (WorldBiomeManager.Mythril == -11)
             {
@@ -298,7 +298,7 @@ namespace AltLibrary.Common.Systems
             }
             else
             {
-                WorldGen.SavedOreTiers.Mythril = AltLibrary.ores[WorldBiomeManager.Mythril - 1].ore;
+                WorldGen.SavedOreTiers.Mythril = AltLibrary.Ores[WorldBiomeManager.Mythril - 1].ore;
             }
             if (WorldBiomeManager.Adamantite == -13)
             {
@@ -310,23 +310,23 @@ namespace AltLibrary.Common.Systems
             }
             else
             {
-                WorldGen.SavedOreTiers.Adamantite = AltLibrary.ores[WorldBiomeManager.Adamantite - 1].ore;
+                WorldGen.SavedOreTiers.Adamantite = AltLibrary.Ores[WorldBiomeManager.Adamantite - 1].ore;
             }
 
             if (WorldGen.drunkWorldGen)
             {
                 List<int> vs = new() { -333, -666 };
-                AltLibrary.biomes.Where(x => x.BiomeType == BiomeType.Evil && x.Selectable).ToList().ForEach(x => vs.Add(x.Type - 1));
+                AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Evil && x.Selectable).ToList().ForEach(x => vs.Add(x.Type - 1));
                 int index = WorldGen.genRand.Next(vs.Count);
-                int current = !WorldGen.crimson ? (WorldBiomeManager.worldEvil == "" ? -333 : AltLibrary.biomes.FindIndex(x => x.Type == vs[index] + 1)) : -666;
+                int current = !WorldGen.crimson ? (WorldBiomeManager.worldEvil == "" ? -333 : AltLibrary.Biomes.FindIndex(x => x.Type == vs[index] + 1)) : -666;
                 while (vs[index] == current)
                 {
                     index = WorldGen.genRand.Next(vs.Count);
-                    current = !WorldGen.crimson ? (WorldBiomeManager.worldEvil == "" ? -333 : AltLibrary.biomes.FindIndex(x => x.Type == vs[index] + 1)) : -666;
+                    current = !WorldGen.crimson ? (WorldBiomeManager.worldEvil == "" ? -333 : AltLibrary.Biomes.FindIndex(x => x.Type == vs[index] + 1)) : -666;
                 }
                 int worldCrimson = vs[index];
                 bool worldCrimson2 = worldCrimson < 0;
-                AltBiome worldCrimson3 = worldCrimson >= 0 ? AltLibrary.biomes[worldCrimson] : null;
+                AltBiome worldCrimson3 = worldCrimson >= 0 ? AltLibrary.Biomes[worldCrimson] : null;
                 WorldBiomeManager.drunkEvil = worldCrimson3 != null ? worldCrimson3.FullName : (worldCrimson == -333 ? "Terraria/Corruption" : "Terraria/Crimson");
                 WorldBiomeGeneration.worldCrimson = worldCrimson;
                 WorldBiomeGeneration.worldCrimson2 = worldCrimson2;
@@ -527,7 +527,7 @@ namespace AltLibrary.Common.Systems
                     {
                         tile59 = Main.tile[num681, num682];
                         bool bl = tile59.TileType == TileID.JungleGrass;
-                        foreach (AltBiome biome in AltLibrary.biomes)
+                        foreach (AltBiome biome in AltLibrary.Biomes)
                         {
                             if (biome.BiomeType == BiomeType.Jungle && biome.BiomeJungleGrass.HasValue)
                                 bl |= tile59.TileType == biome.BiomeJungleGrass.Value;
@@ -698,7 +698,7 @@ namespace AltLibrary.Common.Systems
                                     {
                                         tile59 = Main.tile[num697, num700];
                                         bool bl = tile59.TileType == TileID.JungleGrass;
-                                        foreach (AltBiome biome in AltLibrary.biomes)
+                                        foreach (AltBiome biome in AltLibrary.Biomes)
                                         {
                                             if (biome.BiomeType == BiomeType.Jungle)
                                                 bl |= tile59.TileType != biome.BiomeGrass;
@@ -1007,7 +1007,7 @@ namespace AltLibrary.Common.Systems
                                     {
                                         tile59 = Main.tile[num720, num724];
                                         bool bl = tile59.TileType == TileID.JungleGrass;
-                                        foreach (AltBiome biome in AltLibrary.biomes)
+                                        foreach (AltBiome biome in AltLibrary.Biomes)
                                         {
                                             if (biome.BiomeType == BiomeType.Jungle && biome.BiomeJungleGrass.HasValue)
                                                 bl |= tile59.TileType == biome.BiomeJungleGrass.Value;

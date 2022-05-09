@@ -140,7 +140,11 @@ namespace AltLibrary.Common.Hooks
 
             AltLibrary.TimeHoveringOnIcon = 0;
             float index = Main.GlobalTimeWrappedHourly % 60;
-            if (index < 30)
+            if (index >= 10 && index < 15)
+            {
+                e.SetFrame(new Rectangle(80, 80, 80, 80));
+            }
+            else if (index >= 15 && index < 30)
             {
                 e.SetFrame(new Rectangle(0, 0, 80, 80));
             }

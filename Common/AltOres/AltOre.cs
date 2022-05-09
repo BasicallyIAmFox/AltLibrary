@@ -39,8 +39,8 @@ namespace AltLibrary.Common.AltOres
                 BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static,
                 new Type[] { typeof(Mod), typeof(string), typeof(bool) }).Invoke(null, new object[] { Mod, $"OreDescription.{Name}", true });
 
-            AltLibrary.ores.Add(this);
-            Type = AltLibrary.ores.Count;
+            AltLibrary.Ores.Add(this);
+            Type = AltLibrary.Ores.Count;
         }
 
         public sealed override void SetupContent()

@@ -242,7 +242,7 @@ namespace AltLibrary.Common.Hooks
             {
                 return ourData.DrunkWorld && tempDict.ContainsKey(path2) && tempDict[path2].drunkEvil == "Terraria/Crimson";
             });
-            foreach (AltBiome biome in AltLibrary.biomes)
+            foreach (AltBiome biome in AltLibrary.Biomes)
             {
                 if (biome.BiomeType == BiomeType.Evil)
                 {
@@ -256,7 +256,7 @@ namespace AltLibrary.Common.Hooks
             {
                 return ourData.DrunkWorld && ourData.IsHardMode && tempDict.ContainsKey(path2) && tempDict[path2].worldHallow == "";
             });
-            foreach (AltBiome biomes in AltLibrary.biomes)
+            foreach (AltBiome biomes in AltLibrary.Biomes)
             {
                 if (!biomes.FullName.StartsWith("Terraria/") && biomes.BiomeType != BiomeType.Evil)
                 {
@@ -430,7 +430,7 @@ namespace AltLibrary.Common.Hooks
             assets.Add("Corrupt", new Func<WorldFileData, bool>((ourData) => ourData.HasCorruption && tempDict.ContainsKey(path2) && tempDict[path2].worldEvil == ""));
             assets.Add("Crimson", new Func<WorldFileData, bool>((ourData) => ourData.HasCrimson && tempDict.ContainsKey(path2) && tempDict[path2].worldEvil == ""));
             assets.Add("Hallow", new Func<WorldFileData, bool>((ourData) => ourData.IsHardMode && tempDict.ContainsKey(path2) && tempDict[path2].worldHallow == ""));
-            foreach (AltBiome biomes in AltLibrary.biomes)
+            foreach (AltBiome biomes in AltLibrary.Biomes)
             {
                 if (!biomes.FullName.StartsWith("Terraria/"))
                 {

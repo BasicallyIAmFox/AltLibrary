@@ -18,7 +18,7 @@ namespace AltLibrary.Common
             bool isJungleSpreadingOre = false;
             bool isGrass = false;
             AltBiome biomeToSpread = null;
-            foreach (AltBiome biome in AltLibrary.biomes)
+            foreach (AltBiome biome in AltLibrary.Biomes)
             {
                 if (biome.BiomeType == BiomeType.Evil || biome.BiomeType == BiomeType.Hallow)
                 {

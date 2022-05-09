@@ -4,6 +4,7 @@ using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -95,17 +96,17 @@ namespace AltLibrary.Common.Hooks
                 if (!good)
                 {
                     Tile tile = Main.tile[m, l];
-                    if (WorldBiomeManager.worldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeDirt.HasValue && tile.TileType == TileID.Dirt)
+                    if (WorldBiomeManager.worldEvil != "")
                     {
-                        tile = Main.tile[m, l];
-                        tile.TileType = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeDirt.Value;
-                        WorldGen.SquareTileFrame(m, l, true);
-                    }
-                    if (WorldBiomeManager.worldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeSnow.HasValue && tile.TileType == TileID.SnowBlock)
-                    {
-                        tile = Main.tile[m, l];
-                        tile.TileType = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeSnow.Value;
-                        WorldGen.SquareTileFrame(m, l, true);
+                        foreach (KeyValuePair<int, int> entry in ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).SpecialConversion)
+                        {
+                            if (tile.TileType == entry.Key)
+                            {
+                                tile = Main.tile[m, l];
+                                tile.TileType = (ushort)entry.Value;
+                                WorldGen.SquareTileFrame(m, l, true);
+                            }
+                        }
                     }
                 }
             });
@@ -119,17 +120,17 @@ namespace AltLibrary.Common.Hooks
             c.EmitDelegate<Action<int, int>>((m, l) =>
             {
                 Tile tile = Main.tile[m, l];
-                if (WorldBiomeManager.worldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeDirt.HasValue && tile.TileType == TileID.Dirt)
+                if (WorldBiomeManager.worldHallow != "")
                 {
-                    tile = Main.tile[m, l];
-                    tile.TileType = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeDirt.Value;
-                    WorldGen.SquareTileFrame(m, l, true);
-                }
-                if (WorldBiomeManager.worldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeSnow.HasValue && tile.TileType == TileID.SnowBlock)
-                {
-                    tile = Main.tile[m, l];
-                    tile.TileType = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeSnow.Value;
-                    WorldGen.SquareTileFrame(m, l, true);
+                    foreach (KeyValuePair<int, int> entry in ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).SpecialConversion)
+                    {
+                        if (tile.TileType == entry.Key)
+                        {
+                            tile = Main.tile[m, l];
+                            tile.TileType = (ushort)entry.Value;
+                            WorldGen.SquareTileFrame(m, l, true);
+                        }
+                    }
                 }
             });
 
