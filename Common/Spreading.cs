@@ -238,7 +238,7 @@ namespace AltLibrary.Common
             }
         }
 
-        private static bool NearbyEvilSlowingOres(int i, int j)
+        internal static bool NearbyEvilSlowingOres(int i, int j)
         {
             float count = 0f;
             int worldEdgeDistance = 5;
@@ -301,7 +301,8 @@ namespace AltLibrary.Common
                 }
             }
         }
-        private static void SpreadGrassPhase2(int i, int j, int dirt, int grass, bool blockedBySunflowers)
+
+        internal static void SpreadGrassPhase2(int i, int j, int dirt, int grass, bool blockedBySunflowers)
         {
             int left = i - 1; // defining the bounds of the 3x3 space which will be checked for lava and air
             int right = i + 1;
