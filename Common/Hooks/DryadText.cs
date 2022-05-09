@@ -39,15 +39,23 @@ namespace AltLibrary.Common.Hooks
                         }
                         if (biome.BiomeGrass.HasValue)
                         {
-                            WorldGen.totalGood2 += WorldGen.tileCounts[biome.BiomeIce.Value];
+                            WorldGen.totalGood2 += WorldGen.tileCounts[biome.BiomeGrass.Value];
                         }
                         if (biome.BiomeStone.HasValue)
                         {
-                            WorldGen.totalGood2 += WorldGen.tileCounts[biome.BiomeIce.Value];
+                            WorldGen.totalGood2 += WorldGen.tileCounts[biome.BiomeStone.Value];
                         }
                         if (biome.BiomeSand.HasValue)
                         {
-                            WorldGen.totalGood2 += WorldGen.tileCounts[biome.BiomeIce.Value];
+                            WorldGen.totalGood2 += WorldGen.tileCounts[biome.BiomeSand.Value];
+                        }
+                        if (biome.BiomeHardenedSand.HasValue)
+                        {
+                            WorldGen.totalGood2 += WorldGen.tileCounts[biome.BiomeHardenedSand.Value];
+                        }
+                        if (biome.BiomeSandstone.HasValue)
+                        {
+                            WorldGen.totalGood2 += WorldGen.tileCounts[biome.BiomeSandstone.Value];
                         }
                     }
                     else if (biome.BiomeType == BiomeType.Evil)
@@ -67,6 +75,14 @@ namespace AltLibrary.Common.Hooks
                         if (biome.BiomeSand.HasValue)
                         {
                             WorldGen.totalEvil2 += WorldGen.tileCounts[biome.BiomeSand.Value];
+                        }
+                        if (biome.BiomeHardenedSand.HasValue)
+                        {
+                            WorldGen.totalGood2 += WorldGen.tileCounts[biome.BiomeHardenedSand.Value];
+                        }
+                        if (biome.BiomeSandstone.HasValue)
+                        {
+                            WorldGen.totalGood2 += WorldGen.tileCounts[biome.BiomeSandstone.Value];
                         }
                     }
                 }
