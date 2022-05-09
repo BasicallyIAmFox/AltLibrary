@@ -2,7 +2,6 @@
 using System;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace AltLibrary.Common.AltOres

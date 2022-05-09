@@ -10,7 +10,6 @@ using MonoMod.Cil;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using Terraria;
@@ -20,9 +19,7 @@ using Terraria.ID;
 using Terraria.IO;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
 using Terraria.UI;
-using Terraria.Utilities;
 
 namespace AltLibrary.Common
 {
@@ -127,55 +124,7 @@ namespace AltLibrary.Common
         {
             if ((WorldFileData)typeof(UIWorldListItem).GetField("_data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self) == null)
                 return;
-            WorldFileData data = (WorldFileData)typeof(UIWorldListItem).GetField("_data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self);
-            string path2 = Path.ChangeExtension(data.Path, ".twld");
-            Dictionary<string, AltLibraryConfig.WorldDataValues> tempDict = AltLibraryConfig.Config.GetWorldData();
-            if (!tempDict.ContainsKey(path2))
-            {
-                if (!FileUtilities.Exists(path2, data.IsCloudSave))
-                {
-                    return;
-                }
-                byte[] buf = FileUtilities.ReadAllBytes(path2, data.IsCloudSave);
-                if (buf[0] != 31 || buf[1] != 139)
-                {
-                    return;
-                }
-                var stream = new MemoryStream(buf);
-                var tag = TagIO.FromStream(stream);
-                bool containsMod = false;
-                if (tag.ContainsKey("modData"))
-                {
-                    foreach (TagCompound modDataTag in tag.GetList<TagCompound>("modData").Skip(2))
-                    {
-                        if (modDataTag.Get<string>("mod") == AltLibrary.Instance.Name)
-                        {
-                            TagCompound dataTag = modDataTag.Get<TagCompound>("data");
-                            AltLibraryConfig.WorldDataValues worldData;
-                            worldData.worldEvil = dataTag.Get<string>("AltLibrary:WorldEvil");
-                            worldData.worldHallow = dataTag.Get<string>("AltLibrary:WorldHallow");
-                            worldData.worldHell = dataTag.Get<string>("AltLibrary:WorldHell");
-                            worldData.worldJungle = dataTag.Get<string>("AltLibrary:WorldJungle");
-                            worldData.drunkEvil = dataTag.Get<string>("AltLibrary:DrunkEvil");
-                            tempDict[path2] = worldData;
-                            containsMod = true;
-                            break;
-                        }
-                    }
-                    if (!containsMod)
-                    {
-                        AltLibraryConfig.WorldDataValues worldData;
-                        worldData.worldHallow = "";
-                        worldData.worldEvil = "";
-                        worldData.worldHell = "";
-                        worldData.worldJungle = "";
-                        worldData.drunkEvil = "";
-                        tempDict[path2] = worldData;
-                    }
-                    AltLibraryConfig.Config.SetWorldData(tempDict);
-                    AltLibraryConfig.Save(AltLibraryConfig.Config);
-                }
-            }
+            ALUtils.GetWorldData(self, out Dictionary<string, AltLibraryConfig.WorldDataValues> tempDict, out string path2);
 
             bool valid = true;
             if (tempDict.ContainsKey(path2))
