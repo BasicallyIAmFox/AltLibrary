@@ -21,6 +21,10 @@ namespace AltLibrary
             public string drunkEvil;
         }
 
+        [Label("$Mods.AltLibrary.Config.SpecialSeedWorldPreview.Label")]
+        [Tooltip("$Mods.AltLibrary.Config.SpecialSeedWorldPreview.Tooltip")]
+        [DefaultValue(true)]
+        public bool SpecialSeedWorldPreview;
         [Label("$Mods.AltLibrary.Config.PreviewVisible.Label")]
         [Tooltip("$Mods.AltLibrary.Config.PreviewVisible.Tooltip")]
         [OptionStrings(new string[] { "None", "Hallow only", "Jungle only", "Both" })]

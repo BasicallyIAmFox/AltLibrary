@@ -43,6 +43,7 @@ namespace AltLibrary.Common
         public static int Mythril;
         public static int Adamantite;
         public static bool isCrimson;
+        public static string seed;
         public enum CurrentAltOption
         {
             Biome,
@@ -55,10 +56,17 @@ namespace AltLibrary.Common
             On.Terraria.GameContent.UI.States.UIWorldCreation.AddWorldEvilOptions += OnAddWorldEvilOptions;
             On.Terraria.GameContent.UI.States.UIWorldCreation.SetDefaultOptions += UIWorldCreation_SetDefaultOptions;
             On.Terraria.GameContent.UI.States.UIWorldCreation.BuildPage += UIWorldCreation_BuildPage;
+            On.Terraria.GameContent.UI.States.UIWorldCreation.Draw += UIWorldCreation_Draw;
             IL.Terraria.GameContent.UI.States.UIWorldCreation.FinishCreatingWorld += UIWorldCreation_FinishCreatingWorld;
             IL.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf += UIWorldCreationPreview_DrawSelf1;
             On.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf += UIWorldCreationPreview_DrawSelf;
             On.Terraria.GameContent.UI.Elements.UIWorldListItem.PlayGame += UIWorldListItem_PlayGame;
+        }
+
+        private static void UIWorldCreation_Draw(On.Terraria.GameContent.UI.States.UIWorldCreation.orig_Draw orig, UIWorldCreation self, SpriteBatch spriteBatch)
+        {
+            orig(self, spriteBatch);
+            seed = (string)typeof(UIWorldCreation).GetField("_optionSeed", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
         }
 
         private static void UIWorldCreationPreview_DrawSelf1(ILContext il)
@@ -101,8 +109,34 @@ namespace AltLibrary.Common
             c.Emit(OpCodes.Ldarg, 1);
             c.Emit(OpCodes.Ldloc, 1);
             c.Emit(OpCodes.Ldloc, 2);
-            c.EmitDelegate<Action<UIWorldCreationPreview, SpriteBatch, Vector2, Color>>((unusedVariableLeftInForLoading, spritebatch, position, color) =>
+            c.EmitDelegate<Action<UIWorldCreationPreview, SpriteBatch, Vector2, Color>>((ui, spritebatch, position, color) =>
             {
+                byte size = (byte)typeof(UIWorldCreationPreview).GetField("_size", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(ui);
+                string var = size switch
+                {
+                    0 => "Small",
+                    1 => "Medium",
+                    2 => "Large",
+                    _ => "Small",
+                };
+                string folder = seed switch
+                {
+                    "05162020" or "5162020" => "Drunk",
+                    "not the bees" or "not the bees!" => "NotTheBees",
+                    "for the worthy" => "ForTheWorthy",
+                    "celebrationmk10" or "05162011" or "5162011" or "05162021" or "5162021" => "Anniversary",
+                    "constant" or "theconstant" or "​the constant" or "eye4aneye" or "eye4aneye" => "Constant",
+                    _ => "",
+                };
+                if (folder != "" && AltLibraryConfig.Config.SpecialSeedWorldPreview)
+                {
+                    spritebatch.Draw(ModContent.Request<Texture2D>($"AltLibrary/Assets/WorldPreviews/{folder}/{var}", AssetRequestMode.ImmediateLoad).Value, position, color);
+                }
+                else
+                {
+                    //spritebatch.Draw(((Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField($"_Size{var}Texture").GetValue(ui)).Value, position, color);
+                }
+
                 foreach (AltBiome biome in AltLibrary.Biomes)
                 {
                     if (AltHallowBiomeChosenType == biome.Type - 1 && biome.IconLarge != "" && (AltLibraryConfig.Config.PreviewVisible == "Hallow only" || AltLibraryConfig.Config.PreviewVisible == "Both") && biome.BiomeType == BiomeType.Hallow)
