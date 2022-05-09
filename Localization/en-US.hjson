@@ -79,6 +79,7 @@ Mods: {
 			ModdedOre: "This ore is added by {0}"
 		}
 		RecipeGroups: {
+			EvilOres: "Evil Ore"
 			EvilBars: "Evil Bar"
 			HallowBars: "Light Bar"
 			HellBars: "Underworld Bar"
@@ -102,6 +103,12 @@ Mods: {
 			Fireblossom: "Underworld Herb"
 			Moonglow: "Tropical Herb"
 			Hellforges: "Underworld Forge"
+			CopperBars: "Copper Bar"
+			SilverBars: "Silver Bar"
+			GoldBars: "Gold Bar"
+			CobaltBars: "Cobalt Bar"
+			MythrilBars: "Mythril Bar"
+			AdamantiteBars: "Adamantite Bar"
 		}
 		DryadSpecialText: {
 			WorldStatusGoodEvil: "{0} is {1}% good and {2}% evil."

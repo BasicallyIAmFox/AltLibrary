@@ -361,6 +361,90 @@ namespace AltLibrary.Common.Systems
                     recipe.RemoveIngredient(ing);
                     recipe.AddRecipeGroup("AltLibrary:Hellforges");
                 }
+                if (recipe.HasResult(ItemID.FlinxFurCoat))
+                {
+                    if (recipe.HasIngredient(ItemID.PlatinumBar))
+                    {
+                        recipe.RemoveRecipe();
+                        i--;
+                    } 
+                    else if (recipe.HasIngredient(ItemID.GoldBar))
+                    {
+                        recipe.TryGetIngredient(ItemID.GoldBar, out Item ing);
+                        recipe.RemoveIngredient(ing);
+                        recipe.AddRecipeGroup("AltLibrary:GoldBars", 8);
+                    }
+                }
+                if (recipe.HasResult(ItemID.FlinxStaff))
+                {
+                    if (recipe.HasIngredient(ItemID.PlatinumBar))
+                    {
+                        recipe.RemoveRecipe();
+                        i--;
+                    }
+                    else if (recipe.HasIngredient(ItemID.GoldBar))
+                    {
+                        recipe.TryGetIngredient(ItemID.GoldBar, out Item ing);
+                        recipe.RemoveIngredient(ing);
+                        recipe.AddRecipeGroup("AltLibrary:GoldBars", 10);
+                    }
+                }
+                if (recipe.HasResult(ItemID.AncientBattleArmorHat) || recipe.HasResult(ItemID.FrostHelmet))
+                {
+                    if (recipe.HasIngredient(ItemID.TitaniumBar))
+                    {
+                        recipe.RemoveRecipe();
+                        i--;
+                    }
+                    else if (recipe.HasIngredient(ItemID.AdamantiteBar))
+                    {
+                        recipe.TryGetIngredient(ItemID.AdamantiteBar, out Item ing);
+                        recipe.RemoveIngredient(ing);
+                        recipe.AddRecipeGroup("AltLibrary:AdamantiteBars", 10);
+                    }
+                }
+                if (recipe.HasResult(ItemID.AncientBattleArmorShirt) || recipe.HasResult(ItemID.FrostBreastplate))
+                {
+                    if (recipe.HasIngredient(ItemID.TitaniumBar))
+                    {
+                        recipe.RemoveRecipe();
+                        i--;
+                    }
+                    else if (recipe.HasIngredient(ItemID.AdamantiteBar))
+                    {
+                        recipe.TryGetIngredient(ItemID.AdamantiteBar, out Item ing);
+                        recipe.RemoveIngredient(ing);
+                        recipe.AddRecipeGroup("AltLibrary:AdamantiteBars", 20);
+                    }
+                }
+                if (recipe.HasResult(ItemID.AncientBattleArmorPants) || recipe.HasResult(ItemID.FrostLeggings))
+                {
+                    if (recipe.HasIngredient(ItemID.TitaniumBar))
+                    {
+                        recipe.RemoveRecipe();
+                        i--;
+                    }
+                    else if (recipe.HasIngredient(ItemID.AdamantiteBar))
+                    {
+                        recipe.TryGetIngredient(ItemID.AdamantiteBar, out Item ing);
+                        recipe.RemoveIngredient(ing);
+                        recipe.AddRecipeGroup("AltLibrary:AdamantiteBars", 16);
+                    }
+                }
+                if (recipe.HasResult(ItemID.DeerThing))
+                {
+                    if (recipe.HasIngredient(ItemID.CrimtaneOre))
+                    {
+                        recipe.RemoveRecipe();
+                        i--;
+                    }
+                    else if (recipe.HasIngredient(ItemID.DemoniteOre))
+                    {
+                        recipe.TryGetIngredient(ItemID.DemoniteOre, out Item ing);
+                        recipe.RemoveIngredient(ing);
+                        recipe.AddRecipeGroup("AltLibrary:EvilOres", 5);
+                    }
+                }
             }
         }
     }

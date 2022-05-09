@@ -82,16 +82,9 @@ namespace AltLibrary.Common
             {
                 foreach (var entry in entries)
                 {
-                    if (entry is LeadingConditionRule leadingRule)
+                    if (entry is ItemDropWithConditionRule rule && rule.itemId == ItemID.Pwnhammer)
                     {
-                        foreach (var chainedRule in entry.ChainedRules)
-                        {
-                            if (chainedRule is ItemDropWithConditionRule rule && rule.itemId == ItemID.Pwnhammer)
-                            {
-                                npcLoot.Remove(rule);
-                                break;
-                            }
-                        }
+                        npcLoot.Remove(rule);
                     }
                 }
                 var expertCondition = new LeadingConditionRule(new Conditions.NotExpert());
@@ -245,10 +238,17 @@ namespace AltLibrary.Common
     {
         public override bool PreOpenVanillaBag(string context, Player player, int arg)
         {
-            if (arg == ItemID.TwinsBossBag || arg == ItemID.SkeletronPrimeBossBag || arg == ItemID.DestroyerBossBag)
+            if (WorldBiomeManager.worldHallow != "")
             {
-                if (WorldBiomeManager.worldHallow != "") NPCLoader.blockLoot.Add(ItemID.HallowedBar);
-            }
+                if (arg == ItemID.TwinsBossBag || arg == ItemID.SkeletronPrimeBossBag || arg == ItemID.DestroyerBossBag)
+                {
+                    NPCLoader.blockLoot.Add(ItemID.HallowedBar);
+                }
+                if (arg == ItemID.WallOfFleshBossBag && ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).HammerType != ItemID.Pwnhammer)
+                {
+                    NPCLoader.blockLoot.Add(ItemID.Pwnhammer);
+                }
+            }  
             if (arg == ItemID.EyeOfCthulhuBossBag)
             {
                 if (WorldBiomeManager.worldEvil != "")
@@ -267,14 +267,19 @@ namespace AltLibrary.Common
         public override void OpenVanillaBag(string context, Player player, int arg)
         {
             var source = player.GetSource_OpenItem(arg);
-            if ((arg == ItemID.TwinsBossBag || arg == ItemID.SkeletronPrimeBossBag || arg == ItemID.DestroyerBossBag) &&
-                WorldBiomeManager.worldHallow != "")
+            if (WorldBiomeManager.worldHallow != "")
             {
                 var biome = ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow);
-                var amount = Main.rand.Next(15, 31);
-                player.QuickSpawnItem(source, (int)biome.MechDropItemType, amount);
+                if (arg == ItemID.TwinsBossBag || arg == ItemID.SkeletronPrimeBossBag || arg == ItemID.DestroyerBossBag)
+                {
+                    var amount = Main.rand.Next(15, 31);
+                    player.QuickSpawnItem(source, (int)biome.MechDropItemType, amount);
+                }
+                if (arg == ItemID.WallOfFleshBossBag)
+                {
+                    player.QuickSpawnItem(source, (int)biome.HammerType);
+                }
             }
-
             if (arg == ItemID.EyeOfCthulhuBossBag && WorldBiomeManager.worldEvil != "")
             {
                 var biome = ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil);
