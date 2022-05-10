@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -443,6 +444,55 @@ namespace AltLibrary.Common.Systems
                         recipe.TryGetIngredient(ItemID.DemoniteOre, out Item ing);
                         recipe.RemoveIngredient(ing);
                         recipe.AddRecipeGroup("AltLibrary:EvilOres", 5);
+                    }
+                }
+                ExampleTestMethod(ref recipe,
+                                  new int[] { ItemID.PeaceCandle, ItemID.Throne },
+                                  new int[] { ItemID.GoldBar },
+                                  "AltLibrary:GoldBars",
+                                  ref i,
+                                  ItemID.PlatinumBar);
+            }
+        }
+
+        private void ReplaceRecipe(ref Recipe r, int[] results, int[] ingredients, string group)
+        {
+            foreach (int result in results)
+            {
+                if (r.HasResult(result))
+                {
+                    foreach (int ingredient in ingredients)
+                    {
+                        if (r.HasIngredient(ingredient))
+                        {
+                            r.TryGetIngredient(ingredient, out Item ing);
+                            r.RemoveIngredient(ing);
+                            r.AddRecipeGroup(group, ing.stack);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void ReplaceRecipe(ref Recipe r, int[] results, int[] ingredients, string group, ref int i, int altIng)
+        {
+            foreach (int result in results)
+            {
+                if (r.HasResult(result))
+                {
+                    foreach (int ingredient in ingredients)
+                    {
+                        if (r.HasIngredient(altIng))
+                        {
+                            r.RemoveRecipe();
+                            i--;
+                        }
+                        else if (r.HasIngredient(ingredient))
+                        {
+                            r.TryGetIngredient(ingredient, out Item ing);
+                            r.RemoveIngredient(ing);
+                            r.AddRecipeGroup(group, ing.stack);
+                        }
                     }
                 }
             }
