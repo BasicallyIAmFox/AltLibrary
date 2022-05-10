@@ -81,7 +81,7 @@ namespace AltLibrary.Common
             c.EmitDelegate<Func<Asset<Texture2D>, Asset<Texture2D>>>((orig) =>
             {
                 if (seed != "")
-                    return ModContent.Request<Texture2D>("AltLibrary/Assets/WorldPreviews/Empty");
+                    return ALTextureAssets.Empty2;
                 return orig;
             });
             if (!c.TryGotoNext(i => i.MatchLdfld<UIWorldCreationPreview>("_SizeMediumTexture")))
@@ -90,7 +90,7 @@ namespace AltLibrary.Common
             c.EmitDelegate<Func<Asset<Texture2D>, Asset<Texture2D>>>((orig) =>
             {
                 if (seed != "")
-                    return ModContent.Request<Texture2D>("AltLibrary/Assets/WorldPreviews/Empty");
+                    return ALTextureAssets.Empty2;
                 return orig;
             });
             if (!c.TryGotoNext(i => i.MatchLdfld<UIWorldCreationPreview>("_SizeLargeTexture")))
@@ -99,7 +99,7 @@ namespace AltLibrary.Common
             c.EmitDelegate<Func<Asset<Texture2D>, Asset<Texture2D>>>((orig) =>
             {
                 if (seed != "")
-                    return ModContent.Request<Texture2D>("AltLibrary/Assets/WorldPreviews/Empty");
+                    return ALTextureAssets.Empty2;
                 return orig;
             });
 
@@ -107,8 +107,22 @@ namespace AltLibrary.Common
                 return;
             if (!c.TryGotoNext(i => i.MatchLdfld(out corrupt)))
                 return;
+            c.Index++;
+            c.EmitDelegate<Func<Asset<Texture2D>, Asset<Texture2D>>>((orig) =>
+            {
+                if (AltEvilBiomeChosenType == -333)
+                    return orig;
+                return ALTextureAssets.Empty2;
+            });
             if (!c.TryGotoNext(i => i.MatchLdfld(out crimson)))
                 return;
+            c.Index++;
+            c.EmitDelegate<Func<Asset<Texture2D>, Asset<Texture2D>>>((orig) =>
+            {
+                if (AltEvilBiomeChosenType == -666)
+                    return orig;
+                return ALTextureAssets.Empty2;
+            });
             if (!c.TryGotoPrev(i => i.MatchLdfld<UIWorldCreationPreview>("_EvilRandomTexture")))
                 return;
 
@@ -171,16 +185,22 @@ namespace AltLibrary.Common
                 }
                 else
                 {
-                    spritebatch.Draw(ModContent.Request<Texture2D>($"Terraria/Images/UI/WorldCreation/PreviewSize{var}", AssetRequestMode.ImmediateLoad).Value, position, color);
+                    spritebatch.Draw(Main.Assets.Request<Texture2D>($"Images/UI/WorldCreation/PreviewSize{var}", AssetRequestMode.ImmediateLoad).Value, position, color);
                 }
 
-                return AltEvilBiomeChosenType switch
+                Asset<Texture2D> asset = AltEvilBiomeChosenType switch
                 {
                     -333 => corrupt,
                     -666 => crimson,
-                    > -1 => ModContent.Request<Texture2D>(AltLibrary.Biomes[AltEvilBiomeChosenType].IconLarge ?? "AltLibrary/Assets/Menu/NullBiomePreview"),
-                    _ => orig
+                    _ => orig,
                 };
+                if (AltEvilBiomeChosenType > -1)
+                {
+                    asset = AltLibrary.Biomes[AltEvilBiomeChosenType].IconLarge == null ? ALTextureAssets.NullPreview : ModContent.Request<Texture2D>(AltLibrary.Biomes[AltEvilBiomeChosenType].IconLarge, AssetRequestMode.ImmediateLoad); 
+                }
+                spritebatch.Draw(asset.Value, position, color);
+
+                return ALTextureAssets.Empty2;
             });
 
             if (!c.TryGotoNext(i => i.MatchSwitch(out _)))
@@ -692,7 +712,7 @@ namespace AltLibrary.Common
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    Asset<Texture2D> asset = ModContent.Request<Texture2D>("Terraria/Images/UI/Bestiary/Icon_Tags_Shadow", AssetRequestMode.ImmediateLoad);
+                    Asset<Texture2D> asset = ALTextureAssets.BestiaryIcons;
                     if (i == 0 && AltHallowBiomeChosenType >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.Biomes[AltHallowBiomeChosenType].IconSmall ?? "AltLibrary/Assets/Menu/ButtonHallow", AssetRequestMode.ImmediateLoad);
                     if (i == 1 && AltEvilBiomeChosenType > -1) asset = ModContent.Request<Texture2D>(AltLibrary.Biomes[AltEvilBiomeChosenType].IconSmall ?? "AltLibrary/Assets/Menu/ButtonCorrupt", AssetRequestMode.ImmediateLoad);
                     if (i == 2 && AltHellBiomeChosenType >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.Biomes[AltHellBiomeChosenType].IconSmall ?? "AltLibrary/Assets/Menu/ButtonHell", AssetRequestMode.ImmediateLoad);
@@ -704,7 +724,7 @@ namespace AltLibrary.Common
                     if (i == 2 && AltHellBiomeChosenType < 0) rectangle = new(30, 60, 30, 30);
                     if (i == 3 && AltJungleBiomeChosenType < 0) rectangle = new(180, 30, 30, 30);
                     ValueTuple<Asset<Texture2D>, Rectangle?> valueTuple = new(asset, rectangle);
-                    spriteBatch.Draw(ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/Button", AssetRequestMode.ImmediateLoad).Value, new Vector2(position.X + 96f, position.Y + 26f * i), color * 0.8f);
+                    spriteBatch.Draw(ALTextureAssets.Button.Value, new Vector2(position.X + 96f, position.Y + 26f * i), color * 0.8f);
                     spriteBatch.Draw(valueTuple.Item1.Value, new Vector2(position.X + 99f, position.Y + 26f * i + 3f), valueTuple.Item2, color, 0f, new Vector2(0f, 0f), 0.5f, SpriteEffects.None, 0f);
                     Vector2 vector2 = new(position.X + 96f, position.Y + 26f * i);
                     if (mouseRectangle.Intersects(Utils.CenteredRectangle(vector2 + new Vector2(16f, 16f), Utils.Size(new Rectangle(0, 0, 30, 30)))))
@@ -738,7 +758,7 @@ namespace AltLibrary.Common
             {
                 for (int i = 0; i < 7; i++)
                 {
-                    Asset<Texture2D> asset = ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/OreIcons", AssetRequestMode.ImmediateLoad);
+                    Asset<Texture2D> asset = ALTextureAssets.OreIcons;
                     if (i == 0 && Copper >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.Ores[Copper - 1].Texture);
                     if (i == 1 && Iron >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.Ores[Iron - 1].Texture);
                     if (i == 2 && Silver >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.Ores[Silver - 1].Texture);
@@ -762,7 +782,7 @@ namespace AltLibrary.Common
                     if (i == 6 && Adamantite == -13) rectangle = new(120, 30, 30, 30);
                     if (i == 6 && Adamantite == -14) rectangle = new(150, 30, 30, 30);
                     ValueTuple<Asset<Texture2D>, Rectangle?> valueTuple = new(asset, rectangle);
-                    spriteBatch.Draw(ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/Button", AssetRequestMode.ImmediateLoad).Value, new Vector2(position.X + 96f, position.Y + 26f * (i + x)), color * 0.8f);
+                    spriteBatch.Draw(ALTextureAssets.Button.Value, new Vector2(position.X + 96f, position.Y + 26f * (i + x)), color * 0.8f);
                     spriteBatch.Draw(valueTuple.Item1.Value, new Vector2(position.X + 99f, position.Y + 26f * (i + x) + 3f), valueTuple.Item2, color, 0f, new Vector2(0f, 0f), 0.5f, SpriteEffects.None, 0f);
                     Vector2 vector2 = new(position.X + 96f, position.Y + 26f * (i + x));
                     if (mouseRectangle.Intersects(Utils.CenteredRectangle(vector2 + new Vector2(16f, 16f), Utils.Size(new Rectangle(0, 0, 30, 30)))))

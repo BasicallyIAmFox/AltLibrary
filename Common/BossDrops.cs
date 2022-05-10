@@ -202,7 +202,8 @@ namespace AltLibrary.Common
 
         public string GetConditionDescription()
         {
-            return Language.GetTextValue("Mods.AltLibrary.DropRule.Base", BiomeType.DisplayName != null ? Language.GetTextValue(BiomeType.DisplayName.Key) : BiomeType.Name);
+            string name = BiomeType.DisplayName != null ? BiomeType.DisplayName.GetTranslation(Language.ActiveCulture) : BiomeType.Name;
+            return Language.GetTextValue("Mods.AltLibrary.DropRule.Base", name);
         }
     }
 
@@ -230,7 +231,7 @@ namespace AltLibrary.Common
 
         public string GetConditionDescription()
         {
-            return Language.GetTextValue("Mods.AltLibrary.DropRule.Base", BiomeType.DisplayName != null ? Language.GetTextValue(BiomeType.DisplayName.Key) : BiomeType.Name);
+            return Language.GetTextValue("Mods.AltLibrary.DropRule.Base", BiomeType.DisplayName != null ? BiomeType.DisplayName.GetTranslation(Language.ActiveCulture) : BiomeType.Name);
         }
     }
 

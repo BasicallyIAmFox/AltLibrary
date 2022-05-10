@@ -4,6 +4,7 @@ using AltLibrary.Common.Hooks;
 using AltLibrary.Core;
 using System;
 using System.Collections.Generic;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -30,6 +31,8 @@ namespace AltLibrary
 
         internal static int TimeHoveringOnIcon = 0;
         internal static bool HallowBunnyUnlocked = false;
+        internal static int ModIconVariationX = 0;
+        internal static int ModIconVariationY = 0;
 
         public AltLibrary()
         {
@@ -40,6 +43,9 @@ namespace AltLibrary
         {
             ILHooks.OnInitialize();
             AnimatedModIcon.Init();
+            ALTextureAssets.Load();
+            ModIconVariationX = Main.rand.Next(2);
+            ModIconVariationY = 0;
             TimeHoveringOnIcon = 0;
             HallowBunnyUnlocked = false;
         }
@@ -75,6 +81,7 @@ namespace AltLibrary
         public override void Unload()
         {
             AnimatedModIcon.Unload();
+            ALTextureAssets.Unload();
             AltLibraryConfig.Config = null;
             TimeHoveringOnIcon = 0;
             HallowBunnyUnlocked = false;

@@ -42,21 +42,21 @@ namespace AltLibrary.Core.UIs
             Width.Set(0f, 1f);
             PaddingTop = 8f;
             PaddingLeft = 9f;
-            UIImage image = new(ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/Button2", AssetRequestMode.ImmediateLoad));
+            UIImage image = new(ALTextureAssets.Button2);
             image.Left.Set(-50f, 0f);
             image.Width.Set(-50f, 0f);
             image.Left.Set(num7 - 1f, 0f);
             image.Top.Set(num6 - 1f, 0f);
             Append(image);
             Rectangle frame = new(0, 0, 30, 30);
-            oreIcon = new UIImageFramed(ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/OreIcons"), frame);
+            oreIcon = new UIImageFramed(ALTextureAssets.OreIcons, frame);
             oreIcon.Left.Set(-50f, 0f);
             oreIcon.Width.Set(-50f, 0f);
             oreIcon.Left.Set(num7, 0f);
             oreIcon.Top.Set(num6, 0f);
             oreIcon.OnUpdate += _achievementIcon_OnUpdate;
             Append(oreIcon);
-            button = new(ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/Empty", AssetRequestMode.ImmediateLoad));
+            button = new(ALTextureAssets.Empty);
             oreIcon.Width.Set(0f, 1f);
             oreIcon.Height.Set(0, 1f);
             button.OnClick += _achievementIcon_OnClick;
@@ -78,7 +78,7 @@ namespace AltLibrary.Core.UIs
         {
             if (ore.Name.StartsWith("Random"))
             {
-                (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/Random"), new(0, 0, 30, 30));
+                (affectedElement as UIImageFramed).SetImage(ALTextureAssets.Random, new(0, 0, 30, 30));
                 return;
             }
 
@@ -149,7 +149,7 @@ namespace AltLibrary.Core.UIs
 
             void set(int i)
             {
-                (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/OreIcons"), new(i % 8 * 30, i / 8 * 30, 30, 30));
+                (affectedElement as UIImageFramed).SetImage(ALTextureAssets.OreIcons, new(i % 8 * 30, i / 8 * 30, 30, 30));
             }
         }
 

@@ -42,25 +42,25 @@ namespace AltLibrary.Core.UIs
             Width.Set(0f, 1f);
             PaddingTop = 8f;
             PaddingLeft = 9f;
-            UIImage image = new(ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/Button2", AssetRequestMode.ImmediateLoad));
+            UIImage image = new(ALTextureAssets.Button2);
             image.Left.Set(-50f, 0f);
             image.Width.Set(-50f, 0f);
             image.Left.Set(num7 - 1f, 0f);
             image.Top.Set(num6 - 1f, 0f);
             Append(image);
-            string ifUnknown = "AltLibrary/Assets/Menu/ButtonCorrupt";
-            if (biome.BiomeType == BiomeType.Hallow) ifUnknown = "AltLibrary/Assets/Menu/ButtonHallow";
-            if (biome.BiomeType == BiomeType.Hell) ifUnknown = "AltLibrary/Assets/Menu/ButtonHell";
-            if (biome.BiomeType == BiomeType.Jungle) ifUnknown = "AltLibrary/Assets/Menu/ButtonJungle";
+            Asset<Texture2D> ifUnknown = ALTextureAssets.ButtonCorrupt;
+            if (biome.BiomeType == BiomeType.Hallow) ifUnknown = ALTextureAssets.ButtonHallow;
+            if (biome.BiomeType == BiomeType.Hell) ifUnknown = ALTextureAssets.ButtonHell;
+            if (biome.BiomeType == BiomeType.Jungle) ifUnknown = ALTextureAssets.ButtonJungle;
             Rectangle frame = new(0, 0, 30, 30);
-            biomeIcon = new UIImageFramed(biome.IconSmall == null ? ModContent.Request<Texture2D>(ifUnknown) : ModContent.Request<Texture2D>(biome.IconSmall), frame);
+            biomeIcon = new UIImageFramed(biome.IconSmall == null ? ifUnknown : ModContent.Request<Texture2D>(biome.IconSmall), frame);
             biomeIcon.Left.Set(-50f, 0f);
             biomeIcon.Width.Set(-50f, 0f);
             biomeIcon.Left.Set(num7, 0f);
             biomeIcon.Top.Set(num6, 0f);
             biomeIcon.OnUpdate += AchievementIcon_OnUpdate;
             Append(biomeIcon);
-            button = new(ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/Empty", AssetRequestMode.ImmediateLoad));
+            button = new(ALTextureAssets.Empty);
             biomeIcon.Width.Set(0f, 1f);
             biomeIcon.Height.Set(0, 1f);
             button.OnClick += AchievementIcon_OnClick;
@@ -82,44 +82,43 @@ namespace AltLibrary.Core.UIs
         {
             if (biome.Name.StartsWith("Random"))
             {
-                (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/Random"), new(0, 0, 30, 30));
+                (affectedElement as UIImageFramed).SetImage(ALTextureAssets.Random, new(0, 0, 30, 30));
                 return;
             }
 
             if (biome.SpecialValueForWorldUIDoNotTouchElseYouCanBreakStuff == 0)
             {
-                string hallow = "AltLibrary/Assets/Menu/ButtonHallow";
-                string hell = "AltLibrary/Assets/Menu/ButtonHell";
-                string jungle = "AltLibrary/Assets/Menu/ButtonJungle";
-                string corrupt = "AltLibrary/Assets/Menu/ButtonCorrupt";
-                string path = "";
+                Asset<Texture2D> hallow = ALTextureAssets.ButtonHallow;
+                Asset<Texture2D> hell = ALTextureAssets.ButtonHell;
+                Asset<Texture2D> jungle = ALTextureAssets.ButtonJungle;
+                Asset<Texture2D> corrupt = ALTextureAssets.ButtonCorrupt;
+                Asset<Texture2D> path = corrupt;
                 if (biome.BiomeType == BiomeType.Hallow) path = hallow;
                 if (biome.BiomeType == BiomeType.Hell) path = hell;
                 if (biome.BiomeType == BiomeType.Jungle) path = jungle;
-                if (biome.BiomeType == BiomeType.Evil) path = corrupt;
-                (affectedElement as UIImageFramed).SetImage(biome.IconSmall != null ? ModContent.Request<Texture2D>(biome.IconSmall) : ModContent.Request<Texture2D>(path), new(0, 0, 30, 30));
+                (affectedElement as UIImageFramed).SetImage(biome.IconSmall != null ? ModContent.Request<Texture2D>(biome.IconSmall) : path, new(0, 0, 30, 30));
                 return;
             }
 
             if (biome.SpecialValueForWorldUIDoNotTouchElseYouCanBreakStuff == -3)
             {
-                (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>("Terraria/Images/UI/Bestiary/Icon_Tags_Shadow"), new(30, 30, 30, 30));
+                (affectedElement as UIImageFramed).SetImage(ALTextureAssets.BestiaryIcons, new(30, 30, 30, 30));
             }
             if (biome.SpecialValueForWorldUIDoNotTouchElseYouCanBreakStuff == -1)
             {
-                (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>("Terraria/Images/UI/Bestiary/Icon_Tags_Shadow"), new(210, 0, 30, 30));
+                (affectedElement as UIImageFramed).SetImage(ALTextureAssets.BestiaryIcons, new(210, 0, 30, 30));
             }
             if (biome.SpecialValueForWorldUIDoNotTouchElseYouCanBreakStuff == -2)
             {
-                (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>("Terraria/Images/UI/Bestiary/Icon_Tags_Shadow"), new(360, 0, 30, 30));
+                (affectedElement as UIImageFramed).SetImage(ALTextureAssets.BestiaryIcons, new(360, 0, 30, 30));
             }
             if (biome.SpecialValueForWorldUIDoNotTouchElseYouCanBreakStuff == -5)
             {
-                (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>("Terraria/Images/UI/Bestiary/Icon_Tags_Shadow"), new(30, 60, 30, 30));
+                (affectedElement as UIImageFramed).SetImage(ALTextureAssets.BestiaryIcons, new(30, 60, 30, 30));
             }
             if (biome.SpecialValueForWorldUIDoNotTouchElseYouCanBreakStuff == -4)
             {
-                (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>("Terraria/Images/UI/Bestiary/Icon_Tags_Shadow"), new(180, 30, 30, 30));
+                (affectedElement as UIImageFramed).SetImage(ALTextureAssets.BestiaryIcons, new(180, 30, 30, 30));
             }
         }
 
@@ -287,7 +286,7 @@ namespace AltLibrary.Core.UIs
             float num10 = this._large.ToInt() * 4;
             float num11 = this._large.ToInt() * 58 - 102;
             Vector2 vector2 = new(dimensions.X + num10, dimensions.Y - num11);
-            Texture2D texture = ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/ButtonWarn", AssetRequestMode.ImmediateLoad).Value;
+            Texture2D texture = ALTextureAssets.ButtonWarn.Value;
             spriteBatch.Draw(texture, vector2, new Rectangle(0, 0, 22, 22), Color.White);
             if (mouseRectangle.Intersects(Utils.CenteredRectangle(vector2 + new Vector2(11f, 11f), Utils.Size(texture))))
             {

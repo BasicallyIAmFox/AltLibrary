@@ -82,7 +82,7 @@ namespace AltLibrary.Common.Hooks
             c.Emit(OpCodes.Ldfld, _modIcon);
             c.EmitDelegate(() =>
             {
-                UIImageFramed image = new(ModContent.Request<Texture2D>("AltLibrary/icon_anim", AssetRequestMode.ImmediateLoad), new Rectangle(0, 0, 80, 80))
+                UIImageFramed image = new(ALTextureAssets.AnimatedModIcon, new Rectangle(0, 0, 80, 80))
                 {
                     Left =
                     {
@@ -106,10 +106,12 @@ namespace AltLibrary.Common.Hooks
         {
             UIImageFramed e = affectedElement as UIImageFramed;
             int time = 3600;
+            int additionalX = 160 * AltLibrary.ModIconVariationX;
+            int additionalY = 160 * AltLibrary.ModIconVariationY;
 
             if (AltLibrary.TimeHoveringOnIcon >= time + 1)
             {
-                e.SetFrame(new Rectangle(80, 0, 80, 80));
+                e.SetFrame(new Rectangle(80 + additionalX, 0 + additionalY, 80, 80));
                 AltLibrary.HallowBunnyUnlocked = true;
                 return;
             }
@@ -119,16 +121,16 @@ namespace AltLibrary.Common.Hooks
                 float i = Main.GlobalTimeWrappedHourly % 20;
                 if (i >= 0 && i < 10 || i >= 15 && i < 20)
                 {
-                    e.SetFrame(new Rectangle(0, 80, 80, 80));
+                    e.SetFrame(new Rectangle(0 + additionalX, 80 + additionalY, 80, 80));
                 }
                 else
                 {
-                    e.SetFrame(new Rectangle(0, 160, 80, 80));
+                    e.SetFrame(new Rectangle(0 + additionalX, 160 + additionalY, 80, 80));
                 }
                 if (++AltLibrary.TimeHoveringOnIcon == time)
                 {
                     SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen);
-                    e.SetFrame(new Rectangle(80, 0, 80, 80));
+                    e.SetFrame(new Rectangle(80 + additionalX, 0 + additionalY, 80, 80));
                     AltLibrary.TimeHoveringOnIcon = time + 1;
                 }
                 if (AltLibrary.TimeHoveringOnIcon >= time)
@@ -142,19 +144,19 @@ namespace AltLibrary.Common.Hooks
             float index = Main.GlobalTimeWrappedHourly % 60;
             if (index >= 10 && index < 15)
             {
-                e.SetFrame(new Rectangle(80, 80, 80, 80));
+                e.SetFrame(new Rectangle(80 + additionalX, 80 + additionalY, 80, 80));
             }
-            else if (index >= 15 && index < 30)
+            else if (index >= 5 && index < 10 || index >= 15 && index < 30)
             {
-                e.SetFrame(new Rectangle(0, 0, 80, 80));
+                e.SetFrame(new Rectangle(0 + additionalX, 0 + additionalY, 80, 80));
             }
             else if (index >= 30 && index < 40 || index >= 45 && index < 60)
             {
-                e.SetFrame(new Rectangle(0, 80, 80, 80));
+                e.SetFrame(new Rectangle(0 + additionalX, 80 + additionalY, 80, 80));
             }
             else if (index >= 40 && index < 45)
             {
-                e.SetFrame(new Rectangle(0, 160, 80, 80));
+                e.SetFrame(new Rectangle(0 + additionalX, 160 + additionalY, 80, 80));
             }
         }
     }

@@ -219,22 +219,22 @@ namespace AltLibrary.Common.Hooks
             float num7 = innerDimensions.X + innerDimensions.Width;
             for (int i = 0; i < 4; i++)
             {
-                Asset<Texture2D> asset = ModContent.Request<Texture2D>("Terraria/Images/UI/Bestiary/Icon_Tags_Shadow");
+                Asset<Texture2D> asset = ALTextureAssets.BestiaryIcons;
                 if (i == 0 && tempDict[path2].worldHallow != "" && ModContent.TryFind(tempDict[path2].worldHallow, out AltBiome hallow)) asset = ModContent.Request<Texture2D>(hallow.IconSmall ?? "AltLibrary/Assets/Menu/ButtonHallow");
                 if (i == 1 && tempDict[path2].worldEvil != "" && ModContent.TryFind(tempDict[path2].worldEvil, out AltBiome evil)) asset = ModContent.Request<Texture2D>(evil.IconSmall ?? "AltLibrary/Assets/Menu/ButtonCorrupt");
                 if (i == 2 && tempDict[path2].worldHell != "" && ModContent.TryFind(tempDict[path2].worldHell, out AltBiome hell)) asset = ModContent.Request<Texture2D>(hell.IconSmall ?? "AltLibrary/Assets/Menu/ButtonHell");
                 if (i == 3 && tempDict[path2].worldJungle != "" && ModContent.TryFind(tempDict[path2].worldJungle, out AltBiome jungle)) asset = ModContent.Request<Texture2D>(jungle.IconSmall ?? "AltLibrary/Assets/Menu/ButtonJungle");
-                if (i == 0 && tempDict[path2].worldHallow != "" && !ModContent.TryFind(tempDict[path2].worldHallow, out AltBiome _)) asset = ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/ButtonHallow");
-                if (i == 1 && tempDict[path2].worldEvil != "" && !ModContent.TryFind(tempDict[path2].worldEvil, out AltBiome _)) asset = ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/ButtonCorrupt");
-                if (i == 2 && tempDict[path2].worldHell != "" && !ModContent.TryFind(tempDict[path2].worldHell, out AltBiome _)) asset = ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/ButtonHell");
-                if (i == 3 && tempDict[path2].worldJungle != "" && !ModContent.TryFind(tempDict[path2].worldJungle, out AltBiome _)) asset = ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/ButtonJungle");
+                if (i == 0 && tempDict[path2].worldHallow != "" && !ModContent.TryFind(tempDict[path2].worldHallow, out AltBiome _)) asset = ALTextureAssets.ButtonHallow;
+                if (i == 1 && tempDict[path2].worldEvil != "" && !ModContent.TryFind(tempDict[path2].worldEvil, out AltBiome _)) asset = ALTextureAssets.ButtonCorrupt;
+                if (i == 2 && tempDict[path2].worldHell != "" && !ModContent.TryFind(tempDict[path2].worldHell, out AltBiome _)) asset = ALTextureAssets.ButtonHell;
+                if (i == 3 && tempDict[path2].worldJungle != "" && !ModContent.TryFind(tempDict[path2].worldJungle, out AltBiome _)) asset = ALTextureAssets.ButtonJungle;
                 Rectangle? rectangle = null;
                 if (i == 0 && tempDict[path2].worldHallow == "") rectangle = new(30, 30, 30, 30);
                 if (i == 1 && tempDict[path2].worldEvil == "") rectangle = new(_data.HasCorruption ? 210 : 360, 0, 30, 30);
                 if (i == 2 && tempDict[path2].worldHell == "") rectangle = new(30, 60, 30, 30);
                 if (i == 3 && tempDict[path2].worldJungle == "") rectangle = new(180, 30, 30, 30);
                 ValueTuple<Asset<Texture2D>, Rectangle?> valueTuple = new(asset, rectangle);
-                spriteBatch.Draw(ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/Button").Value, new Vector2(num7 - 26f * (i + 1), dimensions.Y - 2f), Color.White);
+                spriteBatch.Draw(ALTextureAssets.Button.Value, new Vector2(num7 - 26f * (i + 1), dimensions.Y - 2f), Color.White);
                 spriteBatch.Draw(valueTuple.Item1.Value, new Vector2(num7 - 26f * (i + 1) + 3f, dimensions.Y + 1f), valueTuple.Item2, Color.White, 0f, new Vector2(0f, 0f), 0.5f, SpriteEffects.None, 0f);
             }
 
@@ -266,7 +266,7 @@ namespace AltLibrary.Common.Hooks
             if (!valid)
             {
                 Rectangle mouseRectangle = Utils.CenteredRectangle(Main.MouseScreen, Vector2.One * 2f);
-                Asset<Texture2D> asset = ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/ButtonWarn");
+                Asset<Texture2D> asset = ALTextureAssets.ButtonWarn;
                 int num = WarnUpdate % 120;
                 int num2 = num < 60 ? 0 : 1;
                 Rectangle rectangle = new(num2 * 22, 0, 22, 22);
@@ -339,34 +339,34 @@ namespace AltLibrary.Common.Hooks
 
         private static void ReplaceIcons(WorldFileData data, ref UIImage image)
         {
-            Asset<Texture2D> asset = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/IconNormal");
+            Asset<Texture2D> asset = ALTextureAssets.WorldIconNormal;
             if (data.DrunkWorld)
             {
-                asset = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/IconDrunk");
+                asset = ALTextureAssets.WorldIconDrunk;
                 if (data.HasCrimson)
                 {
-                    asset = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/DrunkBase/Crimson");
+                    asset = ALTextureAssets.WorldIconDrunkCrimson;
                 }
-                else if (data.HasCorruption)
+                if (data.HasCorruption)
                 {
-                    asset = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/DrunkBase/Corruption");
+                    asset = ALTextureAssets.WorldIconDrunkCorrupt;
                 }
             }
             if (data.ForTheWorthy)
             {
-                asset = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/IconForTheWorthy");
+                asset = ALTextureAssets.WorldIconForTheWorthy;
             }
             if (data.NotTheBees)
             {
-                asset = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/IconNotTheBees");
+                asset = ALTextureAssets.WorldIconNotTheBees;
             }
             if (data.Anniversary)
             {
-                asset = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/IconAnniversary");
+                asset = ALTextureAssets.WorldIconAnniversary;
             }
             if (data.DontStarve)
             {
-                asset = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/IconDontStarve");
+                asset = ALTextureAssets.WorldIconDontStarve;
             }
             UIImage worldIcon = new(asset);
             worldIcon.Height.Set(0, 1);
