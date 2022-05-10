@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using System.Collections.Generic;
@@ -11,13 +12,6 @@ namespace AltLibrary.Common.Systems
         {
             for (int i = 0; i < Recipe.numRecipes; i++)
             {
-                List<int> results = new() { ItemID.DeerThing };
-                ReplaceRecipe(ref i, results, ItemID.DemoniteOre, ItemID.CrimtaneOre, "AltLibrary:EvilOres");
-
-                results = new() { ItemID.MonsterLasagna, ItemID.CoffinMinecart, ItemID.MechanicalWorm, ItemID.BattlePotion };
-                ReplaceRecipe(ref i, results, ItemID.RottenChunk, ItemID.Vertebrae, "AltLibrary:RottenChunks");
-
-                #region old
                 Recipe recipe = Main.recipe[i];
                 if (recipe.HasResult(ItemID.Magiluminescence))
                 {
@@ -453,40 +447,54 @@ namespace AltLibrary.Common.Systems
                         recipe.AddRecipeGroup("AltLibrary:EvilOres", 5);
                     }
                 }
-                #endregion 
+                ExampleTestMethod(ref recipe,
+                                  new int[] { ItemID.PeaceCandle, ItemID.Throne },
+                                  new int[] { ItemID.GoldBar },
+                                  "AltLibrary:GoldBars",
+                                  ref i,
+                                  ItemID.PlatinumBar);
             }
         }
 
-        public void ReplaceRecipe(ref int i, List<int> results, int ingredient, string group)
+        private void ReplaceRecipe(ref Recipe r, int[] results, int[] ingredients, string group)
         {
-            Recipe recipe = Main.recipe[i];
             foreach (int result in results)
             {
-                if (recipe.HasResult(result) && recipe.HasIngredient(ingredient))
+                if (r.HasResult(result))
                 {
-                    recipe.TryGetIngredient(ingredient, out Item ing);
-                    var amount = ing.stack;
-                    recipe.RemoveIngredient(ing);
-                    recipe.AddRecipeGroup(group, amount);
+                    foreach (int ingredient in ingredients)
+                    {
+                        if (r.HasIngredient(ingredient))
+                        {
+                            r.TryGetIngredient(ingredient, out Item ing);
+                            r.RemoveIngredient(ing);
+                            r.AddRecipeGroup(group, ing.stack);
+                        }
+                    }
                 }
-            }  
+            }
         }
-        public void ReplaceRecipe(ref int i, List<int> results, int ingredient, int altIngredient, string group)
+
+        private void ReplaceRecipe(ref Recipe r, int[] results, int[] ingredients, string group, ref int i, int altIng)
         {
-            Recipe recipe = Main.recipe[i];
             foreach (int result in results)
             {
-                if (recipe.HasIngredient(altIngredient))
+                if (r.HasResult(result))
                 {
-                    recipe.RemoveRecipe();
-                    i--;
-                }
-                else if (recipe.HasIngredient(ingredient))
-                {
-                    recipe.TryGetIngredient(ingredient, out Item ing);
-                    var amount = ing.stack;
-                    recipe.RemoveIngredient(ing);
-                    recipe.AddRecipeGroup(group, amount);
+                    foreach (int ingredient in ingredients)
+                    {
+                        if (r.HasIngredient(altIng))
+                        {
+                            r.RemoveRecipe();
+                            i--;
+                        }
+                        else if (r.HasIngredient(ingredient))
+                        {
+                            r.TryGetIngredient(ingredient, out Item ing);
+                            r.RemoveIngredient(ing);
+                            r.AddRecipeGroup(group, ing.stack);
+                        }
+                    }
                 }
             }
         }
