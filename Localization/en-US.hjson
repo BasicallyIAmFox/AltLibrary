@@ -117,6 +117,7 @@ Mods: {
 			CobaltBars: "Cobalt Bar"
 			MythrilBars: "Mythril Bar"
 			AdamantiteBars: "Adamantite Bar"
+			GoldCandles: "Gold Candle"
 		}
 		DryadSpecialText: {
 			WorldStatusGoodEvil: "{0} is {1}% good and {2}% evil."

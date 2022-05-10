@@ -118,6 +118,10 @@ namespace AltLibrary.Common.Systems
             group = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.GoldBars")}", array);
             RecipeGroup.RegisterGroup("AltLibrary:GoldBars", group);
 
+            array = new int[] { ItemID.GoldenCandle, ItemID.PlatinumCandle };
+            group = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.GoldCandles")}", array);
+            RecipeGroup.RegisterGroup("AltLibrary:GoldCandles", group);
+
             array = new int[] { ItemID.CobaltBar, ItemID.PalladiumBar };
             group = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.CobaltBars")}", array);
             RecipeGroup.RegisterGroup("AltLibrary:CobaltBars", group);
