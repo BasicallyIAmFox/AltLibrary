@@ -118,10 +118,6 @@ namespace AltLibrary.Common.Systems
             group = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.GoldBars")}", array);
             RecipeGroup.RegisterGroup("AltLibrary:GoldBars", group);
 
-            array = new int[] { ItemID.GoldenCandle, ItemID.PlatinumCandle };
-            group = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.GoldCandles")}", array);
-            RecipeGroup.RegisterGroup("AltLibrary:GoldCandles", group);
-
             array = new int[] { ItemID.CobaltBar, ItemID.PalladiumBar };
             group = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.CobaltBars")}", array);
             RecipeGroup.RegisterGroup("AltLibrary:CobaltBars", group);
@@ -133,6 +129,22 @@ namespace AltLibrary.Common.Systems
             array = new int[] { ItemID.AdamantiteBar, ItemID.TitaniumBar };
             group = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.AdamantiteBars")}", array);
             RecipeGroup.RegisterGroup("AltLibrary:AdamantiteBars", group);
+
+            array = new int[] { ItemID.Candle, ItemID.PlatinumCandle };
+            group = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.GoldCandles")}", array);
+            RecipeGroup.RegisterGroup("AltLibrary:GoldCandles", group);
+
+            array = new int[] { ItemID.CopperWatch, ItemID.TinWatch };
+            group = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.CopperWatches")}", array);
+            RecipeGroup.RegisterGroup("AltLibrary:CopperWatches", group);
+
+            array = new int[] { ItemID.SilverWatch, ItemID.TungstenWatch };
+            group = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.SilverWatches")}", array);
+            RecipeGroup.RegisterGroup("AltLibrary:SilverWatches", group);
+
+            array = new int[] { ItemID.GoldWatch, ItemID.PlatinumWatch };
+            group = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.GoldWatches")}", array);
+            RecipeGroup.RegisterGroup("AltLibrary:GoldWatches", group);
         }
     }
 }

@@ -13,446 +13,141 @@ namespace AltLibrary.Common.Systems
             for (int i = 0; i < Recipe.numRecipes; i++)
             {
                 Recipe recipe = Main.recipe[i];
-                if (recipe.HasResult(ItemID.Magiluminescence))
-                {
-                    if (recipe.HasIngredient(ItemID.CrimtaneBar))
-                    {
-                        recipe.RemoveRecipe();
-                        i--;
-                    }
-                    else if (recipe.HasIngredient(ItemID.DemoniteBar))
-                    {
-                        recipe.TryGetIngredient(ItemID.DemoniteBar, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:EvilBars", 12);
-                    }
-                }
-                if (recipe.HasResult(ItemID.PumpkinMoonMedallion) && recipe.HasIngredient(ItemID.HallowedBar))
-                {
-                    recipe.TryGetIngredient(ItemID.HallowedBar, out Item ing);
-                    recipe.RemoveIngredient(ing);
-                    recipe.AddRecipeGroup("AltLibrary:HallowBars", 10);
-                }
-                if (recipe.HasResult(ItemID.DrillContainmentUnit))
-                {
-                    if (recipe.HasIngredient(ItemID.ChlorophyteBar))
-                    {
-                        recipe.TryGetIngredient(ItemID.ChlorophyteBar, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:JungleBars", 40);
-                    }
-                    if (recipe.HasIngredient(ItemID.ShroomiteBar))
-                    {
-                        recipe.TryGetIngredient(ItemID.ShroomiteBar, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:MushroomBars", 40);
-                    }
-                    if (recipe.HasIngredient(ItemID.HellstoneBar))
-                    {
-                        recipe.TryGetIngredient(ItemID.HellstoneBar, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:HellBars", 40);
-                    }
-                }
-                if (recipe.HasResult(ItemID.VenomStaff) && recipe.HasIngredient(ItemID.ChlorophyteBar))
-                {
-                    recipe.TryGetIngredient(ItemID.ChlorophyteBar, out Item ing);
-                    recipe.RemoveIngredient(ing);
-                    recipe.AddRecipeGroup("AltLibrary:JungleBars", 14);
-                }
-                if (recipe.HasResult(ItemID.TrueExcalibur) && recipe.HasIngredient(ItemID.ChlorophyteBar))
-                {
-                    recipe.TryGetIngredient(ItemID.ChlorophyteBar, out Item ing);
-                    recipe.RemoveIngredient(ing);
-                    recipe.AddRecipeGroup("AltLibrary:JungleBars", 24);
-                }
-                if (recipe.HasIngredient(ItemID.ShroomiteBar))
-                {
-                    if (recipe.HasResult(ItemID.MiniNukeI) || recipe.HasResult(ItemID.MiniNukeII))
-                    {
-                        recipe.TryGetIngredient(ItemID.ShroomiteBar, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:MushroomBars");
-                    }
-                }
-
-                if (recipe.HasResult(ItemID.NightsEdge))
-                {
-                    if (recipe.HasIngredient(ItemID.BloodButcherer))
-                    {
-                        recipe.RemoveRecipe();
-                        i--;
-                    }
-                    else if (recipe.HasIngredient(ItemID.LightsBane))
-                    {
-                        recipe.TryGetIngredient(ItemID.LightsBane, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:EvilSwords");
-                    }
-                    if (recipe.HasIngredient(ItemID.BladeofGrass))
-                    {
-                        recipe.TryGetIngredient(ItemID.BladeofGrass, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:JungleSwords");
-                    }
-                    if (recipe.HasIngredient(ItemID.FieryGreatsword))
-                    {
-                        recipe.TryGetIngredient(ItemID.FieryGreatsword, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:HellSwords");
-                    }
-                }
-                if (recipe.HasResult(ItemID.TerraBlade))
-                {
-                    if (recipe.HasIngredient(ItemID.TrueNightsEdge))
-                    {
-                        recipe.TryGetIngredient(ItemID.TrueNightsEdge, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:TrueComboSwords");
-                    }
-                    if (recipe.HasIngredient(ItemID.TrueExcalibur))
-                    {
-                        recipe.TryGetIngredient(ItemID.TrueExcalibur, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:TrueHallowSwords");
-                    }
-                }
-
-                if (recipe.HasResult(ItemID.MonsterLasagna))
-                {
-                    if (recipe.HasIngredient(ItemID.Vertebrae))
-                    {
-                        recipe.RemoveRecipe();
-                        i--;
-                    }
-                    else if (recipe.HasIngredient(ItemID.RottenChunk))
-                    {
-                        recipe.TryGetIngredient(ItemID.RottenChunk, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:RottenChunks", 8);
-                    }
-                }
-                if (recipe.HasResult(ItemID.CoffinMinecart))
-                {
-                    if (recipe.HasIngredient(ItemID.Vertebrae))
-                    {
-                        recipe.RemoveRecipe();
-                        i--;
-                    }
-                    else if (recipe.HasIngredient(ItemID.RottenChunk))
-                    {
-                        recipe.TryGetIngredient(ItemID.RottenChunk, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:RottenChunks", 10);
-                    }
-                }
-                if (recipe.HasResult(ItemID.BattlePotion))
-                {
-                    if (recipe.HasIngredient(ItemID.Vertebrae))
-                    {
-                        recipe.RemoveRecipe();
-                        i--;
-                    }
-                    else if (recipe.HasIngredient(ItemID.RottenChunk))
-                    {
-                        recipe.TryGetIngredient(ItemID.RottenChunk, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:RottenChunks");
-                    }
-                    if (recipe.HasIngredient(ItemID.Deathweed))
-                    {
-                        recipe.TryGetIngredient(ItemID.Deathweed, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:Deathweed");
-                    }
-                }
-                if (recipe.HasResult(ItemID.MechanicalWorm))
-                {
-                    if (recipe.HasIngredient(ItemID.Vertebrae))
-                    {
-                        recipe.RemoveRecipe();
-                        i--;
-                    }
-                    else if (recipe.HasIngredient(ItemID.RottenChunk))
-                    {
-                        recipe.TryGetIngredient(ItemID.RottenChunk, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:RottenChunks", 6);
-                    }
-                }
-
-                if (recipe.HasResult(ItemID.SuperManaPotion))
-                {
-                    if (recipe.HasIngredient(ItemID.CrystalShard))
-                    {
-                        recipe.TryGetIngredient(ItemID.CrystalShard, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:CrystalShards", 3);
-                    }
-                    if (recipe.HasIngredient(ItemID.UnicornHorn))
-                    {
-                        recipe.TryGetIngredient(ItemID.UnicornHorn, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:UnicornHorns");
-                    }
-                }
-                if (recipe.HasResult(ItemID.GreaterHealingPotion))
-                {
-                    if (recipe.HasIngredient(ItemID.CrystalShard))
-                    {
-                        recipe.TryGetIngredient(ItemID.CrystalShard, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:CrystalShards");
-                    }
-                    if (recipe.HasIngredient(ItemID.PixieDust))
-                    {
-                        recipe.TryGetIngredient(ItemID.PixieDust, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:PixieDusts", 3);
-                    }
-                }
-                if (recipe.HasResult(ItemID.MeteorStaff) && recipe.HasIngredient(ItemID.PixieDust))
-                {
-                    recipe.TryGetIngredient(ItemID.PixieDust, out Item ing);
-                    recipe.RemoveIngredient(ing);
-                    recipe.AddRecipeGroup("AltLibrary:PixieDusts", 10);
-                }
-                int[] phasesabers = new int[] { ItemID.BluePhasesaber, ItemID.GreenPhasesaber, ItemID.PurplePhasesaber, ItemID.OrangePhasesaber, ItemID.RedPhasesaber, ItemID.YellowPhaseblade };
-                foreach (int j in phasesabers)
-                {
-                    if (recipe.HasResult(j) && recipe.HasIngredient(ItemID.CrystalShard))
-                    {
-                        recipe.TryGetIngredient(ItemID.CrystalShard, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:CrystalShards", 50);
-                        break;
-                    }
-                }
-
-                if (recipe.HasResult(ItemID.VoidLens)) // void bag
-                {
-                    if (recipe.HasIngredient(ItemID.TissueSample))
-                    {
-                        recipe.RemoveRecipe();
-                        i--;
-                    }
-                    else if (recipe.HasIngredient(ItemID.ShadowScale))
-                    {
-                        recipe.TryGetIngredient(ItemID.ShadowScale, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:ShadowScales", 30);
-                    }
-                    if (recipe.HasIngredient(ItemID.JungleSpores))
-                    {
-                        recipe.TryGetIngredient(ItemID.JungleSpores, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:JungleSpores", 15);
-                    }
-                }
-                if (recipe.HasResult(ItemID.VoidVault))
-                {
-                    if (recipe.HasIngredient(ItemID.TissueSample))
-                    {
-                        recipe.RemoveRecipe();
-                        i--;
-                    }
-                    else if (recipe.HasIngredient(ItemID.ShadowScale))
-                    {
-                        recipe.TryGetIngredient(ItemID.ShadowScale, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:ShadowScales", 15);
-                    }
-                    if (recipe.HasIngredient(ItemID.JungleSpores))
-                    {
-                        recipe.TryGetIngredient(ItemID.JungleSpores, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:JungleSpores", 8);
-                    }
-                }
-
-                if (recipe.HasResult(ItemID.ObsidianHelm) || recipe.HasResult(ItemID.ObsidianPants))
-                {
-                    if (recipe.HasIngredient(ItemID.TissueSample))
-                    {
-                        recipe.RemoveRecipe();
-                        i--;
-                    }
-                    else if (recipe.HasIngredient(ItemID.ShadowScale))
-                    {
-                        recipe.TryGetIngredient(ItemID.ShadowScale, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:ShadowScales", 5);
-                    }
-                }
-                if (recipe.HasResult(ItemID.ObsidianShirt))
-                {
-                    if (recipe.HasIngredient(ItemID.TissueSample))
-                    {
-                        recipe.RemoveRecipe();
-                        i--;
-                    }
-                    else if (recipe.HasIngredient(ItemID.ShadowScale))
-                    {
-                        recipe.TryGetIngredient(ItemID.ShadowScale, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:ShadowScales", 10);
-                    }
-                }
-
-                if (recipe.HasResult(ItemID.GarlandHat) || recipe.HasResult(ItemID.GenderChangePotion))
-                {
-                    if (recipe.HasIngredient(ItemID.Deathweed))
-                    {
-                        recipe.TryGetIngredient(ItemID.Deathweed, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:Deathweed");
-                    }
-                    if (recipe.HasIngredient(ItemID.Moonglow))
-                    {
-                        recipe.TryGetIngredient(ItemID.Moonglow, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:Moonglow");
-                    }
-                    if (recipe.HasIngredient(ItemID.Fireblossom))
-                    {
-                        recipe.TryGetIngredient(ItemID.Fireblossom, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:Fireblossom");
-                    }
-                }
-                if (recipe.HasResult(ItemID.MagicPowerPotion))
-                {
-                    if (recipe.HasIngredient(ItemID.Deathweed))
-                    {
-                        recipe.TryGetIngredient(ItemID.Deathweed, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:Deathweed");
-                    }
-                    if (recipe.HasIngredient(ItemID.Moonglow))
-                    {
-                        recipe.TryGetIngredient(ItemID.Moonglow, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:Moonglow");
-                    }
-                }
-                if ((recipe.HasResult(ItemID.CratePotion) || recipe.HasResult(ItemID.LifeforcePotion) || recipe.HasResult(ItemID.SpelunkerPotion) || recipe.HasResult(ItemID.BuilderPotion)) && recipe.HasIngredient(ItemID.Moonglow))
-                {
-                    recipe.TryGetIngredient(ItemID.Moonglow, out Item ing);
-                    recipe.RemoveIngredient(ing);
-                    recipe.AddRecipeGroup("AltLibrary:Moonglow");
-                }
-                if (recipe.HasResult(ItemID.GravitationPotion))
-                {
-                    if (recipe.HasIngredient(ItemID.Deathweed))
-                    {
-                        recipe.TryGetIngredient(ItemID.Deathweed, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:Deathweed");
-                    }
-                    if (recipe.HasIngredient(ItemID.Fireblossom))
-                    {
-                        recipe.TryGetIngredient(ItemID.Fireblossom, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:Fireblossom");
-                    }
-                }
-
-                if ((recipe.HasResult(ItemID.AdamantiteForge) || recipe.HasResult(ItemID.TitaniumForge)) && recipe.HasIngredient(ItemID.Hellforge))
-                {
-                    recipe.TryGetIngredient(ItemID.Hellforge, out Item ing);
-                    recipe.RemoveIngredient(ing);
-                    recipe.AddRecipeGroup("AltLibrary:Hellforges");
-                }
-                if (recipe.HasResult(ItemID.FlinxFurCoat))
-                {
-                    if (recipe.HasIngredient(ItemID.PlatinumBar))
-                    {
-                        recipe.RemoveRecipe();
-                        i--;
-                    } 
-                    else if (recipe.HasIngredient(ItemID.GoldBar))
-                    {
-                        recipe.TryGetIngredient(ItemID.GoldBar, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:GoldBars", 8);
-                    }
-                }
-                if (recipe.HasResult(ItemID.FlinxStaff))
-                {
-                    if (recipe.HasIngredient(ItemID.PlatinumBar))
-                    {
-                        recipe.RemoveRecipe();
-                        i--;
-                    }
-                    else if (recipe.HasIngredient(ItemID.GoldBar))
-                    {
-                        recipe.TryGetIngredient(ItemID.GoldBar, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:GoldBars", 10);
-                    }
-                }
-                if (recipe.HasResult(ItemID.AncientBattleArmorHat) || recipe.HasResult(ItemID.FrostHelmet))
-                {
-                    if (recipe.HasIngredient(ItemID.TitaniumBar))
-                    {
-                        recipe.RemoveRecipe();
-                        i--;
-                    }
-                    else if (recipe.HasIngredient(ItemID.AdamantiteBar))
-                    {
-                        recipe.TryGetIngredient(ItemID.AdamantiteBar, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:AdamantiteBars", 10);
-                    }
-                }
-                if (recipe.HasResult(ItemID.AncientBattleArmorShirt) || recipe.HasResult(ItemID.FrostBreastplate))
-                {
-                    if (recipe.HasIngredient(ItemID.TitaniumBar))
-                    {
-                        recipe.RemoveRecipe();
-                        i--;
-                    }
-                    else if (recipe.HasIngredient(ItemID.AdamantiteBar))
-                    {
-                        recipe.TryGetIngredient(ItemID.AdamantiteBar, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:AdamantiteBars", 20);
-                    }
-                }
-                if (recipe.HasResult(ItemID.AncientBattleArmorPants) || recipe.HasResult(ItemID.FrostLeggings))
-                {
-                    if (recipe.HasIngredient(ItemID.TitaniumBar))
-                    {
-                        recipe.RemoveRecipe();
-                        i--;
-                    }
-                    else if (recipe.HasIngredient(ItemID.AdamantiteBar))
-                    {
-                        recipe.TryGetIngredient(ItemID.AdamantiteBar, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:AdamantiteBars", 16);
-                    }
-                }
-                if (recipe.HasResult(ItemID.DeerThing))
-                {
-                    if (recipe.HasIngredient(ItemID.CrimtaneOre))
-                    {
-                        recipe.RemoveRecipe();
-                        i--;
-                    }
-                    else if (recipe.HasIngredient(ItemID.DemoniteOre))
-                    {
-                        recipe.TryGetIngredient(ItemID.DemoniteOre, out Item ing);
-                        recipe.RemoveIngredient(ing);
-                        recipe.AddRecipeGroup("AltLibrary:EvilOres", 5);
-                    }
-                }
-                ExampleTestMethod(ref recipe,
-                                  new int[] { ItemID.PeaceCandle, ItemID.Throne },
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.DeerThing },
+                                  new int[] { ItemID.DemoniteOre },
+                                  "AltLibrary:EvilOres",
+                                  ref i,
+                                  ItemID.CrimtaneOre);
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.Magiluminescence },
+                                  new int[] { ItemID.DemoniteBar },
+                                  "AltLibrary:EvilBars",
+                                  ref i,
+                                  ItemID.CrimtaneBar);
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.OpticStaff, ItemID.PumpkinMoonMedallion },
+                                  new int[] { ItemID.HallowedBar },
+                                  "AltLibrary:HallowBars");
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.DrillContainmentUnit },
+                                  new int[] { ItemID.HellstoneBar },
+                                  "AltLibrary:HellBars");
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.DrillContainmentUnit, ItemID.VenomStaff, ItemID.TrueExcalibur },
+                                  new int[] { ItemID.ChlorophyteBar },
+                                  "AltLibrary:JungleBars");
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.DrillContainmentUnit, ItemID.MiniNukeI, ItemID.MiniNukeII },
+                                  new int[] { ItemID.ShroomiteBar },
+                                  "AltLibrary:MushroomBars");
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.PeaceCandle, ItemID.Throne, ItemID.FlinxFurCoat, ItemID.FlinxStaff },
                                   new int[] { ItemID.GoldBar },
                                   "AltLibrary:GoldBars",
                                   ref i,
                                   ItemID.PlatinumBar);
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.FrostBreastplate, ItemID.FrostLeggings, ItemID.FrostHelmet, ItemID.AncientBattleArmorHat, ItemID.AncientBattleArmorPants, ItemID.AncientBattleArmorShirt },
+                                  new int[] { ItemID.AdamantiteBar },
+                                  "AltLibrary:AdamantiteBars",
+                                  ref i,
+                                  ItemID.TitaniumBar);
+
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.NightsEdge },
+                                  new int[] { ItemID.LightsBane },
+                                  "AltLibrary:EvilSwords",
+                                  ref i,
+                                  ItemID.BloodButcherer);
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.NightsEdge },
+                                  new int[] { ItemID.BladeofGrass },
+                                  "AltLibrary:JungleSwords");
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.NightsEdge },
+                                  new int[] { ItemID.FieryGreatsword },
+                                  "AltLibrary:HellSwords");
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.TerraBlade },
+                                  new int[] { ItemID.TrueNightsEdge },
+                                  "AltLibrary:TrueComboSwords");
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.TerraBlade },
+                                  new int[] { ItemID.TrueExcalibur },
+                                  "AltLibrary:TrueHallowSwords");
+
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.MonsterLasagna, ItemID.CoffinMinecart, ItemID.MechanicalWorm, ItemID.BattlePotion },
+                                  new int[] { ItemID.RottenChunk },
+                                  "AltLibrary:RottenChunks",
+                                  ref i,
+                                  ItemID.Vertebrae);
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.MeteorStaff, ItemID.GreaterHealingPotion },
+                                  new int[] { ItemID.PixieDust },
+                                  "AltLibrary:PixieDusts");
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.SuperManaPotion },
+                                  new int[] { ItemID.UnicornHorn },
+                                  "AltLibrary:UnicornHorns");
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.SuperManaPotion, ItemID.GreaterHealingPotion, ItemID.BluePhasesaber, ItemID.GreenPhasesaber, ItemID.PurplePhasesaber, ItemID.RedPhasesaber, ItemID.WhitePhasesaber, ItemID.YellowPhasesaber, ItemID.OrangePhasesaber },
+                                  new int[] { ItemID.CrystalShard },
+                                  "AltLibrary:CrystalShards");
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.VoidLens, ItemID.VoidVault, ItemID.ObsidianHelm, ItemID.ObsidianShirt, ItemID.ObsidianPants },
+                                  new int[] { ItemID.ShadowScale },
+                                  "AltLibrary:ShadowScales",
+                                  ref i,
+                                  ItemID.TissueSample);
+
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.VoidLens, ItemID.VoidVault },
+                                  new int[] { ItemID.JungleSpores },
+                                  "AltLibrary:JungleSpores");
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.GarlandHat, ItemID.GenderChangePotion, ItemID.BattlePotion, ItemID.GravitationPotion, ItemID.MagicPowerPotion, ItemID.StinkPotion, ItemID.TitanPotion },
+                                  new int[] { ItemID.Deathweed },
+                                  "AltLibrary:Deathweed");
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.GarlandHat, ItemID.GenderChangePotion, ItemID.GravitationPotion, ItemID.TeleportationPotion },
+                                  new int[] { ItemID.Fireblossom },
+                                  "AltLibrary:Fireblossom");
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.GarlandHat, ItemID.GenderChangePotion, ItemID.BuilderPotion, ItemID.CratePotion, ItemID.LifeforcePotion, ItemID.SpelunkerPotion },
+                                  new int[] { ItemID.JungleSpores },
+                                  "AltLibrary:JungleSpores");
+
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.AdamantiteForge, ItemID.TitaniumForge },
+                                  new int[] { ItemID.Hellforge },
+                                  "AltLibrary:Hellforges");
+
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.WaterCandle },
+                                  new int[] { ItemID.Candle },
+                                  "AltLibrary:GoldCandles",
+                                  ref i,
+                                  ItemID.PlatinumCandle);
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.Timer5Second },
+                                  new int[] { ItemID.CopperWatch },
+                                  "AltLibrary:CopperWatches",
+                                  ref i,
+                                  ItemID.TinWatch);
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.Timer3Second },
+                                  new int[] { ItemID.SilverWatch },
+                                  "AltLibrary:SilverWatches",
+                                  ref i,
+                                  ItemID.TungstenWatch);
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.Timer1Second },
+                                  new int[] { ItemID.GoldWatch },
+                                  "AltLibrary:GoldWatches",
+                                  ref i,
+                                  ItemID.PlatinumWatch);
             }
         }
 
@@ -467,8 +162,9 @@ namespace AltLibrary.Common.Systems
                         if (r.HasIngredient(ingredient))
                         {
                             r.TryGetIngredient(ingredient, out Item ing);
+                            var amount = ing.stack;
                             r.RemoveIngredient(ing);
-                            r.AddRecipeGroup(group, ing.stack);
+                            r.AddRecipeGroup(group, amount);
                         }
                     }
                 }
@@ -491,8 +187,9 @@ namespace AltLibrary.Common.Systems
                         else if (r.HasIngredient(ingredient))
                         {
                             r.TryGetIngredient(ingredient, out Item ing);
+                            var amount = ing.stack;
                             r.RemoveIngredient(ing);
-                            r.AddRecipeGroup(group, ing.stack);
+                            r.AddRecipeGroup(group, amount);
                         }
                     }
                 }

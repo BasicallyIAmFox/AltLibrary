@@ -118,6 +118,9 @@ Mods: {
 			MythrilBars: "Mythril Bar"
 			AdamantiteBars: "Adamantite Bar"
 			GoldCandles: "Gold Candle"
+			CopperWatches: "Copper Watch"
+			SilverWatches: "Silver Watch"
+			GoldWatches: "Gold Watch"
 		}
 		DryadSpecialText: {
 			WorldStatusGoodEvil: "{0} is {1}% good and {2}% evil."
