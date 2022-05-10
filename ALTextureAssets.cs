@@ -7,7 +7,7 @@ namespace AltLibrary
 {
     internal static class ALTextureAssets
     {
-        internal static Asset<Texture2D> AnimatedModIcon;
+        internal static Asset<Texture2D>[] AnimatedModIcon = new Asset<Texture2D>[4];
         internal static Asset<Texture2D> Button;
         internal static Asset<Texture2D> Button2;
         internal static Asset<Texture2D> ButtonCorrupt;
@@ -32,7 +32,10 @@ namespace AltLibrary
 
         internal static void Load()
         {
-            AnimatedModIcon = ModContent.Request<Texture2D>("AltLibrary/icon_anim", AssetRequestMode.ImmediateLoad);
+            for (int i = 0; i < AnimatedModIcon.Length; i++)
+            {
+                AnimatedModIcon[i] = ModContent.Request<Texture2D>($"AltLibrary/Assets/Icons/AMIcon_{i}", AssetRequestMode.ImmediateLoad);
+            }
             Button = ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/Button", AssetRequestMode.ImmediateLoad);
             Button2 = ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/Button2", AssetRequestMode.ImmediateLoad);
             ButtonCorrupt = ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/ButtonCorrupt", AssetRequestMode.ImmediateLoad);

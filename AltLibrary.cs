@@ -31,8 +31,7 @@ namespace AltLibrary
 
         internal static int TimeHoveringOnIcon = 0;
         internal static bool HallowBunnyUnlocked = false;
-        internal static int ModIconVariationX = 0;
-        internal static int ModIconVariationY = 0;
+        internal static int ModIconVariation = 0;
 
         public AltLibrary()
         {
@@ -44,8 +43,7 @@ namespace AltLibrary
             ILHooks.OnInitialize();
             AnimatedModIcon.Init();
             ALTextureAssets.Load();
-            ModIconVariationX = Main.rand.Next(2);
-            ModIconVariationY = 0;
+            ModIconVariation = Main.rand.Next(ALTextureAssets.AnimatedModIcon.Length);
             TimeHoveringOnIcon = 0;
             HallowBunnyUnlocked = false;
         }
@@ -64,13 +62,13 @@ namespace AltLibrary
                         if (args.Length != 5)
                             throw new ArgumentException("Arguments cannot be less or more than 5 in length for AddCustomSeedPreviews");
                         if (args[1] is not string seed)
-                            return false;
+                            throw new ArgumentException("Second argument (seed) is not string!");
                         if (args[2] is not string small)
-                            return false;
+                            throw new ArgumentException("Third argument (small) is not string!");
                         if (args[3] is not string medium)
-                            return false;
+                            throw new ArgumentException("Fourth argument (medium) is not string!");
                         if (args[4] is not string large)
-                            return false;
+                            throw new ArgumentException("Fifth argument (large) is not string!");
                         PreviewWorldIcons.Add(new CustomPreviews(seed, small, medium, large));
                         break;
                 }

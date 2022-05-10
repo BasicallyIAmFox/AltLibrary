@@ -350,8 +350,9 @@ namespace AltLibrary.Common.Hooks
             FieldReference iron = null;
             FieldReference silver = null;
             FieldReference gold = null;
+            FieldReference dungeonSide = null;
 
-            if (!c.TryGotoNext(i => i.MatchStsfld<WorldGen>(nameof(WorldGen.crimson))))
+            if (!c.TryGotoNext(i => i.MatchStsfld(typeof(WorldGen).GetField(nameof(WorldGen.crimson), BindingFlags.Public | BindingFlags.Static))))
                 return;
             if (!c.TryGotoPrev(i => i.MatchLdcI4(166)))
                 return;
@@ -359,22 +360,22 @@ namespace AltLibrary.Common.Hooks
                 return;
             if (!c.TryGotoNext(i => i.MatchStfld(out copper)))
                 return;
-            if (!c.TryGotoPrev(i => i.MatchLdcI4(167)))
+            if (!c.TryGotoNext(i => i.MatchLdcI4(167)))
                 return;
             if (!c.TryGotoNext(i => i.MatchStfld(out iron)))
                 return;
-            if (!c.TryGotoPrev(i => i.MatchLdcI4(168)))
+            if (!c.TryGotoNext(i => i.MatchLdcI4(168)))
                 return;
             if (!c.TryGotoNext(i => i.MatchStfld(out silver)))
                 return;
-            if (!c.TryGotoPrev(i => i.MatchLdcI4(169)))
+            if (!c.TryGotoNext(i => i.MatchLdcI4(169)))
                 return;
             if (!c.TryGotoNext(i => i.MatchStfld(out gold)))
                 return;
-            if (!c.TryGotoNext(i => i.MatchStsfld<WorldGen>(nameof(WorldGen.crimson))))
+            if (!c.TryGotoNext(i => i.MatchStsfld(typeof(WorldGen).GetField(nameof(WorldGen.crimson), BindingFlags.Public | BindingFlags.Static))))
                 return;
 
-            c.Index++;
+            /*c.Index++;
             c.Emit(OpCodes.Ldfld, copper);
             c.EmitDelegate<Func<int, int>>((copper) =>
             {
@@ -391,7 +392,7 @@ namespace AltLibrary.Common.Hooks
                     return AltLibrary.Ores[WorldBiomeManager.Copper - 1].ore;
                 }
             });
-            c.Emit(OpCodes.Stsfld, copper);
+            c.Emit(OpCodes.Stfld, copper);
             c.Emit(OpCodes.Ldfld, iron);
             c.EmitDelegate<Func<int, int>>((iron) =>
             {
@@ -408,7 +409,7 @@ namespace AltLibrary.Common.Hooks
                     return AltLibrary.Ores[WorldBiomeManager.Iron - 1].ore;
                 }
             });
-            c.Emit(OpCodes.Stsfld, iron);
+            c.Emit(OpCodes.Stfld, iron);
             c.Emit(OpCodes.Ldfld, silver);
             c.EmitDelegate<Func<int, int>>((silver) =>
             {
@@ -425,7 +426,7 @@ namespace AltLibrary.Common.Hooks
                     return AltLibrary.Ores[WorldBiomeManager.Silver - 1].ore;
                 }
             });
-            c.Emit(OpCodes.Stsfld, silver);
+            c.Emit(OpCodes.Stfld, silver);
             c.Emit(OpCodes.Ldfld, gold);
             c.EmitDelegate<Func<int, int>>((gold) =>
             {
@@ -442,32 +443,26 @@ namespace AltLibrary.Common.Hooks
                     return AltLibrary.Ores[WorldBiomeManager.Gold - 1].ore;
                 }
             });
-            c.Emit(OpCodes.Stsfld, gold);
+            c.Emit(OpCodes.Stfld, gold);*/
 
-            if (!c.TryGotoNext(i => i.MatchLdfld(out _)))
-                return;
             if (!c.TryGotoNext(i => i.MatchRet()))
                 return;
             if (!c.TryGotoPrev(i => i.MatchBneUn(out _)))
                 return;
-            if (!c.TryGotoPrev(i => i.MatchLdcI4(-1)))
+            if (!c.TryGotoPrev(i => i.MatchLdfld(out dungeonSide)))
                 return;
+            if (!c.TryGotoNext(i => i.MatchStloc(6)))
+                return;
+
+            c.Index++;
+            c.Emit(OpCodes.Ldfld, dungeonSide);
             c.EmitDelegate<Func<int, int>>(dungeonSide =>
             {
+                AltLibrary.Instance.Logger.Info("dungeonSide assigned");
                 WorldBiomeGeneration.dungeonLocation = dungeonSide;
                 return dungeonSide;
             });
-            for (int i = 0; i < 2; i++)
-            {
-                if (!c.TryGotoNext(i => i.MatchRet()))
-                    return;
-                c.Index--;
-                c.EmitDelegate<Func<int, int>>(dungeonLocation =>
-                {
-                    WorldBiomeGeneration.dungeonLocation = dungeonLocation;
-                    return dungeonLocation;
-                });
-            }
+            c.Emit(OpCodes.Stfld, dungeonSide);
         }
 
         private static void GenPasses_HookGenPassShinies(ILContext il)

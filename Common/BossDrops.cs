@@ -217,7 +217,7 @@ namespace AltLibrary.Common
 
         public bool CanDrop(DropAttemptInfo info)
         {
-            if (!info.IsInSimulation && (BiomeType.FullName != null && BiomeType.FullName != ""))
+            if (!info.IsInSimulation && BiomeType.FullName != null && BiomeType.FullName != "")
             {
                 if (WorldBiomeManager.worldEvil != "") return WorldBiomeManager.worldEvil == BiomeType.FullName;
             }
