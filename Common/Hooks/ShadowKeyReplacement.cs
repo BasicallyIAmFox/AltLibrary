@@ -24,7 +24,6 @@ namespace AltLibrary.Common.Hooks
             {
                 if (WorldBiomeManager.worldHell != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).ShadowKeyAlt.HasValue)
                 {
-                    AltLibrary.Instance.Logger.Info("new shadow key alt!");
                     return ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).ShadowKeyAlt.Value;
                 }
                 return orig;

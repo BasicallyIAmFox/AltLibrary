@@ -374,8 +374,25 @@ namespace AltLibrary.Common.Hooks
                 return;
             if (!c.TryGotoNext(i => i.MatchStsfld(typeof(WorldGen).GetField(nameof(WorldGen.crimson), BindingFlags.Public | BindingFlags.Static))))
                 return;
+            if (!c.TryGotoNext(i => i.MatchRet()))
+                return;
+            if (!c.TryGotoPrev(i => i.MatchBneUn(out _)))
+                return;
+            if (!c.TryGotoPrev(i => i.MatchLdfld(out dungeonSide)))
+                return;
+            if (!c.TryGotoNext(i => i.MatchLdcI4(-1)))
+                return;
+            if (!c.TryGotoNext(i => i.MatchStfld(out _)))
+                return;
 
-            /*c.Index++;
+            c.Index += 2;
+            c.Emit(OpCodes.Ldfld, dungeonSide);
+            c.EmitDelegate<Func<int, int>>(dungeonSide =>
+            {
+                WorldBiomeGeneration.dungeonSide = dungeonSide;
+                return dungeonSide;
+            });
+            c.Emit(OpCodes.Stfld, dungeonSide);
             c.Emit(OpCodes.Ldfld, copper);
             c.EmitDelegate<Func<int, int>>((copper) =>
             {
@@ -443,26 +460,7 @@ namespace AltLibrary.Common.Hooks
                     return AltLibrary.Ores[WorldBiomeManager.Gold - 1].ore;
                 }
             });
-            c.Emit(OpCodes.Stfld, gold);*/
-
-            if (!c.TryGotoNext(i => i.MatchRet()))
-                return;
-            if (!c.TryGotoPrev(i => i.MatchBneUn(out _)))
-                return;
-            if (!c.TryGotoPrev(i => i.MatchLdfld(out dungeonSide)))
-                return;
-            if (!c.TryGotoNext(i => i.MatchStloc(6)))
-                return;
-
-            c.Index++;
-            c.Emit(OpCodes.Ldfld, dungeonSide);
-            c.EmitDelegate<Func<int, int>>(dungeonSide =>
-            {
-                AltLibrary.Instance.Logger.Info("dungeonSide assigned");
-                WorldBiomeGeneration.dungeonLocation = dungeonSide;
-                return dungeonSide;
-            });
-            c.Emit(OpCodes.Stfld, dungeonSide);
+            c.Emit(OpCodes.Stfld, gold);
         }
 
         private static void GenPasses_HookGenPassShinies(ILContext il)

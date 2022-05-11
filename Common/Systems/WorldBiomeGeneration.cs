@@ -13,7 +13,7 @@ namespace AltLibrary.Common.Systems
 {
     internal class WorldBiomeGeneration : ModSystem
     {
-        public static int dungeonLocation = 0;
+        public static int dungeonSide = 0;
         private static readonly int beachBordersWidth = 275;
         private static readonly int beachSandRandomCenter = beachBordersWidth + 45;
         private static readonly int evilBiomeBeachAvoidance = beachSandRandomCenter + 60;
@@ -633,11 +633,11 @@ namespace AltLibrary.Common.Systems
                         {
                             num692 = num694 - evilBiomeAvoidanceMidFixer;
                         }
-                        if (dungeonLocation < 0 && num693 < 400)
+                        if (dungeonSide < 0 && num693 < 400)
                         {
                             num693 = 400;
                         }
-                        else if (dungeonLocation > 0 && num693 > Main.maxTilesX - 400)
+                        else if (dungeonSide > 0 && num693 > Main.maxTilesX - 400)
                         {
                             num693 = Main.maxTilesX - 400;
                         }
@@ -665,7 +665,7 @@ namespace AltLibrary.Common.Systems
                         {
                             flag48 = false;
                         }
-                        if (num693 < dungeonLocation + num685 && num694 > dungeonLocation - num685)
+                        if (num693 < dungeonSide + num685 && num694 > dungeonSide - num685)
                         {
                             flag48 = false;
                         }
@@ -969,7 +969,7 @@ namespace AltLibrary.Common.Systems
                         {
                             flag51 = false;
                         }
-                        if (num715 < dungeonLocation + num685 && num716 > dungeonLocation - num685)
+                        if (num715 < dungeonSide + num685 && num716 > dungeonSide - num685)
                         {
                             flag51 = false;
                         }
