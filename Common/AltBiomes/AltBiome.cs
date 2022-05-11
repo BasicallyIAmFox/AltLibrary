@@ -275,10 +275,10 @@ namespace AltLibrary.Common.AltBiomes
 
             DisplayName = (ModTranslation)typeof(LocalizationLoader).GetMethod("GetOrCreateTranslation",
                 BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static,
-                new Type[] { typeof(Mod), typeof(string), typeof(bool) }).Invoke(null, new object[] { Mod, $"BiomeName.{Name}", false });
+                new Type[] { typeof(Mod), typeof(string), typeof(bool) }).Invoke(null, new object[] { Mod, $"AltBiomeName.{Name}", false });
             Description = (ModTranslation)typeof(LocalizationLoader).GetMethod("GetOrCreateTranslation",
                 BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static,
-                new Type[] { typeof(Mod), typeof(string), typeof(bool) }).Invoke(null, new object[] { Mod, $"BiomeDescription.{Name}", true });
+                new Type[] { typeof(Mod), typeof(string), typeof(bool) }).Invoke(null, new object[] { Mod, $"AltBiomeDescription.{Name}", true });
 
             AltLibrary.Biomes.Add(this);
             if (BossBulb != null) AltLibrary.planteraBulbs.Add((int)BossBulb);

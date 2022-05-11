@@ -224,15 +224,15 @@ namespace AltLibrary.Core.UIs
             {
                 switch (biome.Name)
                 {
-                    case "CorruptBiome": descValue = Language.GetTextValue($"Mods.AltLibrary.BiomeDescription.{biome.Name}"); break;
-                    case "CrimsonBiome": descValue = Language.GetTextValue($"Mods.AltLibrary.BiomeDescription.{biome.Name}"); break;
-                    case "HallowBiome": descValue = Language.GetTextValue($"Mods.AltLibrary.BiomeDescription.{biome.Name}"); break;
-                    case "JungleBiome": descValue = Language.GetTextValue($"Mods.AltLibrary.BiomeDescription.{biome.Name}"); break;
-                    case "UnderworldBiome": descValue = Language.GetTextValue($"Mods.AltLibrary.BiomeDescription.{biome.Name}"); break;
-                    case "RandomEvilBiome": descValue = Language.GetTextValue($"Mods.AltLibrary.BiomeDescription.{biome.Name}"); break;
-                    case "RandomHallowBiome": descValue = Language.GetTextValue($"Mods.AltLibrary.BiomeDescription.{biome.Name}"); break;
-                    case "RandomJungleBiome": descValue = Language.GetTextValue($"Mods.AltLibrary.BiomeDescription.{biome.Name}"); break;
-                    case "RandomUnderworldBiome": descValue = Language.GetTextValue($"Mods.AltLibrary.BiomeDescription.{biome.Name}"); break;
+                    case "CorruptBiome": descValue = Language.GetTextValue($"Mods.AltLibrary.AltBiomeDescription.{biome.Name}"); break;
+                    case "CrimsonBiome": descValue = Language.GetTextValue($"Mods.AltLibrary.AltBiomeDescription.{biome.Name}"); break;
+                    case "HallowBiome": descValue = Language.GetTextValue($"Mods.AltLibrary.AltBiomeDescription.{biome.Name}"); break;
+                    case "JungleBiome": descValue = Language.GetTextValue($"Mods.AltLibrary.AltBiomeDescription.{biome.Name}"); break;
+                    case "UnderworldBiome": descValue = Language.GetTextValue($"Mods.AltLibrary.AltBiomeDescription.{biome.Name}"); break;
+                    case "RandomEvilBiome": descValue = Language.GetTextValue($"Mods.AltLibrary.AltBiomeDescription.{biome.Name}"); break;
+                    case "RandomHallowBiome": descValue = Language.GetTextValue($"Mods.AltLibrary.AltBiomeDescription.{biome.Name}"); break;
+                    case "RandomJungleBiome": descValue = Language.GetTextValue($"Mods.AltLibrary.AltBiomeDescription.{biome.Name}"); break;
+                    case "RandomUnderworldBiome": descValue = Language.GetTextValue($"Mods.AltLibrary.AltBiomeDescription.{biome.Name}"); break;
                     default: break;
                 }
             }
@@ -263,15 +263,15 @@ namespace AltLibrary.Core.UIs
             {
                 switch (biome.Name)
                 {
-                    case "CorruptBiome": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.BiomeName.{biome.Name}"); break;
-                    case "CrimsonBiome": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.BiomeName.{biome.Name}"); break;
-                    case "HallowBiome": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.BiomeName.{biome.Name}"); break;
-                    case "JungleBiome": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.BiomeName.{biome.Name}"); break;
-                    case "UnderworldBiome": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.BiomeName.{biome.Name}"); break;
-                    case "RandomEvilBiome": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.BiomeName.{biome.Name}"); break;
-                    case "RandomHallowBiome": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.BiomeName.{biome.Name}"); break;
-                    case "RandomJungleBiome": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.BiomeName.{biome.Name}"); break;
-                    case "RandomUnderworldBiome": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.BiomeName.{biome.Name}"); break;
+                    case "CorruptBiome": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltBiomeName.{biome.Name}"); break;
+                    case "CrimsonBiome": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltBiomeName.{biome.Name}"); break;
+                    case "HallowBiome": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltBiomeName.{biome.Name}"); break;
+                    case "JungleBiome": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltBiomeName.{biome.Name}"); break;
+                    case "UnderworldBiome": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltBiomeName.{biome.Name}"); break;
+                    case "RandomEvilBiome": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltBiomeName.{biome.Name}"); break;
+                    case "RandomHallowBiome": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltBiomeName.{biome.Name}"); break;
+                    case "RandomJungleBiome": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltBiomeName.{biome.Name}"); break;
+                    case "RandomUnderworldBiome": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltBiomeName.{biome.Name}"); break;
                     default: break;
                 }
             }

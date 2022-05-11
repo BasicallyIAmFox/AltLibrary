@@ -26,7 +26,7 @@ Mods: {
 				Tooltip: "When true, the infectious blocks spawned by smashing Demon Altars can be of any installed biome"
 			}
 		}
-		OreName: {
+		AltOreName: {
 			RandomCopper: "Random Copper-Tier"
 			RandomIron: "Random Iron-Tier"
 			RandomSilver: "Random Silver-Tier"
@@ -49,7 +49,7 @@ Mods: {
 			Adamantite: "Adamantite"
 			Titanium: "Titanium"
 		}
-		OreDescription: {
+		AltOreDescription: {
 			RandomCopper: "Chooses a random copper-tier ore for you!"
 			RandomIron: "Chooses a random iron-tier ore for you!"
 			RandomSilver: "Chooses a random silver-tier ore for you!"
@@ -58,7 +58,7 @@ Mods: {
 			RandomMythril: "Chooses a random mythril-tier ore for you!"
 			RandomAdamantite: "Chooses a random adamantite-tier ore for you!"
 		}
-		BiomeName: {
+		AltBiomeName: {
 			RandomEvilBiome: "Random Evil"
 			RandomHallowBiome: "Random Hallow"
 			RandomJungleBiome: "Random Jungle"
@@ -69,7 +69,7 @@ Mods: {
 			JungleBiome: "Jungle"
 			UnderworldBiome: "Underworld"
 		}
-		BiomeDescription: {
+		AltBiomeDescription: {
 			RandomEvilBiome: "Chooses a random evil biome for you!"
 			RandomHallowBiome: "Chooses a random good biome for you!"
 			RandomJungleBiome: "Chooses a random tropical biome for you!"
@@ -152,6 +152,7 @@ Mods: {
 			3: "{0} fell down the rabbithole."
 			4: "{0} had a cuteness overload."
 			5: "{0} was killed by their own creation."
+			6: "{0} got brutally booped."
 		}
 	}
 }

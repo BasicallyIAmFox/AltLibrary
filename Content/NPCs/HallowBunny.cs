@@ -33,34 +33,10 @@ namespace AltLibrary.Content.NPCs
             AnimationType = NPCID.Bunny;
         }
 
-        private bool firstTick = false;
         public override void AI()
         {
             if (AltLibrary.HallowBunnyUnlocked)
             {
-                if (!firstTick)
-                {
-                    List<string> pairs = new();
-                    pairs.Add("Charlie");
-                    pairs.Add("Freddy");
-                    pairs.Add("Kai");
-                    pairs.Add("Max");
-                    pairs.Add("Mickey");
-                    pairs.Add("Mike");
-                    pairs.Add("Jack");
-                    pairs.Add("Cleo");
-                    pairs.Add("Juni");
-                    pairs.Add("Nessie");
-                    pairs.Add("Betty");
-                    pairs.Add("Mary");
-                    pairs.Add("Linda");
-                    pairs.Add("Tootsie");
-                    pairs.Add("Ensie");
-                    pairs.Add("Hannah");
-                    NPC.GivenName = pairs[Main.rand.Next(pairs.Count)];
-                    firstTick = true;
-                }
-
                 for (int i = 0; i < Main.maxPlayers; i++)
                 {
                     Player player = Main.player[i];
@@ -72,6 +48,7 @@ namespace AltLibrary.Content.NPCs
                         pairs.Add(2);
                         pairs.Add(3);
                         pairs.Add(4);
+                        pairs.Add(6);
                         if (player.name == "FoxXD_") pairs.Add(5);
 
                         string reason = Language.GetTextValue($"Mods.AltLibrary.BunReason.{pairs[Main.rand.Next(pairs.Count)]}", player.name);

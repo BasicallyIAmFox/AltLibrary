@@ -82,65 +82,53 @@ namespace AltLibrary.Core.UIs
                 return;
             }
 
-            if (ore.Type == -1)
+            switch (ore.Type)
             {
-                set(0);
-            }
-            else if (ore.Type == -2)
-            {
-                set(1);
-            }
-            else if (ore.Type == -3)
-            {
-                set(2);
-            }
-            else if (ore.Type == -4)
-            {
-                set(3);
-            }
-            else if (ore.Type == -5)
-            {
-                set(4);
-            }
-            else if (ore.Type == -6)
-            {
-                set(5);
-            }
-            else if (ore.Type == -7)
-            {
-                set(6);
-            }
-            else if (ore.Type == -8)
-            {
-                set(7);
-            }
-            else if (ore.Type == -9)
-            {
-                set(8);
-            }
-            else if (ore.Type == -10)
-            {
-                set(9);
-            }
-            else if (ore.Type == -11)
-            {
-                set(10);
-            }
-            else if (ore.Type == -12)
-            {
-                set(11);
-            }
-            else if (ore.Type == -13)
-            {
-                set(12);
-            }
-            else if (ore.Type == -14)
-            {
-                set(13);
-            }
-            else if (ore.Type == -15)
-            {
-                set(14);
+                case -1:
+                    set(0);
+                    break;
+                case -2:
+                    set(1);
+                    break;
+                case -3:
+                    set(2);
+                    break;
+                case -4:
+                    set(3);
+                    break;
+                case -5:
+                    set(4);
+                    break;
+                case -6:
+                    set(5);
+                    break;
+                case -7:
+                    set(6);
+                    break;
+                case -8:
+                    set(7);
+                    break;
+                case -9:
+                    set(8);
+                    break;
+                case -10:
+                    set(9);
+                    break;
+                case -11:
+                    set(10);
+                    break;
+                case -12:
+                    set(11);
+                    break;
+                case -13:
+                    set(12);
+                    break;
+                case -14:
+                    set(13);
+                    break;
+                case -15:
+                    set(14);
+                    break;
             }
             if (ore.Type >= 0 && ore.Mod != null)
             {
@@ -263,13 +251,13 @@ namespace AltLibrary.Core.UIs
             {
                 switch (ore.Name)
                 {
-                    case "RandomCopper": descValue = Language.GetTextValue($"Mods.AltLibrary.OreDescription.{ore.Name}"); break;
-                    case "RandomIron": descValue = Language.GetTextValue($"Mods.AltLibrary.OreDescription.{ore.Name}"); break;
-                    case "RandomSilver": descValue = Language.GetTextValue($"Mods.AltLibrary.OreDescription.{ore.Name}"); break;
-                    case "RandomGold": descValue = Language.GetTextValue($"Mods.AltLibrary.OreDescription.{ore.Name}"); break;
-                    case "RandomCobalt": descValue = Language.GetTextValue($"Mods.AltLibrary.OreDescription.{ore.Name}"); break;
-                    case "RandomMythril": descValue = Language.GetTextValue($"Mods.AltLibrary.OreDescription.{ore.Name}"); break;
-                    case "RandomAdamantite": descValue = Language.GetTextValue($"Mods.AltLibrary.OreDescription.{ore.Name}"); break;
+                    case "RandomCopper": descValue = Language.GetTextValue($"Mods.AltLibrary.AltOreDescription.{ore.Name}"); break;
+                    case "RandomIron": descValue = Language.GetTextValue($"Mods.AltLibrary.AltOreDescription.{ore.Name}"); break;
+                    case "RandomSilver": descValue = Language.GetTextValue($"Mods.AltLibrary.AltOreDescription.{ore.Name}"); break;
+                    case "RandomGold": descValue = Language.GetTextValue($"Mods.AltLibrary.AltOreDescription.{ore.Name}"); break;
+                    case "RandomCobalt": descValue = Language.GetTextValue($"Mods.AltLibrary.AltOreDescription.{ore.Name}"); break;
+                    case "RandomMythril": descValue = Language.GetTextValue($"Mods.AltLibrary.AltOreDescription.{ore.Name}"); break;
+                    case "RandomAdamantite": descValue = Language.GetTextValue($"Mods.AltLibrary.AltOreDescription.{ore.Name}"); break;
                     default: break;
                 }
             }
@@ -300,27 +288,27 @@ namespace AltLibrary.Core.UIs
             {
                 switch (ore.Name)
                 {
-                    case "Copper": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
-                    case "Tin": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
-                    case "Iron": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
-                    case "Lead": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
-                    case "Silver": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
-                    case "Tungsten": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
-                    case "Gold": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
-                    case "Platinum": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
-                    case "Cobalt": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
-                    case "Palladium": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
-                    case "Mythril": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
-                    case "Orichalcum": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
-                    case "Adamantite": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
-                    case "Titanium": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
-                    case "RandomCopper": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
-                    case "RandomIron": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
-                    case "RandomSilver": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
-                    case "RandomGold": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
-                    case "RandomCobalt": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
-                    case "RandomMythril": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
-                    case "RandomAdamantite": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.OreName.{ore.Name}"); break;
+                    case "Copper": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
+                    case "Tin": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
+                    case "Iron": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
+                    case "Lead": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
+                    case "Silver": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
+                    case "Tungsten": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
+                    case "Gold": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
+                    case "Platinum": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
+                    case "Cobalt": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
+                    case "Palladium": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
+                    case "Mythril": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
+                    case "Orichalcum": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
+                    case "Adamantite": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
+                    case "Titanium": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
+                    case "RandomCopper": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
+                    case "RandomIron": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
+                    case "RandomSilver": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
+                    case "RandomGold": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
+                    case "RandomCobalt": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
+                    case "RandomMythril": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
+                    case "RandomAdamantite": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
                     default: break;
                 }
             }

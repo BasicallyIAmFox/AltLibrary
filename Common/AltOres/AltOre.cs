@@ -54,10 +54,10 @@ namespace AltLibrary.Common.AltOres
 
             DisplayName = (ModTranslation)typeof(LocalizationLoader).GetMethod("GetOrCreateTranslation",
                 BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static,
-                new Type[] { typeof(Mod), typeof(string), typeof(bool) }).Invoke(null, new object[] { Mod, $"OreName.{Name}", false });
+                new Type[] { typeof(Mod), typeof(string), typeof(bool) }).Invoke(null, new object[] { Mod, $"AltOreName.{Name}", false });
             Description = (ModTranslation)typeof(LocalizationLoader).GetMethod("GetOrCreateTranslation",
                 BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static,
-                new Type[] { typeof(Mod), typeof(string), typeof(bool) }).Invoke(null, new object[] { Mod, $"OreDescription.{Name}", true });
+                new Type[] { typeof(Mod), typeof(string), typeof(bool) }).Invoke(null, new object[] { Mod, $"AltOreDescription.{Name}", true });
 
             AltLibrary.Ores.Add(this);
             Type = AltLibrary.Ores.Count;
