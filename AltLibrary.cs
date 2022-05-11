@@ -16,18 +16,18 @@ namespace AltLibrary
 
         public static AltLibrary Instance { get => instance; internal set => instance = value; }
 
-        public static List<AltBiome> Biomes = new();
+        internal static List<AltBiome> Biomes = new();
 
-        public static List<AltOre> Ores = new();
+        internal static List<AltOre> Ores = new();
 
-        public static Dictionary<string, float> HellAltTrans = new();
-        internal static List<CustomPreviews> PreviewWorldIcons = new();
+        internal static Dictionary<string, float> HellAltTrans = new();
+        internal static List<CustomPreviews> PreviewWorldIcons;
 
         // Spreading related lists.
-        public static List<int> planteraBulbs = new() { TileID.PlanteraBulb };
-        public static List<int> jungleGrass = new() { TileID.JungleGrass };
-        public static List<int> jungleThorns = new() { TileID.JungleThorns };
-        public static List<int> evilStoppingOres = new() { TileID.Chlorophyte, TileID.ChlorophyteBrick };
+        internal static List<int> planteraBulbs = new() { TileID.PlanteraBulb };
+        internal static List<int> jungleGrass = new() { TileID.JungleGrass };
+        internal static List<int> jungleThorns = new() { TileID.JungleThorns };
+        internal static List<int> evilStoppingOres = new() { TileID.Chlorophyte, TileID.ChlorophyteBrick };
 
         internal static int TimeHoveringOnIcon = 0;
         internal static bool HallowBunnyUnlocked = false;
@@ -46,6 +46,7 @@ namespace AltLibrary
             ModIconVariation = Main.rand.Next(ALTextureAssets.AnimatedModIcon.Length);
             TimeHoveringOnIcon = 0;
             HallowBunnyUnlocked = false;
+            PreviewWorldIcons = new();
         }
 
         public override object Call(params object[] args)
@@ -70,6 +71,7 @@ namespace AltLibrary
                         if (args[4] is not string large)
                             throw new ArgumentException("Fifth argument (large) is not string!");
                         PreviewWorldIcons.Add(new CustomPreviews(seed, small, medium, large));
+                        Logger.Info($"Registered custom preview! Seed: {seed} Path: {small} {medium} {large}");
                         break;
                 }
             }
@@ -83,6 +85,7 @@ namespace AltLibrary
             AltLibraryConfig.Config = null;
             TimeHoveringOnIcon = 0;
             HallowBunnyUnlocked = false;
+            PreviewWorldIcons = null;
         }
 
         internal struct CustomPreviews

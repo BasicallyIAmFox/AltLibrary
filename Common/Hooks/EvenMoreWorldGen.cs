@@ -350,7 +350,6 @@ namespace AltLibrary.Common.Hooks
             FieldReference iron = null;
             FieldReference silver = null;
             FieldReference gold = null;
-            FieldReference dungeonSide = null;
 
             if (!c.TryGotoNext(i => i.MatchStsfld(typeof(WorldGen).GetField(nameof(WorldGen.crimson), BindingFlags.Public | BindingFlags.Static))))
                 return;
@@ -378,89 +377,46 @@ namespace AltLibrary.Common.Hooks
                 return;
             if (!c.TryGotoPrev(i => i.MatchBneUn(out _)))
                 return;
-            if (!c.TryGotoPrev(i => i.MatchLdfld(out dungeonSide)))
-                return;
-            if (!c.TryGotoNext(i => i.MatchLdcI4(-1)))
-                return;
-            if (!c.TryGotoNext(i => i.MatchStfld(out _)))
+            if (!c.TryGotoPrev(i => i.MatchLdcI4(-1)))
                 return;
 
-            c.Index += 2;
-            c.Emit(OpCodes.Ldfld, dungeonSide);
             c.EmitDelegate<Func<int, int>>(dungeonSide =>
             {
                 WorldBiomeGeneration.dungeonSide = dungeonSide;
                 return dungeonSide;
             });
-            c.Emit(OpCodes.Stfld, dungeonSide);
-            c.Emit(OpCodes.Ldfld, copper);
-            c.EmitDelegate<Func<int, int>>((copper) =>
+
+            replaceValues(nameof(WorldBiomeManager.Copper), (-1, TileID.Copper), (-2, TileID.Tin), copper);
+            replaceValues(nameof(WorldBiomeManager.Iron), (-3, TileID.Iron), (-4, TileID.Lead), iron);
+            replaceValues(nameof(WorldBiomeManager.Silver), (-5, TileID.Silver), (-6, TileID.Tungsten), silver);
+            replaceValues(nameof(WorldBiomeManager.Gold), (-7, TileID.Gold), (-8, TileID.Platinum), gold);
+
+            void replaceValues(string type, ValueTuple<int, int> value1, ValueTuple<int, int> value2, FieldReference field)
             {
-                if (WorldBiomeManager.Copper == -1)
-                {
-                    return TileID.Copper;
-                }
-                else if (WorldBiomeManager.Copper == -2)
-                {
-                    return TileID.Tin;
-                }
-                else
-                {
-                    return AltLibrary.Ores[WorldBiomeManager.Copper - 1].ore;
-                }
-            });
-            c.Emit(OpCodes.Stfld, copper);
-            c.Emit(OpCodes.Ldfld, iron);
-            c.EmitDelegate<Func<int, int>>((iron) =>
-            {
-                if (WorldBiomeManager.Iron == -3)
-                {
-                    return TileID.Iron;
-                }
-                else if (WorldBiomeManager.Iron == -4)
-                {
-                    return TileID.Lead;
-                }
-                else
-                {
-                    return AltLibrary.Ores[WorldBiomeManager.Iron - 1].ore;
-                }
-            });
-            c.Emit(OpCodes.Stfld, iron);
-            c.Emit(OpCodes.Ldfld, silver);
-            c.EmitDelegate<Func<int, int>>((silver) =>
-            {
-                if (WorldBiomeManager.Silver == -5)
-                {
-                    return TileID.Silver;
-                }
-                else if (WorldBiomeManager.Silver == -6)
-                {
-                    return TileID.Tungsten;
-                }
-                else
-                {
-                    return AltLibrary.Ores[WorldBiomeManager.Silver - 1].ore;
-                }
-            });
-            c.Emit(OpCodes.Stfld, silver);
-            c.Emit(OpCodes.Ldfld, gold);
-            c.EmitDelegate<Func<int, int>>((gold) =>
-            {
-                if (WorldBiomeManager.Gold == -7)
-                {
-                    return TileID.Gold;
-                }
-                else if (WorldBiomeManager.Gold == -8)
-                {
-                    return TileID.Platinum;
-                }
-                else
-                {
-                    return AltLibrary.Ores[WorldBiomeManager.Gold - 1].ore;
-                }
-            });
-            c.Emit(OpCodes.Stfld, gold);
+                var label = c.DefineLabel();
+                var label2 = c.DefineLabel();
+                var label3 = c.DefineLabel();
+                c.Emit(OpCodes.Ldsfld, typeof(WorldBiomeManager).GetField(type, BindingFlags.Public | BindingFlags.Static));
+                c.Emit(OpCodes.Ldc_I4, value1.Item1);
+                c.Emit(OpCodes.Bne_Un_S, label);
+                c.Emit(OpCodes.Ldarg, 0);
+                c.EmitDelegate(() => value1.Item2);
+                c.Emit(OpCodes.Stfld, field);
+                c.Emit(OpCodes.Br_S, label3);
+                c.MarkLabel(label);
+                c.Emit(OpCodes.Ldsfld, typeof(WorldBiomeManager).GetField(type, BindingFlags.Public | BindingFlags.Static));
+                c.Emit(OpCodes.Ldc_I4, value2.Item1);
+                c.Emit(OpCodes.Bne_Un_S, label2);
+                c.Emit(OpCodes.Ldarg, 0);
+                c.EmitDelegate(() => value2.Item2);
+                c.Emit(OpCodes.Stfld, field);
+                c.Emit(OpCodes.Br_S, label3);
+                c.MarkLabel(label2);
+                c.Emit(OpCodes.Ldarg, 0);
+                c.EmitDelegate(() => AltLibrary.Ores[(int)typeof(WorldBiomeManager).GetField(type, BindingFlags.Public | BindingFlags.Static).GetValue(null) - 1].ore);
+                c.Emit(OpCodes.Stfld, field);
+                c.MarkLabel(label3);
+            }
         }
 
         private static void GenPasses_HookGenPassShinies(ILContext il)

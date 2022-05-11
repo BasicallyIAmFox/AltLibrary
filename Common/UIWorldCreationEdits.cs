@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using Newtonsoft.Json.Linq;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
@@ -145,7 +146,7 @@ namespace AltLibrary.Common
                     2 => "Large",
                     _ => "Small",
                 };
-                string folder = seed switch
+                string folder = (seed != null ? seed.ToLower() : "") switch
                 {
                     "05162020" or "5162020" => "Drunk",
                     "not the bees" or "not the bees!" => "NotTheBees",
@@ -154,38 +155,37 @@ namespace AltLibrary.Common
                     "constant" or "theconstant" or "​the constant" or "eye4aneye" or "eye4aneye" => "Constant",
                     _ => "",
                 };
-                if (folder != "" && AltLibraryConfig.Config.SpecialSeedWorldPreview)
+                bool broken = false;
+                foreach (AltLibrary.CustomPreviews preview in AltLibrary.PreviewWorldIcons)
                 {
-                    bool broken = false;
-                    foreach (AltLibrary.CustomPreviews preview in AltLibrary.PreviewWorldIcons)
+                    if (seed == preview.seed)
                     {
-                        if (preview.seed == seed)
+                        switch (size)
                         {
-                            switch (size)
-                            {
-                                case 0:
-                                default:
-                                    spritebatch.Draw(ModContent.Request<Texture2D>(preview.pathSmall).Value, position, color);
-                                    break;
-                                case 1:
-                                    spritebatch.Draw(ModContent.Request<Texture2D>(preview.pathMedium).Value, position, color);
-                                    break;
-                                case 2:
-                                    spritebatch.Draw(ModContent.Request<Texture2D>(preview.pathLarge).Value, position, color);
-                                    break;
-                            }
-                            broken = true;
-                            break;
+                            case 0:
+                            default:
+                                spritebatch.Draw(ModContent.Request<Texture2D>(preview.pathSmall, AssetRequestMode.ImmediateLoad).Value, position, color);
+                                break;
+                            case 1:
+                                spritebatch.Draw(ModContent.Request<Texture2D>(preview.pathMedium, AssetRequestMode.ImmediateLoad).Value, position, color);
+                                break;
+                            case 2:
+                                spritebatch.Draw(ModContent.Request<Texture2D>(preview.pathLarge, AssetRequestMode.ImmediateLoad).Value, position, color);
+                                break;
                         }
+                        broken = true;
                     }
-                    if (!broken)
+                }
+                if (!broken)
+                {
+                    if (folder != "" && AltLibraryConfig.Config.SpecialSeedWorldPreview)
                     {
                         spritebatch.Draw(ModContent.Request<Texture2D>($"AltLibrary/Assets/WorldPreviews/{folder}/{var}", AssetRequestMode.ImmediateLoad).Value, position, color);
                     }
-                }
-                else
-                {
-                    spritebatch.Draw(Main.Assets.Request<Texture2D>($"Images/UI/WorldCreation/PreviewSize{var}", AssetRequestMode.ImmediateLoad).Value, position, color);
+                    else
+                    {
+                        spritebatch.Draw(Main.Assets.Request<Texture2D>($"Images/UI/WorldCreation/PreviewSize{var}", AssetRequestMode.ImmediateLoad).Value, position, color);
+                    }
                 }
 
                 Asset<Texture2D> asset = AltEvilBiomeChosenType switch
