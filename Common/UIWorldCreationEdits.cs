@@ -158,7 +158,7 @@ namespace AltLibrary.Common
                 bool broken = false;
                 foreach (AltLibrary.CustomPreviews preview in AltLibrary.PreviewWorldIcons)
                 {
-                    if (seed == preview.seed)
+                    if (seed.ToLower() == preview.seed.ToLower())
                     {
                         switch (size)
                         {
