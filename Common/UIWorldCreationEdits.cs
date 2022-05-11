@@ -156,24 +156,27 @@ namespace AltLibrary.Common
                     _ => "",
                 };
                 bool broken = false;
-                foreach (AltLibrary.CustomPreviews preview in AltLibrary.PreviewWorldIcons)
+                if (AltLibrary.PreviewWorldIcons.Count > 0)
                 {
-                    if (seed.ToLower() == preview.seed.ToLower())
+                    foreach (AltLibrary.CustomPreviews preview in AltLibrary.PreviewWorldIcons)
                     {
-                        switch (size)
+                        if ((seed != null ? seed.ToLower() : "").ToLower() == preview.seed.ToLower())
                         {
-                            case 0:
-                            default:
-                                spritebatch.Draw(ModContent.Request<Texture2D>(preview.pathSmall, AssetRequestMode.ImmediateLoad).Value, position, color);
-                                break;
-                            case 1:
-                                spritebatch.Draw(ModContent.Request<Texture2D>(preview.pathMedium, AssetRequestMode.ImmediateLoad).Value, position, color);
-                                break;
-                            case 2:
-                                spritebatch.Draw(ModContent.Request<Texture2D>(preview.pathLarge, AssetRequestMode.ImmediateLoad).Value, position, color);
-                                break;
+                            switch (size)
+                            {
+                                case 0:
+                                default:
+                                    spritebatch.Draw(ModContent.Request<Texture2D>(preview.pathSmall, AssetRequestMode.ImmediateLoad).Value, position, color);
+                                    break;
+                                case 1:
+                                    spritebatch.Draw(ModContent.Request<Texture2D>(preview.pathMedium, AssetRequestMode.ImmediateLoad).Value, position, color);
+                                    break;
+                                case 2:
+                                    spritebatch.Draw(ModContent.Request<Texture2D>(preview.pathLarge, AssetRequestMode.ImmediateLoad).Value, position, color);
+                                    break;
+                            }
+                            broken = true;
                         }
-                        broken = true;
                     }
                 }
                 if (!broken)

@@ -1,4 +1,5 @@
 ﻿using AltLibrary.Common;
+using AltLibrary.Common.AltLavaStyles.Hooks;
 using AltLibrary.Common.Hooks;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -35,6 +36,7 @@ namespace AltLibrary.Core
             EvilWofBox.Init();
             TenthAnniversaryFix.Init();
             ShadowKeyReplacement.Init();
+            LiquidILHooks.Init();
         }
 
         private static void Main_EraseWorld(On.Terraria.Main.orig_EraseWorld orig, int i)

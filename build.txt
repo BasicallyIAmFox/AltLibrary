@@ -1,4 +1,4 @@
-displayName = Alternative Biomes Library
+displayName = Alternatives Library
 author = FoxXD_, RQXY // cace
 version = 1.0.0.4
 

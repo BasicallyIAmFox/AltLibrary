@@ -1,4 +1,5 @@
 using AltLibrary.Common.AltBiomes;
+using AltLibrary.Common.AltLavaStyles;
 using AltLibrary.Common.AltOres;
 using AltLibrary.Common.Hooks;
 using AltLibrary.Core;
@@ -19,6 +20,8 @@ namespace AltLibrary
         internal static List<AltBiome> Biomes = new();
 
         internal static List<AltOre> Ores = new();
+
+        internal static List<AltLavaStyle> LavaStyles = new();
 
         internal static Dictionary<string, float> HellAltTrans = new();
         internal static List<CustomPreviews> PreviewWorldIcons;
@@ -97,6 +100,23 @@ namespace AltLibrary
 
             public CustomPreviews(string seed, string pathSmall, string pathMedium, string pathLarge)
             {
+                if (seed is null)
+                {
+                    throw new ArgumentNullException(nameof(seed), "'seed' cannot be null!");
+                }
+                if (pathSmall is null)
+                {
+                    throw new ArgumentNullException(nameof(pathSmall), "'pathSmall' cannot be null!");
+                }
+                if (pathMedium is null)
+                {
+                    throw new ArgumentNullException(nameof(pathMedium), "'pathMedium' cannot be null!");
+                }
+                if (pathLarge is null)
+                {
+                    throw new ArgumentNullException(nameof(pathLarge), "'pathLarge' cannot be null!");
+                }
+
                 this.seed = seed;
                 this.pathSmall = pathSmall;
                 this.pathMedium = pathMedium;
