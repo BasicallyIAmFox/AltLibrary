@@ -1,5 +1,5 @@
 using AltLibrary.Common.AltBiomes;
-using AltLibrary.Common.AltLavaStyles;
+using AltLibrary.Common.AltLiquidStyles;
 using AltLibrary.Common.AltOres;
 using AltLibrary.Common.Hooks;
 using AltLibrary.Core;
@@ -21,7 +21,7 @@ namespace AltLibrary
 
         internal static List<AltOre> Ores = new();
 
-        internal static List<AltLavaStyle> LavaStyles = new();
+        internal static List<AltLiquidStyle> LiquidStyles = new();
 
         internal static Dictionary<string, float> HellAltTrans = new();
         internal static List<CustomPreviews> PreviewWorldIcons;

@@ -1,5 +1,5 @@
 ﻿using AltLibrary.Common;
-using AltLibrary.Common.AltLavaStyles.Hooks;
+using AltLibrary.Common.AltLiquidStyles.Hooks;
 using AltLibrary.Common.Hooks;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
