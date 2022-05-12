@@ -8,7 +8,6 @@ using Terraria.ModLoader;
 
 namespace AltLibrary.Common.AltLiquidStyles
 {
-    [Obsolete("This class is being heavily in DEVELOPMENT and EXPERIMENTAL! Major changes can happen in any update. Risky to use.")]
     public abstract class AltLiquidStyle : ModTexturedType
     {
         /// <summary>
@@ -23,12 +22,10 @@ namespace AltLibrary.Common.AltLiquidStyles
         internal Asset<Texture2D>[] GetTextures() => Textures;
 
         public Func<Player, PlayerDeathReason> LavaDeathReason;
-        public int? LavaDebuff = null;
         public int LavaContactDamage = 80;
-        public int LavaDebuffTime = 0;
         public string LavaImmuneTexture = null;
-        public int? HoneyBuff = null;
-        public int HoneyBuffTime = 0;
+        public int? LiquidBuff = null;
+        public int LiquidBuffTime = 0;
         public int? ObsidianWater = null;
         public int? HoneyWater = null;
         public int? CrispyHoneyWater = null;

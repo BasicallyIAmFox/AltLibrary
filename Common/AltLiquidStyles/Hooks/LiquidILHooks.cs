@@ -293,9 +293,9 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
             {
                 foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
                 {
-                    if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Honey && liquidStyle.HoneyBuff.HasValue)
+                    if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Honey && liquidStyle.LiquidBuff.HasValue)
                     {
-                        return liquidStyle.HoneyBuff.Value;
+                        return liquidStyle.LiquidBuff.Value;
                     }
                 }
                 return orig;
@@ -305,9 +305,9 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
             {
                 foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
                 {
-                    if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Honey && liquidStyle.HoneyBuffTime > 0)
+                    if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Honey && liquidStyle.LiquidBuffTime > 0)
                     {
-                        return liquidStyle.HoneyBuffTime;
+                        return liquidStyle.LiquidBuffTime;
                     }
                 }
                 return orig;
@@ -327,7 +327,7 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
                 {
                     foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
                     {
-                        if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Honey && liquidStyle.HoneyBuffTime > 0)
+                        if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Lava && liquidStyle.LavaDeathReason != null)
                         {
                             return liquidStyle.LavaDeathReason.Invoke(player);
                         }
@@ -345,7 +345,7 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
                 {
                     foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
                     {
-                        if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Honey && liquidStyle.LavaContactDamage > 0)
+                        if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Lava && liquidStyle.LavaContactDamage > 0)
                         {
                             return liquidStyle.LavaContactDamage;
                         }
@@ -362,9 +362,9 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
                 {
                     foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
                     {
-                        if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Honey && liquidStyle.LavaDebuff.HasValue)
+                        if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Lava && liquidStyle.LiquidBuff.HasValue)
                         {
-                            return liquidStyle.LavaDebuff.Value;
+                            return liquidStyle.LiquidBuff.Value;
                         }
                     }
                     return 24;
@@ -380,9 +380,9 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
                 {
                     foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
                     {
-                        if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Honey && liquidStyle.LavaDebuffTime > 0)
+                        if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Lava && liquidStyle.LiquidBuffTime > 0)
                         {
-                            return liquidStyle.LavaDebuffTime;
+                            return liquidStyle.LiquidBuffTime;
                         }
                     }
                     return 420 / (j + 1);
@@ -459,7 +459,7 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
                     {
                         foreach (AltLiquidStyle lavaStyle in AltLibrary.LiquidStyles)
                         {
-                            if (lavaStyle.IsActive.Invoke() && (num59 == 1 && lavaStyle.LiquidStyle == LiquidStyle.Lava || num59 == 11 && lavaStyle.LiquidStyle == LiquidStyle.Honey))
+                            if (lavaStyle.IsActive.Invoke() && (num59 == 1 && lavaStyle.LiquidStyle == LiquidStyle.Lava || num59 == 14 && lavaStyle.LiquidStyle == LiquidStyle.Honey))
                             {
                                 return lavaStyle.GetTextures()[2];
                             }
@@ -470,7 +470,7 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
                     {
                         foreach (AltLiquidStyle lavaStyle in AltLibrary.LiquidStyles)
                         {
-                            if (lavaStyle.IsActive.Invoke() && (num59 == 1 && lavaStyle.LiquidStyle == LiquidStyle.Lava || num59 == 11 && lavaStyle.LiquidStyle == LiquidStyle.Honey))
+                            if (lavaStyle.IsActive.Invoke() && (num59 == 1 && lavaStyle.LiquidStyle == LiquidStyle.Lava || num59 == 14 && lavaStyle.LiquidStyle == LiquidStyle.Honey))
                             {
                                 return lavaStyle.GetTextures()[2];
                             }

@@ -1,0 +1,161 @@
+Mods: {
+	AltLibrary: {
+		HardmodeOre: "Ваш мир был освещён {0}!"
+		WorldBreak: "Один из биомов, с которым был создан этот мир, был удален, это может привести к серьезной поломке!"
+		AddedBy: "Добавлено:"
+		ChooseBiome: "Выберите биомы"
+		ChooseOre: "Выберите руды"
+		Config: {
+			PreviewVisible: {
+				Label: "World Creation Preview"
+				Tooltip: "Which layers should be rendered on World Creation Preview"
+			}
+			BiomeIconsVisibleOutsideBiomeUI: {
+				Label: "Biome Icons visible outside Biome UI"
+				Tooltip: "When true, you will be able to see Biome Icons any time on World Creation"
+			}
+			OreIconsVisibleOutsideOreUI: {
+				Label: "Ore Icons visible outside Ore UI"
+				Tooltip: "When true, you will be able to see Ore Icons any time on World Creation"
+			}
+			SpecialSeedWorldPreview: {
+				Label: "Special seed previews"
+				Tooltip: "When true, the world preview image will change depending on any secret seed you enter"
+			}
+			SmashingAltarsSpreadsRandom: {
+				Label: "Randomized Altar infections"
+				Tooltip: "When true, the infectious blocks spawned by smashing Demon Altars can be of any installed biome"
+			}
+		}
+		AltOreName: {
+			RandomCopper: "Рандомный вариант меди"
+			RandomIron: "Рандомный вариант железа"
+			RandomSilver: "Рандомный вариант серебра"
+			RandomGold: "Рандомный вариант золота"
+			RandomCobalt: "Рандомный вариант кобальта"
+			RandomMythril: "Рандомный вариант мифрила"
+			RandomAdamantite: "Рандомный вариант адамантита"
+			Copper: "Медь"
+			Tin: "Олово"
+			Iron: "Железо"
+			Lead: "Свинец"
+			Silver: "Серебро"
+			Tungsten: "Вольфрам"
+			Gold: "Золото"
+			Platinum: "Платина"
+			Cobalt: "Кобальт"
+			Palladium: "Палладиум"
+			Mythril: "Мифрил"
+			Orichalcum: "Орихалк"
+			Adamantite: "Адамантит"
+			Titanium: "Титан"
+		}
+		AltOreDescription: {
+			RandomCopper: "Выбирает медную руду за вас!"
+			RandomIron: "Выбирает железную руду за вас!"
+			RandomSilver: "Выбирает серебряную руду за вас!"
+			RandomGold: "Выбирает золотую руду за вас!"
+			RandomCobalt: "Выбирает кобальтовую руду за вас!"
+			RandomMythril: "Выбирает мифриловую руду за вас!"
+			RandomAdamantite: "Выбирает адамантитовую руду за вас!"
+		}
+		AltBiomeName: {
+			RandomEvilBiome: "Рандомное зло"
+			RandomHallowBiome: "Рандомное освящение"
+			RandomJungleBiome: "Рандомный джунгли"
+			RandomUnderworldBiome: "Рандомная преисподняя"
+			CorruptBiome: "Искажение"
+			CrimsonBiome: "Багрянец"
+			HallowBiome: "Освящение"
+			JungleBiome: "Джунгли"
+			UnderworldBiome: "Преисподняя"
+		}
+		AltBiomeDescription: {
+			RandomEvilBiome: "Выбирает мировое зло за вас!"
+			RandomHallowBiome: "Выбирает мировое добро за вас!"
+			RandomJungleBiome: "Выбирает тропический биом за вас!"
+			RandomUnderworldBiome: "Выбирает биом преисподней за вас!"
+			CorruptBiome: "Фиолетовый биом, состоящий из гниющих врагов, которые будут защищать свой ландшафт любой ценой."
+			CrimsonBiome: "Кроваво-красный биом, состоящий из кровавых существ, проявленных землей, которые будут защищать биом любой ценой."
+			HallowBiome: "Священный пейзаж, наполненный надеждами, мечтами и настоящими единорогами и феями."
+			JungleBiome: "Процветающее место, полное густых деревьев и множество пчел. Глубоко под поверхностью джунглей находится древний храм."
+			UnderworldBiome: "Раскаленный, раскаленный ландшафт, разрушенный временем, наполненный лавой и демонами, бродящими по разрушенному ландшафту."
+		}
+		Warn: {
+			VanillaBiome: "Этот биом добавлен Terraria"
+			ModdedBiome: "Этот биом добавлен модом {0}"
+			VanillaOre: "Эта руда добавлена Terraria"
+			ModdedOre: "Эта руда добавлена модом {0}"
+		}
+		RecipeGroups: {
+			EvilOres: "Злая руда"
+			EvilBars: "Злой слитой"
+			HallowBars: "Святой слиток"
+			HellBars: "Слиток из преисподнии"
+			JungleBars: "Тропический слиток"
+			MushroomBars: "Грибной слиток"
+			EvilSwords: "Злой меч"
+			HallowSwords: "Святой меч"
+			HellSwords: "Меч из преисподнии"
+			JungleSwords: "Тропический меч"
+			ComboSwords: "Меч комбинации"
+			TrueComboSwords: "Истинный меч комбинации"
+			TrueHallowSwords: "Истинный святой меч"
+			RottenChunks: "Пороченный внутренности"
+			PixieDusts: "Святой остаток"
+			UnicornHorns: "Святые внутренности"
+			CrystalShards: "Святые компоненты"
+			CursedFlames: "Пороченные компоненты"
+			ShadowScales: "Материал с босса зла"
+			JungleSpores: "Тропический компонент"
+			Deathweed: "Злое растение"
+			Fireblossom: "Растение из преисподнии"
+			Moonglow: "Тропическое растение"
+			Hellforges: "Адская кузня"
+			CopperBars: "Медный слиток"
+			SilverBars: "Серебряный слиток"
+			GoldBars: "Золотой слиток"
+			CobaltBars: "Кобальтовый слиток"
+			MythrilBars: "Мифриловый слиток"
+			AdamantiteBars: "Адамантитовый слиток"
+			GoldCandles: "Золотая свеча"
+			CopperWatches: "Медные часы"
+			SilverWatches: "Серебряные часы"
+			GoldWatches: "Золотые часы"
+		}
+		DryadSpecialText: {
+			WorldStatusGoodEvil: "{0} is {1}% good and {2}% evil."
+			WorldStatusGood: "{0} is {1}% good."
+			WorldStatusEvil: "{0} is {1}% evil."
+		}
+		DropRule: {
+			Base: "Выпадает в мирах с {0}"
+		}
+		Common: {
+			DevTooltip: "«Отлично подходит для подражания внешности разработчиков!»"
+		}
+		ItemTooltip: {
+			HallowBunny: "Призрачный кролик... Но такой опасный."
+			FoxShirt: "{$Mods.AltLibrary.Common.DevTooltip}"
+			FoxMask: "{$Mods.AtLibrary.Common.DevTooltip}"
+			FoxPants: "{$Mods.AltLibrary.Common.DevTooltip}"
+			CaceEars: "{$Mods.AltLibrary.Common.DevTooltip}"
+		}
+		ItemName: {
+			HallowBunny: "Святой кролик"
+			FoxShirt: "Свитер Фокса"
+			FoxMask: "Маска для лица Фокса"
+			FoxPants: "Брюки Фокса"
+			CaceEars: "Cace's кошачьи уши"
+		}
+		BunReason: {
+			0: "Игрока {0} сожрали кролики."
+			1: "{0} был уничтожен жестокими правилами игры."
+			2: "{0} был уничтожен кроликами."
+			3: "{0} упал в кроличью нору."
+			4: "У игрока {0} была перегрузка милоты."
+			5: "{0} был убит собственным творением."
+			6: "Игрока {0} жестоко бупкнули."
+		}
+	}
+}
