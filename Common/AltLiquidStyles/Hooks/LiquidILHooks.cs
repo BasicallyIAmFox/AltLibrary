@@ -31,59 +31,57 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
             IL.Terraria.Liquid.HoneyCheck += Liquid_HoneyCheck;
             IL.Terraria.GameContent.Drawing.TileDrawing.EmitLiquidDrops += TileDrawing_EmitLiquidDrops;
             On.Terraria.Map.MapHelper.GetMapTileXnaColor += MapHelper_GetMapTileXnaColor;
-            //IL.Terraria.Player.ItemCheck_UseBuckets += Player_ItemCheck_UseBuckets;
+            IL.Terraria.Player.ItemCheck_UseBuckets += Player_ItemCheck_UseBuckets;
         }
 
         private static void Player_ItemCheck_UseBuckets(ILContext il)
         {
             ILCursor c = new(il);
-            ILLabel label = null;
-            if (!c.TryGotoNext(i => i.MatchLdcI4(ItemID.LavaBucket)))
+            if (!c.TryGotoNext(i => i.MatchLdcI4(207)))
                 return;
-            if (!c.TryGotoNext(i => i.MatchBeq(out label)))
-                return;
-
-            foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
+            c.Index++;
+            c.EmitDelegate<Func<int, int>>((orig) =>
             {
-                c.Index += 2;
-                c.Emit(OpCodes.Ldarg, 1);
-                c.Emit(OpCodes.Ldfld, typeof(Item).GetField(nameof(Item.type), BindingFlags.Public | BindingFlags.Instance));
-                c.EmitDelegate<Func<Item, bool>>((item) => item.type == (liquidStyle.BucketReplacement ?? -1));
-                c.Emit(OpCodes.Beq, label);
-
-                c.Index += 2;
-                c.Emit(OpCodes.Ldarg, 1);
-                c.Emit(OpCodes.Ldfld, typeof(Item).GetField(nameof(Item.type), BindingFlags.Public | BindingFlags.Instance));
-                c.EmitDelegate<Func<Item, bool>>((item) => item.type == (liquidStyle.BottomlessBucketReplacement ?? -1));
-                c.Emit(OpCodes.Beq, label);
-            }
-
-            if (!c.TryGotoNext(i => i.MatchLdcI4(ItemID.BottomlessLavaBucket)))
-                return;
-            if (!c.TryGotoNext(i => i.MatchLdcI4(ItemID.BottomlessLavaBucket)))
-                return;
-            if (!c.TryGotoNext(i => i.MatchBeq(out label)))
-                return;
-
-            for (int i = 0; i < AltLibrary.LiquidStyles.Count; i++)
-            {
-                AltLiquidStyle liquidStyle = AltLibrary.LiquidStyles[i];
-                c.Index++;
-                c.Emit(OpCodes.Ldarg, 1);
-                c.Emit(OpCodes.Ldfld, typeof(Item).GetField(nameof(Item.type), BindingFlags.Public | BindingFlags.Instance));
-                c.EmitDelegate<Func<Item, bool>>((item) => item.type != (liquidStyle.BucketReplacement ?? -1));
-                c.Emit(OpCodes.Beq, label);
-
-                c.Index++;
-                c.Emit(OpCodes.Ldarg, 1);
-                c.Emit(OpCodes.Ldfld, typeof(Item).GetField(nameof(Item.type), BindingFlags.Public | BindingFlags.Instance));
-                c.EmitDelegate<Func<Item, bool>>((item) => item.type != (liquidStyle.BottomlessBucketReplacement ?? -1));
-                if (i != AltLibrary.LiquidStyles.Count - 1)
+                foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
                 {
-                    c.Emit(OpCodes.Beq, label);
+                    if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Lava && liquidStyle.BucketReplacement.HasValue)
+                    {
+                        return liquidStyle.BucketReplacement.Value;
+                    }
                 }
+                return orig;
+            });
+            for (int j = 0; j < 2; j++)
+            {
+                if (!c.TryGotoNext(i => i.MatchLdcI4(4820)))
+                    return;
+                c.Index++;
+                c.EmitDelegate<Func<int, int>>((orig) =>
+                {
+                    foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
+                    {
+                        if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Lava && liquidStyle.BottomlessBucketReplacement.HasValue)
+                        {
+                            return liquidStyle.BottomlessBucketReplacement.Value;
+                        }
+                    }
+                    return orig;
+                });
             }
-            c.Emit(OpCodes.Bne_Un, label);
+            if (!c.TryGotoNext(i => i.MatchLdcI4(207)))
+                return;
+            c.Index++;
+            c.EmitDelegate<Func<int, int>>((orig) =>
+            {
+                foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
+                {
+                    if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Lava && liquidStyle.BucketReplacement.HasValue)
+                    {
+                        return liquidStyle.BucketReplacement.Value;
+                    }
+                }
+                return orig;
+            });
         }
 
         private static Color MapHelper_GetMapTileXnaColor(On.Terraria.Map.MapHelper.orig_GetMapTileXnaColor orig, ref MapTile tile)
@@ -519,7 +517,7 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
                 {
                     if (lavaStyle.IsActive.Invoke() && (liquidType == 1 && lavaStyle.LiquidStyle == LiquidStyle.Lava || liquidType == 11 && lavaStyle.LiquidStyle == LiquidStyle.Honey))
                     {
-                        Main.spriteBatch.Draw(lavaStyle.GetTextures()[0].Value, position, liquidSize, aColor, 0f, default, 1f, SpriteEffects.None, 0f);
+                        Main.spriteBatch.Draw(lavaStyle.GetTextures()[3].Value, position, liquidSize, aColor, 0f, default, 1f, SpriteEffects.None, 0f);
                     }
                 }
             }
@@ -581,7 +579,7 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
                 {
                     if (lavaStyle.IsActive.Invoke() && (num57 == 1 && lavaStyle.LiquidStyle == LiquidStyle.Lava || num57 == 11 && lavaStyle.LiquidStyle == LiquidStyle.Honey))
                     {
-                        Main.spriteBatch.Draw(lavaStyle.GetTextures()[0].Value,
+                        Main.spriteBatch.Draw(lavaStyle.GetTextures()[3].Value,
                                               value4 - Main.screenPosition + new Vector2(num38, num37) + value5,
                                               new Rectangle(value3.X + num38, value3.Y + num37, width, height),
                                               color3,
@@ -609,7 +607,7 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
                 {
                     if (lavaStyle.IsActive.Invoke() && (num57 == 1 && lavaStyle.LiquidStyle == LiquidStyle.Lava || num57 == 11 && lavaStyle.LiquidStyle == LiquidStyle.Honey))
                     {
-                        Main.spriteBatch.Draw(lavaStyle.GetTextures()[0].Value,
+                        Main.spriteBatch.Draw(lavaStyle.GetTextures()[3].Value,
                                               value4 - Main.screenPosition + value5,
                                               value3,
                                               color,
@@ -637,7 +635,7 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
                 {
                     if (lavaStyle.IsActive.Invoke() && (num57 == 1 && lavaStyle.LiquidStyle == LiquidStyle.Lava || num57 == 11 && lavaStyle.LiquidStyle == LiquidStyle.Honey))
                     {
-                        Main.spriteBatch.Draw(lavaStyle.GetTextures()[0].Value,
+                        Main.spriteBatch.Draw(lavaStyle.GetTextures()[3].Value,
                                               value4 - Main.screenPosition + value5,
                                               value3,
                                               color,
@@ -664,7 +662,7 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
                 {
                     if (lavaStyle.IsActive.Invoke() && (num57 == 1 && lavaStyle.LiquidStyle == LiquidStyle.Lava || num57 == 11 && lavaStyle.LiquidStyle == LiquidStyle.Honey))
                     {
-                        Main.spriteBatch.Draw(lavaStyle.GetTextures()[0].Value,
+                        Main.spriteBatch.Draw(lavaStyle.GetTextures()[3].Value,
                                               value4 - Main.screenPosition + value5,
                                               new Rectangle(0, 4, 16, 8),
                                               color,

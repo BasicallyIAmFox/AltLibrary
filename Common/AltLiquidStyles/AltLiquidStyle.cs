@@ -16,6 +16,7 @@ namespace AltLibrary.Common.AltLiquidStyles
         /// </summary>
         public virtual Func<bool> IsActive => () => false;
         public override string Texture => base.Texture;
+        public virtual string LiquidTexture => base.Texture + "_Liquid";
         public virtual string SlopeTexture => base.Texture + "_Slope";
         public virtual string WaterfallTexture => base.Texture + "_Waterfall";
         internal Asset<Texture2D>[] Textures = null;
@@ -52,10 +53,11 @@ namespace AltLibrary.Common.AltLiquidStyles
         protected sealed override void Register()
         {
             ModTypeLookup<AltLiquidStyle>.Register(this);
-            Textures = new Asset<Texture2D>[3];
+            Textures = new Asset<Texture2D>[4];
             Textures[0] = ModContent.Request<Texture2D>(Texture, AssetRequestMode.ImmediateLoad);
             Textures[1] = ModContent.Request<Texture2D>(SlopeTexture, AssetRequestMode.ImmediateLoad);
             Textures[2] = ModContent.Request<Texture2D>(WaterfallTexture, AssetRequestMode.ImmediateLoad);
+            Textures[3] = ModContent.Request<Texture2D>(LiquidTexture, AssetRequestMode.ImmediateLoad);
             if (LiquidStyle != LiquidStyle.Lava && LiquidStyle != LiquidStyle.Honey)
             {
                 throw new ArgumentOutOfRangeException(nameof(LiquidStyle), "Invalid option");
