@@ -54,8 +54,9 @@ namespace AltLibrary.Common.Hooks
             c.Emit(OpCodes.Stloc, 5);
             if (!c.TryGotoNext(i => i.MatchLdfld<UIGenProgressBar>("_texOuterCorrupt")))
                 return;
-            c.Remove();
-            c.EmitDelegate<Func<UIGenProgressBar, Asset<Texture2D>>>((unusedVariableLeftInForLoading) =>
+            c.Index++;
+            c.Emit(OpCodes.Pop);
+            c.EmitDelegate(() =>
             {
                 int worldGenStep = 0;
                 if (WorldGen.crimson) worldGenStep = 1;
@@ -68,13 +69,13 @@ namespace AltLibrary.Common.Hooks
             });
             if (!c.TryGotoNext(i => i.MatchLdfld<UIGenProgressBar>("_texOuterCrimson")))
                 return;
-            c.Remove();
-            c.EmitDelegate<Func<UIGenProgressBar, Asset<Texture2D>>>((unusedVariableLeftInForLoading) =>
+            c.Index++;
+            c.Emit(OpCodes.Pop);
+            c.EmitDelegate(() =>
             {
                 int worldGenStep = 0;
                 if (WorldGen.crimson) worldGenStep = 1;
                 if (WorldBiomeManager.worldEvil != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).Type + 2;
-
                 Asset<Texture2D> asset = ILHooks.EmptyAsset;
                 return worldGenStep <= 1 ? (worldGenStep == 0 ?
                     Main.Assets.Request<Texture2D>("Images/UI/WorldGen/Outer_Corrupt") :
@@ -108,8 +109,9 @@ namespace AltLibrary.Common.Hooks
             });
             if (!c.TryGotoNext(i => i.MatchLdfld<UIGenProgressBar>("_texOuterLower")))
                 return;
-            c.Remove();
-            c.EmitDelegate<Func<UIGenProgressBar, Asset<Texture2D>>>((unusedVariableLeftInForLoading) =>
+            c.Index++;
+            c.Emit(OpCodes.Pop);
+            c.EmitDelegate(() =>
             {
                 int worldGenStep = 0;
                 if (WorldBiomeManager.worldHell != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).Type + 1;

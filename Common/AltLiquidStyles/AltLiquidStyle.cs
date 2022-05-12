@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using Terraria;
 using Terraria.DataStructures;
@@ -16,6 +18,8 @@ namespace AltLibrary.Common.AltLiquidStyles
         public override string Texture => base.Texture;
         public virtual string SlopeTexture => base.Texture + "_Slope";
         public virtual string WaterfallTexture => base.Texture + "_Waterfall";
+        internal Asset<Texture2D>[] Textures = null;
+        internal Asset<Texture2D>[] GetTextures() => Textures;
 
         public Func<Player, PlayerDeathReason> LavaDeathReason;
         public int? LavaDebuff = null;
@@ -24,6 +28,12 @@ namespace AltLibrary.Common.AltLiquidStyles
         public string LavaImmuneTexture = null;
         public int? HoneyBuff = null;
         public int HoneyBuffTime = 0;
+        public int? ObsidianWater = null;
+        public int? HoneyWater = null;
+        public int? CrispyHoneyWater = null;
+        public int? BucketReplacement = null;
+        public int? BottomlessBucketReplacement = null;
+        public int? GoreDropletID = null;
         public LiquidStyle LiquidStyle = LiquidStyle.Lava;
         public Color LavaColor = new();
         public Color MapColor = new();
@@ -42,6 +52,10 @@ namespace AltLibrary.Common.AltLiquidStyles
         protected sealed override void Register()
         {
             ModTypeLookup<AltLiquidStyle>.Register(this);
+            Textures = new Asset<Texture2D>[3];
+            Textures[0] = ModContent.Request<Texture2D>(Texture, AssetRequestMode.ImmediateLoad);
+            Textures[1] = ModContent.Request<Texture2D>(SlopeTexture, AssetRequestMode.ImmediateLoad);
+            Textures[2] = ModContent.Request<Texture2D>(WaterfallTexture, AssetRequestMode.ImmediateLoad);
             if (LiquidStyle != LiquidStyle.Lava && LiquidStyle != LiquidStyle.Honey)
             {
                 throw new ArgumentOutOfRangeException(nameof(LiquidStyle), "Invalid option");

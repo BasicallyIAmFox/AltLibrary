@@ -25,7 +25,8 @@ namespace AltLibrary.Common.Hooks
                 return;
             if (!c.TryGotoNext(i => i.MatchLdloc(4)))
                 return;
-            c.Remove();
+            c.Index++;
+            c.Emit(OpCodes.Pop);
             c.Emit(OpCodes.Ldloc, 7);
             c.Emit(OpCodes.Ldloc, 5);
             c.EmitDelegate<Func<int, Tile, int>>((orig, tile) =>

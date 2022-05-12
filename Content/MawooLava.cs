@@ -12,8 +12,8 @@ namespace AltLibrary.Content
         {
             LiquidStyle = LiquidStyle.Lava;
             LavaImmuneTexture = "AltLibrary/Content/MawooLava_Immune";
-            LavaColor = new Color(0.1f, 0.1f, 0.1f);
-            MapColor = new(255, 255, 255);
+            LavaColor = new Color(0.01f, 0.01f, 0.01f);
+            MapColor = new(255, 127, 63);
         }
     }
 }

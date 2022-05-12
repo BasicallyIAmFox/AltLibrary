@@ -60,7 +60,8 @@ namespace AltLibrary.Common.Hooks
             if (!c.TryGotoNext(i => i.MatchLdcI4(60)))
                 return;
 
-            c.Remove();
+            c.Index++;
+            c.Emit(OpCodes.Pop);
             c.EmitDelegate(() =>
             {
                 foreach (AltBiome biome in AltLibrary.Biomes)
@@ -188,7 +189,8 @@ namespace AltLibrary.Common.Hooks
             if (!c.TryGotoNext(i => i.MatchLdcI4(60)))
                 return;
 
-            c.Remove();
+            c.Index++;
+            c.Emit(OpCodes.Pop);
             c.EmitDelegate(() =>
             {
                 foreach (AltBiome biome in AltLibrary.Biomes)
@@ -428,7 +430,8 @@ namespace AltLibrary.Common.Hooks
                     return;
                 if (!c.TryGotoNext(i => i.MatchLdcI4(2)))
                     return;
-                c.Remove();
+                c.Index++;
+                c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_I4, 1);
                 if (!c.TryGotoNext(i => i.MatchLdcI4(7)))
                     return;
@@ -451,7 +454,8 @@ namespace AltLibrary.Common.Hooks
                     return;
                 if (!c.TryGotoNext(i => i.MatchLdcI4(2)))
                     return;
-                c.Remove();
+                c.Index++;
+                c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_I4, 1);
                 if (!c.TryGotoNext(i => i.MatchLdcI4(6)))
                     return;
@@ -474,7 +478,8 @@ namespace AltLibrary.Common.Hooks
                     return;
                 if (!c.TryGotoNext(i => i.MatchLdcI4(2)))
                     return;
-                c.Remove();
+                c.Index++;
+                c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_I4, 1);
                 if (!c.TryGotoNext(i => i.MatchLdcI4(9)))
                     return;
@@ -497,7 +502,8 @@ namespace AltLibrary.Common.Hooks
                     return;
                 if (!c.TryGotoNext(i => i.MatchLdcI4(2)))
                     return;
-                c.Remove();
+                c.Index++;
+                c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_I4, 1);
                 if (!c.TryGotoNext(i => i.MatchLdcI4(8)))
                     return;

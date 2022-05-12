@@ -51,7 +51,6 @@ namespace AltLibrary.Common.Hooks
             });
             if (!c.TryGotoNext(i => i.MatchRet()))
                 return;
-            c.Remove();
             c.Emit(OpCodes.Ldarg_0);
             c.Emit(OpCodes.Ldarg_1);
             c.Emit(OpCodes.Ldarg_2);

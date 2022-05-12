@@ -47,24 +47,18 @@ namespace AltLibrary.Common.Hooks
             if (!c.TryGotoNext(i => i.MatchCall(out _)))
                 return;
             c.Remove();
-            c.EmitDelegate<Func<short>>(() =>
+            c.EmitDelegate<Action<int, int, ushort, int>>((x, y, type, style) =>
             {
+                short frameX = 0;
+                short frameY = 0;
                 if (WorldGen.tenthAnniversaryWorldGen && WorldBiomeManager.worldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).FountainActiveFrameX.HasValue)
                 {
-                    return (short)ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).FountainActiveFrameX.Value;
+                    frameX = (short)ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).FountainActiveFrameX.Value;
                 }
-                return 0;
-            });
-            c.EmitDelegate<Func<short>>(() =>
-            {
                 if (WorldGen.tenthAnniversaryWorldGen && WorldBiomeManager.worldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).FountainActiveFrameY.HasValue)
                 {
-                    return (short)ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).FountainActiveFrameY.Value;
+                    frameY = (short)ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).FountainActiveFrameY.Value;
                 }
-                return 0;
-            });
-            c.EmitDelegate<Action<int, int, ushort, int, short, short>>((x, y, type, style, frameX, frameY) =>
-            {
                 UselessCallThatDoesTechnicallyNothing(x, y, type, style, frameX, frameY);
             });
 
