@@ -7,24 +7,24 @@ Mods: {
 		ChooseOre: "Выберите руды"
 		Config: {
 			PreviewVisible: {
-				Label: "World Creation Preview"
-				Tooltip: "Which layers should be rendered on World Creation Preview"
+				Label: "Превью создания мира"
+				Tooltip: "Какие слои будут прогружены в превью создания мира"
 			}
 			BiomeIconsVisibleOutsideBiomeUI: {
-				Label: "Biome Icons visible outside Biome UI"
-				Tooltip: "When true, you will be able to see Biome Icons any time on World Creation"
+				Label: "Видимость иконок биома вне интерфейса биома"
+				Tooltip: "Когда включено, вы сможете видеть иконки биома всегда при создании мира"
 			}
 			OreIconsVisibleOutsideOreUI: {
-				Label: "Ore Icons visible outside Ore UI"
-				Tooltip: "When true, you will be able to see Ore Icons any time on World Creation"
+				Label: "Видимость иконок руд вне интерфейса руд"
+				Tooltip: "Когда включено, вы сможете видеть иконки руд всегда при создании мира"
 			}
 			SpecialSeedWorldPreview: {
-				Label: "Special seed previews"
-				Tooltip: "When true, the world preview image will change depending on any secret seed you enter"
+				Label: "Превью специальных сидов"
+				Tooltip: "Когда включено, иконка мира будет изменяться в зависимости от того, в каком секретном сиде вы находитесь"
 			}
 			SmashingAltarsSpreadsRandom: {
-				Label: "Randomized Altar infections"
-				Tooltip: "When true, the infectious blocks spawned by smashing Demon Altars can be of any installed biome"
+				Label: "Случайное заражение алтарей"
+				Tooltip: "Когда включено, заражаемые блоки, созданные при разрушении демонических алтарей могут быть в любом установленном биоме"
 			}
 		}
 		AltOreName: {
@@ -124,9 +124,9 @@ Mods: {
 			GoldWatches: "Золотые часы"
 		}
 		DryadSpecialText: {
-			WorldStatusGoodEvil: "{0} is {1}% good and {2}% evil."
-			WorldStatusGood: "{0} is {1}% good."
-			WorldStatusEvil: "{0} is {1}% evil."
+			WorldStatusGoodEvil: "{0} - на {1}% святой и {2}% испорчен."
+			WorldStatusGood: "{0} - на {1}% святой."
+			WorldStatusEvil: "{0} - на {1}% испорчен."
 		}
 		DropRule: {
 			Base: "Выпадает в мирах с {0}"
@@ -137,7 +137,7 @@ Mods: {
 		ItemTooltip: {
 			HallowBunny: "Призрачный кролик... Но такой опасный."
 			FoxShirt: "{$Mods.AltLibrary.Common.DevTooltip}"
-			FoxMask: "{$Mods.AtLibrary.Common.DevTooltip}"
+			FoxMask: "{$Mods.AltLibrary.Common.DevTooltip}"
 			FoxPants: "{$Mods.AltLibrary.Common.DevTooltip}"
 			CaceEars: "{$Mods.AltLibrary.Common.DevTooltip}"
 		}

@@ -1,5 +1,6 @@
 ﻿using AltLibrary.Common.AltBiomes;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Terraria;
 using Terraria.ModLoader;
@@ -10,6 +11,12 @@ namespace AltLibrary.Common.Systems
     {
         public override void OnWorldLoad()
         {
+            if (WorldBiomeManager.worldEvil == null) WorldBiomeManager.worldEvil = "";
+            if (WorldBiomeManager.worldHallow == null) WorldBiomeManager.worldHallow = "";
+            if (WorldBiomeManager.worldHell == null) WorldBiomeManager.worldHell = "";
+            if (WorldBiomeManager.worldJungle == null) WorldBiomeManager.worldJungle = "";
+            if (WorldBiomeManager.drunkEvil == null) WorldBiomeManager.drunkEvil = "";
+
             string evil = WorldBiomeManager.worldEvil;
             string hallow = WorldBiomeManager.worldHallow;
             string hell = WorldBiomeManager.worldHell;

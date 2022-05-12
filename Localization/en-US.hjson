@@ -136,7 +136,7 @@ Mods: {
 		}
 		ItemTooltip: {
 			FoxShirt: "{$Mods.AltLibrary.Common.DevTooltip}"
-			FoxMask: "{$Mods.AtLibrary.Common.DevTooltip}"
+			FoxMask: "{$Mods.AltLibrary.Common.DevTooltip}"
 			FoxPants: "{$Mods.AltLibrary.Common.DevTooltip}"
 			CaceEars: "{$Mods.AltLibrary.Common.DevTooltip}"
 		}

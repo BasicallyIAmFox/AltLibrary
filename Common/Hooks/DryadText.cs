@@ -1,6 +1,4 @@
 ﻿using AltLibrary.Common.AltBiomes;
-using Mono.Cecil;
-using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using Terraria;
 using Terraria.ID;
