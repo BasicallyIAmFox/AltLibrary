@@ -31,7 +31,7 @@ namespace AltLibrary.Common.Hooks
             c.Emit(OpCodes.Call, typeof(string).GetMethod("op_Equality", new Type[] { typeof(string), typeof(string) }));
             c.Emit(OpCodes.Brfalse_S, label);
 
-            c.Emit(OpCodes.Ldsfld, typeof(HouseBuilder).GetField("Invalid", BindingFlags.Public | BindingFlags.Static));
+            c.EmitDelegate(() => HouseBuilder.Invalid);
             c.Emit(OpCodes.Ret);
 
             c.MarkLabel(label);

@@ -2,7 +2,8 @@
 using AltLibrary.Common.Systems;
 using MonoMod.Cil;
 using System;
-using Terraria.ModLoader;
+using Terraria.ID;
+using static Terraria.ModLoader.ModContent;
 
 namespace AltLibrary.Common.Hooks
 {
@@ -15,19 +16,10 @@ namespace AltLibrary.Common.Hooks
 
         private static void WorldGen_AddBuriedChest_int_int_int_bool_int_bool_ushort(ILContext il)
         {
-            ILCursor c = new(il);
-            if (!c.TryGotoNext(i => i.MatchLdcI4(329)))
-                return;
-
-            c.Index++;
-            c.EmitDelegate<Func<int, int>>((orig) =>
-            {
-                if (WorldBiomeManager.worldHell != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).ShadowKeyAlt.HasValue)
-                {
-                    return ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).ShadowKeyAlt.Value;
-                }
-                return orig;
-            });
+            ALUtils.ReplaceIDs<int>(il,
+                ItemID.ShadowKey,
+                (orig) => Find<AltBiome>(WorldBiomeManager.worldHell).ShadowKeyAlt ?? orig,
+                (orig) => WorldBiomeManager.worldHell != "" && Find<AltBiome>(WorldBiomeManager.worldHell).ShadowKeyAlt.HasValue);
         }
     }
 }

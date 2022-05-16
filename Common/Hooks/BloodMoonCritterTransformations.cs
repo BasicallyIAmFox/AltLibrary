@@ -2,7 +2,8 @@
 using AltLibrary.Common.Systems;
 using MonoMod.Cil;
 using System;
-using Terraria.ModLoader;
+using Terraria.ID;
+using static Terraria.ModLoader.ModContent;
 
 namespace AltLibrary.Common.Hooks
 {
@@ -15,45 +16,18 @@ namespace AltLibrary.Common.Hooks
 
         private static void NPC_AttemptToConvertNPCToEvil(ILContext il)
         {
-            ILCursor c = new(il);
-            if (!c.TryGotoNext(i => i.MatchLdcI4(47)))
-                return;
-
-            c.Index++;
-            c.EmitDelegate<Func<int, int>>((orig) =>
-            {
-                if (WorldBiomeManager.worldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BloodBunny.HasValue)
-                {
-                    return ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BloodBunny.Value;
-                }
-                return orig;
-            });
-
-            if (!c.TryGotoNext(i => i.MatchLdcI4(57)))
-                return;
-
-            c.Index++;
-            c.EmitDelegate<Func<int, int>>((orig) =>
-            {
-                if (WorldBiomeManager.worldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BloodGoldfish.HasValue)
-                {
-                    return ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BloodGoldfish.Value;
-                }
-                return orig;
-            });
-
-            if (!c.TryGotoNext(i => i.MatchLdcI4(168)))
-                return;
-
-            c.Index++;
-            c.EmitDelegate<Func<int, int>>((orig) =>
-            {
-                if (WorldBiomeManager.worldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BloodPenguin.HasValue)
-                {
-                    return ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BloodPenguin.Value;
-                }
-                return orig;
-            });
+            ALUtils.ReplaceIDs(il,
+                NPCID.CorruptBunny,
+                (orig) => (short)(Find<AltBiome>(WorldBiomeManager.worldEvil).BloodBunny ?? orig),
+                (orig) => WorldBiomeManager.worldEvil != "" && Find<AltBiome>(WorldBiomeManager.worldEvil).BloodBunny.HasValue);
+            ALUtils.ReplaceIDs(il,
+                NPCID.CorruptGoldfish,
+                (orig) => (short)(Find<AltBiome>(WorldBiomeManager.worldEvil).BloodGoldfish ?? orig),
+                (orig) => WorldBiomeManager.worldEvil != "" && Find<AltBiome>(WorldBiomeManager.worldEvil).BloodGoldfish.HasValue);
+            ALUtils.ReplaceIDs(il,
+                NPCID.CorruptPenguin,
+                (orig) => (short)(Find<AltBiome>(WorldBiomeManager.worldEvil).BloodPenguin ?? orig),
+                (orig) => WorldBiomeManager.worldEvil != "" && Find<AltBiome>(WorldBiomeManager.worldEvil).BloodPenguin.HasValue);
         }
     }
 }

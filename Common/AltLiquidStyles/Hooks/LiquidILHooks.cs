@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using AltLibrary.Common.AltBiomes;
+using AltLibrary.Common.Systems;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
@@ -36,52 +38,69 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
 
         private static void Player_ItemCheck_UseBuckets(ILContext il)
         {
-            ILCursor c = new(il);
-            if (!c.TryGotoNext(i => i.MatchLdcI4(207)))
-                return;
-            c.Index++;
-            c.EmitDelegate<Func<int, int>>((orig) =>
-            {
-                foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
-                {
-                    if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Lava && liquidStyle.BucketReplacement.HasValue)
-                    {
-                        return liquidStyle.BucketReplacement.Value;
-                    }
-                }
-                return orig;
-            });
-            for (int j = 0; j < 2; j++)
-            {
-                if (!c.TryGotoNext(i => i.MatchLdcI4(4820)))
-                    return;
-                c.Index++;
-                c.EmitDelegate<Func<int, int>>((orig) =>
+            ALUtils.ReplaceIDs<int>(il,
+                ItemID.LavaBucket,
+                (orig) =>
                 {
                     foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
                     {
-                        if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Lava && liquidStyle.BottomlessBucketReplacement.HasValue)
+                        if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Lava)
+                        {
+                            return liquidStyle.BucketReplacement.Value;
+                        }
+                    }
+                    return orig;
+                },
+                (orig) =>
+                {
+                    foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
+                    {
+                        return liquidStyle.BucketReplacement.HasValue && liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Lava;
+                    }
+                    return false;
+                });
+            ALUtils.ReplaceIDs<int>(il,
+                ItemID.HoneyBucket,
+                (orig) =>
+                {
+                    foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
+                    {
+                        if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Honey)
+                        {
+                            return liquidStyle.BucketReplacement.Value;
+                        }
+                    }
+                    return orig;
+                },
+                (orig) =>
+                {
+                    foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
+                    {
+                        return liquidStyle.BucketReplacement.HasValue && liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Honey;
+                    }
+                    return false;
+                });
+            ALUtils.ReplaceIDs<int>(il,
+                ItemID.BottomlessLavaBucket,
+                (orig) =>
+                {
+                    foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
+                    {
+                        if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Lava)
                         {
                             return liquidStyle.BottomlessBucketReplacement.Value;
                         }
                     }
                     return orig;
-                });
-            }
-            if (!c.TryGotoNext(i => i.MatchLdcI4(207)))
-                return;
-            c.Index++;
-            c.EmitDelegate<Func<int, int>>((orig) =>
-            {
-                foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
+                },
+                (orig) =>
                 {
-                    if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Lava && liquidStyle.BucketReplacement.HasValue)
+                    foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
                     {
-                        return liquidStyle.BucketReplacement.Value;
+                        return liquidStyle.BottomlessBucketReplacement.HasValue && liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Lava;
                     }
-                }
-                return orig;
-            });
+                    return false;
+                });
         }
 
         private static Color MapHelper_GetMapTileXnaColor(On.Terraria.Map.MapHelper.orig_GetMapTileXnaColor orig, ref MapTile tile)
@@ -111,146 +130,120 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
 
         private static void TileDrawing_EmitLiquidDrops(ILContext il)
         {
-            ILCursor c = new(il);
-            if (!c.TryGotoNext(i => i.MatchLdcI4(716)))
-                return;
-            c.Index++;
-            c.EmitDelegate<Func<int, int>>((orig) =>
-            {
-                foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
+            ALUtils.ReplaceIDs(il,
+                GoreID.LavaDrip,
+                (orig) =>
                 {
-                    if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Lava && liquidStyle.GoreDropletID.HasValue)
+                    foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
                     {
-                        return liquidStyle.GoreDropletID.Value;
+                        if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Lava)
+                        {
+                            return liquidStyle.GoreDropletID.Value;
+                        }
                     }
-                }
-                return orig;
-            });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(717)))
-                return;
-            c.Index++;
-            c.EmitDelegate<Func<int, int>>((orig) =>
-            {
-                foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
+                    return orig;
+                },
+                (orig) =>
                 {
-                    if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Honey && liquidStyle.GoreDropletID.HasValue)
+                    foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
                     {
-                        return liquidStyle.GoreDropletID.Value;
+                        return liquidStyle.GoreDropletID.HasValue && liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Lava;
                     }
-                }
-                return orig;
-            });
+                    return false;
+                });
+            ALUtils.ReplaceIDs(il,
+                GoreID.HoneyDrip,
+                (orig) =>
+                {
+                    foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
+                    {
+                        if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Honey)
+                        {
+                            return liquidStyle.GoreDropletID.Value;
+                        }
+                    }
+                    return orig;
+                },
+                (orig) =>
+                {
+                    foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
+                    {
+                        return liquidStyle.GoreDropletID.HasValue && liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Honey;
+                    }
+                    return false;
+                });
         }
 
         private static void Liquid_HoneyCheck(ILContext il)
         {
-            ILCursor c = new(il);
-            if (!c.TryGotoNext(i => i.MatchLdcI4(229)))
-                return;
-            c.Index++;
-            c.EmitDelegate<Func<int, int>>((orig) =>
-            {
-                foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
+            ALUtils.ReplaceIDs<int>(il,
+                TileID.HoneyBlock,
+                (orig) =>
                 {
-                    if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Honey && liquidStyle.HoneyWater.HasValue)
+                    foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
                     {
-                        return liquidStyle.HoneyWater.Value;
+                        if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Honey)
+                        {
+                            return liquidStyle.HoneyWater.Value;
+                        }
                     }
-                }
-                return orig;
-            });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(229)))
-                return;
-            c.Index++;
-            c.EmitDelegate<Func<int, int>>((orig) =>
-            {
-                foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
+                    return orig;
+                },
+                (orig) =>
                 {
-                    if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Honey && liquidStyle.HoneyWater.HasValue)
+                    foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
                     {
-                        return liquidStyle.HoneyWater.Value;
+                        return liquidStyle.HoneyWater.HasValue && liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Honey;
                     }
-                }
-                return orig;
-            });
+                    return false;
+                });
         }
 
         private static void Liquid_LavaCheck(ILContext il)
         {
             ILCursor c = new(il);
-            if (!c.TryGotoNext(i => i.MatchLdcI4(56)))
-                return;
-            c.Index++;
-            c.EmitDelegate<Func<int, int>>((orig) =>
-            {
-                foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
-                {
-                    if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Lava && liquidStyle.ObsidianWater.HasValue)
-                    {
-                        return liquidStyle.ObsidianWater.Value;
-                    }
-                }
-                return orig;
-            });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(230)))
-                return;
-            c.Index++;
-            c.EmitDelegate<Func<int, int>>((orig) =>
-            {
-                foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
-                {
-                    if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Honey && liquidStyle.CrispyHoneyWater.HasValue)
-                    {
-                        return liquidStyle.CrispyHoneyWater.Value;
-                    }
-                }
-                return orig;
-            });
-            for (int j = 0; j < 3; j++)
-            {
-                if (!c.TryGotoNext(i => i.MatchLdcI4(56)))
-                    return;
-                c.Index++;
-                c.EmitDelegate<Func<int, int>>((orig) =>
+            ALUtils.ReplaceIDs<int>(il,
+                TileID.Obsidian,
+                (orig) =>
                 {
                     foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
                     {
-                        if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Lava && liquidStyle.ObsidianWater.HasValue)
+                        if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Lava)
                         {
                             return liquidStyle.ObsidianWater.Value;
                         }
                     }
                     return orig;
+                },
+                (orig) =>
+                {
+                    foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
+                    {
+                        return liquidStyle.ObsidianWater.HasValue && liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Lava;
+                    }
+                    return false;
                 });
-            }
-            if (!c.TryGotoNext(i => i.MatchLdcI4(230)))
-                return;
-            c.Index++;
-            c.EmitDelegate<Func<int, int>>((orig) =>
-            {
-                foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
+            ALUtils.ReplaceIDs<int>(il,
+                TileID.CrispyHoneyBlock,
+                (orig) =>
                 {
-                    if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Honey && liquidStyle.CrispyHoneyWater.HasValue)
+                    foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
                     {
-                        return liquidStyle.CrispyHoneyWater.Value;
+                        if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Honey)
+                        {
+                            return liquidStyle.CrispyHoneyWater.Value;
+                        }
                     }
-                }
-                return orig;
-            });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(56)))
-                return;
-            c.Index++;
-            c.EmitDelegate<Func<int, int>>((orig) =>
-            {
-                foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
+                    return orig;
+                },
+                (orig) =>
                 {
-                    if (liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Lava && liquidStyle.ObsidianWater.HasValue)
+                    foreach (AltLiquidStyle liquidStyle in AltLibrary.LiquidStyles)
                     {
-                        return liquidStyle.ObsidianWater.Value;
+                        return liquidStyle.CrispyHoneyWater.HasValue && liquidStyle.IsActive.Invoke() && liquidStyle.LiquidStyle == LiquidStyle.Honey;
                     }
-                }
-                return orig;
-            });
+                    return false;
+                });
         }
 
         private static void Main_DrawInterface_Resources_Breath(ILContext il)

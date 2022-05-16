@@ -10,9 +10,10 @@ namespace AltLibrary.Common.AltOres
         internal readonly string oreTexture;
         private readonly string name;
         private readonly string desc;
-        internal VanillaOre(string texture, string name, int type, int ore, int bar, string desc = "")
+        internal VanillaOre(string texture, string name, int type, int ore, int bar, OreType oreType, string desc = "")
         {
             oreTexture = texture;
+            OreType = oreType;
             Type = type;
             this.name = name;
             this.ore = ore;

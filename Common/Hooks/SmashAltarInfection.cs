@@ -161,8 +161,10 @@ namespace AltLibrary.Common.Hooks
                 }
                 else
                 {
-                    List<int> indexToUse = new();
-                    indexToUse.Add(orig);
+                    List<int> indexToUse = new()
+                    {
+                        orig
+                    };
                     AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Evil && x.BiomeStone.HasValue)
                                         .ToList()
                                         .ForEach(x => indexToUse.Add(x.BiomeStone.Value));
@@ -186,8 +188,10 @@ namespace AltLibrary.Common.Hooks
                 }
                 else
                 {
-                    List<int> indexToUse = new();
-                    indexToUse.Add(orig);
+                    List<int> indexToUse = new()
+                    {
+                        orig
+                    };
                     AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow && x.BiomeStone.HasValue)
                                         .ToList()
                                         .ForEach(x => indexToUse.Add(x.BiomeStone.Value));

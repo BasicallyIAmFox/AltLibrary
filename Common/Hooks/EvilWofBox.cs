@@ -3,7 +3,7 @@ using AltLibrary.Common.Systems;
 using MonoMod.Cil;
 using System;
 using Terraria.ID;
-using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace AltLibrary.Common.Hooks
 {
@@ -16,18 +16,10 @@ namespace AltLibrary.Common.Hooks
 
         private static void NPC_CreateBrickBoxForWallOfFlesh(ILContext il)
         {
-            ILCursor c = new(il);
-            if (!c.TryGotoNext(i => i.MatchLdcI4(TileID.DemoniteBrick)))
-                return;
-            c.Index++;
-            c.EmitDelegate<Func<int, int>>((orig) =>
-            {
-                if (WorldBiomeManager.worldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeOreBrick.HasValue)
-                {
-                    return ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeOreBrick.Value;
-                }
-                return orig;
-            });
+            ALUtils.ReplaceIDs(il,
+                TileID.DemoniteBrick,
+                (orig) => (ushort)(Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeOreBrick ?? orig),
+                (orig) => WorldBiomeManager.worldEvil != "" && Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeOreBrick.HasValue);
         }
     }
 }

@@ -438,9 +438,11 @@ namespace AltLibrary.Common.Hooks
                 c.Index++;
                 c.EmitDelegate<Func<int, int>>((value) =>
                 {
-                    List<int> list = new();
-                    list.Add(7);
-                    list.Add(166);
+                    List<int> list = new()
+                    {
+                        7,
+                        166
+                    };
                     AltLibrary.Ores.Where(x => x.OreType == OreType.Copper)
                                    .ToList()
                                    .ForEach(x => list.Add(x.ore));
@@ -462,9 +464,11 @@ namespace AltLibrary.Common.Hooks
                 c.Index++;
                 c.EmitDelegate<Func<int, int>>((value) =>
                 {
-                    List<int> list = new();
-                    list.Add(6);
-                    list.Add(167);
+                    List<int> list = new()
+                    {
+                        6,
+                        167
+                    };
                     AltLibrary.Ores.Where(x => x.OreType == OreType.Iron)
                                    .ToList()
                                    .ForEach(x => list.Add(x.ore));
@@ -486,9 +490,11 @@ namespace AltLibrary.Common.Hooks
                 c.Index++;
                 c.EmitDelegate<Func<int, int>>((value) =>
                 {
-                    List<int> list = new();
-                    list.Add(9);
-                    list.Add(168);
+                    List<int> list = new()
+                    {
+                        9,
+                        168
+                    };
                     AltLibrary.Ores.Where(x => x.OreType == OreType.Silver)
                                    .ToList()
                                    .ForEach(x => list.Add(x.ore));
@@ -510,9 +516,11 @@ namespace AltLibrary.Common.Hooks
                 c.Index++;
                 c.EmitDelegate<Func<int, int>>((value) =>
                 {
-                    List<int> list = new();
-                    list.Add(8);
-                    list.Add(169);
+                    List<int> list = new()
+                    {
+                        8,
+                        169
+                    };
                     AltLibrary.Ores.Where(x => x.OreType == OreType.Gold)
                                    .ToList()
                                    .ForEach(x => list.Add(x.ore));

@@ -2,7 +2,8 @@
 using AltLibrary.Common.Systems;
 using MonoMod.Cil;
 using System;
-using Terraria.ModLoader;
+using Terraria.ID;
+using static Terraria.ModLoader.ModContent;
 
 namespace AltLibrary.Common.Hooks
 {
@@ -15,29 +16,14 @@ namespace AltLibrary.Common.Hooks
 
         private static void WorldGen_nearbyChlorophyte(ILContext il)
         {
-            ILCursor c = new(il);
-            if (!c.TryGotoNext(i => i.MatchLdcI4(211)))
-                return;
-            c.Index++;
-            c.EmitDelegate<Func<int, int>>((orig) =>
-            {
-                if (WorldBiomeManager.worldJungle != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldJungle).BiomeOre.HasValue)
-                {
-                    return ModContent.Find<AltBiome>(WorldBiomeManager.worldJungle).BiomeOre.Value;
-                }
-                return orig;
-            });
-            if (!c.TryGotoNext(i => i.MatchLdcI4(346)))
-                return;
-            c.Index++;
-            c.EmitDelegate<Func<int, int>>((orig) =>
-            {
-                if (WorldBiomeManager.worldJungle != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldJungle).BiomeOreBrick.HasValue)
-                {
-                    return ModContent.Find<AltBiome>(WorldBiomeManager.worldJungle).BiomeOreBrick.Value;
-                }
-                return orig;
-            });
+            ALUtils.ReplaceIDs<int>(il,
+                TileID.Chlorophyte,
+                (orig) => Find<AltBiome>(WorldBiomeManager.worldJungle).BiomeOre ?? orig,
+                (orig) => WorldBiomeManager.worldJungle != "" && Find<AltBiome>(WorldBiomeManager.worldJungle).BiomeOre.HasValue);
+            ALUtils.ReplaceIDs<int>(il,
+                TileID.ChlorophyteBrick,
+                (orig) => Find<AltBiome>(WorldBiomeManager.worldJungle).BiomeOreBrick ?? orig,
+                (orig) => WorldBiomeManager.worldJungle != "" && Find<AltBiome>(WorldBiomeManager.worldJungle).BiomeOreBrick.HasValue);
         }
     }
 }

@@ -96,15 +96,12 @@ namespace AltLibrary.Common.Hooks
             ILCursor c = new(il);
             if (!c.TryGotoNext(i => i.MatchLdcI4(109)))
                 return;
-            c.Index++;
-            c.EmitDelegate<Func<int, int>>((orig) =>
-            {
-                if (WorldBiomeManager.worldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeGrass.HasValue)
-                {
-                    return ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeGrass.Value;
-                }
-                return orig;
-            });
+
+            ALUtils.ReplaceIDs<int>(il,
+                TileID.HallowedGrass,
+                (orig) => ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeGrass ?? orig,
+                (orig) => WorldBiomeManager.worldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeGrass.HasValue);
+
             if (!c.TryGotoNext(i => i.MatchCall<WorldGen>(nameof(WorldGen.Convert))))
                 return;
             c.Index++;

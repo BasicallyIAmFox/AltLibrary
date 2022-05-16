@@ -308,14 +308,18 @@ namespace AltLibrary.Common
             ores = new() { -13, -14 };
             AltLibrary.Ores.Where(x => x.OreType == OreType.Adamantite && x.Selectable).ToList().ForEach(x => ores.Add(x.Type));
             Adamantite = ores[Main.rand.Next(ores.Count)];
+
+            orig(self);
+
             _oreElements.Clear();
             _oreList = null;
-            orig(self);
 
             #region Ore UI List
             {
-                UIElement uIElement3 = new();
-                uIElement3.Left = StyleDimension.FromPixels(Main.screenWidth - (Main.screenWidth - 100f));
+                UIElement uIElement3 = new()
+                {
+                    Left = StyleDimension.FromPixels(Main.screenWidth - (Main.screenWidth - 100f))
+                };
                 uIElement3.Width.Set(0f, 0.8f);
                 uIElement3.MaxWidth.Set(450, 0f);
                 uIElement3.MinWidth.Set(350, 0f);
@@ -359,39 +363,59 @@ namespace AltLibrary.Common
                 closeIcon.OnClick += CloseIcon_OnClick;
                 uIElement3.Append(closeIcon);
 
-                List<AltOre> list = new();
-                list.Clear();
-                list.Add(new RandomOptionOre("RandomCopper"));
-                list.Add(new RandomOptionOre("RandomIron"));
-                list.Add(new RandomOptionOre("RandomSilver"));
-                list.Add(new RandomOptionOre("RandomGold"));
-                list.Add(new RandomOptionOre("RandomCobalt"));
-                list.Add(new RandomOptionOre("RandomMythril"));
-                list.Add(new RandomOptionOre("RandomAdamantite"));
-                list.Add(new VanillaOre("Copper", "Copper", -1, TileID.Copper, ItemID.CopperBar));
-                list.Add(new VanillaOre("Tin", "Tin", -2, TileID.Tin, ItemID.TinBar));
-                list.AddRange(AltLibrary.Ores.Where(x => x.OreType == OreType.Copper && x.Selectable));
-                list.Add(new VanillaOre("Iron", "Iron", -3, TileID.Iron, ItemID.IronBar));
-                list.Add(new VanillaOre("Lead", "Lead", -4, TileID.Lead, ItemID.LeadBar));
-                list.AddRange(AltLibrary.Ores.Where(x => x.OreType == OreType.Iron && x.Selectable));
-                list.Add(new VanillaOre("Silver", "Silver", -5, TileID.Silver, ItemID.SilverBar));
-                list.Add(new VanillaOre("Tungsten", "Tungsten", -6, TileID.Tungsten, ItemID.TungstenBar));
-                list.AddRange(AltLibrary.Ores.Where(x => x.OreType == OreType.Silver && x.Selectable));
-                list.Add(new VanillaOre("Gold", "Gold", -7, TileID.Gold, ItemID.GoldBar));
-                list.Add(new VanillaOre("Platinum", "Platinum", -8, TileID.Platinum, ItemID.PlatinumBar));
-                list.AddRange(AltLibrary.Ores.Where(x => x.OreType == OreType.Gold && x.Selectable));
-                list.Add(new VanillaOre("Cobalt", "Cobalt", -9, TileID.Cobalt, ItemID.CobaltBar));
-                list.Add(new VanillaOre("Palladium", "Palladium", -10, TileID.Palladium, ItemID.PalladiumBar));
-                list.AddRange(AltLibrary.Ores.Where(x => x.OreType == OreType.Cobalt && x.Selectable));
-                list.Add(new VanillaOre("Mythril", "Mythril", -11, TileID.Mythril, ItemID.MythrilBar));
-                list.Add(new VanillaOre("Orichalcum", "Orichalcum", -12, TileID.Orichalcum, ItemID.OrichalcumBar));
-                list.AddRange(AltLibrary.Ores.Where(x => x.OreType == OreType.Mythril && x.Selectable));
-                list.Add(new VanillaOre("Adamantite", "Adamantite", -13, TileID.Adamantite, ItemID.AdamantiteBar));
-                list.Add(new VanillaOre("Titanium", "Titanium", -14, TileID.Titanium, ItemID.TitaniumBar));
-                list.AddRange(AltLibrary.Ores.Where(x => x.OreType == OreType.Adamantite && x.Selectable));
-                foreach (AltOre biome in list)
+                List<AltOre> hardmodeListing = new();
+                hardmodeListing.Clear();
+                hardmodeListing.Add(new VanillaOre("Cobalt", "Cobalt", -9, TileID.Cobalt, ItemID.CobaltBar, OreType.Cobalt));
+                hardmodeListing.Add(new VanillaOre("Palladium", "Palladium", -10, TileID.Palladium, ItemID.PalladiumBar, OreType.Cobalt));
+                hardmodeListing.AddRange(AltLibrary.Ores.Where(x => x.OreType == OreType.Cobalt && x.Selectable));
+                hardmodeListing.Add(new VanillaOre("Mythril", "Mythril", -11, TileID.Mythril, ItemID.MythrilBar, OreType.Mythril));
+                hardmodeListing.Add(new VanillaOre("Orichalcum", "Orichalcum", -12, TileID.Orichalcum, ItemID.OrichalcumBar, OreType.Mythril));
+                hardmodeListing.AddRange(AltLibrary.Ores.Where(x => x.OreType == OreType.Mythril && x.Selectable));
+                hardmodeListing.Add(new VanillaOre("Adamantite", "Adamantite", -13, TileID.Adamantite, ItemID.AdamantiteBar, OreType.Adamantite));
+                hardmodeListing.Add(new VanillaOre("Titanium", "Titanium", -14, TileID.Titanium, ItemID.TitaniumBar, OreType.Adamantite));
+                hardmodeListing.AddRange(AltLibrary.Ores.Where(x => x.OreType == OreType.Adamantite && x.Selectable));
+                AltLibrary.Instance.Logger.Info("=== START ===");
+                hardmodeListing.Sort(delegate (AltOre x, AltOre y)
                 {
-                    ALUIOreListItem item = new(biome, false);
+                    AltLibrary.Instance.Logger.Info(x.FullName + " " + y.FullName);
+                    if (x.Type <= 0)
+                    {
+                        return ((x.Type + 8) > (y.Type + 8) ? 1 : -1);
+                    }
+                    return x.OreType == y.OreType ? (x.Type > 0 ? 1 : -1) : -1;
+                });
+                AltLibrary.Instance.Logger.Info("=== END ===");
+
+                List<AltOre> prehmList = new();
+                prehmList.Clear();
+                prehmList.Add(new RandomOptionOre("RandomCopper"));
+                prehmList.Add(new RandomOptionOre("RandomIron"));
+                prehmList.Add(new RandomOptionOre("RandomSilver"));
+                prehmList.Add(new RandomOptionOre("RandomGold"));
+                prehmList.Add(new RandomOptionOre("RandomCobalt"));
+                prehmList.Add(new RandomOptionOre("RandomMythril"));
+                prehmList.Add(new RandomOptionOre("RandomAdamantite"));
+                prehmList.Add(new VanillaOre("Copper", "Copper", -1, TileID.Copper, ItemID.CopperBar, OreType.Copper));
+                prehmList.Add(new VanillaOre("Tin", "Tin", -2, TileID.Tin, ItemID.TinBar, OreType.Copper));
+                prehmList.AddRange(AltLibrary.Ores.Where(x => x.OreType == OreType.Copper && x.Selectable));
+                prehmList.Add(new VanillaOre("Iron", "Iron", -3, TileID.Iron, ItemID.IronBar, OreType.Iron));
+                prehmList.Add(new VanillaOre("Lead", "Lead", -4, TileID.Lead, ItemID.LeadBar, OreType.Iron));
+                prehmList.AddRange(AltLibrary.Ores.Where(x => x.OreType == OreType.Iron && x.Selectable));
+                prehmList.Add(new VanillaOre("Silver", "Silver", -5, TileID.Silver, ItemID.SilverBar, OreType.Silver));
+                prehmList.Add(new VanillaOre("Tungsten", "Tungsten", -6, TileID.Tungsten, ItemID.TungstenBar, OreType.Silver));
+                prehmList.AddRange(AltLibrary.Ores.Where(x => x.OreType == OreType.Silver && x.Selectable));
+                prehmList.Add(new VanillaOre("Gold", "Gold", -7, TileID.Gold, ItemID.GoldBar, OreType.Gold));
+                prehmList.Add(new VanillaOre("Platinum", "Platinum", -8, TileID.Platinum, ItemID.PlatinumBar, OreType.Gold));
+                prehmList.AddRange(AltLibrary.Ores.Where(x => x.OreType == OreType.Gold && x.Selectable));
+                foreach (AltOre ore in prehmList)
+                {
+                    ALUIOreListItem item = new(ore, false);
+                    _oreList.Add(item);
+                    _oreElements.Add(item);
+                }
+                foreach (AltOre ore in hardmodeListing)
+                {
+                    ALUIOreListItem item = new(ore, false);
                     _oreList.Add(item);
                     _oreElements.Add(item);
                 }

@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Mono.Cecil.Cil;
+using MonoMod.Cil;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -11,6 +14,43 @@ namespace AltLibrary.Common
 {
     internal static class ALUtils
     {
+        internal static void ReplaceIDs<T>(ILContext il, T id, Func<T, T> replace, Func<T, bool> check, Func<ILCursor, bool> extraPred = null)
+        {
+            ILCursor c = new(il);
+            switch (id)
+            {
+                case int num:
+                    {
+                        while (c.TryGotoNext(i => i.MatchLdcI4(num) && (extraPred == null || extraPred.Invoke(c)) && i.Offset != 0))
+                        {
+                            c.Index++;
+                            c.EmitDelegate<Func<T, T>>(orig => check.Invoke(orig) ? replace.Invoke(orig) : orig);
+                        }
+                        break;
+                    }
+                case short num:
+                    {
+                        while (c.TryGotoNext(i => i.MatchLdcI4(num) && (extraPred == null || extraPred.Invoke(c)) && i.Offset != 0))
+                        {
+                            c.Index++;
+                            c.EmitDelegate<Func<T, T>>(orig => check.Invoke(orig) ? replace.Invoke(orig) : orig);
+                        }
+                        break;
+                    }
+                case ushort num:
+                    {
+                        while (c.TryGotoNext(i => i.MatchLdcI4(num) && (extraPred == null || extraPred.Invoke(c)) && i.Offset != 0))
+                        {
+                            c.Index++;
+                            c.EmitDelegate<Func<T, T>>(orig => check.Invoke(orig) ? replace.Invoke(orig) : orig);
+                        }
+                        break;
+                    }
+                default:
+                    throw new ArgumentException("Invalid type: " + typeof(T).Name, nameof(id));
+            }
+        }
+
         public static void GetWorldData(UIWorldListItem self, out Dictionary<string, AltLibraryConfig.WorldDataValues> tempDict, out string path2)
         {
             WorldFileData _data = (WorldFileData)typeof(UIWorldListItem).GetField("_data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self);
