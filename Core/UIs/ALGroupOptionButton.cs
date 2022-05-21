@@ -74,9 +74,9 @@ namespace AltLibrary.Core.UIs
                     HAlign = titleAlignmentX,
                     VAlign = 0.5f,
                     Width = StyleDimension.FromPixelsAndPercent(0f - titleWidthReduction, 1f),
-                    Top = StyleDimension.FromPixels(0f)
+                    Top = StyleDimension.FromPixels(0f),
+                    TextColor = textColor
                 };
-                uIText.TextColor = textColor;
                 Append(uIText);
                 _title = uIText;
             }
@@ -93,9 +93,9 @@ namespace AltLibrary.Core.UIs
                 HAlign = 0.5f,
                 VAlign = 0.5f,
                 Width = StyleDimension.FromPixelsAndPercent(-10f, 1f),
-                Top = StyleDimension.FromPixels(0f)
+                Top = StyleDimension.FromPixels(0f),
+                TextColor = color
             };
-            uIText.TextColor = color;
             Append(uIText);
             _title = uIText;
         }

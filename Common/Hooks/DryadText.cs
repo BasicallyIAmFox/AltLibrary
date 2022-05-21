@@ -14,6 +14,12 @@ namespace AltLibrary.Common.Hooks
             IL.Terraria.WorldGen.AddUpAlignmentCounts += WorldGen_AddUpAlignmentCounts;
         }
 
+        public static void Unload()
+        {
+            On.Terraria.Lang.GetDryadWorldStatusDialog -= Lang_GetDryadWorldStatusDialog;
+            IL.Terraria.WorldGen.AddUpAlignmentCounts -= WorldGen_AddUpAlignmentCounts;
+        }
+
         private static string Lang_GetDryadWorldStatusDialog(On.Terraria.Lang.orig_GetDryadWorldStatusDialog orig)
         {
             string text2;

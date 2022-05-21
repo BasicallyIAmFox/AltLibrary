@@ -13,6 +13,11 @@ namespace AltLibrary.Common.Hooks
             IL.Terraria.Player.MowGrassTile += Player_MowGrassTile;
         }
 
+        public static void Unload()
+        {
+            IL.Terraria.Player.MowGrassTile -= Player_MowGrassTile;
+        }
+
         private static void Player_MowGrassTile(ILContext il)
         {
             ILCursor c = new(il);

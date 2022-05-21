@@ -42,13 +42,15 @@ namespace AltLibrary.Content.NPCs
                     Player player = Main.player[i];
                     if (player.active && !player.DeadOrGhost && player.Distance(NPC.position) <= 500f && Main.time % Main.rand.Next(30, 150) == Main.rand.Next(0, 20) && Collision.CanHit(player, NPC))
                     {
-                        List<int> pairs = new();
-                        pairs.Add(0);
-                        pairs.Add(1);
-                        pairs.Add(2);
-                        pairs.Add(3);
-                        pairs.Add(4);
-                        pairs.Add(6);
+                        List<int> pairs = new()
+                        {
+                            0,
+                            1,
+                            2,
+                            3,
+                            4,
+                            6
+                        };
                         if (player.name == "FoxXD_") pairs.Add(5);
 
                         string reason = Language.GetTextValue($"Mods.AltLibrary.BunReason.{pairs[Main.rand.Next(pairs.Count)]}", player.name);

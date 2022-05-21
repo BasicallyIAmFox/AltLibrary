@@ -18,6 +18,11 @@ namespace AltLibrary.Common.Hooks
             IL.Terraria.Main.DrawUnderworldBackgroudLayer += Main_DrawUnderworldBackgroudLayer;
         }
 
+        public static void Unload()
+        {
+            IL.Terraria.Main.DrawUnderworldBackgroudLayer -= Main_DrawUnderworldBackgroudLayer;
+        }
+
         private static void Main_DrawUnderworldBackgroudLayer(ILContext il)
         {
             var c = new ILCursor(il);

@@ -1,7 +1,9 @@
+using AltLibrary.Common;
 using AltLibrary.Common.AltBiomes;
 using AltLibrary.Common.AltLiquidStyles;
 using AltLibrary.Common.AltOres;
 using AltLibrary.Common.Hooks;
+using AltLibrary.Common.Systems;
 using AltLibrary.Core;
 using System;
 using System.Collections.Generic;
@@ -17,29 +19,24 @@ namespace AltLibrary
 
         public static AltLibrary Instance { get => instance; internal set => instance = value; }
 
-        internal static List<AltBiome> Biomes = new();
+        internal static List<AltBiome> Biomes;
 
-        internal static List<AltOre> Ores = new();
+        internal static List<AltOre> Ores;
 
-        internal static List<AltLiquidStyle> LiquidStyles = new();
+        internal static List<AltLiquidStyle> LiquidStyles;
 
-        internal static Dictionary<string, float> HellAltTrans = new();
+        internal static Dictionary<string, float> HellAltTrans;
         internal static List<CustomPreviews> PreviewWorldIcons;
 
         // Spreading related lists.
-        internal static List<int> planteraBulbs = new() { TileID.PlanteraBulb };
-        internal static List<int> jungleGrass = new() { TileID.JungleGrass };
-        internal static List<int> jungleThorns = new() { TileID.JungleThorns };
-        internal static List<int> evilStoppingOres = new() { TileID.Chlorophyte, TileID.ChlorophyteBrick };
+        internal static List<int> planteraBulbs;
+        internal static List<int> jungleGrass;
+        internal static List<int> jungleThorns;
+        internal static List<int> evilStoppingOres;
 
-        internal static int TimeHoveringOnIcon = 0;
-        internal static bool HallowBunnyUnlocked = false;
-        internal static int ModIconVariation = 0;
-
-        public AltLibrary()
-        {
-            Instance = this;
-        }
+        internal static int TimeHoveringOnIcon;
+        internal static bool HallowBunnyUnlocked;
+        internal static int ModIconVariation;
 
         public override void Load()
         {
@@ -50,6 +47,15 @@ namespace AltLibrary
             TimeHoveringOnIcon = 0;
             HallowBunnyUnlocked = false;
             PreviewWorldIcons = new();
+            Instance = this;
+            Biomes = new();
+            Ores = new();
+            LiquidStyles = new();
+            HellAltTrans = new();
+            planteraBulbs = new() { TileID.PlanteraBulb };
+            jungleGrass = new() { TileID.JungleGrass };
+            jungleThorns = new() { TileID.JungleThorns };
+            evilStoppingOres = new() { TileID.Chlorophyte, TileID.ChlorophyteBrick };
         }
 
         public override object Call(params object[] args)
@@ -89,6 +95,42 @@ namespace AltLibrary
             TimeHoveringOnIcon = 0;
             HallowBunnyUnlocked = false;
             PreviewWorldIcons = null;
+            Instance = null;
+            Biomes = null;
+            Ores = null;
+            LiquidStyles = null;
+            HellAltTrans = null;
+            planteraBulbs = null;
+            jungleGrass = null;
+            jungleThorns = null;
+            evilStoppingOres = null;
+            ILHooks.Unload();
+            AltLibraryConfig.Config = null;
+            UIWorldCreationEdits.Adamantite = 0;
+            UIWorldCreationEdits.AltEvilBiomeChosenType = 0;
+            UIWorldCreationEdits.AltHallowBiomeChosenType = 0;
+            UIWorldCreationEdits.AltHellBiomeChosenType = 0;
+            UIWorldCreationEdits.AltJungleBiomeChosenType = 0;
+            UIWorldCreationEdits.chosenOption = UIWorldCreationEdits.CurrentAltOption.Biome;
+            UIWorldCreationEdits.chosingOption = null;
+            UIWorldCreationEdits.Cobalt = 0;
+            UIWorldCreationEdits.Copper = 0;
+            UIWorldCreationEdits.Gold = 0;
+            UIWorldCreationEdits.Iron = 0;
+            UIWorldCreationEdits.isCrimson = false;
+            UIWorldCreationEdits.Mythril = 0;
+            UIWorldCreationEdits.seed = null;
+            UIWorldCreationEdits.Silver = 0;
+            UIWorldCreationEdits._biomeElements = null;
+            UIWorldCreationEdits._biomeList = null;
+            UIWorldCreationEdits._oreElements = null;
+            UIWorldCreationEdits._oreHmElements = null;
+            UIWorldCreationEdits._oreHmList = null;
+            UIWorldCreationEdits._oreList = null;
+            WorldBiomeGeneration.dungeonSide = 0;
+            WorldBiomeGeneration.worldCrimson = 0;
+            WorldBiomeGeneration.worldCrimson2 = false;
+            WorldBiomeGeneration.worldCrimson3 = null;
         }
 
         internal struct CustomPreviews

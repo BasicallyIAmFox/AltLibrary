@@ -1,17 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour.HookGen;
-using ReLogic.Content;
 using System;
 using System.Reflection;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
-using Terraria.ModLoader;
 using Terraria.UI;
 
 namespace AltLibrary.Common.Hooks
@@ -121,8 +118,7 @@ namespace AltLibrary.Common.Hooks
             int additionX = 0;
             if (AltLibrary.ModIconVariation == 1)
             {
-                additionX = ((int)Math.Round(Main.GlobalTimeWrappedHourly / 2 % 2)) * 160;
-                AltLibrary.Instance.Logger.Info(additionX);
+                additionX = ((int)(Main.GlobalTimeWrappedHourly % 2)) * 160;
             }
 
             e.SetImage(ALTextureAssets.AnimatedModIcon[AltLibrary.ModIconVariation], new Rectangle(additionX, 0, 80, 80));

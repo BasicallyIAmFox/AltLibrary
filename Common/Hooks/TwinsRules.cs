@@ -1,7 +1,6 @@
 ﻿using AltLibrary.Common.AltBiomes;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using System;
 using System.Linq;
 using Terraria.GameContent.ItemDropRules;
 
@@ -12,6 +11,11 @@ namespace AltLibrary.Common.Hooks
         public static void Init()
         {
             IL.Terraria.GameContent.ItemDropRules.ItemDropDatabase.RegisterBoss_Twins += ItemDropDatabase_RegisterBoss_Twins;
+        }
+
+        public static void Unload()
+        {
+            IL.Terraria.GameContent.ItemDropRules.ItemDropDatabase.RegisterBoss_Twins -= ItemDropDatabase_RegisterBoss_Twins;
         }
 
         private static void ItemDropDatabase_RegisterBoss_Twins(ILContext il)
@@ -29,29 +33,31 @@ namespace AltLibrary.Common.Hooks
             }
             c.Index++;
             c.Emit(OpCodes.Ldloc, 1);
-            c.EmitDelegate<Func<LeadingConditionRule, LeadingConditionRule>>((leadCond) =>
+            c.EmitDelegate(LeadingConditionRule);
+            c.Emit(OpCodes.Stloc, 1);
+        }
+
+        private static LeadingConditionRule LeadingConditionRule(LeadingConditionRule leadCond)
+        {
+            if (AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow).Any())
             {
-                if (AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow).Any())
-                {
-                    foreach (AltBiome biome in AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow))
-                    {
-                        if (biome.MechDropItemType != null)
-                        {
-                            leadCond.ChainedRules.RemoveAt(1);
-                            break;
-                        }
-                    }
-                }
                 foreach (AltBiome biome in AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow))
                 {
                     if (biome.MechDropItemType != null)
                     {
-                        leadCond.OnSuccess(ItemDropRule.ByCondition(new HallowedBarAltDropCondition(biome), (int)biome.MechDropItemType, 1, 15, 30));
+                        leadCond.ChainedRules.RemoveAt(1);
+                        break;
                     }
                 }
-                return leadCond;
-            });
-            c.Emit(OpCodes.Stloc, 1);
+            }
+            foreach (AltBiome biome in AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow))
+            {
+                if (biome.MechDropItemType != null && biome.MechDropItemType.HasValue)
+                {
+                    leadCond.OnSuccess(ItemDropRule.ByCondition(new HallowedBarAltDropCondition(biome), biome.MechDropItemType.Value, 1, 15, 30));
+                }
+            }
+            return leadCond;
         }
     }
 }

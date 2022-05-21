@@ -16,6 +16,11 @@ namespace AltLibrary.Common.Hooks
             IL.Terraria.GameContent.Biomes.CaveHouse.HouseUtils.CreateBuilder += HouseUtils_CreateBuilder;
         }
 
+        public static void Unload()
+        {
+            IL.Terraria.GameContent.Biomes.CaveHouse.HouseUtils.CreateBuilder -= HouseUtils_CreateBuilder;
+        }
+
         private static void HouseUtils_CreateBuilder(ILContext il)
         {
             ILCursor c = new(il);
@@ -32,7 +37,7 @@ namespace AltLibrary.Common.Hooks
 
             var label = il.DefineLabel();
 
-            c.EmitDelegate(() => WorldBiomeManager.worldJungle == "");
+            c.EmitDelegate(() => WorldBiomeManager.WorldJungle == "");
             //c.Emit(OpCodes.Ldsfld, typeof(WorldBiomeManager).GetField(nameof(WorldBiomeManager.worldJungle), BindingFlags.Public | BindingFlags.Static));
             //c.Emit(OpCodes.Ldstr, "");
             //c.Emit(OpCodes.Call, typeof(string).GetMethod("op_Equality", new Type[] { typeof(string), typeof(string) }));

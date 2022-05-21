@@ -39,6 +39,30 @@ namespace AltLibrary.Core
             LiquidILHooks.Init();
         }
 
+        public static void Unload()
+        {
+            On.Terraria.Main.EraseWorld -= Main_EraseWorld;
+            WorldIcons.Unload();
+            OuterVisual.Unload();
+            EvenMoreWorldGen.Unload();
+            UnderworldVisual.Unload();
+            UIWorldCreationEdits.Unload();
+            HardmodeWorldGen.Unload();
+            TwinsRules.Unload();
+            DungeonChests.Unload();
+            SmashAltarInfection.Unload();
+            MowingGrassTile.Unload();
+            MimicSummon.Unload();
+            BloodMoonCritterTransformations.Unload();
+            DryadText.Unload();
+            JungleHuts.Unload();
+            NearbyAltChloro.Unload();
+            EvilWofBox.Unload();
+            TenthAnniversaryFix.Unload();
+            ShadowKeyReplacement.Unload();
+            LiquidILHooks.Unload();
+        }
+
         private static void Main_EraseWorld(On.Terraria.Main.orig_EraseWorld orig, int i)
         {
             Dictionary<string, AltLibraryConfig.WorldDataValues> tempDict = AltLibraryConfig.Config.GetWorldData();

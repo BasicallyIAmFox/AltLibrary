@@ -19,6 +19,13 @@ namespace AltLibrary.Common.Hooks
             GenPasses.HookGenPassHardmodeWalls += GenPasses_HookGenPassHardmodeWalls;
         }
 
+        public static void Unload()
+        {
+            IL.Terraria.WorldGen.smCallBack -= GenPasses.ILSMCallBack;
+            IL.Terraria.WorldGen.GERunner -= WorldGen_GERunner;
+            GenPasses.HookGenPassHardmodeWalls -= GenPasses_HookGenPassHardmodeWalls;
+        }
+
         private static void GenPasses_HookGenPassHardmodeWalls(ILContext il)
         {
             ILCursor c = new(il);
@@ -38,41 +45,41 @@ namespace AltLibrary.Common.Hooks
             c.Emit(OpCodes.Ldloc, 5);
             c.EmitDelegate<Func<int, Tile, int>>((orig, tile) =>
             {
-                if (WorldBiomeManager.worldHallow != "" && Find<AltBiome>(WorldBiomeManager.worldHallow).HardmodeWalls.Count > 0 &&
-                    ((Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeGrass.HasValue &&
-                        tile.TileType == Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeGrass.Value) ||
-                    (Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeStone.HasValue &&
-                        tile.TileType == Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeStone.Value) ||
-                    (Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeSand.HasValue &&
-                        tile.TileType == Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeSand.Value) ||
-                    (Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeIce.HasValue &&
-                        tile.TileType == Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeIce.Value) ||
-                    (Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeHardenedSand.HasValue &&
-                        tile.TileType == Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeHardenedSand.Value) ||
-                    (Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeSandstone.HasValue &&
-                        tile.TileType == Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeSandstone.Value))
+                if (WorldBiomeManager.WorldHallow != "" && Find<AltBiome>(WorldBiomeManager.WorldHallow).HardmodeWalls.Count > 0 &&
+                    ((Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeGrass.HasValue &&
+                        tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeGrass.Value) ||
+                    (Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeStone.HasValue &&
+                        tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeStone.Value) ||
+                    (Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeSand.HasValue &&
+                        tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeSand.Value) ||
+                    (Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeIce.HasValue &&
+                        tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeIce.Value) ||
+                    (Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeHardenedSand.HasValue &&
+                        tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeHardenedSand.Value) ||
+                    (Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeSandstone.HasValue &&
+                        tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeSandstone.Value))
                     // Vine here!
                     )
                 {
-                    orig = Find<AltBiome>(WorldBiomeManager.worldHallow).HardmodeWalls[WorldGen.genRand.Next(Find<AltBiome>(WorldBiomeManager.worldHallow).HardmodeWalls.Count)];
+                    orig = Find<AltBiome>(WorldBiomeManager.WorldHallow).HardmodeWalls[WorldGen.genRand.Next(Find<AltBiome>(WorldBiomeManager.WorldHallow).HardmodeWalls.Count)];
                 }
-                if (WorldBiomeManager.worldEvil != "" && Find<AltBiome>(WorldBiomeManager.worldEvil).HardmodeWalls.Count > 0 &&
-                    ((Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeGrass.HasValue &&
-                        tile.TileType == Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeGrass.Value) ||
-                    (Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeStone.HasValue &&
-                        tile.TileType == Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeStone.Value) ||
-                    (Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeSand.HasValue &&
-                        tile.TileType == Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeSand.Value) ||
-                    (Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeIce.HasValue &&
-                        tile.TileType == Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeIce.Value) ||
-                    (Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeHardenedSand.HasValue &&
-                        tile.TileType == Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeHardenedSand.Value) ||
-                    (Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeSandstone.HasValue &&
-                        tile.TileType == Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeSandstone.Value))
+                if (WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).HardmodeWalls.Count > 0 &&
+                    ((Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeGrass.HasValue &&
+                        tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeGrass.Value) ||
+                    (Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeStone.HasValue &&
+                        tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeStone.Value) ||
+                    (Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeSand.HasValue &&
+                        tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeSand.Value) ||
+                    (Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeIce.HasValue &&
+                        tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeIce.Value) ||
+                    (Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeHardenedSand.HasValue &&
+                        tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeHardenedSand.Value) ||
+                    (Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeSandstone.HasValue &&
+                        tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeSandstone.Value))
                     // Vine here!
                     )
                 {
-                    orig = Find<AltBiome>(WorldBiomeManager.worldEvil).HardmodeWalls[WorldGen.genRand.Next(Find<AltBiome>(WorldBiomeManager.worldEvil).HardmodeWalls.Count)];
+                    orig = Find<AltBiome>(WorldBiomeManager.WorldEvil).HardmodeWalls[WorldGen.genRand.Next(Find<AltBiome>(WorldBiomeManager.WorldEvil).HardmodeWalls.Count)];
                 }
                 return orig;
             });
@@ -114,9 +121,9 @@ namespace AltLibrary.Common.Hooks
                 if (!good)
                 {
                     Tile tile = Main.tile[m, l];
-                    if (WorldBiomeManager.worldEvil != "")
+                    if (WorldBiomeManager.WorldEvil != "")
                     {
-                        foreach (KeyValuePair<int, int> entry in Find<AltBiome>(WorldBiomeManager.worldEvil).SpecialConversion)
+                        foreach (KeyValuePair<int, int> entry in Find<AltBiome>(WorldBiomeManager.WorldEvil).SpecialConversion)
                         {
                             if (tile.TileType == entry.Key)
                             {
@@ -125,7 +132,7 @@ namespace AltLibrary.Common.Hooks
                                 WorldGen.SquareTileFrame(m, l, true);
                             }
                         }
-                        foreach (KeyValuePair<ushort, ushort> entry in Find<AltBiome>(WorldBiomeManager.worldEvil).WallContext.wallsReplacement)
+                        foreach (KeyValuePair<ushort, ushort> entry in Find<AltBiome>(WorldBiomeManager.WorldEvil).WallContext.wallsReplacement)
                         {
                             if (tile.WallType == entry.Key)
                             {
@@ -148,9 +155,9 @@ namespace AltLibrary.Common.Hooks
             c.EmitDelegate<Action<int, int>>((m, l) =>
             {
                 Tile tile = Main.tile[m, l];
-                if (WorldBiomeManager.worldHallow != "")
+                if (WorldBiomeManager.WorldHallow != "")
                 {
-                    foreach (KeyValuePair<int, int> entry in Find<AltBiome>(WorldBiomeManager.worldHallow).SpecialConversion)
+                    foreach (KeyValuePair<int, int> entry in Find<AltBiome>(WorldBiomeManager.WorldHallow).SpecialConversion)
                     {
                         if (tile.TileType == entry.Key)
                         {
@@ -158,7 +165,7 @@ namespace AltLibrary.Common.Hooks
                             WorldGen.SquareTileFrame(m, l, true);
                         }
                     }
-                    foreach (KeyValuePair<ushort, ushort> entry in Find<AltBiome>(WorldBiomeManager.worldHallow).WallContext.wallsReplacement)
+                    foreach (KeyValuePair<ushort, ushort> entry in Find<AltBiome>(WorldBiomeManager.WorldHallow).WallContext.wallsReplacement)
                     {
                         if (tile.WallType == entry.Key)
                         {
@@ -170,82 +177,82 @@ namespace AltLibrary.Common.Hooks
 
             ALUtils.ReplaceIDs(il,
                 WallID.HallowedGrassUnsafe,
-                (orig) => Find<AltBiome>(WorldBiomeManager.worldHallow).WallContext.wallsReplacement.TryGetValue(orig, out ushort value) ? value : WallID.None,
-                (orig) => WorldBiomeManager.worldHallow != "" && Find<AltBiome>(WorldBiomeManager.worldHallow).WallContext.wallsReplacement.ContainsKey(orig));
+                (orig) => Find<AltBiome>(WorldBiomeManager.WorldHallow).WallContext.wallsReplacement.TryGetValue(orig, out ushort value) ? value : WallID.None,
+                (orig) => WorldBiomeManager.WorldHallow != "" && Find<AltBiome>(WorldBiomeManager.WorldHallow).WallContext.wallsReplacement.ContainsKey(orig));
             ALUtils.ReplaceIDs(il,
                 WallID.HallowHardenedSand,
-                (orig) => Find<AltBiome>(WorldBiomeManager.worldHallow).WallContext.wallsReplacement.TryGetValue(orig, out ushort value) ? value : WallID.None,
-                (orig) => WorldBiomeManager.worldHallow != "" && Find<AltBiome>(WorldBiomeManager.worldHallow).WallContext.wallsReplacement.ContainsKey(orig));
+                (orig) => Find<AltBiome>(WorldBiomeManager.WorldHallow).WallContext.wallsReplacement.TryGetValue(orig, out ushort value) ? value : WallID.None,
+                (orig) => WorldBiomeManager.WorldHallow != "" && Find<AltBiome>(WorldBiomeManager.WorldHallow).WallContext.wallsReplacement.ContainsKey(orig));
             ALUtils.ReplaceIDs(il,
                 WallID.HallowSandstone,
-                (orig) => Find<AltBiome>(WorldBiomeManager.worldHallow).WallContext.wallsReplacement.TryGetValue(orig, out ushort value) ? value : WallID.None,
-                (orig) => WorldBiomeManager.worldHallow != "" && Find<AltBiome>(WorldBiomeManager.worldHallow).WallContext.wallsReplacement.ContainsKey(orig));
+                (orig) => Find<AltBiome>(WorldBiomeManager.WorldHallow).WallContext.wallsReplacement.TryGetValue(orig, out ushort value) ? value : WallID.None,
+                (orig) => WorldBiomeManager.WorldHallow != "" && Find<AltBiome>(WorldBiomeManager.WorldHallow).WallContext.wallsReplacement.ContainsKey(orig));
             ALUtils.ReplaceIDs(il,
                 WallID.PearlstoneBrickUnsafe,
-                (orig) => Find<AltBiome>(WorldBiomeManager.worldHallow).WallContext.wallsReplacement.TryGetValue(orig, out ushort value) ? value : WallID.None,
-                (orig) => WorldBiomeManager.worldHallow != "" && Find<AltBiome>(WorldBiomeManager.worldHallow).WallContext.wallsReplacement.ContainsKey(orig));
+                (orig) => Find<AltBiome>(WorldBiomeManager.WorldHallow).WallContext.wallsReplacement.TryGetValue(orig, out ushort value) ? value : WallID.None,
+                (orig) => WorldBiomeManager.WorldHallow != "" && Find<AltBiome>(WorldBiomeManager.WorldHallow).WallContext.wallsReplacement.ContainsKey(orig));
             ALUtils.ReplaceIDs(il,
                 WallID.CorruptGrassUnsafe,
-                (orig) => Find<AltBiome>(WorldBiomeManager.worldEvil).WallContext.wallsReplacement.TryGetValue(orig, out ushort value) ? value : WallID.None,
-                (orig) => WorldBiomeManager.worldEvil != "" && Find<AltBiome>(WorldBiomeManager.worldEvil).WallContext.wallsReplacement.ContainsKey(orig));
+                (orig) => Find<AltBiome>(WorldBiomeManager.WorldEvil).WallContext.wallsReplacement.TryGetValue(orig, out ushort value) ? value : WallID.None,
+                (orig) => WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).WallContext.wallsReplacement.ContainsKey(orig));
             ALUtils.ReplaceIDs(il,
                 WallID.CorruptHardenedSand,
-                (orig) => Find<AltBiome>(WorldBiomeManager.worldEvil).WallContext.wallsReplacement.TryGetValue(orig, out ushort value) ? value : WallID.None,
-                (orig) => WorldBiomeManager.worldEvil != "" && Find<AltBiome>(WorldBiomeManager.worldEvil).WallContext.wallsReplacement.ContainsKey(orig));
+                (orig) => Find<AltBiome>(WorldBiomeManager.WorldEvil).WallContext.wallsReplacement.TryGetValue(orig, out ushort value) ? value : WallID.None,
+                (orig) => WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).WallContext.wallsReplacement.ContainsKey(orig));
             ALUtils.ReplaceIDs(il,
                 WallID.CorruptSandstone,
-                (orig) => Find<AltBiome>(WorldBiomeManager.worldEvil).WallContext.wallsReplacement.TryGetValue(orig, out ushort value) ? value : WallID.None,
-                (orig) => WorldBiomeManager.worldEvil != "" && Find<AltBiome>(WorldBiomeManager.worldEvil).WallContext.wallsReplacement.ContainsKey(orig));
+                (orig) => Find<AltBiome>(WorldBiomeManager.WorldEvil).WallContext.wallsReplacement.TryGetValue(orig, out ushort value) ? value : WallID.None,
+                (orig) => WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).WallContext.wallsReplacement.ContainsKey(orig));
 
             ALUtils.ReplaceIDs<int>(il,
                 TileID.Pearlstone,
-                (orig) => Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeStone ?? orig,
-                (orig) => WorldBiomeManager.worldHallow != "" && Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeStone.HasValue);
+                (orig) => Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeStone ?? orig,
+                (orig) => WorldBiomeManager.WorldHallow != "" && Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeStone.HasValue);
             ALUtils.ReplaceIDs<int>(il,
                 TileID.HallowHardenedSand,
-                (orig) => Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeHardenedSand ?? orig,
-                (orig) => WorldBiomeManager.worldHallow != "" && Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeHardenedSand.HasValue);
+                (orig) => Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeHardenedSand ?? orig,
+                (orig) => WorldBiomeManager.WorldHallow != "" && Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeHardenedSand.HasValue);
             ALUtils.ReplaceIDs<int>(il,
                 TileID.HallowedGrass,
-                (orig) => Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeGrass ?? orig,
-                (orig) => WorldBiomeManager.worldHallow != "" && Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeGrass.HasValue);
+                (orig) => Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeGrass ?? orig,
+                (orig) => WorldBiomeManager.WorldHallow != "" && Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeGrass.HasValue);
             ALUtils.ReplaceIDs<int>(il,
                 TileID.Pearlsand,
-                (orig) => Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeSand ?? orig,
-                (orig) => WorldBiomeManager.worldHallow != "" && Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeSand.HasValue);
+                (orig) => Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeSand ?? orig,
+                (orig) => WorldBiomeManager.WorldHallow != "" && Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeSand.HasValue);
             ALUtils.ReplaceIDs<int>(il,
                 TileID.HallowedIce,
-                (orig) => Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeIce ?? orig,
-                (orig) => WorldBiomeManager.worldHallow != "" && Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeIce.HasValue);
+                (orig) => Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeIce ?? orig,
+                (orig) => WorldBiomeManager.WorldHallow != "" && Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeIce.HasValue);
             ALUtils.ReplaceIDs<int>(il,
                 TileID.HallowSandstone,
-                (orig) => Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeSandstone ?? orig,
-                (orig) => WorldBiomeManager.worldHallow != "" && Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeSandstone.HasValue);
+                (orig) => Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeSandstone ?? orig,
+                (orig) => WorldBiomeManager.WorldHallow != "" && Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeSandstone.HasValue);
 
             ALUtils.ReplaceIDs<int>(il,
                 TileID.Ebonstone,
-                (orig) => Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeStone ?? orig,
-                (orig) => WorldBiomeManager.worldEvil != "" && Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeStone.HasValue);
+                (orig) => Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeStone ?? orig,
+                (orig) => WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeStone.HasValue);
             ALUtils.ReplaceIDs<int>(il,
                 TileID.CorruptHardenedSand,
-                (orig) => Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeHardenedSand ?? orig,
-                (orig) => WorldBiomeManager.worldEvil != "" && Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeHardenedSand.HasValue);
+                (orig) => Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeHardenedSand ?? orig,
+                (orig) => WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeHardenedSand.HasValue);
             ALUtils.ReplaceIDs<int>(il,
                 TileID.CorruptGrass,
-                (orig) => Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeGrass ?? orig,
-                (orig) => WorldBiomeManager.worldEvil != "" && Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeGrass.HasValue);
+                (orig) => Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeGrass ?? orig,
+                (orig) => WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeGrass.HasValue);
             ALUtils.ReplaceIDs<int>(il,
                 TileID.Ebonsand,
-                (orig) => Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeSand ?? orig,
-                (orig) => WorldBiomeManager.worldEvil != "" && Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeSand.HasValue);
+                (orig) => Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeSand ?? orig,
+                (orig) => WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeSand.HasValue);
             ALUtils.ReplaceIDs<int>(il,
                 TileID.CorruptIce,
-                (orig) => Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeIce ?? orig,
-                (orig) => WorldBiomeManager.worldEvil != "" && Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeIce.HasValue);
+                (orig) => Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeIce ?? orig,
+                (orig) => WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeIce.HasValue);
             ALUtils.ReplaceIDs<int>(il,
                 TileID.CorruptSandstone,
-                (orig) => Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeSandstone ?? orig,
-                (orig) => WorldBiomeManager.worldEvil != "" && Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeSandstone.HasValue);
+                (orig) => Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeSandstone ?? orig,
+                (orig) => WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeSandstone.HasValue);
         }
     }
 }

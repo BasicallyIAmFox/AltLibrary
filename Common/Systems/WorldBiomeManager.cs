@@ -8,25 +8,25 @@ namespace AltLibrary.Common.Systems
 {
     public class WorldBiomeManager : ModSystem
     {
-        public static string worldEvil = "";
-        public static string worldHallow = "";
-        public static string worldHell = "";
-        public static string worldJungle = "";
+        public static string WorldEvil { get; internal set; } = "";
+        public static string WorldHallow { get; internal set; } = "";
+        public static string WorldHell { get; internal set; } = "";
+        public static string WorldJungle { get; internal set; } = "";
         internal static string drunkEvil = "";
-        public static int Copper;
-        public static int Iron;
-        public static int Silver;
-        public static int Gold;
-        public static int Cobalt;
-        public static int Mythril;
-        public static int Adamantite;
+        public static int Copper { get; internal set; } = 0;
+        public static int Iron { get; internal set; } = 0;
+        public static int Silver { get; internal set; } = 0;
+        public static int Gold { get; internal set; } = 0;
+        public static int Cobalt { get; internal set; } = 0;
+        public static int Mythril { get; internal set; } = 0;
+        public static int Adamantite { get; internal set; } = 0;
 
         public override void SaveWorldData(TagCompound tag)
         {
-            tag.Add("AltLibrary:WorldEvil", worldEvil);
-            tag.Add("AltLibrary:WorldHallow", worldHallow);
-            tag.Add("AltLibrary:WorldHell", worldHell);
-            tag.Add("AltLibrary:WorldJungle", worldJungle);
+            tag.Add("AltLibrary:WorldEvil", WorldEvil);
+            tag.Add("AltLibrary:WorldHallow", WorldHallow);
+            tag.Add("AltLibrary:WorldHell", WorldHell);
+            tag.Add("AltLibrary:WorldJungle", WorldJungle);
             tag.Add("AltLibrary:DrunkEvil", drunkEvil);
             tag.Add("AltLibrary:Copper", Copper);
             tag.Add("AltLibrary:Iron", Iron);
@@ -39,10 +39,10 @@ namespace AltLibrary.Common.Systems
             Dictionary<string, AltLibraryConfig.WorldDataValues> tempDict = AltLibraryConfig.Config.GetWorldData();
             AltLibraryConfig.WorldDataValues worldData;
 
-            worldData.worldEvil = worldEvil;
-            worldData.worldHallow = worldHallow;
-            worldData.worldHell = worldHell;
-            worldData.worldJungle = worldJungle;
+            worldData.worldEvil = WorldEvil;
+            worldData.worldHallow = WorldHallow;
+            worldData.worldHell = WorldHell;
+            worldData.worldJungle = WorldJungle;
             worldData.drunkEvil = drunkEvil;
 
             string path = Path.ChangeExtension(Main.worldPathName, ".twld");
@@ -53,10 +53,10 @@ namespace AltLibrary.Common.Systems
 
         public override void LoadWorldData(TagCompound tag)
         {
-            worldEvil = tag.GetString("AltLibrary:WorldEvil");
-            worldHallow = tag.GetString("AltLibrary:WorldHallow");
-            worldHell = tag.GetString("AltLibrary:WorldHell");
-            worldJungle = tag.GetString("AltLibrary:WorldJungle");
+            WorldEvil = tag.GetString("AltLibrary:WorldEvil");
+            WorldHallow = tag.GetString("AltLibrary:WorldHallow");
+            WorldHell = tag.GetString("AltLibrary:WorldHell");
+            WorldJungle = tag.GetString("AltLibrary:WorldJungle");
             drunkEvil = tag.GetString("AltLibrary:DrunkEvil");
             Copper = tag.GetInt("AltLibrary:Copper");
             Iron = tag.GetInt("AltLibrary:Iron");
@@ -69,10 +69,10 @@ namespace AltLibrary.Common.Systems
 
         public override void NetSend(BinaryWriter writer)
         {
-            writer.Write(worldEvil);
-            writer.Write(worldHallow);
-            writer.Write(worldHell);
-            writer.Write(worldJungle);
+            writer.Write(WorldEvil);
+            writer.Write(WorldHallow);
+            writer.Write(WorldHell);
+            writer.Write(WorldJungle);
             writer.Write(drunkEvil);
             writer.Write(Copper);
             writer.Write(Iron);
@@ -85,10 +85,10 @@ namespace AltLibrary.Common.Systems
 
         public override void NetReceive(BinaryReader reader)
         {
-            worldEvil = reader.ReadString();
-            worldHallow = reader.ReadString();
-            worldHell = reader.ReadString();
-            worldJungle = reader.ReadString();
+            WorldEvil = reader.ReadString();
+            WorldHallow = reader.ReadString();
+            WorldHell = reader.ReadString();
+            WorldJungle = reader.ReadString();
             drunkEvil = reader.ReadString();
             Copper = reader.ReadInt32();
             Iron = reader.ReadInt32();

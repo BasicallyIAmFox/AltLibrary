@@ -19,6 +19,11 @@ namespace AltLibrary.Common.Hooks
             IL.Terraria.WorldGen.MakeDungeon += WorldGen_MakeDungeon;
         }
 
+        public static void Unload()
+        {
+            IL.Terraria.WorldGen.MakeDungeon -= WorldGen_MakeDungeon;
+        }
+
         private static void WorldGen_MakeDungeon(ILContext il)
         {
             ILCursor c = new(il);
@@ -37,7 +42,7 @@ namespace AltLibrary.Common.Hooks
             c.Emit(OpCodes.Ldloc, 15);
             c.EmitDelegate<Func<int, int>>((orig) =>
             {
-                if (WorldBiomeManager.worldHell != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).BiomeChestTile.HasValue)
+                if (WorldBiomeManager.WorldHell != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).BiomeChestTile.HasValue)
                 {
                     //orig++;
                 }
@@ -61,21 +66,21 @@ namespace AltLibrary.Common.Hooks
             c.Emit(OpCodes.Ldc_I4, int.MinValue);
             c.EmitDelegate<Func<int, int, int, int>>((contain, chests, hellChestIndex) =>
             {
-                if (chests == 0 && WorldBiomeManager.worldJungle != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldJungle).BiomeChestItem.HasValue)
+                if (chests == 0 && WorldBiomeManager.WorldJungle != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeChestItem.HasValue)
                 {
-                    return ModContent.Find<AltBiome>(WorldBiomeManager.worldJungle).BiomeChestItem.Value;
+                    return ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeChestItem.Value;
                 }
-                if (chests == 2 && WorldBiomeManager.worldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeChestItem.HasValue)
+                if (chests == 2 && WorldBiomeManager.WorldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeChestItem.HasValue)
                 {
-                    return ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeChestItem.Value;
+                    return ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeChestItem.Value;
                 }
-                if ((chests == 1 || chests == 5) && WorldBiomeManager.worldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeChestItem.HasValue)
+                if ((chests == 1 || chests == 5) && WorldBiomeManager.WorldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeChestItem.HasValue)
                 {
-                    return ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeChestItem.Value;
+                    return ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeChestItem.Value;
                 }
-                if (chests == hellChestIndex && WorldBiomeManager.worldHell != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).BiomeChestItem.HasValue)
+                if (chests == hellChestIndex && WorldBiomeManager.WorldHell != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).BiomeChestItem.HasValue)
                 {
-                    return ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).BiomeChestItem.Value;
+                    return ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).BiomeChestItem.Value;
                 }
                 return contain;
             });
@@ -91,21 +96,21 @@ namespace AltLibrary.Common.Hooks
             c.Emit(OpCodes.Ldc_I4, int.MinValue);
             c.EmitDelegate<Func<int, int, int, int>>((style, chests, hellChestIndex) =>
             {
-                if (chests == 0 && WorldBiomeManager.worldJungle != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldJungle).BiomeChestTileStyle.HasValue)
+                if (chests == 0 && WorldBiomeManager.WorldJungle != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeChestTileStyle.HasValue)
                 {
-                    style = ModContent.Find<AltBiome>(WorldBiomeManager.worldJungle).BiomeChestTileStyle.Value;
+                    style = ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeChestTileStyle.Value;
                 }
-                if (chests == 2 && WorldBiomeManager.worldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeChestTileStyle.HasValue)
+                if (chests == 2 && WorldBiomeManager.WorldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeChestTileStyle.HasValue)
                 {
-                    style = ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeChestTileStyle.Value;
+                    style = ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeChestTileStyle.Value;
                 }
-                if ((chests == 1 || chests == 5) && WorldBiomeManager.worldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeChestTileStyle.HasValue)
+                if ((chests == 1 || chests == 5) && WorldBiomeManager.WorldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeChestTileStyle.HasValue)
                 {
-                    style = ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeChestTileStyle.Value;
+                    style = ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeChestTileStyle.Value;
                 }
-                if (chests == hellChestIndex && WorldBiomeManager.worldHell != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).BiomeChestTileStyle.HasValue)
+                if (chests == hellChestIndex && WorldBiomeManager.WorldHell != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).BiomeChestTileStyle.HasValue)
                 {
-                    return ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).BiomeChestTileStyle.Value;
+                    return ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).BiomeChestTileStyle.Value;
                 }
                 return style;
             });
@@ -121,21 +126,21 @@ namespace AltLibrary.Common.Hooks
             c.Emit(OpCodes.Ldc_I4, int.MinValue);
             c.EmitDelegate<Func<int, int, int, int>>((chestTileType, chests, hellChestIndex) =>
             {
-                if (chests == 0 && WorldBiomeManager.worldJungle != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldJungle).BiomeChestTile.HasValue)
+                if (chests == 0 && WorldBiomeManager.WorldJungle != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeChestTile.HasValue)
                 {
-                    return ModContent.Find<AltBiome>(WorldBiomeManager.worldJungle).BiomeChestTile.Value;
+                    return ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeChestTile.Value;
                 }
-                if (chests == 2 && WorldBiomeManager.worldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeChestTile.HasValue)
+                if (chests == 2 && WorldBiomeManager.WorldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeChestTile.HasValue)
                 {
-                    return ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeChestTile.Value;
+                    return ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeChestTile.Value;
                 }
-                if ((chests == 1 || chests == 5) && WorldBiomeManager.worldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeChestTile.HasValue)
+                if ((chests == 1 || chests == 5) && WorldBiomeManager.WorldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeChestTile.HasValue)
                 {
-                    return ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeChestTile.Value;
+                    return ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeChestTile.Value;
                 }
-                if (chests == hellChestIndex && WorldBiomeManager.worldHell != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).BiomeChestTile.HasValue)
+                if (chests == hellChestIndex && WorldBiomeManager.WorldHell != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).BiomeChestTile.HasValue)
                 {
-                    return ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).BiomeChestTile.Value;
+                    return ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).BiomeChestTile.Value;
                 }
                 return chestTileType;
             });

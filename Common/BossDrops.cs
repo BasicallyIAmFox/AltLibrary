@@ -128,7 +128,7 @@ namespace AltLibrary.Common
     {
         public bool CanDrop(DropAttemptInfo info)
         {
-            if (!info.IsInSimulation && (WorldBiomeManager.worldHallow == "" || WorldBiomeManager.worldHallow == null))
+            if (!info.IsInSimulation && (WorldBiomeManager.WorldHallow == "" || WorldBiomeManager.WorldHallow == null))
             {
                 return true;
             }
@@ -136,7 +136,7 @@ namespace AltLibrary.Common
         }
         public bool CanShowItemDropInUI()
         {
-            return WorldBiomeManager.worldHallow == "";
+            return WorldBiomeManager.WorldHallow == "";
         }
         public string GetConditionDescription()
         {
@@ -153,7 +153,7 @@ namespace AltLibrary.Common
         //}
         public bool CanDrop(DropAttemptInfo info)
         {
-            if (!info.IsInSimulation && (WorldBiomeManager.worldEvil == "" || WorldBiomeManager.worldEvil == null))
+            if (!info.IsInSimulation && (WorldBiomeManager.WorldEvil == "" || WorldBiomeManager.WorldEvil == null))
             {
                 //return WorldGen.crimson == Crimson;
                 return true;
@@ -162,7 +162,7 @@ namespace AltLibrary.Common
         }
         public bool CanShowItemDropInUI()
         {
-            if (WorldBiomeManager.worldEvil == "" || WorldBiomeManager.worldEvil == null)
+            if (WorldBiomeManager.WorldEvil == "" || WorldBiomeManager.WorldEvil == null)
             {
                 //return WorldGen.crimson == Crimson;
                 return true;
@@ -190,14 +190,14 @@ namespace AltLibrary.Common
         {
             if (!info.IsInSimulation && (BiomeType.FullName != null && BiomeType.FullName != ""))
             {
-                if (WorldBiomeManager.worldHallow == BiomeType.FullName) return WorldBiomeManager.worldHallow == BiomeType.FullName;
+                if (WorldBiomeManager.WorldHallow == BiomeType.FullName) return WorldBiomeManager.WorldHallow == BiomeType.FullName;
             }
             return false;
         }
 
         public bool CanShowItemDropInUI()
         {
-            return WorldBiomeManager.worldHallow == BiomeType.FullName;
+            return WorldBiomeManager.WorldHallow == BiomeType.FullName;
         }
 
         public string GetConditionDescription()
@@ -219,14 +219,14 @@ namespace AltLibrary.Common
         {
             if (!info.IsInSimulation && BiomeType.FullName != null && BiomeType.FullName != "")
             {
-                if (WorldBiomeManager.worldEvil != "") return WorldBiomeManager.worldEvil == BiomeType.FullName;
+                if (WorldBiomeManager.WorldEvil != "") return WorldBiomeManager.WorldEvil == BiomeType.FullName;
             }
             return false;
         }
 
         public bool CanShowItemDropInUI()
         {
-            return WorldBiomeManager.worldEvil == BiomeType.FullName;
+            return WorldBiomeManager.WorldEvil == BiomeType.FullName;
         }
 
         public string GetConditionDescription()
@@ -239,20 +239,20 @@ namespace AltLibrary.Common
     {
         public override bool PreOpenVanillaBag(string context, Player player, int arg)
         {
-            if (WorldBiomeManager.worldHallow != "")
+            if (WorldBiomeManager.WorldHallow != "")
             {
                 if (arg == ItemID.TwinsBossBag || arg == ItemID.SkeletronPrimeBossBag || arg == ItemID.DestroyerBossBag)
                 {
                     NPCLoader.blockLoot.Add(ItemID.HallowedBar);
                 }
-                if (arg == ItemID.WallOfFleshBossBag && ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).HammerType != ItemID.Pwnhammer)
+                if (arg == ItemID.WallOfFleshBossBag && ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow).HammerType != ItemID.Pwnhammer)
                 {
                     NPCLoader.blockLoot.Add(ItemID.Pwnhammer);
                 }
-            }  
+            }
             if (arg == ItemID.EyeOfCthulhuBossBag)
             {
-                if (WorldBiomeManager.worldEvil != "")
+                if (WorldBiomeManager.WorldEvil != "")
                 {
                     NPCLoader.blockLoot.Add(ItemID.DemoniteOre);
                     NPCLoader.blockLoot.Add(ItemID.CrimtaneOre);
@@ -268,9 +268,9 @@ namespace AltLibrary.Common
         public override void OpenVanillaBag(string context, Player player, int arg)
         {
             var source = player.GetSource_OpenItem(arg);
-            if (WorldBiomeManager.worldHallow != "")
+            if (WorldBiomeManager.WorldHallow != "")
             {
-                var biome = ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow);
+                var biome = ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow);
                 if (arg == ItemID.TwinsBossBag || arg == ItemID.SkeletronPrimeBossBag || arg == ItemID.DestroyerBossBag)
                 {
                     var amount = Main.rand.Next(15, 31);
@@ -278,12 +278,12 @@ namespace AltLibrary.Common
                 }
                 if (arg == ItemID.WallOfFleshBossBag)
                 {
-                    player.QuickSpawnItem(source, (int)biome.HammerType);
+                    player.QuickSpawnItem(source, biome.HammerType);
                 }
             }
-            if (arg == ItemID.EyeOfCthulhuBossBag && WorldBiomeManager.worldEvil != "")
+            if (arg == ItemID.EyeOfCthulhuBossBag && WorldBiomeManager.WorldEvil != "")
             {
-                var biome = ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil);
+                var biome = ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil);
                 if (biome.BiomeOreItem != null)
                 {
                     var amount = Main.rand.Next(30, 90);

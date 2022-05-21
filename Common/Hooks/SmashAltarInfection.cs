@@ -19,6 +19,11 @@ namespace AltLibrary.Common.Hooks
             IL.Terraria.WorldGen.SmashAltar += WorldGen_SmashAltar;
         }
 
+        public static void Unload()
+        {
+            IL.Terraria.WorldGen.SmashAltar -= WorldGen_SmashAltar;
+        }
+
         private static void WorldGen_SmashAltar(ILContext il)
         {
             ILCursor c = new(il);
@@ -163,9 +168,9 @@ namespace AltLibrary.Common.Hooks
             {
                 if (!AltLibraryConfig.Config.SmashingAltarsSpreadsRandom)
                 {
-                    if (WorldBiomeManager.worldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeStone.HasValue)
+                    if (WorldBiomeManager.WorldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeStone.HasValue)
                     {
-                        return ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeStone.Value;
+                        return ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeStone.Value;
                     }
                 }
                 else
@@ -193,9 +198,9 @@ namespace AltLibrary.Common.Hooks
             {
                 if (!AltLibraryConfig.Config.SmashingAltarsSpreadsRandom)
                 {
-                    if (WorldBiomeManager.worldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeStone.HasValue)
+                    if (WorldBiomeManager.WorldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeStone.HasValue)
                     {
-                        return ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeStone.Value;
+                        return ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeStone.Value;
                     }
                 }
                 else

@@ -26,6 +26,16 @@ namespace AltLibrary.Common.Hooks
             GenPasses.HookGenPassMicroBiomes += GenPasses_HookGenPassMicroBiomes;
         }
 
+        public static void Unload()
+        {
+            IL.Terraria.WorldGen.GenerateWorld -= GenPasses.ILGenerateWorld;
+            GenPasses.HookGenPassReset -= GenPasses_HookGenPassReset;
+            GenPasses.HookGenPassShinies -= GenPasses_HookGenPassShinies;
+            GenPasses.HookGenPassCorruption -= GenPasses_HookGenPassCorruption;
+            GenPasses.HookGenPassAltars -= ILGenPassAltars;
+            GenPasses.HookGenPassMicroBiomes -= GenPasses_HookGenPassMicroBiomes;
+        }
+
         private static void GenPasses_HookGenPassMicroBiomes(ILContext il)
         {
             ILCursor c = new(il);
@@ -43,7 +53,7 @@ namespace AltLibrary.Common.Hooks
             var label = il.DefineLabel();
 
             c.Index++;
-            c.EmitDelegate(() => WorldBiomeManager.worldJungle == "");
+            c.EmitDelegate(() => WorldBiomeManager.WorldJungle == "");
             //c.Emit(OpCodes.Ldsfld, typeof(WorldBiomeManager).GetField(nameof(WorldBiomeManager.worldJungle), BindingFlags.Public | BindingFlags.Static));
             //c.Emit(OpCodes.Ldstr, "");
             //c.Emit(OpCodes.Call, typeof(string).GetMethod("op_Equality", new Type[] { typeof(string), typeof(string) }));
@@ -85,7 +95,7 @@ namespace AltLibrary.Common.Hooks
             {
                 foreach (AltBiome biome in AltLibrary.Biomes)
                 {
-                    if (WorldBiomeManager.worldJungle == biome.FullName && biome.BiomeType == BiomeType.Jungle && biome.BiomeGrass.HasValue)
+                    if (WorldBiomeManager.WorldJungle == biome.FullName && biome.BiomeType == BiomeType.Jungle && biome.BiomeGrass.HasValue)
                         return biome.BiomeGrass.Value;
                 }
                 return 60;
@@ -238,7 +248,7 @@ namespace AltLibrary.Common.Hooks
             {
                 foreach (AltBiome biome in AltLibrary.Biomes)
                 {
-                    if (WorldBiomeManager.worldJungle == biome.FullName && biome.BiomeType == BiomeType.Jungle && biome.BiomeGrass.HasValue)
+                    if (WorldBiomeManager.WorldJungle == biome.FullName && biome.BiomeType == BiomeType.Jungle && biome.BiomeGrass.HasValue)
                         return biome.BiomeGrass.Value;
                 }
                 return 60;
@@ -389,17 +399,17 @@ namespace AltLibrary.Common.Hooks
                 AltLibrary.Instance.Logger.Info("e $ 1");
                 return;
             }
-            c.EmitDelegate(() => WorldGen.crimson || WorldBiomeManager.worldEvil != "");
+            c.EmitDelegate(() => WorldGen.crimson || WorldBiomeManager.WorldEvil != "");
             c.Emit(OpCodes.Brfalse, startNormalAltar);
             c.Emit(OpCodes.Ldloc, 3);
             c.Emit(OpCodes.Ldloc, 4);
             c.EmitDelegate((int x, int y) =>
             {
-                if (WorldBiomeManager.worldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).AltarTile.HasValue)
+                if (WorldBiomeManager.WorldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).AltarTile.HasValue)
                 {
-                    if (!WorldGen.IsTileNearby(x, y, ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).AltarTile.Value, 3))
+                    if (!WorldGen.IsTileNearby(x, y, ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).AltarTile.Value, 3))
                     {
-                        WorldGen.Place3x2(x, y, (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).AltarTile.Value);
+                        WorldGen.Place3x2(x, y, (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).AltarTile.Value);
                     }
                 }
             });
@@ -503,17 +513,17 @@ namespace AltLibrary.Common.Hooks
                 return dungeonSide;
             });
 
-            replaceValues(nameof(WorldBiomeManager.Copper), (-1, TileID.Copper), (-2, TileID.Tin), copper);
-            replaceValues(nameof(WorldBiomeManager.Iron), (-3, TileID.Iron), (-4, TileID.Lead), iron);
-            replaceValues(nameof(WorldBiomeManager.Silver), (-5, TileID.Silver), (-6, TileID.Tungsten), silver);
-            replaceValues(nameof(WorldBiomeManager.Gold), (-7, TileID.Gold), (-8, TileID.Platinum), gold);
+            replaceValues(() => WorldBiomeManager.Copper, (-1, TileID.Copper), (-2, TileID.Tin), copper);
+            replaceValues(() => WorldBiomeManager.Iron, (-3, TileID.Iron), (-4, TileID.Lead), iron);
+            replaceValues(() => WorldBiomeManager.Silver, (-5, TileID.Silver), (-6, TileID.Tungsten), silver);
+            replaceValues(() => WorldBiomeManager.Gold, (-7, TileID.Gold), (-8, TileID.Platinum), gold);
 
-            void replaceValues(string type, ValueTuple<int, int> value1, ValueTuple<int, int> value2, FieldReference field)
+            void replaceValues(Func<int> type, ValueTuple<int, int> value1, ValueTuple<int, int> value2, FieldReference field)
             {
                 var label = c.DefineLabel();
                 var label2 = c.DefineLabel();
                 var label3 = c.DefineLabel();
-                c.Emit(OpCodes.Ldsfld, typeof(WorldBiomeManager).GetField(type, BindingFlags.Public | BindingFlags.Static));
+                c.EmitDelegate(type.Invoke);
                 c.Emit(OpCodes.Ldc_I4, value1.Item1);
                 c.Emit(OpCodes.Bne_Un_S, label);
                 c.Emit(OpCodes.Ldarg, 0);
@@ -521,7 +531,7 @@ namespace AltLibrary.Common.Hooks
                 c.Emit(OpCodes.Stfld, field);
                 c.Emit(OpCodes.Br_S, label3);
                 c.MarkLabel(label);
-                c.Emit(OpCodes.Ldsfld, typeof(WorldBiomeManager).GetField(type, BindingFlags.Public | BindingFlags.Static));
+                c.EmitDelegate(type.Invoke);
                 c.Emit(OpCodes.Ldc_I4, value2.Item1);
                 c.Emit(OpCodes.Bne_Un_S, label2);
                 c.Emit(OpCodes.Ldarg, 0);
@@ -530,7 +540,7 @@ namespace AltLibrary.Common.Hooks
                 c.Emit(OpCodes.Br_S, label3);
                 c.MarkLabel(label2);
                 c.Emit(OpCodes.Ldarg, 0);
-                c.EmitDelegate(() => AltLibrary.Ores[(int)typeof(WorldBiomeManager).GetField(type, BindingFlags.Public | BindingFlags.Static).GetValue(null) - 1].ore);
+                c.EmitDelegate(() => AltLibrary.Ores[type.Invoke() - 1].ore);
                 c.Emit(OpCodes.Stfld, field);
                 c.MarkLabel(label3);
             }
@@ -697,13 +707,13 @@ namespace AltLibrary.Common.Hooks
             c.Index++;
             c.EmitDelegate(() =>
             {
-                if (WorldBiomeManager.worldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeOre.HasValue)
+                if (WorldBiomeManager.WorldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeOre.HasValue)
                 {
                     for (int i = 0; i < (int)(Main.maxTilesX * Main.maxTilesY * 2.25E-05 / 2.0); i++)
                     {
                         WorldGen.TileRunner(WorldGen.genRand.Next(0, Main.maxTilesX),
                             WorldGen.genRand.Next((int)Main.rockLayer, Main.maxTilesY), WorldGen.genRand.Next(3, 6),
-                            WorldGen.genRand.Next(4, 8), ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeOre.Value);
+                            WorldGen.genRand.Next(4, 8), ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeOre.Value);
                     }
                 }
             });
@@ -718,17 +728,17 @@ namespace AltLibrary.Common.Hooks
                 return;
             }
             ILLabel startCorruptionGen = c.DefineLabel();
-            c.EmitDelegate(() => !WorldGen.crimson && WorldBiomeManager.worldEvil != "");
+            c.EmitDelegate(() => !WorldGen.crimson && WorldBiomeManager.WorldEvil != "");
             c.Emit(OpCodes.Brfalse, startCorruptionGen);
             c.EmitDelegate(() =>
             {
-                if (WorldBiomeManager.worldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeOre.HasValue)
+                if (WorldBiomeManager.WorldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeOre.HasValue)
                 {
                     for (int i = 0; i < (int)(Main.maxTilesX * Main.maxTilesY * 2.25E-05); i++)
                     {
                         WorldGen.TileRunner(WorldGen.genRand.Next(0, Main.maxTilesX),
                             WorldGen.genRand.Next((int)Main.rockLayer, Main.maxTilesY), WorldGen.genRand.Next(3, 6),
-                            WorldGen.genRand.Next(4, 8), ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeOre.Value);
+                            WorldGen.genRand.Next(4, 8), ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeOre.Value);
                     }
                 }
             });

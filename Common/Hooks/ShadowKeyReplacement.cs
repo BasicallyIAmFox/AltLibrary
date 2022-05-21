@@ -1,7 +1,6 @@
 ﻿using AltLibrary.Common.AltBiomes;
 using AltLibrary.Common.Systems;
 using MonoMod.Cil;
-using System;
 using Terraria.ID;
 using static Terraria.ModLoader.ModContent;
 
@@ -14,12 +13,17 @@ namespace AltLibrary.Common.Hooks
             IL.Terraria.WorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort += WorldGen_AddBuriedChest_int_int_int_bool_int_bool_ushort;
         }
 
+        public static void Unload()
+        {
+            IL.Terraria.WorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort -= WorldGen_AddBuriedChest_int_int_int_bool_int_bool_ushort;
+        }
+
         private static void WorldGen_AddBuriedChest_int_int_int_bool_int_bool_ushort(ILContext il)
         {
             ALUtils.ReplaceIDs<int>(il,
                 ItemID.ShadowKey,
-                (orig) => Find<AltBiome>(WorldBiomeManager.worldHell).ShadowKeyAlt ?? orig,
-                (orig) => WorldBiomeManager.worldHell != "" && Find<AltBiome>(WorldBiomeManager.worldHell).ShadowKeyAlt.HasValue);
+                (orig) => Find<AltBiome>(WorldBiomeManager.WorldHell).ShadowKeyAlt ?? orig,
+                (orig) => WorldBiomeManager.WorldHell != "" && Find<AltBiome>(WorldBiomeManager.WorldHell).ShadowKeyAlt.HasValue);
         }
     }
 }

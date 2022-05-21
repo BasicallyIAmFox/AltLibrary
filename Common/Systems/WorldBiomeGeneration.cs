@@ -31,11 +31,11 @@ namespace AltLibrary.Common.Systems
                 tasks.Insert(resetIndex + 1, new PassLegacy("Alt Library Setup", new WorldGenLegacyMethod(WorldSetupTask)));
             }
             int corruptionIndex = tasks.FindIndex(i => i.Name.Equals("Corruption"));
-            if (WorldBiomeManager.worldEvil != "" && corruptionIndex != -1)
+            if (WorldBiomeManager.WorldEvil != "" && corruptionIndex != -1)
             {
                 tasks[corruptionIndex] = new PassLegacy("Corruption", new WorldGenLegacyMethod(WorldEvilAltTask));
             }
-            if (WorldBiomeManager.worldHell != "")
+            if (WorldBiomeManager.WorldHell != "")
             {
                 int underworldIndex = tasks.FindIndex(i => i.Name.Equals("Underworld"));
                 if (underworldIndex != -1)
@@ -48,7 +48,7 @@ namespace AltLibrary.Common.Systems
                     tasks.RemoveAt(hellforgeIndex);
                 }
             }
-            if (WorldBiomeManager.worldJungle != "")
+            if (WorldBiomeManager.WorldJungle != "")
             {
                 int jungleIndex = tasks.FindIndex(i => i.Name.Equals("Wet Jungle"));
                 if (jungleIndex != -1)
@@ -317,11 +317,11 @@ namespace AltLibrary.Common.Systems
                 List<int> vs = new() { -333, -666 };
                 AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Evil && x.Selectable).ToList().ForEach(x => vs.Add(x.Type - 1));
                 int index = WorldGen.genRand.Next(vs.Count);
-                int current = !WorldGen.crimson ? (WorldBiomeManager.worldEvil == "" ? -333 : AltLibrary.Biomes.FindIndex(x => x.Type == vs[index] + 1)) : -666;
+                int current = !WorldGen.crimson ? (WorldBiomeManager.WorldEvil == "" ? -333 : AltLibrary.Biomes.FindIndex(x => x.Type == vs[index] + 1)) : -666;
                 while (vs[index] == current)
                 {
                     index = WorldGen.genRand.Next(vs.Count);
-                    current = !WorldGen.crimson ? (WorldBiomeManager.worldEvil == "" ? -333 : AltLibrary.Biomes.FindIndex(x => x.Type == vs[index] + 1)) : -666;
+                    current = !WorldGen.crimson ? (WorldBiomeManager.WorldEvil == "" ? -333 : AltLibrary.Biomes.FindIndex(x => x.Type == vs[index] + 1)) : -666;
                 }
                 int worldCrimson = vs[index];
                 bool worldCrimson2 = worldCrimson < 0;
@@ -364,9 +364,9 @@ namespace AltLibrary.Common.Systems
                     else
                     {
                         tile60 = Main.tile[num737, num738];
-                        if (ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).BiomeStone.HasValue)
+                        if (ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).BiomeStone.HasValue)
                         {
-                            tile60.TileType = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).BiomeStone.Value;
+                            tile60.TileType = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).BiomeStone.Value;
                         }
                     }
                 }
@@ -397,7 +397,7 @@ namespace AltLibrary.Common.Systems
             }
             for (int num742 = 0; num742 < Main.maxTilesX; num742++)
             {
-                if (WorldGen.genRand.NextBool(50) && ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).BiomeStone.HasValue)
+                if (WorldGen.genRand.NextBool(50) && ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).BiomeStone.HasValue)
                 {
                     int num743 = Main.maxTilesY - 65;
                     while (true)
@@ -410,7 +410,7 @@ namespace AltLibrary.Common.Systems
                         }
                         break;
                     }
-                    WorldGen.TileRunner(WorldGen.genRand.Next(0, Main.maxTilesX), num743 + WorldGen.genRand.Next(20, 50), WorldGen.genRand.Next(15, 20), 1000, ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).BiomeStone.Value, true, 0f, WorldGen.genRand.Next(1, 3), true, true, -1);
+                    WorldGen.TileRunner(WorldGen.genRand.Next(0, Main.maxTilesX), num743 + WorldGen.genRand.Next(20, 50), WorldGen.genRand.Next(15, 20), 1000, ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).BiomeStone.Value, true, 0f, WorldGen.genRand.Next(1, 3), true, true, -1);
                 }
             }
             Liquid.QuickWater(-2, -1, -1);
@@ -439,25 +439,25 @@ namespace AltLibrary.Common.Systems
                         }
                         break;
                     }
-                    if ((!WorldGen.drunkWorldGen || WorldGen.genRand.NextBool(3) || !(num744 > Main.maxTilesX * 0.4) || !(num744 < Main.maxTilesX * 0.6)) && ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).BiomeStone.HasValue)
+                    if ((!WorldGen.drunkWorldGen || WorldGen.genRand.NextBool(3) || !(num744 > Main.maxTilesX * 0.4) || !(num744 < Main.maxTilesX * 0.6)) && ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).BiomeStone.HasValue)
                     {
-                        WorldGen.TileRunner(num744, num746 - WorldGen.genRand.Next(2, 5), WorldGen.genRand.Next(5, 30), 1000, ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).BiomeStone.Value, true, 0f, WorldGen.genRand.Next(1, 3), true, true, -1);
+                        WorldGen.TileRunner(num744, num746 - WorldGen.genRand.Next(2, 5), WorldGen.genRand.Next(5, 30), 1000, ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).BiomeStone.Value, true, 0f, WorldGen.genRand.Next(1, 3), true, true, -1);
                     }
                     float num747 = WorldGen.genRand.Next(1, 3);
                     if (WorldGen.genRand.NextBool(3))
                     {
                         num747 *= 0.5f;
                     }
-                    if ((!WorldGen.drunkWorldGen || WorldGen.genRand.NextBool(3) || !(num744 > Main.maxTilesX * 0.4) || !(num744 < Main.maxTilesX * 0.6)) && ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).BiomeStone.HasValue)
+                    if ((!WorldGen.drunkWorldGen || WorldGen.genRand.NextBool(3) || !(num744 > Main.maxTilesX * 0.4) || !(num744 < Main.maxTilesX * 0.6)) && ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).BiomeStone.HasValue)
                     {
                         if (WorldGen.genRand.NextBool(2))
                         {
-                            WorldGen.TileRunner(num744, num746 - WorldGen.genRand.Next(2, 5), (int)(WorldGen.genRand.Next(5, 15) * num747), (int)(WorldGen.genRand.Next(10, 15) * num747), ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).BiomeStone.Value, true, 1f, 0.3f, false, true, -1);
+                            WorldGen.TileRunner(num744, num746 - WorldGen.genRand.Next(2, 5), (int)(WorldGen.genRand.Next(5, 15) * num747), (int)(WorldGen.genRand.Next(10, 15) * num747), ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).BiomeStone.Value, true, 1f, 0.3f, false, true, -1);
                         }
                         if (WorldGen.genRand.NextBool(2))
                         {
                             num747 = WorldGen.genRand.Next(1, 3);
-                            WorldGen.TileRunner(num744, num746 - WorldGen.genRand.Next(2, 5), (int)(WorldGen.genRand.Next(5, 15) * num747), (int)(WorldGen.genRand.Next(10, 15) * num747), ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).BiomeStone.Value, true, -1f, 0.3f, false, true, -1);
+                            WorldGen.TileRunner(num744, num746 - WorldGen.genRand.Next(2, 5), (int)(WorldGen.genRand.Next(5, 15) * num747), (int)(WorldGen.genRand.Next(10, 15) * num747), ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).BiomeStone.Value, true, -1f, 0.3f, false, true, -1);
                         }
                     }
                     WorldGen.TileRunner(num744 + WorldGen.genRand.Next(-10, 10), num746 + WorldGen.genRand.Next(-10, 10), WorldGen.genRand.Next(5, 15), WorldGen.genRand.Next(5, 10), -2, false, WorldGen.genRand.Next(-1, 3), WorldGen.genRand.Next(-1, 3), false, true, -1);
@@ -503,9 +503,9 @@ namespace AltLibrary.Common.Systems
             }
             for (int num751 = 0; num751 < (int)((Main.maxTilesX * Main.maxTilesY) * 0.0008); num751++)
             {
-                if (ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).BiomeOre.HasValue)
+                if (ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).BiomeOre.HasValue)
                 {
-                    WorldGen.TileRunner(WorldGen.genRand.Next(0, Main.maxTilesX), WorldGen.genRand.Next(Main.maxTilesY - 140, Main.maxTilesY), WorldGen.genRand.Next(2, 7), WorldGen.genRand.Next(3, 7), ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).BiomeOre.Value, false, 0f, 0f, false, true, -1);
+                    WorldGen.TileRunner(WorldGen.genRand.Next(0, Main.maxTilesX), WorldGen.genRand.Next(Main.maxTilesY - 140, Main.maxTilesY), WorldGen.genRand.Next(2, 7), WorldGen.genRand.Next(3, 7), ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).BiomeOre.Value, false, 0f, 0f, false, true, -1);
                 }
             }
         }
@@ -1049,68 +1049,68 @@ namespace AltLibrary.Common.Systems
                             if (tile59.HasTile)
                             {
                                 tile59 = Main.tile[i2, num727];
-                                if (tile59.TileType == TileID.Sand && i2 >= num715 + WorldGen.genRand.Next(5) && i2 <= num716 - WorldGen.genRand.Next(5) && ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeSand.HasValue)
+                                if (tile59.TileType == TileID.Sand && i2 >= num715 + WorldGen.genRand.Next(5) && i2 <= num716 - WorldGen.genRand.Next(5) && ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeSand.HasValue)
                                 {
                                     tile59 = Main.tile[i2, num727];
-                                    tile59.TileType = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeSand.Value;
+                                    tile59.TileType = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeSand.Value;
                                 }
                                 tile59 = Main.tile[i2, num727];
-                                if (tile59.TileType == TileID.Dirt && num727 < Main.worldSurface - 1.0 && !flag52 && ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeGrass.HasValue)
+                                if (tile59.TileType == TileID.Dirt && num727 < Main.worldSurface - 1.0 && !flag52 && ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeGrass.HasValue)
                                 {
                                     typeof(WorldGen).GetField("grassSpread", BindingFlags.NonPublic | BindingFlags.Static).SetValue(null, 0);
-                                    WorldGen.SpreadGrass(i2, num727, 0, ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeGrass.Value, true, 0);
+                                    WorldGen.SpreadGrass(i2, num727, 0, ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeGrass.Value, true, 0);
                                 }
                                 flag52 = true;
                                 tile59 = Main.tile[i2, num727];
-                                if (tile59.TileType == TileID.Stone && i2 >= num715 + WorldGen.genRand.Next(5) && i2 <= num716 - WorldGen.genRand.Next(5) && ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeStone.HasValue)
+                                if (tile59.TileType == TileID.Stone && i2 >= num715 + WorldGen.genRand.Next(5) && i2 <= num716 - WorldGen.genRand.Next(5) && ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeStone.HasValue)
                                 {
                                     tile59 = Main.tile[i2, num727];
-                                    tile59.TileType = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeStone.Value;
+                                    tile59.TileType = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeStone.Value;
                                 }
                                 tile59 = Main.tile[i2, num727];
-                                if (ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).WallContext.wallsReplacement.ContainsKey(216) && tile59.WallType == 216)
+                                if (ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).WallContext.wallsReplacement.ContainsKey(216) && tile59.WallType == 216)
                                 {
                                     tile59 = Main.tile[i2, num727];
-                                    ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).WallContext.wallsReplacement.TryGetValue(216, out ushort value);
+                                    ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).WallContext.wallsReplacement.TryGetValue(216, out ushort value);
                                     tile59.WallType = value;
                                 }
                                 else
                                 {
                                     tile59 = Main.tile[i2, num727];
-                                    if (ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).WallContext.wallsReplacement.ContainsKey(187) && tile59.WallType == 187)
+                                    if (ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).WallContext.wallsReplacement.ContainsKey(187) && tile59.WallType == 187)
                                     {
                                         tile59 = Main.tile[i2, num727];
-                                        ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).WallContext.wallsReplacement.TryGetValue(187, out ushort value);
+                                        ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).WallContext.wallsReplacement.TryGetValue(187, out ushort value);
                                         tile59.WallType = value;
                                     }
                                 }
                                 tile59 = Main.tile[i2, num727];
-                                if (tile59.TileType == TileID.Grass && ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeGrass.HasValue)
+                                if (tile59.TileType == TileID.Grass && ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeGrass.HasValue)
                                 {
                                     tile59 = Main.tile[i2, num727];
-                                    tile59.TileType = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeGrass.Value;
+                                    tile59.TileType = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeGrass.Value;
                                 }
                                 tile59 = Main.tile[i2, num727];
-                                if (tile59.TileType == TileID.IceBlock && ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeIce.HasValue)
+                                if (tile59.TileType == TileID.IceBlock && ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeIce.HasValue)
                                 {
                                     tile59 = Main.tile[i2, num727];
-                                    tile59.TileType = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeIce.Value;
+                                    tile59.TileType = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeIce.Value;
                                 }
                                 else
                                 {
                                     tile59 = Main.tile[i2, num727];
-                                    if (tile59.TileType == TileID.Sandstone && ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeSandstone.HasValue)
+                                    if (tile59.TileType == TileID.Sandstone && ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeSandstone.HasValue)
                                     {
                                         tile59 = Main.tile[i2, num727];
-                                        tile59.TileType = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeSandstone.Value;
+                                        tile59.TileType = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeSandstone.Value;
                                     }
                                     else
                                     {
                                         tile59 = Main.tile[i2, num727];
-                                        if (tile59.TileType == TileID.HardenedSand && ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeHardenedSand.HasValue)
+                                        if (tile59.TileType == TileID.HardenedSand && ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeHardenedSand.HasValue)
                                         {
                                             tile59 = Main.tile[i2, num727];
-                                            tile59.TileType = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).BiomeHardenedSand.Value;
+                                            tile59.TileType = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeHardenedSand.Value;
                                         }
                                     }
                                 }

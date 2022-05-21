@@ -43,7 +43,7 @@ namespace AltLibrary.Common.AltBiomes
         /// For Underworld alts. If your biome uses a different kind of locked chest than a Shadow Chest, set this field to your equivalent to a Shadow Key so that it may appear in the Dungeon
         /// </summary>
         public int? ShadowKeyAlt = null;
-        
+
         /// <summary>
         /// For Jungle, Evil, and Hallow alts. The ItemID for the rare item that will be found inside this biome's dungeon chest.
         /// </summary>
@@ -287,7 +287,8 @@ namespace AltLibrary.Common.AltBiomes
                 if (BiomeGrass != null)
                 {
                     AltLibrary.jungleGrass.Add((int)BiomeGrass);
-                } else
+                }
+                else
                 {
                     if (BiomeJungleGrass != null) AltLibrary.jungleGrass.Add((int)BiomeJungleGrass);
                 }

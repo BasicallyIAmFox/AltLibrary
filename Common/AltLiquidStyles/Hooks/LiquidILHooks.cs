@@ -1,6 +1,4 @@
-﻿using AltLibrary.Common.AltBiomes;
-using AltLibrary.Common.Systems;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
@@ -34,6 +32,22 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
             IL.Terraria.GameContent.Drawing.TileDrawing.EmitLiquidDrops += TileDrawing_EmitLiquidDrops;
             On.Terraria.Map.MapHelper.GetMapTileXnaColor += MapHelper_GetMapTileXnaColor;
             IL.Terraria.Player.ItemCheck_UseBuckets += Player_ItemCheck_UseBuckets;
+        }
+
+        internal static void Unload()
+        {
+            IL.Terraria.Main.oldDrawWater -= Main_oldDrawWater;
+            IL.Terraria.GameContent.Liquid.LiquidRenderer.InternalDraw -= LiquidRenderer_InternalDraw;
+            On.Terraria.GameContent.Drawing.TileDrawing.DrawPartialLiquid -= TileDrawing_DrawPartialLiquid;
+            IL.Terraria.WaterfallManager.DrawWaterfall -= WaterfallManager_DrawWaterfall;
+            On.Terraria.Graphics.Light.TileLightScanner.ApplyLavaLight -= TileLightScanner_ApplyLavaLight;
+            IL.Terraria.Player.Update -= Player_Update;
+            IL.Terraria.Main.DrawInterface_Resources_Breath -= Main_DrawInterface_Resources_Breath;
+            IL.Terraria.Liquid.LavaCheck -= Liquid_LavaCheck;
+            IL.Terraria.Liquid.HoneyCheck -= Liquid_HoneyCheck;
+            IL.Terraria.GameContent.Drawing.TileDrawing.EmitLiquidDrops -= TileDrawing_EmitLiquidDrops;
+            On.Terraria.Map.MapHelper.GetMapTileXnaColor -= MapHelper_GetMapTileXnaColor;
+            IL.Terraria.Player.ItemCheck_UseBuckets -= Player_ItemCheck_UseBuckets;
         }
 
         private static void Player_ItemCheck_UseBuckets(ILContext il)

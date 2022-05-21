@@ -28,6 +28,13 @@ namespace AltLibrary.Common.Hooks
             On.Terraria.GameContent.UI.Elements.UIWorldListItem.DrawSelf += UIWorldListItem_DrawSelf;
         }
 
+        public static void Unload()
+        {
+            IL.Terraria.GameContent.UI.Elements.UIWorldListItem.ctor -= UIWorldListItem_ctor;
+            IL.Terraria.GameContent.UI.Elements.UIWorldListItem.DrawSelf -= UIWorldListItem_DrawSelf1;
+            On.Terraria.GameContent.UI.Elements.UIWorldListItem.DrawSelf -= UIWorldListItem_DrawSelf;
+        }
+
         private static void UIWorldListItem_DrawSelf1(ILContext il)
         {
             ILCursor c = new(il);
@@ -297,10 +304,12 @@ namespace AltLibrary.Common.Hooks
 
         private static void LayeredIcons(string forWhich, WorldFileData data, ref UIImage image, Dictionary<string, AltLibraryConfig.WorldDataValues> tempDict, string path2)
         {
-            Dictionary<string, Func<WorldFileData, bool>> assets = new();
-            assets.Add("Corrupt", new Func<WorldFileData, bool>((ourData) => ourData.HasCorruption && tempDict.ContainsKey(path2) && tempDict[path2].worldEvil == ""));
-            assets.Add("Crimson", new Func<WorldFileData, bool>((ourData) => ourData.HasCrimson && tempDict.ContainsKey(path2) && tempDict[path2].worldEvil == ""));
-            assets.Add("Hallow", new Func<WorldFileData, bool>((ourData) => ourData.IsHardMode && tempDict.ContainsKey(path2) && tempDict[path2].worldHallow == ""));
+            Dictionary<string, Func<WorldFileData, bool>> assets = new()
+            {
+                { "Corrupt", new Func<WorldFileData, bool>((ourData) => ourData.HasCorruption && tempDict.ContainsKey(path2) && tempDict[path2].worldEvil == "") },
+                { "Crimson", new Func<WorldFileData, bool>((ourData) => ourData.HasCrimson && tempDict.ContainsKey(path2) && tempDict[path2].worldEvil == "") },
+                { "Hallow", new Func<WorldFileData, bool>((ourData) => ourData.IsHardMode && tempDict.ContainsKey(path2) && tempDict[path2].worldHallow == "") }
+            };
             foreach (AltBiome biomes in AltLibrary.Biomes)
             {
                 if (!biomes.FullName.StartsWith("Terraria/"))

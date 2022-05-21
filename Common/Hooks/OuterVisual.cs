@@ -21,6 +21,11 @@ namespace AltLibrary.Common.Hooks
             IL.Terraria.GameContent.UI.Elements.UIGenProgressBar.DrawSelf += UIGenProgressBar_DrawSelf;
         }
 
+        public static void Unload()
+        {
+            IL.Terraria.GameContent.UI.Elements.UIGenProgressBar.DrawSelf -= UIGenProgressBar_DrawSelf;
+        }
+
         private static void UIGenProgressBar_DrawSelf(ILContext il)
         {
             ILCursor c = new(il);
@@ -40,7 +45,7 @@ namespace AltLibrary.Common.Hooks
             {
                 int worldGenStep = 0;
                 if (WorldGen.crimson) worldGenStep = 1;
-                if (WorldBiomeManager.worldEvil != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).Type + 2;
+                if (WorldBiomeManager.WorldEvil != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).Type + 2;
 
                 if (WorldGen.drunkWorldGen && Main.rand.NextBool(2)) worldGenStep = Main.rand.Next(AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Evil).ToList().Count + 2);
 
@@ -69,7 +74,7 @@ namespace AltLibrary.Common.Hooks
             {
                 int worldGenStep = 0;
                 if (WorldGen.crimson) worldGenStep = 1;
-                if (WorldBiomeManager.worldEvil != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).Type + 2;
+                if (WorldBiomeManager.WorldEvil != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).Type + 2;
 
                 Asset<Texture2D> asset = ILHooks.EmptyAsset;
                 return worldGenStep <= 1 ? (worldGenStep == 0 ?
@@ -87,7 +92,7 @@ namespace AltLibrary.Common.Hooks
             {
                 int worldGenStep = 0;
                 if (WorldGen.crimson) worldGenStep = 1;
-                if (WorldBiomeManager.worldEvil != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).Type + 2;
+                if (WorldBiomeManager.WorldEvil != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).Type + 2;
                 Asset<Texture2D> asset = ILHooks.EmptyAsset;
                 return worldGenStep <= 1 ? (worldGenStep == 0 ?
                     Main.Assets.Request<Texture2D>("Images/UI/WorldGen/Outer_Corrupt") :
@@ -110,7 +115,7 @@ namespace AltLibrary.Common.Hooks
             {
                 int worldGenStep = 0;
                 if (WorldGen.crimson) worldGenStep = 1;
-                if (WorldBiomeManager.worldEvil != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).Type + 2;
+                if (WorldBiomeManager.WorldEvil != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).Type + 2;
                 if (WorldGen.drunkWorldGen && Main.rand.NextBool(2)) worldGenStep = Main.rand.Next(AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Evil).ToList().Count + 2);
                 Asset<Texture2D> asset = ILHooks.EmptyAsset;
                 if (worldGenStep == 0) asset = Main.Assets.Request<Texture2D>("Images/UI/WorldGen/Outer_Corrupt");
@@ -119,7 +124,7 @@ namespace AltLibrary.Common.Hooks
                 {
                     if (worldGenStep == biome.Type + 2 && biome.BiomeType == BiomeType.Evil)
                     {
-                        asset = ModContent.Request<Texture2D>(ModContent.Find<AltBiome>(WorldBiomeManager.worldEvil).OuterTexture)
+                        asset = ModContent.Request<Texture2D>(ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).OuterTexture)
                             ?? ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Outer Lower Empty");
                     }
                 }
@@ -135,7 +140,7 @@ namespace AltLibrary.Common.Hooks
             c.EmitDelegate(() =>
             {
                 int worldGenStep = 0;
-                if (WorldBiomeManager.worldHell != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).Type + 1;
+                if (WorldBiomeManager.WorldHell != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).Type + 1;
                 Asset<Texture2D> asset = ILHooks.EmptyLower;
                 return worldGenStep <= 0 ? Main.Assets.Request<Texture2D>("Images/UI/WorldGen/Outer_Lower") : asset;
             });
@@ -155,7 +160,7 @@ namespace AltLibrary.Common.Hooks
             c.EmitDelegate<Action<SpriteBatch, Rectangle>>((spriteBatch, r) =>
             {
                 int worldGenStep = 0;
-                if (WorldBiomeManager.worldHell != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).Type + 1;
+                if (WorldBiomeManager.WorldHell != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).Type + 1;
                 if (WorldGen.drunkWorldGen && Main.rand.NextBool(2)) worldGenStep = Main.rand.Next(AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hell).ToList().Count + 1);
                 Asset<Texture2D> asset = ILHooks.EmptyLower;
                 if (worldGenStep == 0) asset = Main.Assets.Request<Texture2D>("Images/UI/WorldGen/Outer_Lower");
@@ -163,7 +168,7 @@ namespace AltLibrary.Common.Hooks
                 {
                     if (worldGenStep == biome.Type + 1 && biome.BiomeType == BiomeType.Hell)
                     {
-                        asset = ModContent.Request<Texture2D>(ModContent.Find<AltBiome>(WorldBiomeManager.worldHell).LowerTexture)
+                        asset = ModContent.Request<Texture2D>(ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).LowerTexture)
                             ?? ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Outer Lower Empty");
                     }
                 }

@@ -15,18 +15,23 @@ namespace AltLibrary.Common.Hooks
             IL.Terraria.NPC.BigMimicSummonCheck += NPC_BigMimicSummonCheck;
         }
 
+        public static void Unload()
+        {
+            IL.Terraria.NPC.BigMimicSummonCheck -= NPC_BigMimicSummonCheck;
+        }
+
         private static void NPC_BigMimicSummonCheck(ILContext il)
         {
             ILCursor c = new(il);
 
             ALUtils.ReplaceIDs<int>(il,
                 ItemID.LightKey,
-                (orig) => Find<AltBiome>(WorldBiomeManager.worldHallow).MimicKeyType ?? orig,
-                (orig) => WorldBiomeManager.worldHallow != "" && Find<AltBiome>(WorldBiomeManager.worldHallow).MimicKeyType.HasValue);
+                (orig) => Find<AltBiome>(WorldBiomeManager.WorldHallow).MimicKeyType ?? orig,
+                (orig) => WorldBiomeManager.WorldHallow != "" && Find<AltBiome>(WorldBiomeManager.WorldHallow).MimicKeyType.HasValue);
             ALUtils.ReplaceIDs<int>(il,
                 ItemID.NightKey,
-                (orig) => Find<AltBiome>(WorldBiomeManager.worldEvil).MimicKeyType ?? orig,
-                (orig) => WorldBiomeManager.worldEvil != "" && Find<AltBiome>(WorldBiomeManager.worldEvil).MimicKeyType.HasValue);
+                (orig) => Find<AltBiome>(WorldBiomeManager.WorldEvil).MimicKeyType ?? orig,
+                (orig) => WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).MimicKeyType.HasValue);
 
             if (!c.TryGotoNext(i => i.MatchLdcI4(475)))
             {
@@ -38,9 +43,9 @@ namespace AltLibrary.Common.Hooks
             c.Emit(OpCodes.Ldloc, 4);
             c.EmitDelegate<Func<int, int, int>>((value, isGood) =>
             {
-                if (WorldBiomeManager.worldHallow != "" && Find<AltBiome>(WorldBiomeManager.worldHallow).MimicType.HasValue)
+                if (WorldBiomeManager.WorldHallow != "" && Find<AltBiome>(WorldBiomeManager.WorldHallow).MimicType.HasValue)
                 {
-                    return Find<AltBiome>(WorldBiomeManager.worldHallow).MimicType.Value;
+                    return Find<AltBiome>(WorldBiomeManager.WorldHallow).MimicType.Value;
                 }
                 return value;
             });
@@ -55,9 +60,9 @@ namespace AltLibrary.Common.Hooks
             c.Emit(OpCodes.Ldloc, 2);
             c.EmitDelegate<Func<int, int, int>>((value, isEvil) =>
             {
-                if (WorldBiomeManager.worldEvil != "" && Find<AltBiome>(WorldBiomeManager.worldEvil).MimicType.HasValue)
+                if (WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).MimicType.HasValue)
                 {
-                    return Find<AltBiome>(WorldBiomeManager.worldEvil).MimicType.Value;
+                    return Find<AltBiome>(WorldBiomeManager.WorldEvil).MimicType.Value;
                 }
                 return value;
             });

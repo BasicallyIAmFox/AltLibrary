@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using Newtonsoft.Json.Linq;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
@@ -64,6 +63,18 @@ namespace AltLibrary.Common
             IL.Terraria.GameContent.UI.States.UIWorldCreation.FinishCreatingWorld += UIWorldCreation_FinishCreatingWorld;
             IL.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf += UIWorldCreationPreview_DrawSelf1;
             On.Terraria.GameContent.UI.Elements.UIWorldListItem.PlayGame += UIWorldListItem_PlayGame;
+        }
+
+        public static void Unload()
+        {
+            IL.Terraria.GameContent.UI.States.UIWorldCreation.MakeInfoMenu -= ILMakeInfoMenu;
+            On.Terraria.GameContent.UI.States.UIWorldCreation.AddWorldEvilOptions -= OnAddWorldEvilOptions;
+            On.Terraria.GameContent.UI.States.UIWorldCreation.SetDefaultOptions -= UIWorldCreation_SetDefaultOptions;
+            On.Terraria.GameContent.UI.States.UIWorldCreation.BuildPage -= UIWorldCreation_BuildPage;
+            IL.Terraria.GameContent.UI.States.UIWorldCreation.Draw -= UIWorldCreation_Draw;
+            IL.Terraria.GameContent.UI.States.UIWorldCreation.FinishCreatingWorld -= UIWorldCreation_FinishCreatingWorld;
+            IL.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf -= UIWorldCreationPreview_DrawSelf1;
+            On.Terraria.GameContent.UI.Elements.UIWorldListItem.PlayGame -= UIWorldListItem_PlayGame;
         }
 
         private static void UIWorldCreation_Draw(ILContext il)
@@ -231,7 +242,7 @@ namespace AltLibrary.Common
                 };
                 if (AltEvilBiomeChosenType > -1)
                 {
-                    asset = AltLibrary.Biomes[AltEvilBiomeChosenType].IconLarge == null ? ALTextureAssets.NullPreview : ModContent.Request<Texture2D>(AltLibrary.Biomes[AltEvilBiomeChosenType].IconLarge, AssetRequestMode.ImmediateLoad); 
+                    asset = AltLibrary.Biomes[AltEvilBiomeChosenType].IconLarge == null ? ALTextureAssets.NullPreview : ModContent.Request<Texture2D>(AltLibrary.Biomes[AltEvilBiomeChosenType].IconLarge, AssetRequestMode.ImmediateLoad);
                 }
                 spritebatch.Draw(asset.Value, position, color);
 
@@ -512,8 +523,10 @@ namespace AltLibrary.Common
 
             #region Biome UI List
             {
-                UIElement uIElement3 = new();
-                uIElement3.Left = StyleDimension.FromPixels(Main.screenWidth - (Main.screenWidth + 100f));
+                UIElement uIElement3 = new()
+                {
+                    Left = StyleDimension.FromPixels(Main.screenWidth - (Main.screenWidth + 100f))
+                };
                 uIElement3.Width.Set(0f, 0.8f);
                 uIElement3.MaxWidth.Set(450, 0f);
                 uIElement3.MinWidth.Set(350, 0f);
@@ -817,39 +830,39 @@ namespace AltLibrary.Common
             {
                 if (AltHallowBiomeChosenType <= -1)
                 {
-                    WorldBiomeManager.worldHallow = "";
+                    WorldBiomeManager.WorldHallow = "";
                 }
                 else
                 {
-                    WorldBiomeManager.worldHallow = AltLibrary.Biomes[AltHallowBiomeChosenType].FullName;
+                    WorldBiomeManager.WorldHallow = AltLibrary.Biomes[AltHallowBiomeChosenType].FullName;
                 }
                 if (AltEvilBiomeChosenType <= -1)
                 {
-                    WorldBiomeManager.worldEvil = "";
+                    WorldBiomeManager.WorldEvil = "";
                     WorldGen.WorldGenParam_Evil = isCrimson ? 1 : 0;
                     WorldGen.crimson = isCrimson;
                 }
                 else
                 {
-                    WorldBiomeManager.worldEvil = AltLibrary.Biomes[AltEvilBiomeChosenType].FullName;
+                    WorldBiomeManager.WorldEvil = AltLibrary.Biomes[AltEvilBiomeChosenType].FullName;
                     WorldGen.WorldGenParam_Evil = 0;
                     WorldGen.crimson = false;
                 }
                 if (AltJungleBiomeChosenType <= -1)
                 {
-                    WorldBiomeManager.worldJungle = "";
+                    WorldBiomeManager.WorldJungle = "";
                 }
                 else
                 {
-                    WorldBiomeManager.worldJungle = AltLibrary.Biomes[AltJungleBiomeChosenType].FullName;
+                    WorldBiomeManager.WorldJungle = AltLibrary.Biomes[AltJungleBiomeChosenType].FullName;
                 }
                 if (AltHellBiomeChosenType <= -1)
                 {
-                    WorldBiomeManager.worldHell = "";
+                    WorldBiomeManager.WorldHell = "";
                 }
                 else
                 {
-                    WorldBiomeManager.worldHell = AltLibrary.Biomes[AltHellBiomeChosenType].FullName;
+                    WorldBiomeManager.WorldHell = AltLibrary.Biomes[AltHellBiomeChosenType].FullName;
                 }
                 WorldBiomeManager.Copper = Copper;
                 WorldBiomeManager.Iron = Iron;

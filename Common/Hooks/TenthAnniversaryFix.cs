@@ -4,7 +4,6 @@ using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
-using System.Reflection;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -19,6 +18,12 @@ namespace AltLibrary.Common.Hooks
             IL.Terraria.WorldGen.IslandHouse += WorldGen_IslandHouse;
         }
 
+        public static void Unload()
+        {
+            IL.Terraria.WorldGen.ConvertSkyIslands -= WorldGen_ConvertSkyIslands;
+            IL.Terraria.WorldGen.IslandHouse -= WorldGen_IslandHouse;
+        }
+
         private static void WorldGen_IslandHouse(ILContext il)
         {
             ILCursor c = new(il);
@@ -30,9 +35,9 @@ namespace AltLibrary.Common.Hooks
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
-                if (WorldGen.tenthAnniversaryWorldGen && WorldBiomeManager.worldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).FountainTile.HasValue)
+                if (WorldGen.tenthAnniversaryWorldGen && WorldBiomeManager.WorldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow).FountainTile.HasValue)
                 {
-                    return (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).FountainTile.Value;
+                    return (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow).FountainTile.Value;
                 }
                 return orig;
             });
@@ -44,9 +49,9 @@ namespace AltLibrary.Common.Hooks
             c.Index++;
             c.EmitDelegate<Func<int, int>>((orig) =>
             {
-                if (WorldGen.tenthAnniversaryWorldGen && WorldBiomeManager.worldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).FountainTileStyle.HasValue)
+                if (WorldGen.tenthAnniversaryWorldGen && WorldBiomeManager.WorldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow).FountainTileStyle.HasValue)
                 {
-                    return ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).FountainTileStyle.Value;
+                    return ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow).FountainTileStyle.Value;
                 }
                 return orig;
             });
@@ -60,13 +65,13 @@ namespace AltLibrary.Common.Hooks
             {
                 short frameX = 0;
                 short frameY = 0;
-                if (WorldGen.tenthAnniversaryWorldGen && WorldBiomeManager.worldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).FountainActiveFrameX.HasValue)
+                if (WorldGen.tenthAnniversaryWorldGen && WorldBiomeManager.WorldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow).FountainActiveFrameX.HasValue)
                 {
-                    frameX = (short)ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).FountainActiveFrameX.Value;
+                    frameX = (short)ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow).FountainActiveFrameX.Value;
                 }
-                if (WorldGen.tenthAnniversaryWorldGen && WorldBiomeManager.worldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).FountainActiveFrameY.HasValue)
+                if (WorldGen.tenthAnniversaryWorldGen && WorldBiomeManager.WorldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow).FountainActiveFrameY.HasValue)
                 {
-                    frameY = (short)ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).FountainActiveFrameY.Value;
+                    frameY = (short)ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow).FountainActiveFrameY.Value;
                 }
                 UselessCallThatDoesTechnicallyNothing(x, y, type, style, frameX, frameY);
             });
@@ -85,7 +90,7 @@ namespace AltLibrary.Common.Hooks
             ILLabel label = il.DefineLabel();
 
             c.Remove();
-            c.EmitDelegate(() => WorldGen.tenthAnniversaryWorldGen ? WorldBiomeManager.worldHallow : "");
+            c.EmitDelegate(() => WorldGen.tenthAnniversaryWorldGen ? WorldBiomeManager.WorldHallow : "");
             c.Emit(OpCodes.Ldstr, "");
             c.Emit(OpCodes.Call, typeof(string).GetMethod("op_Equality", new Type[] { typeof(string), typeof(string) }));
             c.Emit(OpCodes.Brfalse_S, label);
@@ -117,8 +122,8 @@ namespace AltLibrary.Common.Hooks
 
             ALUtils.ReplaceIDs<int>(il,
                 TileID.HallowedGrass,
-                (orig) => ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeGrass ?? orig,
-                (orig) => WorldBiomeManager.worldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeGrass.HasValue);
+                (orig) => ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeGrass ?? orig,
+                (orig) => WorldBiomeManager.WorldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeGrass.HasValue);
 
             if (!c.TryGotoNext(i => i.MatchCall<WorldGen>(nameof(WorldGen.Convert))))
             {
@@ -130,7 +135,7 @@ namespace AltLibrary.Common.Hooks
             c.Emit(OpCodes.Ldloc, 5);
             c.EmitDelegate<Action<int, int>>((i, j) =>
             {
-                if (WorldBiomeManager.worldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeGrass.HasValue)
+                if (WorldBiomeManager.WorldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeGrass.HasValue)
                 {
                     int size = 1;
                     for (int l = i - size; l <= i + size; l++)
@@ -142,7 +147,7 @@ namespace AltLibrary.Common.Hooks
                             if (TileID.Sets.Conversion.Grass[type] && type == 109)
                             {
                                 tile = Main.tile[l, k];
-                                tile.TileType = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeGrass.Value;
+                                tile.TileType = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeGrass.Value;
                                 WorldGen.SquareTileFrame(l, k, true);
                                 NetMessage.SendTileSquare(-1, l, k, TileChangeType.None);
                             }
