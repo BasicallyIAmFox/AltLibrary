@@ -29,7 +29,7 @@ namespace AltLibrary.Common.AltOres
         /// </summary>
         public OreType OreType;
 
-        internal int Type { get; set; }
+        public int Type { get; internal set; }
 
         /// <summary>
         /// The name of this ore that will display on the biome selection screen.

@@ -26,10 +26,13 @@ namespace AltLibrary.Common.Hooks
             for (int j = 0; j < 3; j++)
             {
                 if (!c.TryGotoNext(i => i.MatchLdsfld<Lang>(nameof(Lang.misc)),
-                    i => i.MatchLdloc(7),
+                    i => i.MatchLdloc(7 + j),
                     i => i.MatchLdelemRef(),
                     i => i.MatchCallvirt<LocalizedText>("get_Value")))
+                {
+                    AltLibrary.Instance.Logger.Info("n $ 1 " + j);
                     return;
+                }
                 c.Index += 4;
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_I4, j);
@@ -85,12 +88,15 @@ namespace AltLibrary.Common.Hooks
                 });
 
                 if (!c.TryGotoNext(i => i.MatchLdsfld<Lang>(nameof(Lang.misc)),
-                    i => i.MatchLdloc(7),
+                    i => i.MatchLdloc(7 + j),
                     i => i.MatchLdelemRef(),
                     i => i.MatchLdfld<LocalizedText>(nameof(LocalizedText.Key)),
                     i => i.MatchCall(out _),
                     i => i.MatchCall<NetworkText>(nameof(NetworkText.FromKey))))
+                {
+                    AltLibrary.Instance.Logger.Info("n $ 2 " + j);
                     return;
+                }
                 c.Index += 6;
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_I4, j);
@@ -147,7 +153,10 @@ namespace AltLibrary.Common.Hooks
             }
 
             if (!c.TryGotoNext(i => i.MatchLdcI4(25)))
+            {
+                AltLibrary.Instance.Logger.Info("n $ 3");
                 return;
+            }
 
             c.Index++;
             c.EmitDelegate<Func<int, int>>((orig) =>
@@ -174,7 +183,10 @@ namespace AltLibrary.Common.Hooks
             });
 
             if (!c.TryGotoNext(i => i.MatchLdcI4(117)))
+            {
+                AltLibrary.Instance.Logger.Info("n $ 4");
                 return;
+            }
 
             c.Index++;
             c.EmitDelegate<Func<int, int>>((orig) =>

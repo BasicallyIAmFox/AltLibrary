@@ -23,9 +23,15 @@ namespace AltLibrary.Common.Hooks
         {
             ILCursor c = new(il);
             if (!c.TryGotoNext(i => i.MatchStloc(8)))
+            {
+                AltLibrary.Instance.Logger.Info("h $ 1");
                 return;
+            }
             if (!c.TryGotoNext(i => i.MatchLdloc(4)))
+            {
+                AltLibrary.Instance.Logger.Info("h $ 2");
                 return;
+            }
             c.Index++;
             c.Emit(OpCodes.Pop);
             c.Emit(OpCodes.Ldloc, 7);
@@ -79,13 +85,25 @@ namespace AltLibrary.Common.Hooks
             ILCursor c = new(il);
             int good = 0;
             if (!c.TryGotoNext(i => i.MatchBrfalse(out _)))
+            {
+                AltLibrary.Instance.Logger.Info("i $ 1");
                 return;
+            }
             if (!c.TryGotoNext(i => i.MatchBrfalse(out _)))
+            {
+                AltLibrary.Instance.Logger.Info("i $ 2");
                 return;
+            }
             if (!c.TryGotoPrev(i => i.MatchLdarg(out good)))
+            {
+                AltLibrary.Instance.Logger.Info("i $ 3");
                 return;
+            }
             if (!c.TryGotoPrev(i => i.MatchBgeUn(out _)))
+            {
+                AltLibrary.Instance.Logger.Info("i $ 4");
                 return;
+            }
 
             c.Index++;
             c.Emit(OpCodes.Ldarg, good);
@@ -119,7 +137,10 @@ namespace AltLibrary.Common.Hooks
             });
 
             if (!c.TryGotoNext(i => i.MatchBrfalse(out _)))
+            {
+                AltLibrary.Instance.Logger.Info("i $ 5");
                 return;
+            }
 
             c.Index++;
             c.Emit(OpCodes.Ldloc, 15);

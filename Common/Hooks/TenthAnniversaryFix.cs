@@ -23,7 +23,10 @@ namespace AltLibrary.Common.Hooks
         {
             ILCursor c = new(il);
             if (!c.TryGotoNext(i => i.MatchLdcI4(207)))
+            {
+                AltLibrary.Instance.Logger.Info("o $ 1");
                 return;
+            }
             c.Index++;
             c.EmitDelegate<Func<ushort, ushort>>((orig) =>
             {
@@ -34,7 +37,10 @@ namespace AltLibrary.Common.Hooks
                 return orig;
             });
             if (!c.TryGotoNext(i => i.MatchLdarg(2)))
+            {
+                AltLibrary.Instance.Logger.Info("o $ 2");
                 return;
+            }
             c.Index++;
             c.EmitDelegate<Func<int, int>>((orig) =>
             {
@@ -45,7 +51,10 @@ namespace AltLibrary.Common.Hooks
                 return orig;
             });
             if (!c.TryGotoNext(i => i.MatchCall(out _)))
+            {
+                AltLibrary.Instance.Logger.Info("o $ 3");
                 return;
+            }
             c.Remove();
             c.EmitDelegate<Action<int, int, ushort, int>>((x, y, type, style) =>
             {
@@ -63,10 +72,16 @@ namespace AltLibrary.Common.Hooks
             });
 
             if (!c.TryGotoNext(i => i.MatchCall(out _)))
+            {
+                AltLibrary.Instance.Logger.Info("o $ 4");
                 return;
+            }
             MethodReference switchFountains = null;
             if (!c.TryGotoNext(i => i.MatchCall(out switchFountains)))
+            {
+                AltLibrary.Instance.Logger.Info("o $ 5");
                 return;
+            }
             ILLabel label = il.DefineLabel();
 
             c.Remove();
@@ -95,7 +110,10 @@ namespace AltLibrary.Common.Hooks
         {
             ILCursor c = new(il);
             if (!c.TryGotoNext(i => i.MatchLdcI4(109)))
+            {
+                AltLibrary.Instance.Logger.Info("p $ 1");
                 return;
+            }
 
             ALUtils.ReplaceIDs<int>(il,
                 TileID.HallowedGrass,
@@ -103,7 +121,10 @@ namespace AltLibrary.Common.Hooks
                 (orig) => WorldBiomeManager.worldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.worldHallow).BiomeGrass.HasValue);
 
             if (!c.TryGotoNext(i => i.MatchCall<WorldGen>(nameof(WorldGen.Convert))))
+            {
+                AltLibrary.Instance.Logger.Info("p $ 2");
                 return;
+            }
             c.Index++;
             c.Emit(OpCodes.Ldloc, 4);
             c.Emit(OpCodes.Ldloc, 5);

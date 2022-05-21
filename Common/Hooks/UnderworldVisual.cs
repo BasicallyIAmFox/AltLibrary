@@ -22,7 +22,10 @@ namespace AltLibrary.Common.Hooks
         {
             var c = new ILCursor(il);
             if (!c.TryGotoNext(i => i.MatchStloc(0)))
+            {
+                AltLibrary.Instance.Logger.Info("r $ 1");
                 return;
+            }
             c.Index++;
             c.EmitDelegate(() =>
             {
@@ -50,7 +53,10 @@ namespace AltLibrary.Common.Hooks
                 }
             });
             if (!c.TryGotoNext(i => i.MatchRet()))
+            {
+                AltLibrary.Instance.Logger.Info("r $ 2");
                 return;
+            }
             c.Emit(OpCodes.Ldarg_0);
             c.Emit(OpCodes.Ldarg_1);
             c.Emit(OpCodes.Ldarg_2);

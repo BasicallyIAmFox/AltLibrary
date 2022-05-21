@@ -151,7 +151,7 @@ namespace AltLibrary.Common.Systems
             }
         }
 
-        private void ReplaceRecipe(ref Recipe r, int[] results, int[] ingredients, string group)
+        private static void ReplaceRecipe(ref Recipe r, int[] results, int[] ingredients, string group)
         {
             foreach (int result in results)
             {
@@ -171,7 +171,7 @@ namespace AltLibrary.Common.Systems
             }
         }
 
-        private void ReplaceRecipe(ref Recipe r, int[] results, int[] ingredients, string group, ref int i, int altIng)
+        private static void ReplaceRecipe(ref Recipe r, int[] results, int[] ingredients, string group, ref int i, int altIng)
         {
             foreach (int result in results)
             {
@@ -181,8 +181,8 @@ namespace AltLibrary.Common.Systems
                     {
                         if (r.HasIngredient(altIng))
                         {
-                            r.RemoveRecipe();
-                            i--;
+                            r.DisableRecipe();
+                            //i--; // not need anymore?
                         }
                         else if (r.HasIngredient(ingredient))
                         {

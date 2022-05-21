@@ -78,7 +78,7 @@ namespace AltLibrary.Common.AltLiquidStyles
         /// </summary>
         public Color MapColor = new();
 
-        internal int Type { get; set; }
+        public int Type { get; internal set; }
 
         public sealed override void SetupContent()
         {

@@ -17,9 +17,15 @@ namespace AltLibrary.Common.Hooks
         {
             ILCursor c = new(il);
             if (!c.TryGotoNext(i => i.MatchLdcI4(492)))
+            {
+                AltLibrary.Instance.Logger.Info("l $ 1");
                 return;
+            }
             if (!c.TryGotoNext(i => i.MatchLdloc(2)))
+            {
+                AltLibrary.Instance.Logger.Info("l $ 2");
                 return;
+            }
 
             c.Index++;
             c.Emit(OpCodes.Ldloc, 1);

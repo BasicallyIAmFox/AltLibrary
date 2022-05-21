@@ -29,7 +29,10 @@ namespace AltLibrary.Common.Hooks
                 (orig) => WorldBiomeManager.worldEvil != "" && Find<AltBiome>(WorldBiomeManager.worldEvil).MimicKeyType.HasValue);
 
             if (!c.TryGotoNext(i => i.MatchLdcI4(475)))
+            {
+                AltLibrary.Instance.Logger.Info("k $ 1");
                 return;
+            }
 
             c.Index++;
             c.Emit(OpCodes.Ldloc, 4);
@@ -43,7 +46,10 @@ namespace AltLibrary.Common.Hooks
             });
 
             if (!c.TryGotoNext(i => i.MatchLdcI4(473)))
+            {
+                AltLibrary.Instance.Logger.Info("k $ 2");
                 return;
+            }
 
             c.Index++;
             c.Emit(OpCodes.Ldloc, 2);

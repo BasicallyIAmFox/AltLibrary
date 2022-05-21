@@ -25,9 +25,15 @@ namespace AltLibrary.Common.Hooks
         {
             ILCursor c = new(il);
             if (!c.TryGotoNext(i => i.MatchLdcI4(-8131073)))
+            {
+                AltLibrary.Instance.Logger.Info("m $ 1");
                 return;
+            }
             if (!c.TryGotoNext(i => i.MatchCall(out _)))
+            {
+                AltLibrary.Instance.Logger.Info("m $ 2");
                 return;
+            }
             c.Index++;
             c.Emit(OpCodes.Ldloc, 5);
             c.EmitDelegate<Func<Color, Color>>((color) =>
@@ -53,7 +59,10 @@ namespace AltLibrary.Common.Hooks
             });
             c.Emit(OpCodes.Stloc, 5);
             if (!c.TryGotoNext(i => i.MatchLdfld<UIGenProgressBar>("_texOuterCorrupt")))
+            {
+                AltLibrary.Instance.Logger.Info("m $ 3");
                 return;
+            }
             c.Index++;
             c.Emit(OpCodes.Pop);
             c.EmitDelegate(() =>
@@ -68,7 +77,10 @@ namespace AltLibrary.Common.Hooks
                     Main.Assets.Request<Texture2D>("Images/UI/WorldGen/Outer_Crimson")) : asset;
             });
             if (!c.TryGotoNext(i => i.MatchLdfld<UIGenProgressBar>("_texOuterCrimson")))
+            {
+                AltLibrary.Instance.Logger.Info("m $ 4");
                 return;
+            }
             c.Index++;
             c.Emit(OpCodes.Pop);
             c.EmitDelegate(() =>
@@ -82,9 +94,15 @@ namespace AltLibrary.Common.Hooks
                     Main.Assets.Request<Texture2D>("Images/UI/WorldGen/Outer_Crimson")) : asset;
             });
             if (!c.TryGotoNext(i => i.MatchCallvirt(out _)))
+            {
+                AltLibrary.Instance.Logger.Info("m $ 5");
                 return;
+            }
             if (!c.TryGotoNext(i => i.MatchCallvirt(out _)))
+            {
+                AltLibrary.Instance.Logger.Info("m $ 6");
                 return;
+            }
             c.Index++;
             c.Emit(OpCodes.Ldarg, 1);
             c.Emit(OpCodes.Ldloc, 6);
@@ -108,7 +126,10 @@ namespace AltLibrary.Common.Hooks
                 spriteBatch.Draw(asset.Value, r.TopLeft(), Color.White);
             });
             if (!c.TryGotoNext(i => i.MatchLdfld<UIGenProgressBar>("_texOuterLower")))
+            {
+                AltLibrary.Instance.Logger.Info("m $ 7");
                 return;
+            }
             c.Index++;
             c.Emit(OpCodes.Pop);
             c.EmitDelegate(() =>
@@ -119,9 +140,15 @@ namespace AltLibrary.Common.Hooks
                 return worldGenStep <= 0 ? Main.Assets.Request<Texture2D>("Images/UI/WorldGen/Outer_Lower") : asset;
             });
             if (!c.TryGotoNext(i => i.MatchCallvirt(out _)))
+            {
+                AltLibrary.Instance.Logger.Info("m $ 8");
                 return;
+            }
             if (!c.TryGotoNext(i => i.MatchCallvirt(out _)))
+            {
+                AltLibrary.Instance.Logger.Info("m $ 9");
                 return;
+            }
             c.Index++;
             c.Emit(OpCodes.Ldarg, 1);
             c.Emit(OpCodes.Ldloc, 6);

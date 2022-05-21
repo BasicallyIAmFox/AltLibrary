@@ -3,8 +3,9 @@ Mods: {
 		HardmodeOre: "Your world has been blessed with {0}!"
 		WorldBreak: "One of the biomes this world was created with has been removed, this can lead to heavy breakage!"
 		AddedBy: "Added By:"
-		ChooseBiome: "Choose Biomes"
-		ChooseOre: "Choose Ores"
+		ChooseBiome: "Biomes"
+		ChooseOre: "Ores"
+		ChooseHardmodeOre: "Hardmode Ores"
 		Config: {
 			PreviewVisible: {
 				Label: "World Creation Preview"

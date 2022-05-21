@@ -30,22 +30,35 @@ namespace AltLibrary.Common.Hooks
         {
             ILCursor c = new(il);
             if (!c.TryGotoNext(i => i.MatchLdstr("LivingTreeCount")))
+            {
+                AltLibrary.Instance.Logger.Info("c $ 1");
                 return;
+            }
             if (!c.TryGotoPrev(i => i.MatchCallvirt<GenerationProgress>("Set")))
+            {
+                AltLibrary.Instance.Logger.Info("c $ 2");
                 return;
+            }
 
             var label = il.DefineLabel();
 
             c.Index++;
-            c.Emit(OpCodes.Ldsfld, typeof(WorldBiomeManager).GetField(nameof(WorldBiomeManager.worldJungle), BindingFlags.Public | BindingFlags.Static));
-            c.Emit(OpCodes.Ldstr, "");
-            c.Emit(OpCodes.Call, typeof(string).GetMethod("op_Equality", new Type[] { typeof(string), typeof(string) }));
+            c.EmitDelegate(() => WorldBiomeManager.worldJungle == "");
+            //c.Emit(OpCodes.Ldsfld, typeof(WorldBiomeManager).GetField(nameof(WorldBiomeManager.worldJungle), BindingFlags.Public | BindingFlags.Static));
+            //c.Emit(OpCodes.Ldstr, "");
+            //c.Emit(OpCodes.Call, typeof(string).GetMethod("op_Equality", new Type[] { typeof(string), typeof(string) }));
             c.Emit(OpCodes.Brfalse_S, label);
 
             if (!c.TryGotoNext(i => i.MatchLdstr("..Long Minecart Tracks")))
+            {
+                AltLibrary.Instance.Logger.Info("c $ 3");
                 return;
+            }
             if (!c.TryGotoPrev(i => i.MatchLdarg(1)))
+            {
+                AltLibrary.Instance.Logger.Info("c $ 4");
                 return;
+            }
 
             c.MarkLabel(label);
         }
@@ -54,11 +67,17 @@ namespace AltLibrary.Common.Hooks
         {
             ILCursor c = new(il);
             if (!c.TryGotoNext(i => i.MatchCall<WorldGen>(nameof(WorldGen.CrimStart))))
+            {
+                AltLibrary.Instance.Logger.Info("d $ 1");
                 return;
+            }
 
             #region Crimson
             if (!c.TryGotoNext(i => i.MatchLdcI4(60)))
+            {
+                AltLibrary.Instance.Logger.Info("d $ 2");
                 return;
+            }
 
             c.Index++;
             c.Emit(OpCodes.Pop);
@@ -73,7 +92,10 @@ namespace AltLibrary.Common.Hooks
             });
 
             if (!c.TryGotoNext(i => i.MatchLdcI4(234)))
+            {
+                AltLibrary.Instance.Logger.Info("d $ 3");
                 return;
+            }
 
             c.Index++;
             c.EmitDelegate<Func<int, int>>((orig) =>
@@ -89,7 +111,10 @@ namespace AltLibrary.Common.Hooks
             });
 
             if (!c.TryGotoNext(i => i.MatchLdcI4(199)))
+            {
+                AltLibrary.Instance.Logger.Info("d $ 5");
                 return;
+            }
 
             c.Index++;
             c.EmitDelegate<Func<int, int>>((orig) =>
@@ -105,7 +130,10 @@ namespace AltLibrary.Common.Hooks
             });
 
             if (!c.TryGotoNext(i => i.MatchLdcI4(203)))
+            {
+                AltLibrary.Instance.Logger.Info("d $ 6");
                 return;
+            }
 
             c.Index++;
             c.EmitDelegate<Func<int, int>>((orig) =>
@@ -121,7 +149,10 @@ namespace AltLibrary.Common.Hooks
             });
 
             if (!c.TryGotoNext(i => i.MatchLdcI4(199)))
+            {
+                AltLibrary.Instance.Logger.Info("d $ 7");
                 return;
+            }
 
             c.Index++;
             c.EmitDelegate<Func<int, int>>((orig) =>
@@ -137,7 +168,10 @@ namespace AltLibrary.Common.Hooks
             });
 
             if (!c.TryGotoNext(i => i.MatchLdcI4(200)))
+            {
+                AltLibrary.Instance.Logger.Info("d $ 8");
                 return;
+            }
 
             c.Index++;
             c.EmitDelegate<Func<int, int>>((orig) =>
@@ -153,7 +187,10 @@ namespace AltLibrary.Common.Hooks
             });
 
             if (!c.TryGotoNext(i => i.MatchLdcI4(401)))
+            {
+                AltLibrary.Instance.Logger.Info("d $ 9");
                 return;
+            }
 
             c.Index++;
             c.EmitDelegate<Func<int, int>>((orig) =>
@@ -169,7 +206,10 @@ namespace AltLibrary.Common.Hooks
             });
 
             if (!c.TryGotoNext(i => i.MatchLdcI4(399)))
+            {
+                AltLibrary.Instance.Logger.Info("d $ 10");
                 return;
+            }
 
             c.Index++;
             c.EmitDelegate<Func<int, int>>((orig) =>
@@ -187,7 +227,10 @@ namespace AltLibrary.Common.Hooks
 
             #region Corrupt
             if (!c.TryGotoNext(i => i.MatchLdcI4(60)))
+            {
+                AltLibrary.Instance.Logger.Info("d $ 11");
                 return;
+            }
 
             c.Index++;
             c.Emit(OpCodes.Pop);
@@ -202,7 +245,10 @@ namespace AltLibrary.Common.Hooks
             });
 
             if (!c.TryGotoNext(i => i.MatchLdcI4(112)))
+            {
+                AltLibrary.Instance.Logger.Info("d $ 12");
                 return;
+            }
 
             c.Index++;
             c.EmitDelegate<Func<int, int>>((orig) =>
@@ -218,7 +264,10 @@ namespace AltLibrary.Common.Hooks
             });
 
             if (!c.TryGotoNext(i => i.MatchLdcI4(23)))
+            {
+                AltLibrary.Instance.Logger.Info("d $ 13");
                 return;
+            }
 
             c.Index++;
             c.EmitDelegate<Func<int, int>>((orig) =>
@@ -234,7 +283,10 @@ namespace AltLibrary.Common.Hooks
             });
 
             if (!c.TryGotoNext(i => i.MatchLdcI4(25)))
+            {
+                AltLibrary.Instance.Logger.Info("d $ 14");
                 return;
+            }
 
             c.Index++;
             c.EmitDelegate<Func<int, int>>((orig) =>
@@ -250,7 +302,10 @@ namespace AltLibrary.Common.Hooks
             });
 
             if (!c.TryGotoNext(i => i.MatchLdcI4(23)))
+            {
+                AltLibrary.Instance.Logger.Info("d $ 15");
                 return;
+            }
 
             c.Index++;
             c.EmitDelegate<Func<int, int>>((orig) =>
@@ -266,7 +321,10 @@ namespace AltLibrary.Common.Hooks
             });
 
             if (!c.TryGotoNext(i => i.MatchLdcI4(163)))
+            {
+                AltLibrary.Instance.Logger.Info("d $ 16");
                 return;
+            }
 
             c.Index++;
             c.EmitDelegate<Func<int, int>>((orig) =>
@@ -282,7 +340,10 @@ namespace AltLibrary.Common.Hooks
             });
 
             if (!c.TryGotoNext(i => i.MatchLdcI4(400)))
+            {
+                AltLibrary.Instance.Logger.Info("d $ 17");
                 return;
+            }
 
             c.Index++;
             c.EmitDelegate<Func<int, int>>((orig) =>
@@ -298,7 +359,10 @@ namespace AltLibrary.Common.Hooks
             });
 
             if (!c.TryGotoNext(i => i.MatchLdcI4(398)))
+            {
+                AltLibrary.Instance.Logger.Info("d $ 18");
                 return;
+            }
 
             c.Index++;
             c.EmitDelegate<Func<int, int>>((orig) =>
@@ -321,7 +385,10 @@ namespace AltLibrary.Common.Hooks
             ILLabel endNormalAltar = c.DefineLabel();
             ILLabel startNormalAltar = c.DefineLabel();
             if (!c.TryGotoNext(i => i.MatchLdsfld<WorldGen>(nameof(WorldGen.crimson))))
+            {
+                AltLibrary.Instance.Logger.Info("e $ 1");
                 return;
+            }
             c.EmitDelegate(() => WorldGen.crimson || WorldBiomeManager.worldEvil != "");
             c.Emit(OpCodes.Brfalse, startNormalAltar);
             c.Emit(OpCodes.Ldloc, 3);
@@ -339,9 +406,15 @@ namespace AltLibrary.Common.Hooks
             c.Emit(OpCodes.Br, endNormalAltar);
             c.MarkLabel(startNormalAltar);
             if (!c.TryGotoNext(i => i.MatchLdloc(5)))
+            {
+                AltLibrary.Instance.Logger.Info("e $ 2");
                 return;
+            }
             if (!c.TryGotoNext(i => i.MatchLdsflda(out _)))
+            {
+                AltLibrary.Instance.Logger.Info("e $ 3");
                 return;
+            }
             c.MarkLabel(endNormalAltar);
         }
 
@@ -354,33 +427,75 @@ namespace AltLibrary.Common.Hooks
             FieldReference gold = null;
 
             if (!c.TryGotoNext(i => i.MatchStsfld(typeof(WorldGen).GetField(nameof(WorldGen.crimson), BindingFlags.Public | BindingFlags.Static))))
+            {
+                AltLibrary.Instance.Logger.Info("f $ 1");
                 return;
+            }
             if (!c.TryGotoPrev(i => i.MatchLdcI4(166)))
+            {
+                AltLibrary.Instance.Logger.Info("f $ 2");
                 return;
+            }
             if (!c.TryGotoPrev(i => i.MatchLdcI4(166)))
+            {
+                AltLibrary.Instance.Logger.Info("f $ 3");
                 return;
+            }
             if (!c.TryGotoNext(i => i.MatchStfld(out copper)))
+            {
+                AltLibrary.Instance.Logger.Info("f $ 4");
                 return;
+            }
             if (!c.TryGotoNext(i => i.MatchLdcI4(167)))
+            {
+                AltLibrary.Instance.Logger.Info("f $ 5");
                 return;
+            }
             if (!c.TryGotoNext(i => i.MatchStfld(out iron)))
+            {
+                AltLibrary.Instance.Logger.Info("f $ 6");
                 return;
+            }
             if (!c.TryGotoNext(i => i.MatchLdcI4(168)))
+            {
+                AltLibrary.Instance.Logger.Info("f $ 7");
                 return;
+            }
             if (!c.TryGotoNext(i => i.MatchStfld(out silver)))
+            {
+                AltLibrary.Instance.Logger.Info("f $ 8");
                 return;
+            }
             if (!c.TryGotoNext(i => i.MatchLdcI4(169)))
+            {
+                AltLibrary.Instance.Logger.Info("f $ 9");
                 return;
+            }
             if (!c.TryGotoNext(i => i.MatchStfld(out gold)))
+            {
+                AltLibrary.Instance.Logger.Info("f $ 10");
                 return;
+            }
             if (!c.TryGotoNext(i => i.MatchStsfld(typeof(WorldGen).GetField(nameof(WorldGen.crimson), BindingFlags.Public | BindingFlags.Static))))
+            {
+                AltLibrary.Instance.Logger.Info("f $ 11");
                 return;
+            }
             if (!c.TryGotoNext(i => i.MatchRet()))
+            {
+                AltLibrary.Instance.Logger.Info("f $ 12");
                 return;
+            }
             if (!c.TryGotoPrev(i => i.MatchBneUn(out _)))
+            {
+                AltLibrary.Instance.Logger.Info("f $ 13");
                 return;
+            }
             if (!c.TryGotoPrev(i => i.MatchLdcI4(-1)))
+            {
+                AltLibrary.Instance.Logger.Info("f $ 14");
                 return;
+            }
 
             c.EmitDelegate<Func<int, int>>(dungeonSide =>
             {
@@ -427,14 +542,23 @@ namespace AltLibrary.Common.Hooks
             for (int j = 0; j < 3; j++)
             {
                 if (!c.TryGotoNext(i => i.MatchLdsfld<WorldGen>(nameof(WorldGen.drunkWorldGen))))
+                {
+                    AltLibrary.Instance.Logger.Info("g $ 1 " + j);
                     return;
+                }
                 if (!c.TryGotoNext(i => i.MatchLdcI4(2)))
+                {
+                    AltLibrary.Instance.Logger.Info("g $ 2 " + j);
                     return;
+                }
                 c.Index++;
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_I4, 1);
                 if (!c.TryGotoNext(i => i.MatchLdcI4(7)))
+                {
+                    AltLibrary.Instance.Logger.Info("g $ 3 " + j);
                     return;
+                }
                 c.Index++;
                 c.EmitDelegate<Func<int, int>>((value) =>
                 {
@@ -453,14 +577,23 @@ namespace AltLibrary.Common.Hooks
             for (int j = 0; j < 3; j++)
             {
                 if (!c.TryGotoNext(i => i.MatchLdsfld<WorldGen>(nameof(WorldGen.drunkWorldGen))))
+                {
+                    AltLibrary.Instance.Logger.Info("g $ 4 " + j);
                     return;
+                }
                 if (!c.TryGotoNext(i => i.MatchLdcI4(2)))
+                {
+                    AltLibrary.Instance.Logger.Info("g $ 5 " + j);
                     return;
+                }
                 c.Index++;
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_I4, 1);
                 if (!c.TryGotoNext(i => i.MatchLdcI4(6)))
+                {
+                    AltLibrary.Instance.Logger.Info("g $ 6 " + j);
                     return;
+                }
                 c.Index++;
                 c.EmitDelegate<Func<int, int>>((value) =>
                 {
@@ -479,14 +612,23 @@ namespace AltLibrary.Common.Hooks
             for (int j = 0; j < 3; j++)
             {
                 if (!c.TryGotoNext(i => i.MatchLdsfld<WorldGen>(nameof(WorldGen.drunkWorldGen))))
+                {
+                    AltLibrary.Instance.Logger.Info("g $ 7 " + j);
                     return;
+                }
                 if (!c.TryGotoNext(i => i.MatchLdcI4(2)))
+                {
+                    AltLibrary.Instance.Logger.Info("g $ 8 " + j);
                     return;
+                }
                 c.Index++;
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_I4, 1);
                 if (!c.TryGotoNext(i => i.MatchLdcI4(9)))
+                {
+                    AltLibrary.Instance.Logger.Info("g $ 9 " + j);
                     return;
+                }
                 c.Index++;
                 c.EmitDelegate<Func<int, int>>((value) =>
                 {
@@ -505,14 +647,23 @@ namespace AltLibrary.Common.Hooks
             for (int j = 0; j < 2; j++)
             {
                 if (!c.TryGotoNext(i => i.MatchLdsfld<WorldGen>(nameof(WorldGen.drunkWorldGen))))
+                {
+                    AltLibrary.Instance.Logger.Info("g $ 10 " + j);
                     return;
+                }
                 if (!c.TryGotoNext(i => i.MatchLdcI4(2)))
+                {
+                    AltLibrary.Instance.Logger.Info("g $ 11 " + j);
                     return;
+                }
                 c.Index++;
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_I4, 1);
                 if (!c.TryGotoNext(i => i.MatchLdcI4(8)))
+                {
+                    AltLibrary.Instance.Logger.Info("g $ 12 " + j);
                     return;
+                }
                 c.Index++;
                 c.EmitDelegate<Func<int, int>>((value) =>
                 {
@@ -529,11 +680,20 @@ namespace AltLibrary.Common.Hooks
             }
 
             if (!c.TryGotoNext(i => i.MatchRet()))
+            {
+                AltLibrary.Instance.Logger.Info("g $ 13");
                 return;
+            }
             if (!c.TryGotoPrev(i => i.MatchLdsfld<WorldGen>(nameof(WorldGen.drunkWorldGen))))
+            {
+                AltLibrary.Instance.Logger.Info("g $ 14");
                 return;
+            }
             if (!c.TryGotoNext(i => i.MatchBrfalse(out _)))
+            {
+                AltLibrary.Instance.Logger.Info("g $ 15");
                 return;
+            }
             c.Index++;
             c.EmitDelegate(() =>
             {
@@ -548,9 +708,15 @@ namespace AltLibrary.Common.Hooks
                 }
             });
             if (!c.TryGotoNext(i => i.MatchRet()))
+            {
+                AltLibrary.Instance.Logger.Info("g $ 16");
                 return;
+            }
             if (!c.TryGotoNext(i => i.MatchBr(out _)))
+            {
+                AltLibrary.Instance.Logger.Info("g $ 17");
                 return;
+            }
             ILLabel startCorruptionGen = c.DefineLabel();
             c.EmitDelegate(() => !WorldGen.crimson && WorldBiomeManager.worldEvil != "");
             c.Emit(OpCodes.Brfalse, startCorruptionGen);

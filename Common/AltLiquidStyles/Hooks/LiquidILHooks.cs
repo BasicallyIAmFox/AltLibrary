@@ -250,11 +250,20 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
         {
             ILCursor c = new(il);
             if (!c.TryGotoNext(i => i.MatchLdsfld<Main>(nameof(Main.spriteBatch))))
+            {
+                AltLibrary.Instance.Logger.Info("u $ 1");
                 return;
+            }
             if (!c.TryGotoNext(i => i.MatchLdsfld<Main>(nameof(Main.spriteBatch))))
+            {
+                AltLibrary.Instance.Logger.Info("u $ 2");
                 return;
+            }
             if (!c.TryGotoNext(i => i.MatchLdsfld(out _)))
+            {
+                AltLibrary.Instance.Logger.Info("u $ 3");
                 return;
+            }
 
             c.Index++;
             c.Emit(OpCodes.Pop);
@@ -279,7 +288,10 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
                 i => i.MatchLdarg(0),
                 i => i.MatchLdcI4(48),
                 i => i.MatchLdcI4(1800)))
+            {
+                AltLibrary.Instance.Logger.Info("v $ 1");
                 return;
+            }
 
             c.Index += 4;
             c.EmitDelegate<Func<int, int>>((orig) =>
@@ -307,11 +319,17 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
             });
 
             if (!c.TryGotoPrev(i => i.MatchCallOrCallvirt<Player>(nameof(Player.AddBuff)) && i.Offset != 0))
+            {
+                AltLibrary.Instance.Logger.Info("v $ 2");
                 return;
+            }
             for (int j = 0; j < 2; j++)
             {
                 if (!c.TryGotoPrev(i => i.MatchCall<PlayerDeathReason>(nameof(PlayerDeathReason.ByOther)) && i.Offset != 0))
+                {
+                    AltLibrary.Instance.Logger.Info("v $ 3 " + j);
                     return;
+                }
 
                 c.Index++;
                 c.Emit(OpCodes.Pop);
@@ -329,7 +347,10 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
                 });
 
                 if (!c.TryGotoNext(i => i.MatchLdcI4(80) || i.MatchLdcI4(35)))
+                {
+                    AltLibrary.Instance.Logger.Info("v $ 4 " + j);
                     return;
+                }
 
                 c.Index++;
                 c.Emit(OpCodes.Pop);
@@ -347,7 +368,10 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
                 });
 
                 if (!c.TryGotoNext(i => i.MatchLdcI4(24)))
+                {
+                    AltLibrary.Instance.Logger.Info("v $ 5 " + j);
                     return;
+                }
 
                 c.Index++;
                 c.Emit(OpCodes.Pop);
@@ -364,7 +388,10 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
                 });
 
                 if (!c.TryGotoNext(i => (i.MatchLdcI4(420) || i.MatchLdcI4(210)) && i.Offset != 0))
+                {
+                    AltLibrary.Instance.Logger.Info("v $ 6 " + j);
                     return;
+                }
 
                 c.Index++;
                 c.Emit(OpCodes.Pop);
@@ -405,11 +432,17 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
         {
             ILCursor c = new(il);
             if (!c.TryGotoNext(i => i.MatchLdcR4(900f)))
+            {
+                AltLibrary.Instance.Logger.Info("w $ 1");
                 return;
+            }
             for (int j = 0; j < 3; j++)
             {
                 if (!c.TryGotoNext(i => i.MatchStloc(60 + j)))
+                {
+                    AltLibrary.Instance.Logger.Info("w $ 2 " + j);
                     return;
+                }
                 c.Index++;
                 c.Emit(OpCodes.Ldloc, 60 + j);
                 c.Emit(OpCodes.Ldc_I4, j);
@@ -520,9 +553,15 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
         {
             ILCursor c = new(il);
             if (!c.TryGotoNext(i => i.MatchLdsfld<Main>(nameof(Main.tileBatch))))
+            {
+                AltLibrary.Instance.Logger.Info("x $ 1");
                 return;
+            }
             if (!c.TryGotoNext(i => i.MatchCallOrCallvirt<TileBatch>(nameof(TileBatch.Draw))))
+            {
+                AltLibrary.Instance.Logger.Info("x $ 2");
                 return;
+            }
 
             c.Index++;
             c.Emit(OpCodes.Ldloc, 8);
@@ -554,7 +593,10 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
         {
             ILCursor c = new(il);
             if (!c.TryGotoNext(i => i.MatchCallOrCallvirt<SpriteBatch>(nameof(SpriteBatch.Draw))))
+            {
+                AltLibrary.Instance.Logger.Info("y $ 1");
                 return;
+            }
 
             c.Index++;
             c.Emit(OpCodes.Ldloc, 15);
@@ -586,7 +628,10 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
             });
 
             if (!c.TryGotoNext(i => i.MatchCallOrCallvirt<SpriteBatch>(nameof(SpriteBatch.Draw))))
+            {
+                AltLibrary.Instance.Logger.Info("y $ 2");
                 return;
+            }
 
             c.Index++;
             c.Emit(OpCodes.Ldloc, 15);
@@ -614,7 +659,10 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
             });
 
             if (!c.TryGotoNext(i => i.MatchCallOrCallvirt<SpriteBatch>(nameof(SpriteBatch.Draw))))
+            {
+                AltLibrary.Instance.Logger.Info("y $ 3");
                 return;
+            }
 
             c.Index++;
             c.Emit(OpCodes.Ldloc, 15);
@@ -642,7 +690,10 @@ namespace AltLibrary.Common.AltLiquidStyles.Hooks
             });
 
             if (!c.TryGotoNext(i => i.MatchCallOrCallvirt<SpriteBatch>(nameof(SpriteBatch.Draw))))
+            {
+                AltLibrary.Instance.Logger.Info("y $ 4");
                 return;
+            }
 
             c.Index++;
             c.Emit(OpCodes.Ldloc, 15);

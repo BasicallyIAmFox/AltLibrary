@@ -23,9 +23,15 @@ namespace AltLibrary.Common.Hooks
         {
             ILCursor c = new(il);
             if (!c.TryGotoNext(i => i.MatchCall<WorldGen>(nameof(WorldGen.AddBuriedChest))))
+            {
+                AltLibrary.Instance.Logger.Info("b $ 1");
                 return;
+            }
             if (!c.TryGotoPrev(i => i.MatchStloc(15)))
+            {
+                AltLibrary.Instance.Logger.Info("b $ 2");
                 return;
+            }
 
             c.Index++;
             c.Emit(OpCodes.Ldloc, 15);
@@ -40,9 +46,15 @@ namespace AltLibrary.Common.Hooks
             c.Emit(OpCodes.Stloc, 15);
 
             if (!c.TryGotoNext(i => i.MatchCall<WorldGen>(nameof(WorldGen.AddBuriedChest))))
+            {
+                AltLibrary.Instance.Logger.Info("b $ 3");
                 return;
+            }
             if (!c.TryGotoPrev(i => i.MatchLdloc(98)))
+            {
+                AltLibrary.Instance.Logger.Info("b $ 4");
                 return;
+            }
 
             c.Index++;
             c.Emit(OpCodes.Ldloc, 93);
@@ -69,7 +81,10 @@ namespace AltLibrary.Common.Hooks
             });
 
             if (!c.TryGotoNext(i => i.MatchLdloc(99)))
+            {
+                AltLibrary.Instance.Logger.Info("b $ 5");
                 return;
+            }
 
             c.Index++;
             c.Emit(OpCodes.Ldloc, 93);
@@ -96,7 +111,10 @@ namespace AltLibrary.Common.Hooks
             });
 
             if (!c.TryGotoNext(i => i.MatchLdloc(97)))
+            {
+                AltLibrary.Instance.Logger.Info("b $ 6");
                 return;
+            }
 
             c.Index++;
             c.Emit(OpCodes.Ldloc, 93);

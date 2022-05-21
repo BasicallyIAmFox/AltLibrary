@@ -18,9 +18,15 @@ namespace AltLibrary.Common.Hooks
         {
             ILCursor c = new(il);
             if (!c.TryGotoNext(i => i.MatchLdcI4(1225)))
+            {
+                AltLibrary.Instance.Logger.Info("q $ 1");
                 return;
+            }
             if (!c.TryGotoNext(i => i.MatchPop()))
+            {
+                AltLibrary.Instance.Logger.Info("q $ 2");
                 return;
+            }
             c.Index++;
             c.Emit(OpCodes.Ldloc, 1);
             c.EmitDelegate<Func<LeadingConditionRule, LeadingConditionRule>>((leadCond) =>

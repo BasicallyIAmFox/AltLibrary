@@ -19,7 +19,7 @@ namespace AltLibrary.Common.AltBiomes
         /// </summary>
         public BiomeType BiomeType { get; set; }
         public ModBiome Biome { get; set; }
-        internal int Type { get; set; }
+        public int Type { get; internal set; }
 
         /// <summary>
         /// The name of this biome that will display on the biome selection screen.

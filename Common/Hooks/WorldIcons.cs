@@ -32,7 +32,10 @@ namespace AltLibrary.Common.Hooks
         {
             ILCursor c = new(il);
             if (!c.TryGotoNext(i => i.MatchCall<Color>("get_White")))
+            {
+                AltLibrary.Instance.Logger.Info("s $ 1");
                 return;
+            }
 
             c.Index++;
             c.Emit(OpCodes.Ldarg, 0);
@@ -79,12 +82,21 @@ namespace AltLibrary.Common.Hooks
         {
             ILCursor c = new(il);
             if (!c.TryGotoNext(i => i.MatchLdftn(out _)))
+            {
+                AltLibrary.Instance.Logger.Info("t $ 1");
                 return;
+            }
             FieldReference fieldReference = null;
             if (!c.TryGotoNext(i => i.MatchLdfld(out fieldReference)))
+            {
+                AltLibrary.Instance.Logger.Info("t $ 2");
                 return;
+            }
             if (!c.TryGotoNext(i => i.MatchCall(out _)))
+            {
+                AltLibrary.Instance.Logger.Info("t $ 3");
                 return;
+            }
             c.Index++;
             c.Emit(OpCodes.Ldarg_0);
             c.Emit(OpCodes.Ldarg_0);

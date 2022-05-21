@@ -190,3 +190,5 @@ C:\Users\emfr3\Documents\My Games\Terraria\tModLoader\ModSources\AltLibrary\obj\
 C:\Users\emfr3\Documents\My Games\Terraria\tModLoader\ModSources\AltLibrary\obj\Debug\net6.0\refint\AltLibrary.dll
 C:\Users\emfr3\Documents\My Games\Terraria\tModLoader\ModSources\AltLibrary\obj\Debug\net6.0\AltLibrary.pdb
 C:\Users\emfr3\Documents\My Games\Terraria\tModLoader\ModSources\AltLibrary\obj\Debug\net6.0\ref\AltLibrary.dll
+C:\Users\palma\Documents\My Games\Terraria\tModLoader\ModSources\AltLibrary\bin\Debug\net6.0\System.Reflection.MetadataLoadContext.dll
+C:\Users\palma\Documents\My Games\Terraria\tModLoader\ModSources\AltLibrary\bin\Debug\net6.0\System.Reflection.MetadataLoadContext.xml

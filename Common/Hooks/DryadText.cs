@@ -43,35 +43,40 @@ namespace AltLibrary.Common.Hooks
         {
             ILCursor c = new(il);
             if (!c.TryGotoNext(i => i.MatchLdcI4(200)))
+            {
+                AltLibrary.Instance.Logger.Info("2 $ 1");
                 return;
+            }
             if (!c.TryGotoNext(i => i.MatchLdcI4(200)))
+            {
+                AltLibrary.Instance.Logger.Info("2 $ 2");
                 return;
+            }
             if (!c.TryGotoPrev(i => i.MatchLdsfld(out _)))
+            {
+                AltLibrary.Instance.Logger.Info("2 $ 3");
                 return;
+            }
             if (!c.TryGotoNext(i => i.MatchStsfld<WorldGen>(nameof(WorldGen.totalSolid2))))
+            {
+                AltLibrary.Instance.Logger.Info("2 $ 4");
                 return;
+            }
 
             c.Index++;
             c.EmitDelegate(() =>
             {
-                WorldGen.totalGood2 += WorldGen.tileCounts[TileID.HallowHardenedSand];
-                WorldGen.totalGood2 += WorldGen.tileCounts[TileID.HallowSandstone];
-                WorldGen.totalEvil2 += WorldGen.tileCounts[TileID.CorruptHardenedSand];
-                WorldGen.totalEvil2 += WorldGen.tileCounts[TileID.CorruptSandstone];
-                WorldGen.totalBlood2 += WorldGen.tileCounts[TileID.CrimsonHardenedSand];
-                WorldGen.totalBlood2 += WorldGen.tileCounts[TileID.CrimsonSandstone];
-                WorldGen.totalSolid2 += WorldGen.tileCounts[TileID.HardenedSand];
-                WorldGen.totalSolid2 += WorldGen.tileCounts[TileID.Sandstone];
-                WorldGen.totalSolid2 += WorldGen.tileCounts[TileID.HallowHardenedSand];
-                WorldGen.totalSolid2 += WorldGen.tileCounts[TileID.HallowSandstone];
-                WorldGen.totalSolid2 += WorldGen.tileCounts[TileID.CorruptHardenedSand];
-                WorldGen.totalSolid2 += WorldGen.tileCounts[TileID.CorruptSandstone];
-                WorldGen.totalSolid2 += WorldGen.tileCounts[TileID.CrimsonHardenedSand];
-                WorldGen.totalSolid2 += WorldGen.tileCounts[TileID.CrimsonSandstone];
+                WorldGen.totalGood2 += WorldGen.tileCounts[TileID.HallowHardenedSand] + WorldGen.tileCounts[TileID.HallowSandstone];
+                WorldGen.totalEvil2 += WorldGen.tileCounts[TileID.CorruptHardenedSand] + WorldGen.tileCounts[TileID.CorruptSandstone];
+                WorldGen.totalBlood2 += WorldGen.tileCounts[TileID.CrimsonHardenedSand] + WorldGen.tileCounts[TileID.CrimsonSandstone];
+
+                WorldGen.totalSolid2 += WorldGen.tileCounts[TileID.HardenedSand] + WorldGen.tileCounts[TileID.Sandstone];
+                WorldGen.totalSolid2 += WorldGen.tileCounts[TileID.HallowHardenedSand] + WorldGen.tileCounts[TileID.HallowSandstone];
+                WorldGen.totalSolid2 += WorldGen.tileCounts[TileID.CorruptHardenedSand] + WorldGen.tileCounts[TileID.CorruptSandstone];
+                WorldGen.totalSolid2 += WorldGen.tileCounts[TileID.CrimsonHardenedSand] + WorldGen.tileCounts[TileID.CrimsonSandstone];
 
                 int hallow = 0;
                 int evil = 0;
-
                 foreach (AltBiome biome in AltLibrary.Biomes)
                 {
                     if (biome.BiomeType == BiomeType.Hallow)
