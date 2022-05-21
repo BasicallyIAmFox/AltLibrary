@@ -63,7 +63,6 @@ namespace AltLibrary.Common
             On.Terraria.GameContent.UI.States.UIWorldCreation.Draw += UIWorldCreation_Draw;
             IL.Terraria.GameContent.UI.States.UIWorldCreation.FinishCreatingWorld += UIWorldCreation_FinishCreatingWorld;
             IL.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf += UIWorldCreationPreview_DrawSelf1;
-            On.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf += UIWorldCreationPreview_DrawSelf;
             On.Terraria.GameContent.UI.Elements.UIWorldListItem.PlayGame += UIWorldListItem_PlayGame;
         }
 
@@ -260,6 +259,10 @@ namespace AltLibrary.Common
                     }
                 }
             });
+            c.Emit(OpCodes.Ldarg, 0);
+            c.Emit(OpCodes.Ldarg, 1);
+            c.EmitDelegate(WorldCreationUIIcons);
+
             c.Emit(OpCodes.Ldarg, 0);
         }
 
@@ -883,9 +886,8 @@ namespace AltLibrary.Common
             RemoveUntilInstruction(c, i => i.MatchLdarg(0));
         }
 
-        public static void UIWorldCreationPreview_DrawSelf(On.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.orig_DrawSelf orig, UIWorldCreationPreview self, SpriteBatch spriteBatch)
+        internal static void WorldCreationUIIcons(UIWorldCreationPreview self, SpriteBatch spriteBatch)
         {
-            orig(self, spriteBatch);
             CalculatedStyle dimensions = self.GetDimensions();
             Vector2 position = new(dimensions.X + 4f, dimensions.Y + 4f);
             Color color = Color.White;
