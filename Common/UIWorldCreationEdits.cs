@@ -60,16 +60,26 @@ namespace AltLibrary.Common
             On.Terraria.GameContent.UI.States.UIWorldCreation.AddWorldEvilOptions += OnAddWorldEvilOptions;
             On.Terraria.GameContent.UI.States.UIWorldCreation.SetDefaultOptions += UIWorldCreation_SetDefaultOptions;
             On.Terraria.GameContent.UI.States.UIWorldCreation.BuildPage += UIWorldCreation_BuildPage;
-            On.Terraria.GameContent.UI.States.UIWorldCreation.Draw += UIWorldCreation_Draw;
+            IL.Terraria.GameContent.UI.States.UIWorldCreation.Draw += UIWorldCreation_Draw;
             IL.Terraria.GameContent.UI.States.UIWorldCreation.FinishCreatingWorld += UIWorldCreation_FinishCreatingWorld;
             IL.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf += UIWorldCreationPreview_DrawSelf1;
             On.Terraria.GameContent.UI.Elements.UIWorldListItem.PlayGame += UIWorldListItem_PlayGame;
         }
 
-        private static void UIWorldCreation_Draw(On.Terraria.GameContent.UI.States.UIWorldCreation.orig_Draw orig, UIWorldCreation self, SpriteBatch spriteBatch)
+        private static void UIWorldCreation_Draw(ILContext il)
         {
-            orig(self, spriteBatch);
-            seed = (string)typeof(UIWorldCreation).GetField("_optionSeed", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
+            ILCursor c = new(il);
+            if (!c.TryGotoNext(i => i.MatchRet() && i.Offset != 0))
+            {
+                AltLibrary.Instance.Logger.Info("3 $ 1");
+                return;
+            }
+
+            c.Emit(OpCodes.Ldarg, 0);
+            c.EmitDelegate<Action<UIWorldCreation>>((self) =>
+            {
+                seed = (string)typeof(UIWorldCreation).GetField("_optionSeed", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
+            });
         }
 
         private static void UIWorldCreationPreview_DrawSelf1(ILContext il)
