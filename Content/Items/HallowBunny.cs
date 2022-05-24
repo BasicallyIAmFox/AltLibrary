@@ -37,7 +37,7 @@ namespace AltLibrary.Content.Items
             return base.PreDrawTooltipLine(line, ref yOffset);
         }
 
-        private class CustomRarity : ModRarity
+        internal class CustomRarity : ModRarity
         {
             public override Color RarityColor
             {

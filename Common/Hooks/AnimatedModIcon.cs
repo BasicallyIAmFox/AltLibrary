@@ -4,11 +4,13 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour.HookGen;
 using System;
+using System.Linq;
 using System.Reflection;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
+using Terraria.ModLoader;
 using Terraria.UI;
 
 namespace AltLibrary.Common.Hooks
@@ -33,18 +35,15 @@ namespace AltLibrary.Common.Hooks
         {
             var UIMods = typeof(Main).Assembly.GetType("Terraria.ModLoader.UI.UIModItem");
             Limits = UIMods.GetMethod("OnInitialize", BindingFlags.Public | BindingFlags.Instance);
-            if (Limits != null)
-            {
-                ModifyLimits += AnimatedModIcon_ModifyLimits;
-            }
+            ModifyLimits += AnimatedModIcon_ModifyLimits;
+            NoSecretItems.Load();
         }
 
         internal static void Unload()
         {
-            if (Limits != null)
-            {
-                ModifyLimits -= AnimatedModIcon_ModifyLimits;
-            }
+            ModifyLimits -= AnimatedModIcon_ModifyLimits;
+            Limits = null;
+            NoSecretItems.Unload();
         }
 
         private static void AnimatedModIcon_ModifyLimits(ILContext il)
@@ -109,6 +108,90 @@ namespace AltLibrary.Common.Hooks
 
             c.MarkLabel(label);
             c.Emit(OpCodes.Ldarg, 0);
+
+            if (!c.TryGotoNext(i => i.MatchLdarg(0),
+                i => i.MatchLdcI4(1),
+                i => i.MatchStfld(out _),
+                i => i.MatchLdcI4(6),
+                i => i.MatchNewarr(out _),
+                i => i.MatchDup(),
+                i => i.MatchLdcI4(0),
+                i => i.MatchLdloc(1),
+                i => i.MatchCallvirt(out _),
+                i => i.MatchCall(out _),
+                i => i.MatchStelemI4(),
+                i => i.MatchDup(),
+                i => i.MatchLdcI4(1)))
+            {
+                AltLibrary.Instance.Logger.Info("a $ 6");
+                return;
+            }
+
+            if (!c.TryGotoNext(i => i.MatchLdloc(1),
+                i => i.MatchCallvirt(out _),
+                i => i.MatchCall(out _),
+                i => i.MatchStelemI4(),
+                i => i.MatchDup(),
+                i => i.MatchLdcI4(1)))
+            {
+                AltLibrary.Instance.Logger.Info("a $ 7");
+                return;
+            }
+
+            c.Index += 3;
+            c.Emit(OpCodes.Ldloc, 1);
+            c.EmitDelegate<Func<int, Mod, int>>((itemCount, mod) =>
+            {
+                if (mod.Name == AltLibrary.Instance.Name)
+                {
+                    return itemCount - 2;
+                }
+                return itemCount;
+            });
+
+            if (!c.TryGotoNext(i => i.MatchLdloc(1),
+                i => i.MatchCallvirt(out _),
+                i => i.MatchCall(out _),
+                i => i.MatchStelemI4(),
+                i => i.MatchDup(),
+                i => i.MatchLdcI4(2)))
+            {
+                AltLibrary.Instance.Logger.Info("a $ 8");
+                return;
+            }
+
+            c.Index += 3;
+            c.Emit(OpCodes.Ldloc, 1);
+            c.EmitDelegate<Func<int, Mod, int>>((npcCount, mod) =>
+            {
+                if (mod.Name == AltLibrary.Instance.Name)
+                {
+                    return npcCount - 1;
+                }
+                return npcCount;
+            });
+
+            if (!c.TryGotoNext(i => i.MatchLdloc(1),
+                i => i.MatchCallvirt(out _),
+                i => i.MatchCall(out _),
+                i => i.MatchStelemI4(),
+                i => i.MatchDup(),
+                i => i.MatchLdcI4(3)))
+            {
+                AltLibrary.Instance.Logger.Info("a $ 9");
+                return;
+            }
+
+            c.Index += 3;
+            c.Emit(OpCodes.Ldloc, 1);
+            c.EmitDelegate<Func<int, Mod, int>>((tileCount, mod) =>
+            {
+                if (mod.Name == AltLibrary.Instance.Name)
+                {
+                    return tileCount - 1;
+                }
+                return tileCount;
+            });
         }
 
         private static void Image_OnUpdate(UIElement affectedElement)

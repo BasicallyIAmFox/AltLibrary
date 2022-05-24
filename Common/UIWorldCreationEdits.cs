@@ -61,8 +61,9 @@ namespace AltLibrary.Common
             On.Terraria.GameContent.UI.States.UIWorldCreation.BuildPage += UIWorldCreation_BuildPage;
             IL.Terraria.GameContent.UI.States.UIWorldCreation.Draw += UIWorldCreation_Draw;
             IL.Terraria.GameContent.UI.States.UIWorldCreation.FinishCreatingWorld += UIWorldCreation_FinishCreatingWorld;
-            IL.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf += UIWorldCreationPreview_DrawSelf1;
+            //IL.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf += UIWorldCreationPreview_DrawSelf1;
             On.Terraria.GameContent.UI.Elements.UIWorldListItem.PlayGame += UIWorldListItem_PlayGame;
+            On.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf += UIWorldCreationPreview_DrawSelf;
         }
 
         public static void Unload()
@@ -73,8 +74,128 @@ namespace AltLibrary.Common
             On.Terraria.GameContent.UI.States.UIWorldCreation.BuildPage -= UIWorldCreation_BuildPage;
             IL.Terraria.GameContent.UI.States.UIWorldCreation.Draw -= UIWorldCreation_Draw;
             IL.Terraria.GameContent.UI.States.UIWorldCreation.FinishCreatingWorld -= UIWorldCreation_FinishCreatingWorld;
-            IL.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf -= UIWorldCreationPreview_DrawSelf1;
+            //IL.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf -= UIWorldCreationPreview_DrawSelf1;
             On.Terraria.GameContent.UI.Elements.UIWorldListItem.PlayGame -= UIWorldListItem_PlayGame;
+            On.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf -= UIWorldCreationPreview_DrawSelf;
+        }
+
+        private static void UIWorldCreationPreview_DrawSelf(On.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.orig_DrawSelf orig, UIWorldCreationPreview self, SpriteBatch spriteBatch)
+        {
+            byte _difficulty = (byte)typeof(UIWorldCreationPreview).GetField("_difficulty", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
+            byte _size = (byte)typeof(UIWorldCreationPreview).GetField("_size", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
+            Asset<Texture2D> _BackgroundNormalTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BackgroundNormalTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
+            Asset<Texture2D> _BackgroundExpertTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BackgroundExpertTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
+            Asset<Texture2D> _BackgroundMasterTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BackgroundMasterTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
+            Asset<Texture2D> _EvilCorruptionTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_EvilCorruptionTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
+            Asset<Texture2D> _EvilCrimsonTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_EvilCrimsonTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
+            Asset<Texture2D> _EvilRandomTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_EvilRandomTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
+            Asset<Texture2D> _BunnyNormalTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BunnyNormalTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
+            Asset<Texture2D> _BunnyExpertTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BunnyExpertTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
+            Asset<Texture2D> _BunnyMasterTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BunnyMasterTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
+            Asset<Texture2D> _BunnyCreativeTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BunnyCreativeTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
+            Asset<Texture2D> _BorderTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BorderTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
+
+            CalculatedStyle dimensions = self.GetDimensions();
+            Vector2 position = new(dimensions.X + 4f, dimensions.Y + 4f);
+            Color color = Color.White;
+            switch (_difficulty)
+            {
+                case 0:
+                case 3:
+                    spriteBatch.Draw(_BackgroundNormalTexture.Value, position, Color.White);
+                    color = Color.White;
+                    break;
+                case 1:
+                    spriteBatch.Draw(_BackgroundExpertTexture.Value, position, Color.White);
+                    color = Color.DarkGray;
+                    break;
+                case 2:
+                    spriteBatch.Draw(_BackgroundMasterTexture.Value, position, Color.White);
+                    color = Color.DarkGray;
+                    break;
+            }
+            #region Custom
+            string var = _size switch
+            {
+                0 => "Small",
+                1 => "Medium",
+                2 => "Large",
+                _ => "Small",
+            };
+            string folder = (seed != null ? seed.ToLower() : "") switch
+            {
+                "05162020" or "5162020" => "Drunk",
+                "not the bees" or "not the bees!" => "NotTheBees",
+                "for the worthy" => "ForTheWorthy",
+                "celebrationmk10" or "05162011" or "5162011" or "05162021" or "5162021" => "Anniversary",
+                "constant" or "theconstant" or "​the constant" or "eye4aneye" or "eye4aneye" => "Constant",
+                _ => "",
+            };
+            bool broken = false;
+            if (AltLibrary.PreviewWorldIcons.Count > 0)
+            {
+                foreach (AltLibrary.CustomPreviews preview in AltLibrary.PreviewWorldIcons)
+                {
+                    if ((seed != null ? seed.ToLower() : "").ToLower() == preview.seed.ToLower())
+                    {
+                        switch (_size)
+                        {
+                            case 0:
+                            default:
+                                spriteBatch.Draw(ModContent.Request<Texture2D>(preview.pathSmall, AssetRequestMode.ImmediateLoad).Value, position, color);
+                                break;
+                            case 1:
+                                spriteBatch.Draw(ModContent.Request<Texture2D>(preview.pathMedium, AssetRequestMode.ImmediateLoad).Value, position, color);
+                                break;
+                            case 2:
+                                spriteBatch.Draw(ModContent.Request<Texture2D>(preview.pathLarge, AssetRequestMode.ImmediateLoad).Value, position, color);
+                                break;
+                        }
+                        broken = true;
+                    }
+                }
+            }
+            if (!broken)
+            {
+                if (folder != "" && AltLibraryConfig.Config.SpecialSeedWorldPreview)
+                {
+                    spriteBatch.Draw(ModContent.Request<Texture2D>($"AltLibrary/Assets/WorldPreviews/{folder}/{var}", AssetRequestMode.ImmediateLoad).Value, position, color);
+                }
+                else
+                {
+                    spriteBatch.Draw(Main.Assets.Request<Texture2D>($"Images/UI/WorldCreation/PreviewSize{var}", AssetRequestMode.ImmediateLoad).Value, position, color);
+                }
+            }
+            Asset<Texture2D> asset = AltEvilBiomeChosenType switch
+            {
+                -333 => _EvilCorruptionTexture,
+                -666 => _EvilCrimsonTexture,
+                _ => _EvilRandomTexture,
+            };
+            if (AltEvilBiomeChosenType > -1)
+            {
+                asset = AltLibrary.Biomes[AltEvilBiomeChosenType].IconLarge == null ? ALTextureAssets.NullPreview : ModContent.Request<Texture2D>(AltLibrary.Biomes[AltEvilBiomeChosenType].IconLarge, AssetRequestMode.ImmediateLoad);
+            }
+            spriteBatch.Draw(asset.Value, position, color);
+            #endregion
+            switch (_difficulty)
+            {
+                case 0:
+                    spriteBatch.Draw(_BunnyNormalTexture.Value, position, color);
+                    break;
+                case 1:
+                    spriteBatch.Draw(_BunnyExpertTexture.Value, position, color);
+                    break;
+                case 2:
+                    spriteBatch.Draw(_BunnyMasterTexture.Value, position, color * 1.2f);
+                    break;
+                case 3:
+                    spriteBatch.Draw(_BunnyCreativeTexture.Value, position, color);
+                    break;
+            }
+            spriteBatch.Draw(_BorderTexture.Value, new Vector2(dimensions.X, dimensions.Y), Color.White);
+
+            WorldCreationUIIcons(self, spriteBatch);
         }
 
         private static void UIWorldCreation_Draw(ILContext il)
@@ -93,6 +214,7 @@ namespace AltLibrary.Common
             });
         }
 
+        /*
         private static void UIWorldCreationPreview_DrawSelf1(ILContext il)
         {
             ILCursor c = new(il);
@@ -260,7 +382,7 @@ namespace AltLibrary.Common
                 return;
             }
 
-            c.Index++;
+            c.Emit(OpCodes.Ldarg, 0);
             c.Emit(OpCodes.Ldarg, 1);
             c.Emit(OpCodes.Ldloc, 1);
             c.Emit(OpCodes.Ldloc, 2);
@@ -280,12 +402,8 @@ namespace AltLibrary.Common
                     }
                 }
             });
-            c.Emit(OpCodes.Ldarg, 0);
-            c.Emit(OpCodes.Ldarg, 1);
-            c.EmitDelegate(WorldCreationUIIcons);
-
-            c.Emit(OpCodes.Ldarg, 0);
         }
+        */
 
         private static void UIWorldListItem_PlayGame(On.Terraria.GameContent.UI.Elements.UIWorldListItem.orig_PlayGame orig, UIWorldListItem self, UIMouseEvent evt, UIElement listeningElement)
         {

@@ -25,7 +25,6 @@ namespace AltLibrary
 
         internal static List<AltLiquidStyle> LiquidStyles;
 
-        internal static Dictionary<string, float> HellAltTrans;
         internal static List<CustomPreviews> PreviewWorldIcons;
 
         // Spreading related lists.
@@ -38,6 +37,11 @@ namespace AltLibrary
         internal static bool HallowBunnyUnlocked;
         internal static int ModIconVariation;
 
+        public AltLibrary()
+        {
+            Instance = this;
+        }
+
         public override void Load()
         {
             ILHooks.OnInitialize();
@@ -47,11 +51,9 @@ namespace AltLibrary
             TimeHoveringOnIcon = 0;
             HallowBunnyUnlocked = false;
             PreviewWorldIcons = new();
-            Instance = this;
             Biomes = new();
             Ores = new();
             LiquidStyles = new();
-            HellAltTrans = new();
             planteraBulbs = new() { TileID.PlanteraBulb };
             jungleGrass = new() { TileID.JungleGrass };
             jungleThorns = new() { TileID.JungleThorns };
@@ -99,7 +101,6 @@ namespace AltLibrary
             Biomes = null;
             Ores = null;
             LiquidStyles = null;
-            HellAltTrans = null;
             planteraBulbs = null;
             jungleGrass = null;
             jungleThorns = null;

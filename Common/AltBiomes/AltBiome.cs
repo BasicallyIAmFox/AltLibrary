@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -18,7 +19,6 @@ namespace AltLibrary.Common.AltBiomes
         /// Tells the Library what biome this is an alternative to
         /// </summary>
         public BiomeType BiomeType { get; set; }
-        public ModBiome Biome { get; set; }
         public int Type { get; internal set; }
 
         /// <summary>
@@ -297,7 +297,10 @@ namespace AltLibrary.Common.AltBiomes
                 if (BiomeOre != null) AltLibrary.evilStoppingOres.Add((int)BiomeOre);
                 if (BiomeOreBrick != null) AltLibrary.evilStoppingOres.Add((int)BiomeOreBrick);
             }
-            AltLibrary.HellAltTrans.Add(FullName, 0f);
+            if (BiomeType == BiomeType.Hell && AltUnderworldBackgrounds != null && AltUnderworldBackgrounds.Length != TextureAssets.Underworld.Length)
+            {
+                throw new IndexOutOfRangeException(nameof(AltUnderworldBackgrounds) + " length isn't same as Underworld's! (" + TextureAssets.Underworld.Length + ")");
+            }
             Type = AltLibrary.Biomes.Count;
         }
     }

@@ -15,13 +15,11 @@ namespace AltLibrary.Common.Systems
                                   new int[] { ItemID.DeerThing },
                                   new int[] { ItemID.DemoniteOre },
                                   "AltLibrary:EvilOres",
-                                  ref i,
                                   ItemID.CrimtaneOre);
                 ReplaceRecipe(ref recipe,
                                   new int[] { ItemID.Magiluminescence },
                                   new int[] { ItemID.DemoniteBar },
                                   "AltLibrary:EvilBars",
-                                  ref i,
                                   ItemID.CrimtaneBar);
                 ReplaceRecipe(ref recipe,
                                   new int[] { ItemID.OpticStaff, ItemID.PumpkinMoonMedallion },
@@ -43,20 +41,17 @@ namespace AltLibrary.Common.Systems
                                   new int[] { ItemID.PeaceCandle, ItemID.Throne, ItemID.FlinxFurCoat, ItemID.FlinxStaff },
                                   new int[] { ItemID.GoldBar },
                                   "AltLibrary:GoldBars",
-                                  ref i,
                                   ItemID.PlatinumBar);
                 ReplaceRecipe(ref recipe,
                                   new int[] { ItemID.FrostBreastplate, ItemID.FrostLeggings, ItemID.FrostHelmet, ItemID.AncientBattleArmorHat, ItemID.AncientBattleArmorPants, ItemID.AncientBattleArmorShirt },
                                   new int[] { ItemID.AdamantiteBar },
                                   "AltLibrary:AdamantiteBars",
-                                  ref i,
                                   ItemID.TitaniumBar);
 
                 ReplaceRecipe(ref recipe,
                                   new int[] { ItemID.NightsEdge },
                                   new int[] { ItemID.LightsBane },
                                   "AltLibrary:EvilSwords",
-                                  ref i,
                                   ItemID.BloodButcherer);
                 ReplaceRecipe(ref recipe,
                                   new int[] { ItemID.NightsEdge },
@@ -79,7 +74,6 @@ namespace AltLibrary.Common.Systems
                                   new int[] { ItemID.MonsterLasagna, ItemID.CoffinMinecart, ItemID.MechanicalWorm, ItemID.BattlePotion },
                                   new int[] { ItemID.RottenChunk },
                                   "AltLibrary:RottenChunks",
-                                  ref i,
                                   ItemID.Vertebrae);
                 ReplaceRecipe(ref recipe,
                                   new int[] { ItemID.MeteorStaff, ItemID.GreaterHealingPotion },
@@ -97,7 +91,6 @@ namespace AltLibrary.Common.Systems
                                   new int[] { ItemID.VoidLens, ItemID.VoidVault, ItemID.ObsidianHelm, ItemID.ObsidianShirt, ItemID.ObsidianPants },
                                   new int[] { ItemID.ShadowScale },
                                   "AltLibrary:ShadowScales",
-                                  ref i,
                                   ItemID.TissueSample);
 
                 ReplaceRecipe(ref recipe,
@@ -126,25 +119,21 @@ namespace AltLibrary.Common.Systems
                                   new int[] { ItemID.WaterCandle },
                                   new int[] { ItemID.Candle },
                                   "AltLibrary:GoldCandles",
-                                  ref i,
                                   ItemID.PlatinumCandle);
                 ReplaceRecipe(ref recipe,
                                   new int[] { ItemID.Timer5Second },
                                   new int[] { ItemID.CopperWatch },
                                   "AltLibrary:CopperWatches",
-                                  ref i,
                                   ItemID.TinWatch);
                 ReplaceRecipe(ref recipe,
                                   new int[] { ItemID.Timer3Second },
                                   new int[] { ItemID.SilverWatch },
                                   "AltLibrary:SilverWatches",
-                                  ref i,
                                   ItemID.TungstenWatch);
                 ReplaceRecipe(ref recipe,
                                   new int[] { ItemID.Timer1Second },
                                   new int[] { ItemID.GoldWatch },
                                   "AltLibrary:GoldWatches",
-                                  ref i,
                                   ItemID.PlatinumWatch);
             }
         }
@@ -169,7 +158,7 @@ namespace AltLibrary.Common.Systems
             }
         }
 
-        private static void ReplaceRecipe(ref Recipe r, int[] results, int[] ingredients, string group, ref int i, int altIng)
+        private static void ReplaceRecipe(ref Recipe r, int[] results, int[] ingredients, string group, int altIng)
         {
             foreach (int result in results)
             {
@@ -180,7 +169,6 @@ namespace AltLibrary.Common.Systems
                         if (r.HasIngredient(altIng))
                         {
                             r.DisableRecipe();
-                            //i--; // not need anymore?
                         }
                         else if (r.HasIngredient(ingredient))
                         {
