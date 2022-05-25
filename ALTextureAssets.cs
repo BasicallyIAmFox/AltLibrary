@@ -1,5 +1,7 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using AltLibrary.Common.AltBiomes;
+using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -29,6 +31,12 @@ namespace AltLibrary
         internal static Asset<Texture2D> WorldIconAnniversary;
         internal static Asset<Texture2D> WorldIconDontStarve;
         internal static Asset<Texture2D> NullPreview;
+        internal static Asset<Texture2D> OuterTexture;
+        internal static Asset<Texture2D> OuterLowerTexture;
+        internal static Asset<Texture2D>[] BiomeIconLarge;
+        internal static Asset<Texture2D>[] BiomeIconSmall;
+        internal static Asset<Texture2D>[] BiomeOuter;
+        internal static Asset<Texture2D>[] BiomeLower;
 
         internal static void Load()
         {
@@ -57,6 +65,55 @@ namespace AltLibrary
             WorldIconAnniversary = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/IconAnniversary", AssetRequestMode.ImmediateLoad);
             WorldIconDontStarve = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/IconDontStarve", AssetRequestMode.ImmediateLoad);
             NullPreview = ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/NullBiomePreview", AssetRequestMode.ImmediateLoad);
+            OuterTexture = ModContent.Request<Texture2D>("AltLibrary/Assets/Loading/Outer Empty", AssetRequestMode.ImmediateLoad);
+            OuterLowerTexture = ModContent.Request<Texture2D>("AltLibrary/Assets/Loading/Outer Lower Empty", AssetRequestMode.ImmediateLoad);
+        }
+
+        internal static void PostContentLoad()
+        {
+            List<Asset<Texture2D>> biomeLarge = new();
+            biomeLarge.Clear();
+            foreach (AltBiome biome in AltLibrary.Biomes)
+            {
+                string path = null;
+                if (ModContent.RequestIfExists(biome.IconLarge, out Asset<Texture2D> asset))
+                    path = asset.Name;
+                biomeLarge.Add(path != null ? ModContent.Request<Texture2D>(path, AssetRequestMode.ImmediateLoad) : null);
+            }
+            BiomeIconLarge = biomeLarge.ToArray();
+
+            List<Asset<Texture2D>> biomeSmall = new();
+            biomeSmall.Clear();
+            foreach (AltBiome biome in AltLibrary.Biomes)
+            {
+                string path = "AltLibrary/Assets/Menu/Empty";
+                if (ModContent.RequestIfExists(biome.IconSmall, out Asset<Texture2D> asset))
+                    path = asset.Name;
+                biomeSmall.Add(path != "AltLibrary/Assets/Menu/Empty" ? ModContent.Request<Texture2D>(path, AssetRequestMode.ImmediateLoad) : null);
+            }
+            BiomeIconSmall = biomeSmall.ToArray();
+
+            List<Asset<Texture2D>> biomeOuter = new();
+            biomeOuter.Clear();
+            foreach (AltBiome biome in AltLibrary.Biomes)
+            {
+                string path = "AltLibrary/Assets/Loading/Outer Empty";
+                if (ModContent.RequestIfExists(biome.OuterTexture, out Asset<Texture2D> asset))
+                    path = asset.Name;
+                biomeOuter.Add(path != "AltLibrary/Assets/Loading/Outer Empty" ? ModContent.Request<Texture2D>(path, AssetRequestMode.ImmediateLoad) : OuterTexture);
+            }
+            BiomeOuter = biomeOuter.ToArray();
+
+            List<Asset<Texture2D>> biomeLower = new();
+            biomeLower.Clear();
+            foreach (AltBiome biome in AltLibrary.Biomes)
+            {
+                string path = "AltLibrary/Assets/Loading/Outer Lower Empty";
+                if (ModContent.RequestIfExists(biome.LowerTexture, out Asset<Texture2D> asset))
+                    path = asset.Name;
+                biomeLower.Add(path != "AltLibrary/Assets/Loading/Outer Lower Empty" ? ModContent.Request<Texture2D>(path, AssetRequestMode.ImmediateLoad) : OuterLowerTexture);
+            }
+            BiomeLower = biomeLower.ToArray();
         }
 
         internal static void Unload()
@@ -81,6 +138,12 @@ namespace AltLibrary
             WorldIconNotTheBees = null;
             WorldIconAnniversary = null;
             WorldIconDontStarve = null;
+            BiomeIconLarge = null;
+            BiomeIconSmall = null;
+            BiomeLower = null;
+            BiomeOuter = null;
+            OuterTexture = null;
+            OuterLowerTexture = null;
         }
     }
 }

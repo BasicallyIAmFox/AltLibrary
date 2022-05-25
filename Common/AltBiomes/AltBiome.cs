@@ -106,7 +106,7 @@ namespace AltLibrary.Common.AltBiomes
         /// <summary>
         /// For Evil alts. Whether or not this biome will turn mud into dirt, as the Corruption and Crimson do. Defaults to false.
         /// </summary>
-        public bool MudToDirt => false;
+        public virtual bool MudToDirt => false;
         /// <summary>
         /// For Evil and Hallow alts. The tile that this biome will convert jungle grass into. Leave null to not convert Jungle grass.
         /// For Evil alts, this should be the same as biomeGrass.
@@ -317,6 +317,16 @@ namespace AltLibrary.Common.AltBiomes
         public WallContext AddReplacement(ushort orig, ushort with)
         {
             wallsReplacement.Add(orig, with);
+            return this;
+        }
+
+        public WallContext AddReplacement<T>(params ushort[] orig) where T : ModWall
+        {
+            ushort type = ContentInstance<T>.Instance.Type;
+            foreach (ushort original in orig)
+            {
+                wallsReplacement.Add(original, type);
+            }
             return this;
         }
     }

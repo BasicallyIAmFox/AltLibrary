@@ -174,7 +174,7 @@ namespace AltLibrary.Common
             };
             if (AltEvilBiomeChosenType > -1)
             {
-                asset = AltLibrary.Biomes[AltEvilBiomeChosenType].IconLarge == null ? ALTextureAssets.NullPreview : ModContent.Request<Texture2D>(AltLibrary.Biomes[AltEvilBiomeChosenType].IconLarge, AssetRequestMode.ImmediateLoad);
+                asset = ALTextureAssets.BiomeIconLarge[AltEvilBiomeChosenType] == null ? ALTextureAssets.NullPreview : ALTextureAssets.BiomeIconLarge[AltEvilBiomeChosenType];
             }
             spriteBatch.Draw(asset.Value, position, color);
             #endregion

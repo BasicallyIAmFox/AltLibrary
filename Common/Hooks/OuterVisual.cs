@@ -8,6 +8,7 @@ using MonoMod.Cil;
 using ReLogic.Content;
 using System;
 using System.Linq;
+using System.Reflection;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
@@ -70,16 +71,18 @@ namespace AltLibrary.Common.Hooks
             }
             c.Index++;
             c.Emit(OpCodes.Pop);
-            c.EmitDelegate(() =>
+            c.Emit(OpCodes.Ldarg, 0);
+            c.Emit(OpCodes.Call, typeof(UIGenProgressBar).GetField("_texOuterCorrupt", BindingFlags.Instance | BindingFlags.NonPublic));
+            c.Emit(OpCodes.Ldarg, 0);
+            c.Emit(OpCodes.Call, typeof(UIGenProgressBar).GetField("_texOuterCrimson", BindingFlags.Instance | BindingFlags.NonPublic));
+            c.EmitDelegate<Func<Asset<Texture2D>, Asset<Texture2D>, Asset<Texture2D>>>((corrupt, crimson) =>
             {
                 int worldGenStep = 0;
                 if (WorldGen.crimson) worldGenStep = 1;
                 if (WorldBiomeManager.WorldEvil != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).Type + 2;
 
                 Asset<Texture2D> asset = ILHooks.EmptyAsset;
-                return worldGenStep <= 1 ? (worldGenStep == 0 ?
-                    Main.Assets.Request<Texture2D>("Images/UI/WorldGen/Outer_Corrupt") :
-                    Main.Assets.Request<Texture2D>("Images/UI/WorldGen/Outer_Crimson")) : asset;
+                return worldGenStep <= 1 ? (worldGenStep == 0 ? corrupt : crimson) : asset;
             });
             if (!c.TryGotoNext(i => i.MatchLdfld<UIGenProgressBar>("_texOuterCrimson")))
             {
@@ -88,15 +91,17 @@ namespace AltLibrary.Common.Hooks
             }
             c.Index++;
             c.Emit(OpCodes.Pop);
-            c.EmitDelegate(() =>
+            c.Emit(OpCodes.Ldarg, 0);
+            c.Emit(OpCodes.Call, typeof(UIGenProgressBar).GetField("_texOuterCorrupt", BindingFlags.Instance | BindingFlags.NonPublic));
+            c.Emit(OpCodes.Ldarg, 0);
+            c.Emit(OpCodes.Call, typeof(UIGenProgressBar).GetField("_texOuterCrimson", BindingFlags.Instance | BindingFlags.NonPublic));
+            c.EmitDelegate<Func<Asset<Texture2D>, Asset<Texture2D>, Asset<Texture2D>>>((corrupt, crimson) =>
             {
                 int worldGenStep = 0;
                 if (WorldGen.crimson) worldGenStep = 1;
                 if (WorldBiomeManager.WorldEvil != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).Type + 2;
                 Asset<Texture2D> asset = ILHooks.EmptyAsset;
-                return worldGenStep <= 1 ? (worldGenStep == 0 ?
-                    Main.Assets.Request<Texture2D>("Images/UI/WorldGen/Outer_Corrupt") :
-                    Main.Assets.Request<Texture2D>("Images/UI/WorldGen/Outer_Crimson")) : asset;
+                return worldGenStep <= 1 ? (worldGenStep == 0 ? corrupt : crimson) : asset;
             });
             if (!c.TryGotoNext(i => i.MatchCallvirt(out _)))
             {
@@ -111,21 +116,24 @@ namespace AltLibrary.Common.Hooks
             c.Index++;
             c.Emit(OpCodes.Ldarg, 1);
             c.Emit(OpCodes.Ldloc, 6);
-            c.EmitDelegate<Action<SpriteBatch, Rectangle>>((spriteBatch, r) =>
+            c.Emit(OpCodes.Ldarg, 0);
+            c.Emit(OpCodes.Call, typeof(UIGenProgressBar).GetField("_texOuterCorrupt", BindingFlags.Instance | BindingFlags.NonPublic));
+            c.Emit(OpCodes.Ldarg, 0);
+            c.Emit(OpCodes.Call, typeof(UIGenProgressBar).GetField("_texOuterCrimson", BindingFlags.Instance | BindingFlags.NonPublic));
+            c.EmitDelegate<Action<SpriteBatch, Rectangle, Asset<Texture2D>, Asset<Texture2D>>>((spriteBatch, r, corrupt, crimson) =>
             {
                 int worldGenStep = 0;
                 if (WorldGen.crimson) worldGenStep = 1;
                 if (WorldBiomeManager.WorldEvil != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).Type + 2;
                 if (WorldGen.drunkWorldGen && Main.rand.NextBool(2)) worldGenStep = Main.rand.Next(AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Evil).ToList().Count + 2);
                 Asset<Texture2D> asset = ILHooks.EmptyAsset;
-                if (worldGenStep == 0) asset = Main.Assets.Request<Texture2D>("Images/UI/WorldGen/Outer_Corrupt");
-                if (worldGenStep == 1) asset = Main.Assets.Request<Texture2D>("Images/UI/WorldGen/Outer_Crimson");
+                if (worldGenStep == 0) asset = corrupt;
+                if (worldGenStep == 1) asset = crimson;
                 foreach (AltBiome biome in AltLibrary.Biomes)
                 {
                     if (worldGenStep == biome.Type + 2 && biome.BiomeType == BiomeType.Evil)
                     {
-                        asset = ModContent.Request<Texture2D>(ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).OuterTexture)
-                            ?? ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Outer Lower Empty");
+                        asset = ALTextureAssets.BiomeOuter[biome.Type - 1];
                     }
                 }
                 spriteBatch.Draw(asset.Value, r.TopLeft(), Color.White);
@@ -137,12 +145,14 @@ namespace AltLibrary.Common.Hooks
             }
             c.Index++;
             c.Emit(OpCodes.Pop);
-            c.EmitDelegate(() =>
+            c.Emit(OpCodes.Ldarg, 0);
+            c.Emit(OpCodes.Call, typeof(UIGenProgressBar).GetField("_texOuterLower", BindingFlags.Instance | BindingFlags.NonPublic));
+            c.EmitDelegate<Func<Asset<Texture2D>, Asset<Texture2D>>>((lower) =>
             {
                 int worldGenStep = 0;
                 if (WorldBiomeManager.WorldHell != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).Type + 1;
                 Asset<Texture2D> asset = ILHooks.EmptyLower;
-                return worldGenStep <= 0 ? Main.Assets.Request<Texture2D>("Images/UI/WorldGen/Outer_Lower") : asset;
+                return worldGenStep <= 0 ? lower : asset;
             });
             if (!c.TryGotoNext(i => i.MatchCallvirt(out _)))
             {
@@ -157,19 +167,20 @@ namespace AltLibrary.Common.Hooks
             c.Index++;
             c.Emit(OpCodes.Ldarg, 1);
             c.Emit(OpCodes.Ldloc, 6);
-            c.EmitDelegate<Action<SpriteBatch, Rectangle>>((spriteBatch, r) =>
+            c.Emit(OpCodes.Ldarg, 0);
+            c.Emit(OpCodes.Call, typeof(UIGenProgressBar).GetField("_texOuterLower", BindingFlags.Instance | BindingFlags.NonPublic));
+            c.EmitDelegate<Action<SpriteBatch, Rectangle, Asset<Texture2D>>>((spriteBatch, r, lower) =>
             {
                 int worldGenStep = 0;
                 if (WorldBiomeManager.WorldHell != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).Type + 1;
                 if (WorldGen.drunkWorldGen && Main.rand.NextBool(2)) worldGenStep = Main.rand.Next(AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hell).ToList().Count + 1);
                 Asset<Texture2D> asset = ILHooks.EmptyLower;
-                if (worldGenStep == 0) asset = Main.Assets.Request<Texture2D>("Images/UI/WorldGen/Outer_Lower");
+                if (worldGenStep == 0) asset = lower;
                 foreach (AltBiome biome in AltLibrary.Biomes)
                 {
                     if (worldGenStep == biome.Type + 1 && biome.BiomeType == BiomeType.Hell)
                     {
-                        asset = ModContent.Request<Texture2D>(ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).LowerTexture)
-                            ?? ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Outer Lower Empty");
+                        asset = ALTextureAssets.BiomeLower[biome.Type - 1];
                     }
                 }
                 spriteBatch.Draw(asset.Value, r.TopLeft() + new Vector2(44f, 60f), Color.White);

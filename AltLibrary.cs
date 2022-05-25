@@ -60,6 +60,11 @@ namespace AltLibrary
             evilStoppingOres = new() { TileID.Chlorophyte, TileID.ChlorophyteBrick };
         }
 
+        public override void PostSetupContent()
+        {
+            ALTextureAssets.PostContentLoad();
+        }
+
         public override object Call(params object[] args)
         {
             if (args is null)
