@@ -53,7 +53,7 @@ namespace AltLibrary.Core.UIs
             if (biome.BiomeType == BiomeType.Hell) ifUnknown = ALTextureAssets.ButtonHell;
             if (biome.BiomeType == BiomeType.Jungle) ifUnknown = ALTextureAssets.ButtonJungle;
             Rectangle frame = new(0, 0, 30, 30);
-            biomeIcon = new UIImageFramed(biome.IconSmall == null ? ifUnknown : ALTextureAssets.BiomeIconSmall[biome.Type - 1], frame);
+            biomeIcon = new UIImageFramed(biome.IconSmall == null ? ifUnknown : ModContent.Request<Texture2D>(biome.IconSmall, AssetRequestMode.ImmediateLoad), frame);
             biomeIcon.Left.Set(-50f, 0f);
             biomeIcon.Width.Set(-50f, 0f);
             biomeIcon.Left.Set(num7, 0f);

@@ -1,4 +1,5 @@
-﻿using MonoMod.Cil;
+﻿using AltLibrary.Common.AltBiomes;
+using MonoMod.Cil;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using Terraria.GameContent.UI.Elements;
 using Terraria.IO;
+using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 
@@ -48,6 +50,36 @@ namespace AltLibrary.Common
                 default:
                     throw new ArgumentException("Invalid type: " + typeof(T).Name, nameof(id));
             }
+        }
+
+        public static bool IsWorldValid(UIWorldListItem self)
+        {
+            GetWorldData(self, out Dictionary<string, AltLibraryConfig.WorldDataValues> tempDict, out string path2);
+            bool valid = true;
+            if (tempDict.ContainsKey(path2))
+            {
+                if (tempDict[path2].worldHallow != "" && !ModContent.TryFind<AltBiome>(tempDict[path2].worldHallow, out _))
+                {
+                    valid = false;
+                }
+                if (tempDict[path2].worldEvil != "" && !ModContent.TryFind<AltBiome>(tempDict[path2].worldEvil, out _))
+                {
+                    valid = false;
+                }
+                if (tempDict[path2].worldHell != "" && !ModContent.TryFind<AltBiome>(tempDict[path2].worldHell, out _))
+                {
+                    valid = false;
+                }
+                if (tempDict[path2].worldJungle != "" && !ModContent.TryFind<AltBiome>(tempDict[path2].worldJungle, out _))
+                {
+                    valid = false;
+                }
+                if (tempDict[path2].drunkEvil != "" && !ModContent.TryFind<AltBiome>(tempDict[path2].drunkEvil, out _))
+                {
+                    valid = false;
+                }
+            }
+            return valid;
         }
 
         public static void GetWorldData(UIWorldListItem self, out Dictionary<string, AltLibraryConfig.WorldDataValues> tempDict, out string path2)

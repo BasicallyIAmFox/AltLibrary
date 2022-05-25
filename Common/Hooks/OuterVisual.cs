@@ -72,9 +72,9 @@ namespace AltLibrary.Common.Hooks
             c.Index++;
             c.Emit(OpCodes.Pop);
             c.Emit(OpCodes.Ldarg, 0);
-            c.Emit(OpCodes.Call, typeof(UIGenProgressBar).GetField("_texOuterCorrupt", BindingFlags.Instance | BindingFlags.NonPublic));
+            c.Emit(OpCodes.Ldfld, typeof(UIGenProgressBar).GetField("_texOuterCorrupt", BindingFlags.Instance | BindingFlags.NonPublic));
             c.Emit(OpCodes.Ldarg, 0);
-            c.Emit(OpCodes.Call, typeof(UIGenProgressBar).GetField("_texOuterCrimson", BindingFlags.Instance | BindingFlags.NonPublic));
+            c.Emit(OpCodes.Ldfld, typeof(UIGenProgressBar).GetField("_texOuterCrimson", BindingFlags.Instance | BindingFlags.NonPublic));
             c.EmitDelegate<Func<Asset<Texture2D>, Asset<Texture2D>, Asset<Texture2D>>>((corrupt, crimson) =>
             {
                 int worldGenStep = 0;
@@ -92,9 +92,9 @@ namespace AltLibrary.Common.Hooks
             c.Index++;
             c.Emit(OpCodes.Pop);
             c.Emit(OpCodes.Ldarg, 0);
-            c.Emit(OpCodes.Call, typeof(UIGenProgressBar).GetField("_texOuterCorrupt", BindingFlags.Instance | BindingFlags.NonPublic));
+            c.Emit(OpCodes.Ldfld, typeof(UIGenProgressBar).GetField("_texOuterCorrupt", BindingFlags.Instance | BindingFlags.NonPublic));
             c.Emit(OpCodes.Ldarg, 0);
-            c.Emit(OpCodes.Call, typeof(UIGenProgressBar).GetField("_texOuterCrimson", BindingFlags.Instance | BindingFlags.NonPublic));
+            c.Emit(OpCodes.Ldfld, typeof(UIGenProgressBar).GetField("_texOuterCrimson", BindingFlags.Instance | BindingFlags.NonPublic));
             c.EmitDelegate<Func<Asset<Texture2D>, Asset<Texture2D>, Asset<Texture2D>>>((corrupt, crimson) =>
             {
                 int worldGenStep = 0;
@@ -117,9 +117,9 @@ namespace AltLibrary.Common.Hooks
             c.Emit(OpCodes.Ldarg, 1);
             c.Emit(OpCodes.Ldloc, 6);
             c.Emit(OpCodes.Ldarg, 0);
-            c.Emit(OpCodes.Call, typeof(UIGenProgressBar).GetField("_texOuterCorrupt", BindingFlags.Instance | BindingFlags.NonPublic));
+            c.Emit(OpCodes.Ldfld, typeof(UIGenProgressBar).GetField("_texOuterCorrupt", BindingFlags.Instance | BindingFlags.NonPublic));
             c.Emit(OpCodes.Ldarg, 0);
-            c.Emit(OpCodes.Call, typeof(UIGenProgressBar).GetField("_texOuterCrimson", BindingFlags.Instance | BindingFlags.NonPublic));
+            c.Emit(OpCodes.Ldfld, typeof(UIGenProgressBar).GetField("_texOuterCrimson", BindingFlags.Instance | BindingFlags.NonPublic));
             c.EmitDelegate<Action<SpriteBatch, Rectangle, Asset<Texture2D>, Asset<Texture2D>>>((spriteBatch, r, corrupt, crimson) =>
             {
                 int worldGenStep = 0;
@@ -146,7 +146,7 @@ namespace AltLibrary.Common.Hooks
             c.Index++;
             c.Emit(OpCodes.Pop);
             c.Emit(OpCodes.Ldarg, 0);
-            c.Emit(OpCodes.Call, typeof(UIGenProgressBar).GetField("_texOuterLower", BindingFlags.Instance | BindingFlags.NonPublic));
+            c.Emit(OpCodes.Ldfld, typeof(UIGenProgressBar).GetField("_texOuterLower", BindingFlags.Instance | BindingFlags.NonPublic));
             c.EmitDelegate<Func<Asset<Texture2D>, Asset<Texture2D>>>((lower) =>
             {
                 int worldGenStep = 0;
@@ -168,7 +168,7 @@ namespace AltLibrary.Common.Hooks
             c.Emit(OpCodes.Ldarg, 1);
             c.Emit(OpCodes.Ldloc, 6);
             c.Emit(OpCodes.Ldarg, 0);
-            c.Emit(OpCodes.Call, typeof(UIGenProgressBar).GetField("_texOuterLower", BindingFlags.Instance | BindingFlags.NonPublic));
+            c.Emit(OpCodes.Ldfld, typeof(UIGenProgressBar).GetField("_texOuterLower", BindingFlags.Instance | BindingFlags.NonPublic));
             c.EmitDelegate<Action<SpriteBatch, Rectangle, Asset<Texture2D>>>((spriteBatch, r, lower) =>
             {
                 int worldGenStep = 0;

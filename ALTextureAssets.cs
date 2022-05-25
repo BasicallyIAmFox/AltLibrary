@@ -89,7 +89,7 @@ namespace AltLibrary
                 string path = "AltLibrary/Assets/Menu/Empty";
                 if (ModContent.RequestIfExists(biome.IconSmall, out Asset<Texture2D> asset))
                     path = asset.Name;
-                biomeSmall.Add(path != "AltLibrary/Assets/Menu/Empty" ? ModContent.Request<Texture2D>(path, AssetRequestMode.ImmediateLoad) : null);
+                biomeSmall.Add(path != "AltLibrary/Assets/Menu/Empty" ? ModContent.Request<Texture2D>(path, AssetRequestMode.ImmediateLoad) : Empty);
             }
             BiomeIconSmall = biomeSmall.ToArray();
 

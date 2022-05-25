@@ -49,6 +49,95 @@
             Call this before loading the FAudio dll
             </summary>
         </member>
+        <member name="M:Terraria.Audio.SoundEngine.PlaySound(Terraria.Audio.SoundStyle@,System.Nullable{Microsoft.Xna.Framework.Vector2})">
+            <summary>
+            Attempts to play a sound, and returns a valid <see cref="T:ReLogic.Utilities.SlotId"/> handle to it on success.
+            </summary>
+            <param name="style"> The sound style that describes everything about the played sound. </param>
+            <param name="position"> An optional 2D position to play the sound at. When null, this sound will be heard everywhere. </param>
+        </member>
+        <member name="M:Terraria.Audio.SoundEngine.TryGetActiveSound(ReLogic.Utilities.SlotId,Terraria.Audio.ActiveSound@)">
+            <inheritdoc cref="M:Terraria.Audio.SoundPlayer.TryGetActiveSound(ReLogic.Utilities.SlotId,Terraria.Audio.ActiveSound@)"/>
+        </member>
+        <member name="M:Terraria.Audio.SoundPlayer.TryGetActiveSound(ReLogic.Utilities.SlotId,Terraria.Audio.ActiveSound@)">
+            <summary>
+            Safely attempts to get a currently playing <see cref="T:Terraria.Audio.ActiveSound"/> instance, tied to the provided <see cref="T:ReLogic.Utilities.SlotId"/>.
+            </summary>
+        </member>
+        <member name="T:Terraria.Audio.SoundStyle">
+            <summary>
+            This data type describes in detail how a sound should be played.
+            <br/> Passable to the <see cref="M:Terraria.Audio.SoundEngine.PlaySound(Terraria.Audio.SoundStyle@,System.Nullable{Microsoft.Xna.Framework.Vector2})"/> method.
+            </summary>
+        </member>
+        <member name="P:Terraria.Audio.SoundStyle.SoundPath">
+            <summary> The sound effect to play. </summary>
+        </member>
+        <member name="P:Terraria.Audio.SoundStyle.Type">
+            <summary>
+            Controls which volume setting will this be affected by.
+            <br/> Ambience sounds also don't play when the game is out of focus.
+            </summary>
+        </member>
+        <member name="P:Terraria.Audio.SoundStyle.Identifier">
+            <summary> If defined, this string will be the only thing used to determine which styles should instances be shared with. </summary>
+        </member>
+        <member name="P:Terraria.Audio.SoundStyle.MaxInstances">
+            <summary>
+            The max amount of sound instances that this style will allow creating, before stopping a playing sound or refusing to play a new one.
+            <br/> Set to 0 for no limits.
+            </summary>
+        </member>
+        <member name="P:Terraria.Audio.SoundStyle.SoundLimitBehavior">
+            <summary> Determines what the action taken when the max amount of sound instances is reached. </summary>
+        </member>
+        <member name="P:Terraria.Audio.SoundStyle.PlayOnlyIfFocused">
+            <summary> If true, this sound won't play if the game's window isn't selected. </summary>
+        </member>
+        <member name="P:Terraria.Audio.SoundStyle.IsLooped">
+            <summary> Whether or not to loop played sounds. </summary>
+        </member>
+        <member name="P:Terraria.Audio.SoundStyle.UsesMusicPitch">
+            <summary>
+            Whether or not this sound obeys the <see cref="F:Terraria.Main.musicPitch"/> field to decide its pitch.<br/>
+            Defaults to false. Used in vanilla by the sounds for the Bell, the (Magical) Harp, and The Axe.<br/>
+            Could prove useful, but is kept internal for the moment.
+            </summary>
+        </member>
+        <member name="P:Terraria.Audio.SoundStyle.Variants">
+            <summary>
+            An array of possible suffixes to randomly append to after <see cref="P:Terraria.Audio.SoundStyle.SoundPath"/>.
+            <br/> Setting this property resets <see cref="P:Terraria.Audio.SoundStyle.VariantsWeights"/>.
+            </summary>
+        </member>
+        <member name="P:Terraria.Audio.SoundStyle.VariantsWeights">
+            <summary>
+            An array of randomization weights to optionally go with <see cref="P:Terraria.Audio.SoundStyle.Variants"/>.
+            <br/> Set this last, if at all, as the <see cref="P:Terraria.Audio.SoundStyle.Variants"/>'s setter resets all weights data.
+            </summary>
+        </member>
+        <member name="P:Terraria.Audio.SoundStyle.Volume">
+            <summary> The volume multiplier to play sounds with. </summary>
+        </member>
+        <member name="P:Terraria.Audio.SoundStyle.Pitch">
+            <summary>
+            The pitch <b>offset</b> to play sounds with.
+            <para/>In XNA and FNA, Pitch ranges from -1.0f (down one octave) to 1.0f (up one octave). 0.0f is unity (normal) pitch.
+            </summary>
+        </member>
+        <member name="P:Terraria.Audio.SoundStyle.PitchVariance">
+            <summary>
+            The pitch offset randomness value. Cannot be negative.
+            <br/>With Pitch at 0.0, and PitchVariance at 1.0, used pitch will range from -0.5 to 0.5. 
+            <para/>In XNA and FNA, Pitch ranges from -1.0f (down one octave) to 1.0f (up one octave). 0.0f is unity (normal) pitch.
+            </summary>
+        </member>
+        <member name="P:Terraria.Audio.SoundStyle.PitchRange">
+            <summary>
+            A helper property for controlling both Pitch and PitchVariance at once.
+            <para/>In XNA and FNA, Pitch ranges from -1.0f (down one octave) to 1.0f (up one octave). 0.0f is unity (normal) pitch.
+            </summary>
+        </member>
         <member name="T:Terraria.DataStructures.BossBarDrawParams">
             <summary>
             Holds data required for boss bar drawing.
@@ -2723,6 +2812,12 @@
         <member name="F:Terraria.ModLoader.BuildInfo.BuildDate">
             <summary>
             local time, for display purposes
+            </summary>
+        </member>
+        <member name="T:Terraria.ModLoader.CloneByReference">
+            <summary>
+            Indicates that references to this object can be shared between clones.
+            When applied to a class, applies to all fields/properties of that type.
             </summary>
         </member>
         <member name="T:Terraria.ModLoader.CommandLoader">
@@ -5524,8 +5619,8 @@
         </member>
         <member name="P:Terraria.ModLoader.GlobalType`2.IsCloneable">
             <summary>
-            Whether or not this type is cloneable. By default, cloning is supported if this type has only value typed fields, or if it overrides <see cref="M:Terraria.ModLoader.GlobalType`2.Clone(`0,`0)"/><br/>
-            If this type has reference fields, which are safe to share between clones then override this property to return true.
+            Whether or not this type is cloneable. Cloning is supported if<br/>
+            all reference typed fields in each sub-class which doesn't override Clone are marked with [CloneByReference]
             </summary>
         </member>
         <member name="P:Terraria.ModLoader.GlobalType`2.CloneNewInstances">
@@ -6199,11 +6294,6 @@
             Whether or not this mod will automatically add images in the Gores folder as gores to the game, along with any ModGore classes that share names with the images. This means you do not need to manually call Mod.AddGore.
             </summary>
         </member>
-        <member name="P:Terraria.ModLoader.Mod.SoundAutoloadingEnabled">
-            <summary>
-            Whether or not this mod will automatically add sounds in the Sounds folder to the game. Place sounds in Sounds/Item to autoload them as item sounds, Sounds/NPCHit to add them as npcHit sounds, and Sounds/NPCKilled to add them as npcKilled sounds. Sounds placed anywhere else in the Sounds folder will be added as custom sounds. Any ModSound classes that share the same name as the sound files will be bound to them. Setting this field to true means that you do not need to manually call AddSound.
-            </summary>
-        </member>
         <member name="P:Terraria.ModLoader.Mod.MusicAutoloadingEnabled">
             <summary>
             Whether or not this mod will automatically add music in the Sounds folder to the game. Place music tracks in Sounds/Music to autoload them.
@@ -6538,11 +6628,11 @@
         <member name="P:Terraria.ModLoader.ModBlockType.Type">
             <summary> The internal ID of this type of tile/wall. </summary>
         </member>
-        <member name="P:Terraria.ModLoader.ModBlockType.SoundType">
-            <summary> The default type of sound made when this tile/wall is hit. Defaults to 0. </summary>
-        </member>
-        <member name="P:Terraria.ModLoader.ModBlockType.SoundStyle">
-            <summary> The default style of sound made when this tile/wall is hit. Defaults to 1. </summary>
+        <member name="P:Terraria.ModLoader.ModBlockType.HitSound">
+            <summary>
+            The default style of sound made when this tile/wall is hit.<br/>
+            Defaults to SoundID.Dig, which is the sound used for tiles such as dirt and sand.
+            </summary>
         </member>
         <member name="P:Terraria.ModLoader.ModBlockType.DustType">
             <summary> The default type of dust made when this tile/wall is hit. Defaults to 0. </summary>
@@ -9010,16 +9100,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Terraria.ModLoader.ModPalmTree.GetBranchTextures">
-            <summary>
-            Return the texture containing the possible tree branches that can be drawn next to this tree.
-            </summary>
-        </member>
-        <member name="M:Terraria.ModLoader.ModPalmTree.GetOasisBranchTextures">
-            <summary>
-            Return the texture containing the possible tree branches that can be drawn next to this tree.
-            </summary>
-        </member>
         <member name="T:Terraria.ModLoader.ModPlayer">
             <summary>
             A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPlayer classes, much like how the Player class abuses field usage, to keep track of mod-specific information on the player that a ModPlayer instance represents. It also contains hooks to insert your code into the Player class.
@@ -10246,21 +10326,6 @@
         <member name="F:Terraria.ModLoader.ModSide.NoSync">
             <summary>This means that the mod could have effects client-side and could have effects server-side. The client will not download this mod if it connects to a server with this mod, and the client will not disable this mod if it connects to a server without this mod. If a client connects to a server and both have this mod, then IDs will still be synchronized. This is useful if you want optional extra features when both the client and server have this mod.</summary>
         </member>
-        <member name="T:Terraria.ModLoader.ModSound">
-            <summary>
-            This class allows you to customize how a sound you add is played. To use this, pass an instance to Mod.AddSound, or if you are autoloading sounds, give an overriding class the same name as the file with the sound you are adding.
-            </summary>
-        </member>
-        <member name="P:Terraria.ModLoader.ModSound.Sound">
-            <summary>
-            The SoundEffect instance of the sound that this ModSound controls. This is here so you can call CreateInstance on it.
-            </summary>
-        </member>
-        <member name="M:Terraria.ModLoader.ModSound.PlaySound(Microsoft.Xna.Framework.Audio.SoundEffectInstance@,System.Single,System.Single)">
-            <summary>
-            Override this hook to customize how this sound is played. If this sound is already currently playing, you have the option to call soundInstance.Stop(). You must eventually assign the result of sound.CreateInstance() to soundInstace. Afterwards, you can modify soundInstance.Volume, soundInstance.Pan, and soundInstance.Pitch to your liking. The default volume and pan have been passed as parameters. Volume measures loudness, pan measures how far to the left or right the sound is, and pitch measures the octave. Finally, call Main.PlaySoundInstance(soundInstance).
-            </summary>
-        </member>
         <member name="T:Terraria.ModLoader.ModSystem">
             <summary>
             ModSystem is an abstract class that your classes can derive from. It contains general-use hooks, and, unlike Mod, can have unlimited amounts of types deriving from it.
@@ -11102,8 +11167,8 @@
         </member>
         <member name="P:Terraria.ModLoader.ModType`2.IsCloneable">
             <summary>
-            Whether or not this type is cloneable. By default, cloning is supported if this type has only value typed fields, or if it overrides <see cref="M:Terraria.ModLoader.ModType`2.Clone(`0)"/><br/>
-            If this type has reference fields, which are safe to share between clones then override this property to return true.
+            Whether or not this type is cloneable. Cloning is supported if<br/>
+            all reference typed fields in each sub-class which doesn't override Clone are marked with [CloneByReference]
             </summary>
         </member>
         <member name="P:Terraria.ModLoader.ModType`2.CloneNewInstances">
@@ -11732,44 +11797,6 @@
         </member>
         <member name="F:Terraria.ModLoader.SceneEffectPriority.BossHigh">
             <summary>Will override SceneEffect of Moon Lord</summary>
-        </member>
-        <member name="T:Terraria.ModLoader.SoundLoader">
-            <summary>
-            This class is used to keep track of and support the existence of custom sounds that have been added to the game.
-            </summary>
-        </member>
-        <member name="F:Terraria.ModLoader.SoundLoader.CustomSoundType">
-            <summary>
-            This value should be passed as the first parameter to Main.PlaySound whenever you want to play a custom sound that is not an item, npcHit, or npcKilled sound.
-            </summary>
-        </member>
-        <member name="M:Terraria.ModLoader.SoundLoader.AddSound(Terraria.ModLoader.Mod,System.String,Terraria.ModLoader.ModSound)">
-            <summary>
-            Adds the given sound file to the game as the given type of sound and with the given custom sound playing. If no ModSound instance is provided, the custom sound will play in a similar manner as the default vanilla ones.
-            </summary>
-            <param name="mod">The mod.</param>
-            <param name="soundPath">The sound path.</param>
-            <param name="modSound">The mod sound.</param>
-        </member>
-        <member name="M:Terraria.ModLoader.SoundLoader.GetSoundSlot(Terraria.ModLoader.Mod,System.String)">
-            <summary>
-            Returns the style (last parameter passed to Main.PlaySound) of the sound corresponding to the given sound file path. Returns 0 if there is no corresponding style.
-            </summary>
-        </member>
-        <member name="M:Terraria.ModLoader.SoundLoader.GetSoundSlot(System.String)">
-            <summary>
-            Returns the style (last parameter passed to Main.PlaySound) of the sound corresponding to the given full sound file path. Returns 0 if there is no corresponding style.
-            </summary>
-        </member>
-        <member name="M:Terraria.ModLoader.SoundLoader.GetLegacySoundSlot(Terraria.ModLoader.Mod,System.String)">
-            <summary>
-            Returns a LegacySoundStyle object which encapsulates both a sound type and a sound style (This is the new way to do sounds in 1.3.4) Returns null if there is no corresponding style.
-            </summary>
-        </member>
-        <member name="M:Terraria.ModLoader.SoundLoader.GetLegacySoundSlot(System.String)">
-            <summary>
-            Returns a LegacySoundStyle object which encapsulates both a sound type and a sound style (This is the new way to do sounds in 1.3.4) Returns null if there is no corresponding style.
-            </summary>
         </member>
         <member name="F:Terraria.ModLoader.StatModifier.Base">
             <summary>

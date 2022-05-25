@@ -48,41 +48,27 @@ namespace AltLibrary.Common.Hooks
             c.Emit(OpCodes.Ldarg, 0);
             c.EmitDelegate<Func<Color, UIWorldListItem, Color>>((value, self) =>
             {
-                if ((WorldFileData)typeof(UIWorldListItem).GetField("_data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self) == null)
-                    return value;
-                WorldFileData _data = (WorldFileData)typeof(UIWorldListItem).GetField("_data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self);
-                UIImage _worldIcon = (UIImage)typeof(UIWorldListItem).GetField("_worldIcon", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self);
-                ALUtils.GetWorldData(self, out Dictionary<string, AltLibraryConfig.WorldDataValues> tempDict, out string path2);
-
-                bool valid = true;
-                if (tempDict.ContainsKey(path2))
-                {
-                    if (tempDict[path2].worldHallow != "" && !ModContent.TryFind<AltBiome>(tempDict[path2].worldHallow, out _))
-                    {
-                        valid = false;
-                    }
-                    if (tempDict[path2].worldEvil != "" && !ModContent.TryFind<AltBiome>(tempDict[path2].worldEvil, out _))
-                    {
-                        valid = false;
-                    }
-                    if (tempDict[path2].worldHell != "" && !ModContent.TryFind<AltBiome>(tempDict[path2].worldHell, out _))
-                    {
-                        valid = false;
-                    }
-                    if (tempDict[path2].worldJungle != "" && !ModContent.TryFind<AltBiome>(tempDict[path2].worldJungle, out _))
-                    {
-                        valid = false;
-                    }
-                    if (tempDict[path2].drunkEvil != "" && !ModContent.TryFind<AltBiome>(tempDict[path2].drunkEvil, out _))
-                    {
-                        valid = false;
-                    }
-                }
-
-                if (!valid)
-                    return Color.Red;
-                return value;
+                return ALUtils.IsWorldValid(self) ? value : Color.MediumPurple;
             });
+
+            if (!c.TryGotoNext(i => i.MatchStloc(3)))
+            {
+                AltLibrary.Instance.Logger.Info("s $ 2");
+                return;
+            }
+
+            c.Index++;
+            c.Emit(OpCodes.Ldarg, 0);
+            c.Emit(OpCodes.Ldarg, 0);
+            c.Emit(OpCodes.Ldarg, 0);
+            c.Emit(OpCodes.Ldfld, typeof(UIWorldListItem).GetField("_canBePlayed", BindingFlags.NonPublic | BindingFlags.Instance));
+            c.EmitDelegate<Func<UIWorldListItem, bool, bool>>((self, canBePlayed) =>
+            {
+                if ((WorldFileData)typeof(UIWorldListItem).GetField("_data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self) == null)
+                    return canBePlayed;
+                return !canBePlayed && ALUtils.IsWorldValid(self);
+            });
+            c.Emit(OpCodes.Stfld, typeof(UIWorldListItem).GetField("_canBePlayed", BindingFlags.NonPublic | BindingFlags.Instance));
         }
 
         private static void UIWorldListItem_ctor(ILContext il)
