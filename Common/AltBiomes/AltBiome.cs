@@ -24,18 +24,18 @@ namespace AltLibrary.Common.AltBiomes
         /// <summary>
         /// The name of this biome that will display on the biome selection screen.
         /// </summary>
-        public virtual ModTranslation DisplayName
+        public ModTranslation DisplayName
         {
             get;
-            internal set;
+            private set;
         }
         /// <summary>
         /// The description for this biome that will appear on the biome selection screen.
         /// </summary>
-        public virtual ModTranslation Description
+        public ModTranslation Description
         {
             get;
-            internal set;
+            private set;
         }
 
         #region Dungeon Loot

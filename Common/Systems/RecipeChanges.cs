@@ -149,9 +149,8 @@ namespace AltLibrary.Common.Systems
                         if (r.HasIngredient(ingredient))
                         {
                             r.TryGetIngredient(ingredient, out Item ing);
-                            var amount = ing.stack;
                             r.RemoveIngredient(ing);
-                            r.AddRecipeGroup(group, amount);
+                            r.AddRecipeGroup(group, ing.stack);
                         }
                     }
                 }
@@ -173,9 +172,8 @@ namespace AltLibrary.Common.Systems
                         else if (r.HasIngredient(ingredient))
                         {
                             r.TryGetIngredient(ingredient, out Item ing);
-                            var amount = ing.stack;
                             r.RemoveIngredient(ing);
-                            r.AddRecipeGroup(group, amount);
+                            r.AddRecipeGroup(group, ing.stack);
                         }
                     }
                 }

@@ -34,18 +34,18 @@ namespace AltLibrary.Common.AltOres
         /// <summary>
         /// The name of this ore that will display on the biome selection screen.
         /// </summary>
-        public virtual ModTranslation DisplayName
+        public ModTranslation DisplayName
         {
             get;
-            internal set;
+            private set;
         }
         /// <summary>
         /// The description for this ore that will appear on the biome selection screen.
         /// </summary>
-        public virtual ModTranslation Description
+        public ModTranslation Description
         {
             get;
-            internal set;
+            private set;
         }
 
         protected sealed override void Register()
