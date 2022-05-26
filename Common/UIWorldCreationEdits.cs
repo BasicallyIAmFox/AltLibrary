@@ -115,13 +115,6 @@ namespace AltLibrary.Common
                     break;
             }
             #region Custom
-            string var = _size switch
-            {
-                0 => "Small",
-                1 => "Medium",
-                2 => "Large",
-                _ => "Small",
-            };
             string folder = (seed != null ? seed.ToLower() : "") switch
             {
                 "05162020" or "5162020" => "Drunk",
@@ -157,13 +150,22 @@ namespace AltLibrary.Common
             }
             if (!broken)
             {
-                if (folder != "" && AltLibraryConfig.Config.SpecialSeedWorldPreview)
+                int style = folder switch
                 {
-                    spriteBatch.Draw(ModContent.Request<Texture2D>($"AltLibrary/Assets/WorldPreviews/{folder}/{var}", AssetRequestMode.ImmediateLoad).Value, position, color);
+                    "Drunk" => 1,
+                    "NotTheBees" => 2,
+                    "ForTheWorthy" => 3,
+                    "Anniversary" => 4,
+                    "Constant" => 5,
+                    _ => 0,
+                };
+                if (style > 0 && AltLibraryConfig.Config.SpecialSeedWorldPreview)
+                {
+                    spriteBatch.Draw(ALTextureAssets.PreviewSpecialSizes[style, _size].Value, position, color);
                 }
                 else
                 {
-                    spriteBatch.Draw(Main.Assets.Request<Texture2D>($"Images/UI/WorldCreation/PreviewSize{var}", AssetRequestMode.ImmediateLoad).Value, position, color);
+                    spriteBatch.Draw(ALTextureAssets.PreviewSpecialSizes[0, _size].Value, position, color);
                 }
             }
             Asset<Texture2D> asset = AltEvilBiomeChosenType switch
@@ -174,7 +176,7 @@ namespace AltLibrary.Common
             };
             if (AltEvilBiomeChosenType > -1)
             {
-                asset = ALTextureAssets.BiomeIconLarge[AltEvilBiomeChosenType] == null ? ALTextureAssets.NullPreview : ALTextureAssets.BiomeIconLarge[AltEvilBiomeChosenType];
+                asset = ALTextureAssets.BiomeIconLarge[AltEvilBiomeChosenType] ?? ALTextureAssets.NullPreview;
             }
             spriteBatch.Draw(asset.Value, position, color);
             #endregion
@@ -498,7 +500,7 @@ namespace AltLibrary.Common
                 self.Append(uIScrollbar);
                 _oreList.SetScrollbar(uIScrollbar);
 
-                UIImageButton closeIcon = new(ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/ButtonClose"));
+                UIImageButton closeIcon = new(ALTextureAssets.ButtonClose);
                 closeIcon.Width.Set(22, 0f);
                 closeIcon.Height.Set(22, 0f);
                 closeIcon.Top.Set(5, 0);
@@ -577,7 +579,7 @@ namespace AltLibrary.Common
                 self.Append(uIScrollbar);
                 _oreHmList.SetScrollbar(uIScrollbar);
 
-                UIImageButton closeIcon = new(ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/ButtonClose"));
+                UIImageButton closeIcon = new(ALTextureAssets.ButtonClose);
                 closeIcon.Width.Set(22, 0f);
                 closeIcon.Height.Set(22, 0f);
                 closeIcon.Top.Set(5, 0);
@@ -652,7 +654,7 @@ namespace AltLibrary.Common
                 self.Append(uIScrollbar);
                 _biomeList.SetScrollbar(uIScrollbar);
 
-                UIImageButton closeIcon = new(ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/ButtonClose"));
+                UIImageButton closeIcon = new(ALTextureAssets.ButtonClose);
                 closeIcon.Width.Set(22, 0f);
                 closeIcon.Height.Set(22, 0f);
                 closeIcon.Top.Set(5, 0);

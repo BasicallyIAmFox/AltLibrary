@@ -323,7 +323,7 @@ namespace AltLibrary.Core.UIs
             float num10 = this._large.ToInt() * 4 + 4;
             float num11 = this._large.ToInt() * 58 - 42;
             Vector2 vector2 = new(dimensions.X + num10, dimensions.Y - num11);
-            Texture2D texture = ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/ButtonWarn").Value;
+            Texture2D texture = ALTextureAssets.ButtonWarn.Value;
             spriteBatch.Draw(texture, vector2, new Rectangle(0, 0, 22, 22), Color.White);
             if (mouseRectangle.Intersects(Utils.CenteredRectangle(vector2 + new Vector2(11f, 11f), Utils.Size(texture))))
             {

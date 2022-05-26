@@ -17,8 +17,10 @@ namespace AltLibrary
         internal static Asset<Texture2D> ButtonJungle;
         internal static Asset<Texture2D> ButtonHell;
         internal static Asset<Texture2D> ButtonWarn;
+        internal static Asset<Texture2D> ButtonClose;
         internal static Asset<Texture2D> OreIcons;
         internal static Asset<Texture2D> Empty;
+        [System.Obsolete]
         internal static Asset<Texture2D> Empty2;
         internal static Asset<Texture2D> Random;
         internal static Asset<Texture2D> BestiaryIcons;
@@ -37,6 +39,8 @@ namespace AltLibrary
         internal static Asset<Texture2D>[] BiomeIconSmall;
         internal static Asset<Texture2D>[] BiomeOuter;
         internal static Asset<Texture2D>[] BiomeLower;
+        internal static Asset<Texture2D>[] PreviewSizes;
+        internal static Asset<Texture2D>[,] PreviewSpecialSizes;
 
         internal static void Load()
         {
@@ -46,6 +50,7 @@ namespace AltLibrary
             }
             Button = ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/Button", AssetRequestMode.ImmediateLoad);
             Button2 = ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/Button2", AssetRequestMode.ImmediateLoad);
+            ButtonClose = ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/ButtonClose", AssetRequestMode.ImmediateLoad);
             ButtonCorrupt = ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/ButtonCorrupt", AssetRequestMode.ImmediateLoad);
             ButtonHallow = ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/ButtonHallow", AssetRequestMode.ImmediateLoad);
             ButtonJungle = ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/ButtonJungle", AssetRequestMode.ImmediateLoad);
@@ -67,6 +72,17 @@ namespace AltLibrary
             NullPreview = ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/NullBiomePreview", AssetRequestMode.ImmediateLoad);
             OuterTexture = ModContent.Request<Texture2D>("AltLibrary/Assets/Loading/Outer Empty", AssetRequestMode.ImmediateLoad);
             OuterLowerTexture = ModContent.Request<Texture2D>("AltLibrary/Assets/Loading/Outer Lower Empty", AssetRequestMode.ImmediateLoad);
+            PreviewSpecialSizes = new Asset<Texture2D>[6, 3];
+            PreviewSpecialSizes[0, 0] = Main.Assets.Request<Texture2D>("Images/UI/WorldCreation/PreviewSizeSmall", AssetRequestMode.ImmediateLoad);
+            PreviewSpecialSizes[0, 1] = Main.Assets.Request<Texture2D>("Images/UI/WorldCreation/PreviewSizeMedium", AssetRequestMode.ImmediateLoad);
+            PreviewSpecialSizes[0, 2] = Main.Assets.Request<Texture2D>("Images/UI/WorldCreation/PreviewSizeLarge", AssetRequestMode.ImmediateLoad);
+            for (int i = 1; i < 5; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    PreviewSpecialSizes[i, j] = ModContent.Request<Texture2D>($"AltLibrary/Assets/WorldPreviews/Preview_{i - 1}_{j}", AssetRequestMode.ImmediateLoad);
+                }
+            }
         }
 
         internal static void PostContentLoad()
@@ -126,8 +142,10 @@ namespace AltLibrary
             ButtonJungle = null;
             ButtonHell = null;
             ButtonWarn = null;
+            ButtonClose = null;
             OreIcons = null;
             Empty = null;
+            Empty2 = null;
             Random = null;
             BestiaryIcons = null;
             WorldIconNormal = null;
@@ -144,6 +162,8 @@ namespace AltLibrary
             BiomeOuter = null;
             OuterTexture = null;
             OuterLowerTexture = null;
+            PreviewSizes = null;
+            PreviewSpecialSizes = null;
         }
     }
 }

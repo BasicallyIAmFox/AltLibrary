@@ -58,7 +58,7 @@ namespace AltLibrary.Common.Systems
                 jungleIndex = tasks.FindIndex(i => i.Name.Equals("Mud Caves To Grass"));
                 if (jungleIndex != -1)
                 {
-                    tasks[jungleIndex] = new PassLegacy("Jungle Grass", new WorldGenLegacyMethod(JunglesGrassTask));
+                    tasks[jungleIndex] = new PassLegacy("Mud Caves To Grass", new WorldGenLegacyMethod(JunglesGrassTask));
                 }
                 jungleIndex = tasks.FindIndex(i => i.Name.Equals("Jungle Temple"));
                 if (jungleIndex != -1)
