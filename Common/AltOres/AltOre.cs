@@ -29,6 +29,9 @@ namespace AltLibrary.Common.AltOres
         /// </summary>
         public OreType OreType;
 
+        public int? Candle = null;
+        public int? Watch = null;
+
         public int Type { get; internal set; }
 
         /// <summary>

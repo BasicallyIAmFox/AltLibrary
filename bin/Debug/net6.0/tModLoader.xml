@@ -3507,11 +3507,6 @@
             This is the superclass for GlobalTile and GlobalWall, combining common code
             </summary>
         </member>
-        <member name="M:Terraria.ModLoader.GlobalBlockType.SetDefaults">
-            <summary>
-            Allows you to modify the properties of any tile/wall in the game. Most properties are stored as arrays throughout the Terraria code.
-            </summary>
-        </member>
         <member name="M:Terraria.ModLoader.GlobalBlockType.KillSound(System.Int32,System.Int32,System.Int32)">
             <summary>
             Allows you to customize which sound you want to play when the tile/wall at the given coordinates is hit. Return false to stop the game from playing its default sound for the tile/wall. Returns true by default.

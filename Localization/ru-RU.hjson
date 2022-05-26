@@ -123,6 +123,8 @@ Mods: {
 			CopperWatches: "Медные часы"
 			SilverWatches: "Серебряные часы"
 			GoldWatches: "Золотые часы"
+			IronOres: "Железная руда"
+			GoldOres: "Золотая руда"
 		}
 		DryadSpecialText: {
 			WorldStatusGoodEvil: "{0} - на {1}% святой и {2}% испорчен."

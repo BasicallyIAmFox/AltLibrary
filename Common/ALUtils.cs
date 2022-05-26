@@ -15,14 +15,14 @@ namespace AltLibrary.Common
 {
     internal static class ALUtils
     {
-        internal static void ReplaceIDs<T>(ILContext il, T id, Func<T, T> replace, Func<T, bool> check, Func<ILCursor, bool> extraPred = null)
+        internal static void ReplaceIDs<T>(ILContext il, T id, Func<T, T> replace, Func<T, bool> check)
         {
             ILCursor c = new(il);
             switch (id)
             {
                 case int num:
                     {
-                        while (c.TryGotoNext(i => i.MatchLdcI4(num) && (extraPred == null || extraPred.Invoke(c)) && i.Offset != 0))
+                        while (c.TryGotoNext(i => i.MatchLdcI4(num) && i.Offset != 0))
                         {
                             c.Index++;
                             c.EmitDelegate<Func<T, T>>(orig => check.Invoke(orig) ? replace.Invoke(orig) : orig);
@@ -31,7 +31,7 @@ namespace AltLibrary.Common
                     }
                 case short num:
                     {
-                        while (c.TryGotoNext(i => i.MatchLdcI4(num) && (extraPred == null || extraPred.Invoke(c)) && i.Offset != 0))
+                        while (c.TryGotoNext(i => i.MatchLdcI4(num) && i.Offset != 0))
                         {
                             c.Index++;
                             c.EmitDelegate<Func<T, T>>(orig => check.Invoke(orig) ? replace.Invoke(orig) : orig);
@@ -40,7 +40,7 @@ namespace AltLibrary.Common
                     }
                 case ushort num:
                     {
-                        while (c.TryGotoNext(i => i.MatchLdcI4(num) && (extraPred == null || extraPred.Invoke(c)) && i.Offset != 0))
+                        while (c.TryGotoNext(i => i.MatchLdcI4(num) && i.Offset != 0))
                         {
                             c.Index++;
                             c.EmitDelegate<Func<T, T>>(orig => check.Invoke(orig) ? replace.Invoke(orig) : orig);

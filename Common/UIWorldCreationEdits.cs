@@ -25,28 +25,28 @@ namespace AltLibrary.Common
 {
     internal class UIWorldCreationEdits
     {
-        public static ALGroupOptionButton<CurrentAltOption>[] chosingOption;
-        public static CurrentAltOption chosenOption;
-        public static int AltEvilBiomeChosenType;
-        public static int AltHallowBiomeChosenType;
-        public static int AltJungleBiomeChosenType;
-        public static int AltHellBiomeChosenType;
-        public static UIList _biomeList;
-        public static List<ALUIBiomeListItem> _biomeElements = new();
-        public static UIList _oreList;
-        public static List<ALUIOreListItem> _oreElements = new();
-        public static UIList _oreHmList;
-        public static List<ALUIOreListItem> _oreHmElements = new();
-        public static int Copper;
-        public static int Iron;
-        public static int Silver;
-        public static int Gold;
-        public static int Cobalt;
-        public static int Mythril;
-        public static int Adamantite;
-        public static bool isCrimson;
-        public static string seed;
-        public enum CurrentAltOption
+        internal static ALGroupOptionButton<CurrentAltOption>[] chosingOption;
+        internal static CurrentAltOption chosenOption;
+        internal static int AltEvilBiomeChosenType;
+        internal static int AltHallowBiomeChosenType;
+        internal static int AltJungleBiomeChosenType;
+        internal static int AltHellBiomeChosenType;
+        internal static UIList _biomeList;
+        internal static List<ALUIBiomeListItem> _biomeElements = new();
+        internal static UIList _oreList;
+        internal static List<ALUIOreListItem> _oreElements = new();
+        internal static UIList _oreHmList;
+        internal static List<ALUIOreListItem> _oreHmElements = new();
+        internal static int Copper;
+        internal static int Iron;
+        internal static int Silver;
+        internal static int Gold;
+        internal static int Cobalt;
+        internal static int Mythril;
+        internal static int Adamantite;
+        internal static bool isCrimson;
+        internal static string seed;
+        internal enum CurrentAltOption
         {
             Biome,
             Ore,
@@ -64,6 +64,7 @@ namespace AltLibrary.Common
             //IL.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf += UIWorldCreationPreview_DrawSelf1;
             On.Terraria.GameContent.UI.Elements.UIWorldListItem.PlayGame += UIWorldListItem_PlayGame;
             On.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf += UIWorldCreationPreview_DrawSelf;
+            On.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.ctor += UIWorldCreationPreview_ctor;
         }
 
         public static void Unload()
@@ -77,24 +78,55 @@ namespace AltLibrary.Common
             //IL.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf -= UIWorldCreationPreview_DrawSelf1;
             On.Terraria.GameContent.UI.Elements.UIWorldListItem.PlayGame -= UIWorldListItem_PlayGame;
             On.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf -= UIWorldCreationPreview_DrawSelf;
+            On.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.ctor -= UIWorldCreationPreview_ctor;
+            _difficulty = 0;
+            _size = 0;
+            _BackgroundNormalTexture = null;
+            _BackgroundExpertTexture = null;
+            _BackgroundMasterTexture = null;
+            _EvilCorruptionTexture = null;
+            _EvilCrimsonTexture = null;
+            _EvilRandomTexture = null;
+            _BunnyNormalTexture = null;
+            _BunnyExpertTexture = null;
+            _BunnyMasterTexture = null;
+            _BunnyCreativeTexture = null;
+            _BorderTexture = null;
+        }
+
+        internal static byte _difficulty = 0;
+        internal static byte _size = 0;
+        internal static Asset<Texture2D> _BackgroundNormalTexture;
+        internal static Asset<Texture2D> _BackgroundExpertTexture;
+        internal static Asset<Texture2D> _BackgroundMasterTexture;
+        internal static Asset<Texture2D> _EvilCorruptionTexture;
+        internal static Asset<Texture2D> _EvilCrimsonTexture;
+        internal static Asset<Texture2D> _EvilRandomTexture;
+        internal static Asset<Texture2D> _BunnyNormalTexture;
+        internal static Asset<Texture2D> _BunnyExpertTexture;
+        internal static Asset<Texture2D> _BunnyMasterTexture;
+        internal static Asset<Texture2D> _BunnyCreativeTexture;
+        internal static Asset<Texture2D> _BorderTexture;
+        private static void UIWorldCreationPreview_ctor(On.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.orig_ctor orig, UIWorldCreationPreview self)
+        {
+            orig(self);
+            _difficulty = (byte)typeof(UIWorldCreationPreview).GetField("_difficulty", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
+            _size = (byte)typeof(UIWorldCreationPreview).GetField("_size", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
+            _BackgroundNormalTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BackgroundNormalTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
+            _BackgroundExpertTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BackgroundExpertTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
+            _BackgroundMasterTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BackgroundMasterTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
+            _EvilCorruptionTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_EvilCorruptionTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
+            _EvilCrimsonTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_EvilCrimsonTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
+            _EvilRandomTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_EvilRandomTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
+            _BunnyNormalTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BunnyNormalTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
+            _BunnyExpertTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BunnyExpertTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
+            _BunnyMasterTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BunnyMasterTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
+            _BunnyCreativeTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BunnyCreativeTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
+            _BorderTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BorderTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
         }
 
         private static void UIWorldCreationPreview_DrawSelf(On.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.orig_DrawSelf orig, UIWorldCreationPreview self, SpriteBatch spriteBatch)
         {
-            byte _difficulty = (byte)typeof(UIWorldCreationPreview).GetField("_difficulty", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
-            byte _size = (byte)typeof(UIWorldCreationPreview).GetField("_size", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
-            Asset<Texture2D> _BackgroundNormalTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BackgroundNormalTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
-            Asset<Texture2D> _BackgroundExpertTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BackgroundExpertTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
-            Asset<Texture2D> _BackgroundMasterTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BackgroundMasterTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
-            Asset<Texture2D> _EvilCorruptionTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_EvilCorruptionTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
-            Asset<Texture2D> _EvilCrimsonTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_EvilCrimsonTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
-            Asset<Texture2D> _EvilRandomTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_EvilRandomTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
-            Asset<Texture2D> _BunnyNormalTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BunnyNormalTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
-            Asset<Texture2D> _BunnyExpertTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BunnyExpertTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
-            Asset<Texture2D> _BunnyMasterTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BunnyMasterTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
-            Asset<Texture2D> _BunnyCreativeTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BunnyCreativeTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
-            Asset<Texture2D> _BorderTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BorderTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
-
             CalculatedStyle dimensions = self.GetDimensions();
             Vector2 position = new(dimensions.X + 4f, dimensions.Y + 4f);
             Color color = Color.White;

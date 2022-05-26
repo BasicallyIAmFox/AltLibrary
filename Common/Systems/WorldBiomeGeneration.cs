@@ -6,6 +6,7 @@ using Terraria;
 using Terraria.GameContent.Generation;
 using Terraria.ID;
 using Terraria.IO;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
 
@@ -34,6 +35,11 @@ namespace AltLibrary.Common.Systems
             if (WorldBiomeManager.WorldEvil != "" && corruptionIndex != -1)
             {
                 tasks[corruptionIndex] = new PassLegacy("Corruption", new WorldGenLegacyMethod(WorldEvilAltTask));
+                AltBiome biome = AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.WorldEvil);
+                if (biome.WorldGenPassLegacy != null)
+                {
+                    tasks.Insert(corruptionIndex + 1, biome.WorldGenPassLegacy);
+                }
             }
             if (WorldBiomeManager.WorldHell != "")
             {
@@ -41,6 +47,11 @@ namespace AltLibrary.Common.Systems
                 if (underworldIndex != -1)
                 {
                     tasks[underworldIndex] = new PassLegacy("Underworld", new WorldGenLegacyMethod(WorldHellAltTask));
+                    AltBiome biome = AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.WorldHell);
+                    if (biome.WorldGenPassLegacy != null)
+                    {
+                        tasks.Insert(underworldIndex + 1, biome.WorldGenPassLegacy);
+                    }
                 }
                 int hellforgeIndex = tasks.FindIndex(i => i.Name.Equals("Hellforge"));
                 if (hellforgeIndex != -1)
@@ -167,8 +178,7 @@ namespace AltLibrary.Common.Systems
                 {
                     if (Main.tile[i, j].HasUnactuatedTile)
                     {
-                        //WorldGen.grassSpread = 0;
-
+                        typeof(WorldGen).GetField("grassSpread", BindingFlags.NonPublic | BindingFlags.Static).SetValue(null, 0);
                         WorldGen.SpreadGrass(i, j, TileID.Mud, grass, repeat: true, 0);
                     }
                     progress.Set(0.2f * ((i * Main.maxTilesY + j) / (float)(Main.maxTilesX * Main.maxTilesY)));
@@ -335,7 +345,7 @@ namespace AltLibrary.Common.Systems
 
         private void WorldHellAltTask(GenerationProgress progress, GameConfiguration configuration)
         {
-            progress.Message = Lang.gen[18].Value;
+            progress.Message = AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.WorldHell).GenPassName.GetTranslation(Language.ActiveCulture);
             progress.Set(0f);
             int num736 = Main.maxTilesY - WorldGen.genRand.Next(150, 190);
             Tile tile60;
@@ -588,7 +598,7 @@ namespace AltLibrary.Common.Systems
             }
             if (flag46)
             {
-                progress.Message = Lang.gen[72].Value;
+                progress.Message = AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.drunkEvil).GenPassName.GetTranslation(Language.ActiveCulture);
                 for (int num687 = 0; num687 < num686; num687++)
                 {
                     int num688 = num679;
@@ -909,7 +919,7 @@ namespace AltLibrary.Common.Systems
             }
             if (!flag46)
             {
-                progress.Message = Lang.gen[20].Value;
+                progress.Message = AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.WorldEvil).GenPassName.GetTranslation(Language.ActiveCulture);
                 for (int num709 = 0; num709 < num686; num709++)
                 {
                     int num710 = num679;

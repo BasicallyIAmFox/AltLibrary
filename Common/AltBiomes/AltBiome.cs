@@ -6,8 +6,11 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Terraria.GameContent;
+using Terraria.GameContent.Generation;
 using Terraria.ID;
+using Terraria.IO;
 using Terraria.ModLoader;
+using Terraria.WorldBuilding;
 
 namespace AltLibrary.Common.AltBiomes
 {
@@ -33,6 +36,11 @@ namespace AltLibrary.Common.AltBiomes
         /// The description for this biome that will appear on the biome selection screen.
         /// </summary>
         public ModTranslation Description
+        {
+            get;
+            private set;
+        }
+        public ModTranslation GenPassName
         {
             get;
             private set;
@@ -252,8 +260,10 @@ namespace AltLibrary.Common.AltBiomes
         /// </summary>
         public int? FountainActiveFrameY = null;
 
+        public PassLegacy WorldGenPassLegacy = null;
         public virtual Color AltUnderworldColor => Color.Black;
         public virtual Asset<Texture2D>[] AltUnderworldBackgrounds => new Asset<Texture2D>[14];
+        public virtual AltMaterialContext MaterialContext => null;
 
         public sealed override void SetupContent()
         {
@@ -267,6 +277,10 @@ namespace AltLibrary.Common.AltBiomes
             {
                 DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
             }
+            if (GenPassName.IsDefault())
+            {
+                GenPassName.SetDefault("Generating " + Regex.Replace(Name, "([A-Z])", " $1").Trim());
+            }
         }
 
         protected sealed override void Register()
@@ -279,6 +293,9 @@ namespace AltLibrary.Common.AltBiomes
             Description = (ModTranslation)typeof(LocalizationLoader).GetMethod("GetOrCreateTranslation",
                 BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static,
                 new Type[] { typeof(Mod), typeof(string), typeof(bool) }).Invoke(null, new object[] { Mod, $"AltBiomeDescription.{Name}", true });
+            GenPassName = (ModTranslation)typeof(LocalizationLoader).GetMethod("GetOrCreateTranslation",
+                BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static,
+                new Type[] { typeof(Mod), typeof(string), typeof(bool) }).Invoke(null, new object[] { Mod, $"AltBiomeGen.{Name}", true });
 
             AltLibrary.Biomes.Add(this);
             if (BossBulb != null) AltLibrary.planteraBulbs.Add((int)BossBulb);

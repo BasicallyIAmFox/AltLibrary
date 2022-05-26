@@ -11,6 +11,18 @@ namespace AltLibrary.Common.Systems
             for (int i = 0; i < Recipe.numRecipes; i++)
             {
                 Recipe recipe = Main.recipe[i];
+
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.IronskinPotion },
+                                  new int[] { ItemID.IronOre },
+                                  "AltLibrary:IronOres",
+                                  ItemID.LeadOre);
+                ReplaceRecipe(ref recipe,
+                                  new int[] { ItemID.SpelunkerPotion },
+                                  new int[] { ItemID.GoldOre },
+                                  "AltLibrary:GoldOres",
+                                  ItemID.PlatinumOre);
+
                 ReplaceRecipe(ref recipe,
                                   new int[] { ItemID.DeerThing },
                                   new int[] { ItemID.DemoniteOre },

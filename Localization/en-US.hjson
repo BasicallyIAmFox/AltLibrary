@@ -124,6 +124,8 @@ Mods: {
 			CopperWatches: "Copper Watch"
 			SilverWatches: "Silver Watch"
 			GoldWatches: "Gold Watch"
+			IronOres: "Iron Ore"
+			GoldOres: "Gold Ore"
 		}
 		DryadSpecialText: {
 			WorldStatusGoodEvil: "{0} is {1}% good and {2}% evil."
