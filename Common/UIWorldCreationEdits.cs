@@ -63,8 +63,6 @@ namespace AltLibrary.Common
             IL.Terraria.GameContent.UI.States.UIWorldCreation.FinishCreatingWorld += UIWorldCreation_FinishCreatingWorld;
             IL.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf += UIWorldCreationPreview_DrawSelf1;
             On.Terraria.GameContent.UI.Elements.UIWorldListItem.PlayGame += UIWorldListItem_PlayGame;
-            On.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf += UIWorldCreationPreview_DrawSelf;
-            On.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.ctor += UIWorldCreationPreview_ctor;
         }
 
         private static void UIWorldCreationPreview_DrawSelf1(ILContext il)
@@ -83,6 +81,8 @@ namespace AltLibrary.Common
                 return;
             }
 
+            c.Index++;
+            c.Emit(OpCodes.Pop);
             c.Emit(OpCodes.Br, label);
 
             if (!c.TryGotoNext(i => i.MatchLdarg(0),
@@ -92,7 +92,7 @@ namespace AltLibrary.Common
                 i => i.MatchSwitch(out _),
                 i => i.MatchBr(out _)))
             {
-                AltLibrary.Instance.Logger.Info("z $ 3");
+                AltLibrary.Instance.Logger.Info("z $ 2");
                 return;
             }
 
@@ -101,7 +101,15 @@ namespace AltLibrary.Common
             c.Emit(OpCodes.Ldarg, 1);
             c.Emit(OpCodes.Ldloc, 1);
             c.Emit(OpCodes.Ldloc, 2);
-            c.EmitDelegate<Action<UIWorldCreationPreview, SpriteBatch, Vector2, Color>>((self, spriteBatch, position, color) =>
+            c.Emit(OpCodes.Ldarg, 0);
+            c.Emit(OpCodes.Ldfld, typeof(UIWorldCreationPreview).GetField("_size", BindingFlags.NonPublic | BindingFlags.Instance));
+            c.Emit(OpCodes.Ldarg, 0);
+            c.Emit(OpCodes.Ldfld, typeof(UIWorldCreationPreview).GetField("_EvilCorruptionTexture", BindingFlags.NonPublic | BindingFlags.Instance));
+            c.Emit(OpCodes.Ldarg, 0);
+            c.Emit(OpCodes.Ldfld, typeof(UIWorldCreationPreview).GetField("_EvilCrimsonTexture", BindingFlags.NonPublic | BindingFlags.Instance));
+            c.Emit(OpCodes.Ldarg, 0);
+            c.Emit(OpCodes.Ldfld, typeof(UIWorldCreationPreview).GetField("_EvilRandomTexture", BindingFlags.NonPublic | BindingFlags.Instance));
+            c.EmitDelegate<Action<UIWorldCreationPreview, SpriteBatch, Vector2, Color, byte, Asset<Texture2D>, Asset<Texture2D>, Asset<Texture2D>>>((self, spriteBatch, position, color, size, _EvilCorruptionTexture, _EvilCrimsonTexture, _EvilRandomTexture) =>
             {
                 string folder = (seed != null ? seed.ToLower() : "") switch
                 {
@@ -119,7 +127,7 @@ namespace AltLibrary.Common
                     {
                         if ((seed != null ? seed.ToLower() : "").ToLower() == preview.seed.ToLower())
                         {
-                            switch (_size)
+                            switch (size)
                             {
                                 case 0:
                                 default:
@@ -149,11 +157,11 @@ namespace AltLibrary.Common
                     };
                     if (style > 0 && AltLibraryConfig.Config.SpecialSeedWorldPreview)
                     {
-                        spriteBatch.Draw(ALTextureAssets.PreviewSpecialSizes[style, _size].Value, position, color);
+                        spriteBatch.Draw(ALTextureAssets.PreviewSpecialSizes[style, size].Value, position, color);
                     }
                     else
                     {
-                        spriteBatch.Draw(ALTextureAssets.PreviewSpecialSizes[0, _size].Value, position, color);
+                        spriteBatch.Draw(ALTextureAssets.PreviewSpecialSizes[0, size].Value, position, color);
                     }
                 }
                 Asset<Texture2D> asset = AltEvilBiomeChosenType switch
@@ -167,6 +175,7 @@ namespace AltLibrary.Common
                     asset = ALTextureAssets.BiomeIconLarge[AltEvilBiomeChosenType] ?? ALTextureAssets.NullPreview;
                 }
                 spriteBatch.Draw(asset.Value, position, color);
+                WorldCreationUIIcons(self, spriteBatch);
             });
         }
 
@@ -180,12 +189,6 @@ namespace AltLibrary.Common
             IL.Terraria.GameContent.UI.States.UIWorldCreation.FinishCreatingWorld -= UIWorldCreation_FinishCreatingWorld;
             IL.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf -= UIWorldCreationPreview_DrawSelf1;
             On.Terraria.GameContent.UI.Elements.UIWorldListItem.PlayGame -= UIWorldListItem_PlayGame;
-            On.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf -= UIWorldCreationPreview_DrawSelf;
-            On.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.ctor -= UIWorldCreationPreview_ctor;
-            _size = 0;
-            _EvilCorruptionTexture = null;
-            _EvilCrimsonTexture = null;
-            _EvilRandomTexture = null;
             chosingOption = null;
             chosenOption = CurrentAltOption.Biome;
             AltEvilBiomeChosenType = 0;
@@ -206,25 +209,6 @@ namespace AltLibrary.Common
             Mythril = 0;
             Adamantite = 0;
             seed = null;
-        }
-
-        internal static byte _size = 0;
-        internal static Asset<Texture2D> _EvilCorruptionTexture;
-        internal static Asset<Texture2D> _EvilCrimsonTexture;
-        internal static Asset<Texture2D> _EvilRandomTexture;
-        private static void UIWorldCreationPreview_ctor(On.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.orig_ctor orig, UIWorldCreationPreview self)
-        {
-            orig(self);
-            _size = (byte)typeof(UIWorldCreationPreview).GetField("_size", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
-            _EvilCorruptionTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_EvilCorruptionTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
-            _EvilCrimsonTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_EvilCrimsonTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
-            _EvilRandomTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_EvilRandomTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
-        }
-
-        private static void UIWorldCreationPreview_DrawSelf(On.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.orig_DrawSelf orig, UIWorldCreationPreview self, SpriteBatch spriteBatch)
-        {
-            orig(self, spriteBatch);
-            WorldCreationUIIcons(self, spriteBatch);
         }
 
         private static void UIWorldCreation_Draw(ILContext il)
