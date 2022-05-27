@@ -33,6 +33,7 @@ namespace AltLibrary
         internal static List<int> jungleThorns;
         internal static List<int> evilStoppingOres;
 
+        internal static int HallowBunnyCageRecipeIndex;
         internal static int TimeHoveringOnIcon;
         internal static bool HallowBunnyUnlocked;
         internal static int ModIconVariation;
@@ -115,6 +116,7 @@ namespace AltLibrary
             evilStoppingOres = null;
             ILHooks.Unload();
             AltLibraryConfig.Config = null;
+            HallowBunnyCageRecipeIndex = 0;
         }
 
         internal struct CustomPreviews
@@ -124,7 +126,7 @@ namespace AltLibrary
             internal string pathMedium;
             internal string pathLarge;
 
-            public CustomPreviews(string seed, string pathSmall, string pathMedium, string pathLarge)
+            internal CustomPreviews(string seed, string pathSmall, string pathMedium, string pathLarge)
             {
                 if (seed is null)
                 {

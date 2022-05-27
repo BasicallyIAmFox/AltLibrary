@@ -207,7 +207,7 @@ namespace AltLibrary.Common.Hooks
 
             e.SetImage(ALTextureAssets.AnimatedModIcon[AltLibrary.ModIconVariation], new Rectangle(additionX, 0, 80, 80));
 
-            if (AltLibrary.TimeHoveringOnIcon >= time + 1)
+            if (AltLibrary.TimeHoveringOnIcon >= time + 1 || AltLibrary.HallowBunnyUnlocked)
             {
                 e.SetFrame(new Rectangle(80 + additionX, 0, 80, 80));
                 AltLibrary.HallowBunnyUnlocked = true;
@@ -231,7 +231,7 @@ namespace AltLibrary.Common.Hooks
                     e.SetFrame(new Rectangle(80 + additionX, 0, 80, 80));
                     AltLibrary.TimeHoveringOnIcon = time + 1;
                 }
-                if (AltLibrary.TimeHoveringOnIcon >= time)
+                if (AltLibrary.TimeHoveringOnIcon >= time || AltLibrary.HallowBunnyUnlocked)
                 {
                     AltLibrary.HallowBunnyUnlocked = true;
                 }

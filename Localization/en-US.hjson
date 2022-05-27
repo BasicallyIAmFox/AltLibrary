@@ -27,6 +27,7 @@ Mods: {
 				Tooltip: "When true, the infectious blocks spawned by smashing Demon Altars can be of any installed biome"
 			}
 		}
+		HallowBunnyCageTooltip: "'I swear you'll pay!'"
 		AltOreName: {
 			RandomCopper: "Random Copper-Tier"
 			RandomIron: "Random Iron-Tier"

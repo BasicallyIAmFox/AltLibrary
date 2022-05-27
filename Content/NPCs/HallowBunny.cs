@@ -26,6 +26,7 @@ namespace AltLibrary.Content.NPCs
         public override void SetDefaults()
         {
             NPC.CloneDefaults(NPCID.Bunny);
+            NPC.width = NPC.height = 30;
             NPC.lifeMax *= 5;
             NPC.catchItem = (short)ModContent.ItemType<Items.HallowBunny>();
             NPC.friendly = true;
@@ -40,7 +41,7 @@ namespace AltLibrary.Content.NPCs
                 for (int i = 0; i < Main.maxPlayers; i++)
                 {
                     Player player = Main.player[i];
-                    if (player.active && !player.DeadOrGhost && player.Distance(NPC.position) <= 500f && Main.time % Main.rand.Next(30, 150) == Main.rand.Next(0, 20) && Collision.CanHit(player, NPC))
+                    if (player.active && player.statLife > 0 && player.Distance(NPC.position) <= 500f && Main.time % Main.rand.Next(80, 150) <= Main.rand.Next(0, 5) && Collision.CanHit(player, NPC))
                     {
                         List<int> pairs = new()
                         {
@@ -56,6 +57,18 @@ namespace AltLibrary.Content.NPCs
                         string reason = Language.GetTextValue($"Mods.AltLibrary.BunReason.{pairs[Main.rand.Next(pairs.Count)]}", player.name);
                         player.Hurt(PlayerDeathReason.ByCustomReason(reason), Main.tenthAnniversaryWorld ? 2 : 100 + Main.rand.Next(0, 100), -1);
                         player.immuneTime = 2;
+                    }
+                }
+                for (int i = 0; i < Main.maxNPCs; i++)
+                {
+                    NPC npc = Main.npc[i];
+                    if (npc.active && npc.life > 0 && npc.Distance(NPC.position) <= 500f && Main.time % Main.rand.Next(80, 150) <= Main.rand.Next(0, 5) && Collision.CanHit(npc, NPC) && npc.type != Type && !npc.dontTakeDamage && !npc.dontTakeDamageFromHostiles)
+                    {
+                        npc.StrikeNPC(Main.tenthAnniversaryWorld ? 2 : 20 + Main.rand.Next(0, 20), 0f, -1, Main.rand.Next(100) < 25);
+                        for (int j = 0; j < byte.MaxValue; j++)
+                        {
+                            npc.immune[j] = 2;
+                        }
                     }
                 }
             }

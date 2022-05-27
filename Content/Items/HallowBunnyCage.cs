@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using AltLibrary.Common;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -15,7 +16,7 @@ namespace AltLibrary.Content.Items
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Hallow Bunny Cage");
-            Tooltip.SetDefault("'I swear you'll pay!'");
+            Tooltip.SetDefault("Illusive bunny, lost in this wacky world...");
         }
 
         public override void SetDefaults()
@@ -27,35 +28,44 @@ namespace AltLibrary.Content.Items
 
         public override void AddRecipes()
         {
-            CreateRecipe()
+            Recipe recipe = CreateRecipe()
                 .AddIngredient(ItemID.Terrarium)
-                .AddIngredient(ModContent.ItemType<HallowBunny>())
-                .Register();
+                .AddIngredient(ModContent.ItemType<HallowBunny>());
+            recipe.Register();
+            AltLibrary.HallowBunnyCageRecipeIndex = recipe.RecipeIndex;
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            string line = Language.GetTextValue("Mods.AltLibrary.ItemTooltip.HallowBunnyCage");
+            string line = Language.GetTextValue("Mods.AltLibrary.HallowBunnyCageTooltip");
             int index = tooltips.FindIndex(i => i.Name == "Tooltip0" && i.Mod == "Terraria");
             if (index != -1)
             {
-                if (Main.GameUpdateCount % Main.rand.Next(60, 90) == 0)
+                if (Main.LocalPlayer.GetModPlayer<ALPlayer>().HasObtainedHallowBunnyAtleastOnce)
                 {
-                    string str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                    int size = Main.rand.Next(Math.Max(0, line.Length - 5), Math.Max(5, line.Length));
-                    string ran = "";
-                    for (int i = 0; i < size; i++)
+                    if (Main.GameUpdateCount % Main.rand.Next(60, 90) == 0)
                     {
-                        int x = Main.rand.Next(str.Length);
-                        ran += str[x];
+                        const string str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                        int size = Main.rand.Next(Math.Max(0, line.Length - 5), Math.Max(5, line.Length));
+                        string ran = "";
+                        for (int i = 0; i < size; i++)
+                        {
+                            int x = Main.rand.Next(str.Length);
+                            ran += str[x];
+                        }
+                        tooltips[index].Text = ran;
+                        tooltips[index].OverrideColor = new Color(MathHelper.Lerp(0f, 1f, Main.rand.NextFloat()), 1f, 1f);
                     }
-                    tooltips[index].Text = ran;
-                    tooltips[index].OverrideColor = new Color(MathHelper.Lerp(0f, 1f, Main.rand.NextFloat()), 1f, 1f);
+                    else
+                    {
+                        tooltips[index].Text = line;
+                        tooltips[index].OverrideColor = Colors.RarityRed;
+                    }
                 }
                 else
                 {
-                    tooltips[index].Text = line;
-                    tooltips[index].OverrideColor = Colors.RarityRed;
+                    tooltips[index].Text = Language.GetTextValue("Mods.AltLibrary.ItemTooltip.HallowBunnyCage");
+                    tooltips[index].OverrideColor = Color.White;
                 }
             }
         }

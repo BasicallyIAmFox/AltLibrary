@@ -6,4 +6,4 @@ hideCode = false
 hideResources = true
 includeSource = false
 
-homepage = https://github.com/TheLuxure/AltLibrary
+homepage = https://discord.gg/rrxE78cyjm

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Terraria;
-using Terraria.ID;
+using Terraria.Enums;
 using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Hooks
@@ -16,17 +16,17 @@ namespace AltLibrary.Common.Hooks
     {
         internal static void Load()
         {
-            //HerosDetour.Load();
-            //CheatSheetChanges.Load();
+            HerosDetour.Load();
+            CheatSheetChanges.Load();
         }
 
         internal static void Unload()
         {
-            //HerosDetour.Unload();
-            //CheatSheetChanges.Unload();
+            HerosDetour.Unload();
+            CheatSheetChanges.Unload();
         }
 
-        /*[JITWhenModsEnabled("HEROsMod")]
+        [JITWhenModsEnabled("HEROsMod")]
         internal static class HerosDetour
         {
             private static Mod mod;
@@ -73,43 +73,23 @@ namespace AltLibrary.Common.Hooks
         {
             private static Mod mod;
 
-            private static MethodInfo ParseList2 = null;
-            private static event ILContext.Manipulator ModifyParseList2
+            private static MethodInfo NPCViewSet = null;
+            private static event ILContext.Manipulator ModifyNPCViewSet
             {
-                add
-                {
-                    HookEndpointManager.Modify(ParseList2, value);
-                }
-                remove
-                {
-                    HookEndpointManager.Unmodify(ParseList2, value);
-                }
+                add => HookEndpointManager.Modify(NPCViewSet, value);
+                remove => HookEndpointManager.Unmodify(NPCViewSet, value);
             }
-
-            private static MethodInfo ParseList1 = null;
-            private static event ILContext.Manipulator ModifyParseList1
+            private static MethodInfo ItemViewSet = null;
+            private static event ILContext.Manipulator ModifyItemViewSet
             {
-                add
-                {
-                    HookEndpointManager.Modify(ParseList1, value);
-                }
-                remove
-                {
-                    HookEndpointManager.Unmodify(ParseList1, value);
-                }
+                add => HookEndpointManager.Modify(ItemViewSet, value);
+                remove => HookEndpointManager.Unmodify(ItemViewSet, value);
             }
-
-            private static MethodInfo RecipeBrowser = null;
-            private static event ILContext.Manipulator ModifyRecipeBrowser
+            private static ConstructorInfo RecipeViewSet = null;
+            private static event ILContext.Manipulator ModifyRecipeViewSet
             {
-                add
-                {
-                    HookEndpointManager.Modify(RecipeBrowser, value);
-                }
-                remove
-                {
-                    HookEndpointManager.Unmodify(RecipeBrowser, value);
-                }
+                add => HookEndpointManager.Modify(RecipeViewSet, value);
+                remove => HookEndpointManager.Unmodify(RecipeViewSet, value);
             }
 
             internal static void Load()
@@ -118,106 +98,106 @@ namespace AltLibrary.Common.Hooks
                 if (!ModLoader.TryGetMod("CheatSheet", out mod))
                     return;
 
-                var p = mod.GetType().Assembly.GetType("CheatSheet.Menus.ItemBrowser");
-                ParseList2 = p.GetMethod("ParseList2", BindingFlags.NonPublic | BindingFlags.Instance);
-                ModifyParseList2 += CheatSheetChanges_ModifyParseList2;
-                p = mod.GetType().Assembly.GetType("CheatSheet.Menus.NPCBrowser");
-                ParseList1 = p.GetMethod("ParseList2", BindingFlags.NonPublic | BindingFlags.Instance);
-                ModifyParseList1 += CheatSheetChanges_ModifyParseList1;
-                p = mod.GetType().Assembly.GetType("CheatSheet.Menus.RecipeBrowserWindow");
-                RecipeBrowser = p.GetMethod("Draw", BindingFlags.Public | BindingFlags.Instance);
-                ModifyRecipeBrowser += CheatSheetChanges_ModifyRecipeBrowser;
+                var p = mod.GetType().Assembly.GetType("CheatSheet.Menus.NPCView");
+                NPCViewSet = p.GetMethod("set_selectedCategory", BindingFlags.Public | BindingFlags.Instance);
+                ModifyNPCViewSet += CheatSheetChanges_ModifyNPCViewSet;
+
+                p = mod.GetType().Assembly.GetType("CheatSheet.Menus.ItemView");
+                ItemViewSet = p.GetMethod("set_selectedCategory", BindingFlags.Public | BindingFlags.Instance);
+                ModifyItemViewSet += CheatSheetChanges_ModifyItemViewSet;
+
+                p = mod.GetType().Assembly.GetType("CheatSheet.Menus.RecipeView");
+                RecipeViewSet = p.GetConstructor(BindingFlags.Public | BindingFlags.Instance, Array.Empty<Type>());
+                ModifyRecipeViewSet += CheatSheetChanges_ModifyRecipeViewSet;
             }
 
             internal static void Unload()
             {
-                if (ParseList2 != null) // just one check is enough, as all fields get their values if mod present
+                if (NPCViewSet != null)
                 {
-                    ModifyParseList2 -= CheatSheetChanges_ModifyParseList2;
-                    ParseList2 = null;
-                    ModifyParseList1 -= CheatSheetChanges_ModifyParseList1;
-                    ParseList1 = null;
-                    ModifyRecipeBrowser -= CheatSheetChanges_ModifyRecipeBrowser;
-                    RecipeBrowser = null;
+                    ModifyNPCViewSet -= CheatSheetChanges_ModifyNPCViewSet;
+                    ModifyItemViewSet -= CheatSheetChanges_ModifyItemViewSet;
+                    ItemViewSet = null;
+                    ModifyRecipeViewSet -= CheatSheetChanges_ModifyRecipeViewSet;
+                    RecipeViewSet = null;
+                    NPCViewSet = null;
                 }
                 mod = null;
             }
 
-            private static void CheatSheetChanges_ModifyRecipeBrowser(ILContext il)
+            private static void CheatSheetChanges_ModifyRecipeViewSet(ILContext il)
             {
                 ILCursor c = new(il);
-                if (!c.TryGotoNext(i => i.MatchLdsfld<Recipe>(nameof(Recipe.numRecipes))))
+                if (!c.TryGotoNext(i => i.MatchRet()))
                 {
                     AltLibrary.Instance.Logger.Info("6 $ 1");
                     return;
                 }
 
-                c.Index++;
-                c.EmitDelegate<Func<int, int>>((orig) => orig);
-
-                if (!c.TryGotoNext(i => i.MatchLdarg(0),
-                    i => i.MatchCall(mod.GetType().Assembly.GetType("CheatSheet.Menus.RecipeBrowserWindow").GetMethod("InitializeRecipeCategories", BindingFlags.NonPublic | BindingFlags.Instance))))
+                c.Emit(OpCodes.Ldarg, 0);
+                c.Emit(OpCodes.Ldarg, 0);
+                c.Emit(OpCodes.Ldfld, mod.GetType().Assembly.GetType("CheatSheet.Menus.RecipeView").GetField("allRecipeSlot"));
+                c.EmitDelegate<Func<object[], object[]>>((orig) =>
                 {
-                    AltLibrary.Instance.Logger.Info("6 $ 2");
-                    return;
-                }
-
-                c.Emit(OpCodes.Ldsfld, mod.GetType().Assembly.GetType("CheatSheet.Menus.RecipeBrowserWindow").GetField("recipeView", BindingFlags.NonPublic | BindingFlags.Static));
-                c.Emit(OpCodes.Ldfld, mod.GetType().Assembly.GetType("CheatSheet.Menus.RecipeView").GetField("allRecipeSlot", BindingFlags.Public | BindingFlags.Instance));
-                c.EmitDelegate<Func<object[], object[]>>((num254) =>
-                {
-                    List<object> allRecipeSlot = num254.ToList();
-                    for (int j = 0; j < allRecipeSlot.Count; j++)
+                    List<object> slots = orig.ToList();
+                    foreach (object slot in slots)
                     {
-                        if (Main.recipe[j].Mod != null && Main.recipe[j].Mod.Name == AltLibrary.Instance.Name)
+                        if (((Recipe)slot.GetType().GetField("recipe").GetValue(slot)).HasIngredient(ModContent.ItemType<HallowBunny>()))
                         {
-                            allRecipeSlot.RemoveAt(j);
+                            slots.Remove(slot);
                         }
                     }
-                    return allRecipeSlot.ToArray();
+                    return slots.ToArray();
                 });
-                c.Emit(OpCodes.Ldsfld, mod.GetType().Assembly.GetType("CheatSheet.Menus.RecipeBrowserWindow").GetField("recipeView", BindingFlags.NonPublic | BindingFlags.Static));
-                c.Emit(OpCodes.Stfld, mod.GetType().Assembly.GetType("CheatSheet.Menus.RecipeView").GetField("allRecipeSlot", BindingFlags.Public | BindingFlags.Instance));
+                c.Emit(OpCodes.Stfld, mod.GetType().Assembly.GetType("CheatSheet.Menus.RecipeView").GetField("allRecipeSlot"));
             }
 
-            private static void CheatSheetChanges_ModifyParseList1(ILContext il)
+            private static void CheatSheetChanges_ModifyItemViewSet(ILContext il)
             {
                 ILCursor c = new(il);
-                ILLabel label = null;
-                if (!c.TryGotoNext(i => i.MatchLdfld<NPC>(nameof(NPC.type)),
-                    i => i.MatchLdcI4(NPCID.Count),
-                    i => i.MatchBlt(out label)))
+                ILLabel definition = null;
+                if (!c.TryGotoNext(i => i.MatchLdfld<Item>(nameof(Item.type)),
+                    i => i.MatchBrfalse(out definition)))
                 {
                     AltLibrary.Instance.Logger.Info("5 $ 1");
                     return;
                 }
-                c.Index += 3;
-                c.Emit(OpCodes.Ldloc, 1);
-                c.EmitDelegate<Func<int, bool>>((j) =>
-                {
-                    return j != ModContent.NPCType<Content.NPCs.HallowBunny>();
-                });
-                c.Emit(OpCodes.Brfalse, label);
+
+                c.Index += 2;
+                c.Emit(OpCodes.Ldloc, 2);
+                c.Emit(OpCodes.Ldfld, mod.GetType().Assembly.GetType("CheatSheet.Menus.Slot").GetField("item"));
+                c.Emit(OpCodes.Ldfld, typeof(Item).GetField(nameof(Item.type)));
+                c.EmitDelegate(() => ModContent.ItemType<HallowBunny>());
+                c.Emit(OpCodes.Beq_S, definition);
+                c.Emit(OpCodes.Ldloc, 2);
+                c.Emit(OpCodes.Ldfld, mod.GetType().Assembly.GetType("CheatSheet.Menus.Slot").GetField("item"));
+                c.Emit(OpCodes.Ldfld, typeof(Item).GetField(nameof(Item.type)));
+                c.EmitDelegate(() => ModContent.ItemType<HallowBunnyCage>());
+                c.Emit(OpCodes.Beq_S, definition);
             }
 
-            private static void CheatSheetChanges_ModifyParseList2(ILContext il)
+            private static void CheatSheetChanges_ModifyNPCViewSet(ILContext il)
             {
                 ILCursor c = new(il);
-                ILLabel label = null;
-                if (!c.TryGotoNext(i => i.MatchLdcI4(ItemID.Count),
-                    i => i.MatchBlt(out label)))
+                ILLabel definition = null;
+                if (!c.TryGotoNext(i => i.MatchLdfld(mod.GetType().Assembly.GetType("CheatSheet.Menus.NPCSlot").GetField("npcType")),
+                    i => i.MatchBrtrue(out definition)))
                 {
                     AltLibrary.Instance.Logger.Info("4 $ 1");
                     return;
                 }
+
                 c.Index += 2;
+                c.Emit(OpCodes.Ldarg, 0);
+                c.Emit(OpCodes.Ldfld, mod.GetType().Assembly.GetType("CheatSheet.Menus.NPCView").GetField("allNPCSlot"));
+                c.Emit(OpCodes.Ldloc, 0);
                 c.Emit(OpCodes.Ldloc, 1);
-                c.EmitDelegate<Func<int, bool>>((j) =>
-                {
-                    return j < 5125 && j != ModContent.ItemType<HallowBunny>() && j != ModContent.ItemType<HallowBunnyCage>();
-                });
-                c.Emit(OpCodes.Brfalse, label);
+                c.Emit(OpCodes.Callvirt, typeof(List<int>).GetMethod("get_Item"));
+                c.Emit(OpCodes.Ldelem_Ref);
+                c.Emit(OpCodes.Ldfld, mod.GetType().Assembly.GetType("CheatSheet.Menus.NPCSlot").GetField("npcType"));
+                c.EmitDelegate(() => ModContent.NPCType<Content.NPCs.HallowBunny>());
+                c.Emit(OpCodes.Beq_S, definition);
             }
-        }*/
+        }
     }
 }
