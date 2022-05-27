@@ -38,9 +38,6 @@ namespace AltLibrary.Common.Hooks
             var label = il.DefineLabel();
 
             c.EmitDelegate(() => WorldBiomeManager.WorldJungle == "");
-            //c.Emit(OpCodes.Ldsfld, typeof(WorldBiomeManager).GetField(nameof(WorldBiomeManager.worldJungle), BindingFlags.Public | BindingFlags.Static));
-            //c.Emit(OpCodes.Ldstr, "");
-            //c.Emit(OpCodes.Call, typeof(string).GetMethod("op_Equality", new Type[] { typeof(string), typeof(string) }));
             c.Emit(OpCodes.Brfalse_S, label);
 
             c.EmitDelegate(() => HouseBuilder.Invalid);

@@ -4,7 +4,6 @@ using AltLibrary.Common.Systems;
 using AltLibrary.Core.UIs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using ReLogic.Content;
@@ -23,6 +22,7 @@ using Terraria.UI;
 
 namespace AltLibrary.Common
 {
+    [Autoload(Side = ModSide.Client)]
     internal class UIWorldCreationEdits
     {
         internal static ALGroupOptionButton<CurrentAltOption>[] chosingOption;
@@ -61,10 +61,113 @@ namespace AltLibrary.Common
             On.Terraria.GameContent.UI.States.UIWorldCreation.BuildPage += UIWorldCreation_BuildPage;
             IL.Terraria.GameContent.UI.States.UIWorldCreation.Draw += UIWorldCreation_Draw;
             IL.Terraria.GameContent.UI.States.UIWorldCreation.FinishCreatingWorld += UIWorldCreation_FinishCreatingWorld;
-            //IL.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf += UIWorldCreationPreview_DrawSelf1;
+            IL.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf += UIWorldCreationPreview_DrawSelf1;
             On.Terraria.GameContent.UI.Elements.UIWorldListItem.PlayGame += UIWorldListItem_PlayGame;
             On.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf += UIWorldCreationPreview_DrawSelf;
             On.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.ctor += UIWorldCreationPreview_ctor;
+        }
+
+        private static void UIWorldCreationPreview_DrawSelf1(ILContext il)
+        {
+            ILCursor c = new(il);
+            ILLabel label = il.DefineLabel();
+
+            if (!c.TryGotoNext(i => i.MatchLdarg(0),
+                i => i.MatchLdfld<UIWorldCreationPreview>("_size"),
+                i => i.MatchStloc(3),
+                i => i.MatchLdloc(3),
+                i => i.MatchSwitch(out _),
+                i => i.MatchBr(out _)))
+            {
+                AltLibrary.Instance.Logger.Info("z $ 1");
+                return;
+            }
+
+            c.Emit(OpCodes.Br, label);
+
+            if (!c.TryGotoNext(i => i.MatchLdarg(0),
+                i => i.MatchLdfld<UIWorldCreationPreview>("_difficulty"),
+                i => i.MatchStloc(3),
+                i => i.MatchLdloc(3),
+                i => i.MatchSwitch(out _),
+                i => i.MatchBr(out _)))
+            {
+                AltLibrary.Instance.Logger.Info("z $ 3");
+                return;
+            }
+
+            c.MarkLabel(label);
+            c.Emit(OpCodes.Ldarg, 0);
+            c.Emit(OpCodes.Ldarg, 1);
+            c.Emit(OpCodes.Ldloc, 1);
+            c.Emit(OpCodes.Ldloc, 2);
+            c.EmitDelegate<Action<UIWorldCreationPreview, SpriteBatch, Vector2, Color>>((self, spriteBatch, position, color) =>
+            {
+                string folder = (seed != null ? seed.ToLower() : "") switch
+                {
+                    "05162020" or "5162020" => "Drunk",
+                    "not the bees" or "not the bees!" => "NotTheBees",
+                    "for the worthy" => "ForTheWorthy",
+                    "celebrationmk10" or "05162011" or "5162011" or "05162021" or "5162021" => "Anniversary",
+                    "constant" or "theconstant" or "​the constant" or "eye4aneye" or "eye4aneye" => "Constant",
+                    _ => "",
+                };
+                bool broken = false;
+                if (AltLibrary.PreviewWorldIcons.Count > 0)
+                {
+                    foreach (AltLibrary.CustomPreviews preview in AltLibrary.PreviewWorldIcons)
+                    {
+                        if ((seed != null ? seed.ToLower() : "").ToLower() == preview.seed.ToLower())
+                        {
+                            switch (_size)
+                            {
+                                case 0:
+                                default:
+                                    spriteBatch.Draw(ModContent.Request<Texture2D>(preview.pathSmall, AssetRequestMode.ImmediateLoad).Value, position, color);
+                                    break;
+                                case 1:
+                                    spriteBatch.Draw(ModContent.Request<Texture2D>(preview.pathMedium, AssetRequestMode.ImmediateLoad).Value, position, color);
+                                    break;
+                                case 2:
+                                    spriteBatch.Draw(ModContent.Request<Texture2D>(preview.pathLarge, AssetRequestMode.ImmediateLoad).Value, position, color);
+                                    break;
+                            }
+                            broken = true;
+                        }
+                    }
+                }
+                if (!broken)
+                {
+                    int style = folder switch
+                    {
+                        "Drunk" => 1,
+                        "NotTheBees" => 2,
+                        "ForTheWorthy" => 3,
+                        "Anniversary" => 4,
+                        "Constant" => 5,
+                        _ => 0,
+                    };
+                    if (style > 0 && AltLibraryConfig.Config.SpecialSeedWorldPreview)
+                    {
+                        spriteBatch.Draw(ALTextureAssets.PreviewSpecialSizes[style, _size].Value, position, color);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(ALTextureAssets.PreviewSpecialSizes[0, _size].Value, position, color);
+                    }
+                }
+                Asset<Texture2D> asset = AltEvilBiomeChosenType switch
+                {
+                    -333 => _EvilCorruptionTexture,
+                    -666 => _EvilCrimsonTexture,
+                    _ => _EvilRandomTexture,
+                };
+                if (AltEvilBiomeChosenType > -1)
+                {
+                    asset = ALTextureAssets.BiomeIconLarge[AltEvilBiomeChosenType] ?? ALTextureAssets.NullPreview;
+                }
+                spriteBatch.Draw(asset.Value, position, color);
+            });
         }
 
         public static void Unload()
@@ -75,160 +178,52 @@ namespace AltLibrary.Common
             On.Terraria.GameContent.UI.States.UIWorldCreation.BuildPage -= UIWorldCreation_BuildPage;
             IL.Terraria.GameContent.UI.States.UIWorldCreation.Draw -= UIWorldCreation_Draw;
             IL.Terraria.GameContent.UI.States.UIWorldCreation.FinishCreatingWorld -= UIWorldCreation_FinishCreatingWorld;
-            //IL.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf -= UIWorldCreationPreview_DrawSelf1;
+            IL.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf -= UIWorldCreationPreview_DrawSelf1;
             On.Terraria.GameContent.UI.Elements.UIWorldListItem.PlayGame -= UIWorldListItem_PlayGame;
             On.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf -= UIWorldCreationPreview_DrawSelf;
             On.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.ctor -= UIWorldCreationPreview_ctor;
-            _difficulty = 0;
             _size = 0;
-            _BackgroundNormalTexture = null;
-            _BackgroundExpertTexture = null;
-            _BackgroundMasterTexture = null;
             _EvilCorruptionTexture = null;
             _EvilCrimsonTexture = null;
             _EvilRandomTexture = null;
-            _BunnyNormalTexture = null;
-            _BunnyExpertTexture = null;
-            _BunnyMasterTexture = null;
-            _BunnyCreativeTexture = null;
-            _BorderTexture = null;
+            chosingOption = null;
+            chosenOption = CurrentAltOption.Biome;
+            AltEvilBiomeChosenType = 0;
+            AltHallowBiomeChosenType = 0;
+            AltJungleBiomeChosenType = 0;
+            AltHellBiomeChosenType = 0;
+            _biomeList = null;
+            _biomeElements = null;
+            _oreList = null;
+            _oreElements = null;
+            _oreHmList = null;
+            _oreHmElements = null;
+            Copper = 0;
+            Iron = 0;
+            Silver = 0;
+            Gold = 0;
+            Cobalt = 0;
+            Mythril = 0;
+            Adamantite = 0;
+            seed = null;
         }
 
-        internal static byte _difficulty = 0;
         internal static byte _size = 0;
-        internal static Asset<Texture2D> _BackgroundNormalTexture;
-        internal static Asset<Texture2D> _BackgroundExpertTexture;
-        internal static Asset<Texture2D> _BackgroundMasterTexture;
         internal static Asset<Texture2D> _EvilCorruptionTexture;
         internal static Asset<Texture2D> _EvilCrimsonTexture;
         internal static Asset<Texture2D> _EvilRandomTexture;
-        internal static Asset<Texture2D> _BunnyNormalTexture;
-        internal static Asset<Texture2D> _BunnyExpertTexture;
-        internal static Asset<Texture2D> _BunnyMasterTexture;
-        internal static Asset<Texture2D> _BunnyCreativeTexture;
-        internal static Asset<Texture2D> _BorderTexture;
         private static void UIWorldCreationPreview_ctor(On.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.orig_ctor orig, UIWorldCreationPreview self)
         {
             orig(self);
-            _difficulty = (byte)typeof(UIWorldCreationPreview).GetField("_difficulty", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
             _size = (byte)typeof(UIWorldCreationPreview).GetField("_size", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
-            _BackgroundNormalTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BackgroundNormalTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
-            _BackgroundExpertTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BackgroundExpertTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
-            _BackgroundMasterTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BackgroundMasterTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
             _EvilCorruptionTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_EvilCorruptionTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
             _EvilCrimsonTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_EvilCrimsonTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
             _EvilRandomTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_EvilRandomTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
-            _BunnyNormalTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BunnyNormalTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
-            _BunnyExpertTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BunnyExpertTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
-            _BunnyMasterTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BunnyMasterTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
-            _BunnyCreativeTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BunnyCreativeTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
-            _BorderTexture = (Asset<Texture2D>)typeof(UIWorldCreationPreview).GetField("_BorderTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
         }
 
         private static void UIWorldCreationPreview_DrawSelf(On.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.orig_DrawSelf orig, UIWorldCreationPreview self, SpriteBatch spriteBatch)
         {
-            CalculatedStyle dimensions = self.GetDimensions();
-            Vector2 position = new(dimensions.X + 4f, dimensions.Y + 4f);
-            Color color = Color.White;
-            switch (_difficulty)
-            {
-                case 0:
-                case 3:
-                    spriteBatch.Draw(_BackgroundNormalTexture.Value, position, Color.White);
-                    color = Color.White;
-                    break;
-                case 1:
-                    spriteBatch.Draw(_BackgroundExpertTexture.Value, position, Color.White);
-                    color = Color.DarkGray;
-                    break;
-                case 2:
-                    spriteBatch.Draw(_BackgroundMasterTexture.Value, position, Color.White);
-                    color = Color.DarkGray;
-                    break;
-            }
-            #region Custom
-            string folder = (seed != null ? seed.ToLower() : "") switch
-            {
-                "05162020" or "5162020" => "Drunk",
-                "not the bees" or "not the bees!" => "NotTheBees",
-                "for the worthy" => "ForTheWorthy",
-                "celebrationmk10" or "05162011" or "5162011" or "05162021" or "5162021" => "Anniversary",
-                "constant" or "theconstant" or "​the constant" or "eye4aneye" or "eye4aneye" => "Constant",
-                _ => "",
-            };
-            bool broken = false;
-            if (AltLibrary.PreviewWorldIcons.Count > 0)
-            {
-                foreach (AltLibrary.CustomPreviews preview in AltLibrary.PreviewWorldIcons)
-                {
-                    if ((seed != null ? seed.ToLower() : "").ToLower() == preview.seed.ToLower())
-                    {
-                        switch (_size)
-                        {
-                            case 0:
-                            default:
-                                spriteBatch.Draw(ModContent.Request<Texture2D>(preview.pathSmall, AssetRequestMode.ImmediateLoad).Value, position, color);
-                                break;
-                            case 1:
-                                spriteBatch.Draw(ModContent.Request<Texture2D>(preview.pathMedium, AssetRequestMode.ImmediateLoad).Value, position, color);
-                                break;
-                            case 2:
-                                spriteBatch.Draw(ModContent.Request<Texture2D>(preview.pathLarge, AssetRequestMode.ImmediateLoad).Value, position, color);
-                                break;
-                        }
-                        broken = true;
-                    }
-                }
-            }
-            if (!broken)
-            {
-                int style = folder switch
-                {
-                    "Drunk" => 1,
-                    "NotTheBees" => 2,
-                    "ForTheWorthy" => 3,
-                    "Anniversary" => 4,
-                    "Constant" => 5,
-                    _ => 0,
-                };
-                if (style > 0 && AltLibraryConfig.Config.SpecialSeedWorldPreview)
-                {
-                    spriteBatch.Draw(ALTextureAssets.PreviewSpecialSizes[style, _size].Value, position, color);
-                }
-                else
-                {
-                    spriteBatch.Draw(ALTextureAssets.PreviewSpecialSizes[0, _size].Value, position, color);
-                }
-            }
-            Asset<Texture2D> asset = AltEvilBiomeChosenType switch
-            {
-                -333 => _EvilCorruptionTexture,
-                -666 => _EvilCrimsonTexture,
-                _ => _EvilRandomTexture,
-            };
-            if (AltEvilBiomeChosenType > -1)
-            {
-                asset = ALTextureAssets.BiomeIconLarge[AltEvilBiomeChosenType] ?? ALTextureAssets.NullPreview;
-            }
-            spriteBatch.Draw(asset.Value, position, color);
-            #endregion
-            switch (_difficulty)
-            {
-                case 0:
-                    spriteBatch.Draw(_BunnyNormalTexture.Value, position, color);
-                    break;
-                case 1:
-                    spriteBatch.Draw(_BunnyExpertTexture.Value, position, color);
-                    break;
-                case 2:
-                    spriteBatch.Draw(_BunnyMasterTexture.Value, position, color * 1.2f);
-                    break;
-                case 3:
-                    spriteBatch.Draw(_BunnyCreativeTexture.Value, position, color);
-                    break;
-            }
-            spriteBatch.Draw(_BorderTexture.Value, new Vector2(dimensions.X, dimensions.Y), Color.White);
-
+            orig(self, spriteBatch);
             WorldCreationUIIcons(self, spriteBatch);
         }
 
@@ -248,197 +243,6 @@ namespace AltLibrary.Common
             });
         }
 
-        /*
-        private static void UIWorldCreationPreview_DrawSelf1(ILContext il)
-        {
-            ILCursor c = new(il);
-            FieldReference corrupt = null;
-            FieldReference crimson = null;
-
-            if (!c.TryGotoNext(i => i.MatchLdfld<UIWorldCreationPreview>("_SizeSmallTexture")))
-            {
-                AltLibrary.Instance.Logger.Info("z $ 1");
-                return;
-            }
-            c.EmitDelegate<Func<Asset<Texture2D>, Asset<Texture2D>>>((orig) =>
-            {
-                if (seed != "")
-                    return ALTextureAssets.Empty2;
-                return orig;
-            });
-            if (!c.TryGotoNext(i => i.MatchLdfld<UIWorldCreationPreview>("_SizeMediumTexture")))
-            {
-                AltLibrary.Instance.Logger.Info("z $ 2");
-                return;
-            }
-            c.Index++;
-            c.EmitDelegate<Func<Asset<Texture2D>, Asset<Texture2D>>>((orig) =>
-            {
-                if (seed != "")
-                    return ALTextureAssets.Empty2;
-                return orig;
-            });
-            if (!c.TryGotoNext(i => i.MatchLdfld<UIWorldCreationPreview>("_SizeLargeTexture")))
-            {
-                AltLibrary.Instance.Logger.Info("z $ 3");
-                return;
-            }
-            c.Index++;
-            c.EmitDelegate<Func<Asset<Texture2D>, Asset<Texture2D>>>((orig) =>
-            {
-                if (seed != "")
-                    return ALTextureAssets.Empty2;
-                return orig;
-            });
-
-            if (!c.TryGotoNext(i => i.MatchLdfld<UIWorldCreationPreview>("_EvilRandomTexture")))
-            {
-                AltLibrary.Instance.Logger.Info("z $ 4");
-                return;
-            }
-            if (!c.TryGotoNext(i => i.MatchLdfld(out corrupt)))
-            {
-                AltLibrary.Instance.Logger.Info("z $ 5");
-                return;
-            }
-            c.Index++;
-            c.EmitDelegate<Func<Asset<Texture2D>, Asset<Texture2D>>>((orig) =>
-            {
-                if (AltEvilBiomeChosenType == -333)
-                    return orig;
-                return ALTextureAssets.Empty2;
-            });
-            if (!c.TryGotoNext(i => i.MatchLdfld(out crimson)))
-            {
-                AltLibrary.Instance.Logger.Info("z $ 6");
-                return;
-            }
-            c.Index++;
-            c.EmitDelegate<Func<Asset<Texture2D>, Asset<Texture2D>>>((orig) =>
-            {
-                if (AltEvilBiomeChosenType == -666)
-                    return orig;
-                return ALTextureAssets.Empty2;
-            });
-            if (!c.TryGotoPrev(i => i.MatchLdfld<UIWorldCreationPreview>("_EvilRandomTexture")))
-            {
-                AltLibrary.Instance.Logger.Info("z $ 7");
-                return;
-            }
-
-            c.Index++;
-            c.Emit(OpCodes.Ldarg, 0);
-            c.Emit(OpCodes.Ldfld, corrupt);
-            c.Emit(OpCodes.Ldarg, 0);
-            c.Emit(OpCodes.Ldfld, crimson);
-            c.Emit(OpCodes.Ldarg, 0);
-            c.Emit(OpCodes.Ldarg, 1);
-            c.Emit(OpCodes.Ldloc, 1);
-            c.Emit(OpCodes.Ldloc, 2);
-            c.EmitDelegate<Func<Asset<Texture2D>, Asset<Texture2D>, Asset<Texture2D>, UIWorldCreationPreview, SpriteBatch, Vector2, Color, Asset<Texture2D>>>((orig, corrupt, crimson, ui, spritebatch, position, color) =>
-            {
-                byte size = (byte)typeof(UIWorldCreationPreview).GetField("_size", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(ui);
-                string var = size switch
-                {
-                    0 => "Small",
-                    1 => "Medium",
-                    2 => "Large",
-                    _ => "Small",
-                };
-                string folder = (seed != null ? seed.ToLower() : "") switch
-                {
-                    "05162020" or "5162020" => "Drunk",
-                    "not the bees" or "not the bees!" => "NotTheBees",
-                    "for the worthy" => "ForTheWorthy",
-                    "celebrationmk10" or "05162011" or "5162011" or "05162021" or "5162021" => "Anniversary",
-                    "constant" or "theconstant" or "​the constant" or "eye4aneye" or "eye4aneye" => "Constant",
-                    _ => "",
-                };
-                bool broken = false;
-                if (AltLibrary.PreviewWorldIcons.Count > 0)
-                {
-                    foreach (AltLibrary.CustomPreviews preview in AltLibrary.PreviewWorldIcons)
-                    {
-                        if ((seed != null ? seed.ToLower() : "").ToLower() == preview.seed.ToLower())
-                        {
-                            switch (size)
-                            {
-                                case 0:
-                                default:
-                                    spritebatch.Draw(ModContent.Request<Texture2D>(preview.pathSmall, AssetRequestMode.ImmediateLoad).Value, position, color);
-                                    break;
-                                case 1:
-                                    spritebatch.Draw(ModContent.Request<Texture2D>(preview.pathMedium, AssetRequestMode.ImmediateLoad).Value, position, color);
-                                    break;
-                                case 2:
-                                    spritebatch.Draw(ModContent.Request<Texture2D>(preview.pathLarge, AssetRequestMode.ImmediateLoad).Value, position, color);
-                                    break;
-                            }
-                            broken = true;
-                        }
-                    }
-                }
-                if (!broken)
-                {
-                    if (folder != "" && AltLibraryConfig.Config.SpecialSeedWorldPreview)
-                    {
-                        spritebatch.Draw(ModContent.Request<Texture2D>($"AltLibrary/Assets/WorldPreviews/{folder}/{var}", AssetRequestMode.ImmediateLoad).Value, position, color);
-                    }
-                    else
-                    {
-                        spritebatch.Draw(Main.Assets.Request<Texture2D>($"Images/UI/WorldCreation/PreviewSize{var}", AssetRequestMode.ImmediateLoad).Value, position, color);
-                    }
-                }
-
-                Asset<Texture2D> asset = AltEvilBiomeChosenType switch
-                {
-                    -333 => corrupt,
-                    -666 => crimson,
-                    _ => orig,
-                };
-                if (AltEvilBiomeChosenType > -1)
-                {
-                    asset = AltLibrary.Biomes[AltEvilBiomeChosenType].IconLarge == null ? ALTextureAssets.NullPreview : ModContent.Request<Texture2D>(AltLibrary.Biomes[AltEvilBiomeChosenType].IconLarge, AssetRequestMode.ImmediateLoad);
-                }
-                spritebatch.Draw(asset.Value, position, color);
-
-                return ALTextureAssets.Empty2;
-            });
-
-            if (!c.TryGotoNext(i => i.MatchSwitch(out _)))
-            {
-                AltLibrary.Instance.Logger.Info("z $ 8");
-                return;
-            }
-            if (!c.TryGotoPrev(i => i.MatchLdarg(0)))
-            {
-                AltLibrary.Instance.Logger.Info("z $ 9");
-                return;
-            }
-
-            c.Emit(OpCodes.Ldarg, 0);
-            c.Emit(OpCodes.Ldarg, 1);
-            c.Emit(OpCodes.Ldloc, 1);
-            c.Emit(OpCodes.Ldloc, 2);
-            c.EmitDelegate<Action<UIWorldCreationPreview, SpriteBatch, Vector2, Color>>((ui, spritebatch, position, color) =>
-            {
-                foreach (AltBiome biome in AltLibrary.Biomes)
-                {
-                    if (AltHallowBiomeChosenType == biome.Type - 1 && biome.IconLarge != "" && (AltLibraryConfig.Config.PreviewVisible == "Hallow only" || AltLibraryConfig.Config.PreviewVisible == "Both") && biome.BiomeType == BiomeType.Hallow && biome.IconLarge != null)
-                    {
-                        if (ModContent.RequestIfExists(biome.IconLarge, out Asset<Texture2D> asset))
-                            spritebatch.Draw(asset.Value, position, color);
-                    }
-                    if (AltJungleBiomeChosenType == biome.Type - 1 && biome.IconLarge != "" && (AltLibraryConfig.Config.PreviewVisible == "Jungle only" || AltLibraryConfig.Config.PreviewVisible == "Both") && biome.BiomeType == BiomeType.Jungle && biome.IconLarge != null)
-                    {
-                        if (ModContent.RequestIfExists(biome.IconLarge, out Asset<Texture2D> asset))
-                            spritebatch.Draw(asset.Value, position, color);
-                    }
-                }
-            });
-        }
-        */
-
         private static void UIWorldListItem_PlayGame(On.Terraria.GameContent.UI.Elements.UIWorldListItem.orig_PlayGame orig, UIWorldListItem self, UIMouseEvent evt, UIElement listeningElement)
         {
             if ((WorldFileData)typeof(UIWorldListItem).GetField("_data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self) == null)
@@ -452,6 +256,7 @@ namespace AltLibrary.Common
         public static void UIWorldCreation_BuildPage(On.Terraria.GameContent.UI.States.UIWorldCreation.orig_BuildPage orig, UIWorldCreation self)
         {
             chosenOption = (CurrentAltOption)(-1);
+
             List<int> evilBiomeTypes = new() { -333, -666 };
             AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Evil && x.Selectable).ToList().ForEach(x => evilBiomeTypes.Add(x.Type - 1));
             AltEvilBiomeChosenType = evilBiomeTypes[Main.rand.Next(evilBiomeTypes.Count)];

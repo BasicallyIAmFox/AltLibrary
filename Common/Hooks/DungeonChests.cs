@@ -12,16 +12,21 @@ namespace AltLibrary.Common.Hooks
     /// TODO:
     /// make hell chest alts actually gen...
     /// </summary>
+    [Autoload(Side = ModSide.Both)]
     internal class DungeonChests
     {
+        internal static int hellChestIndex;
+
         public static void Init()
         {
+            hellChestIndex = -1;
             IL.Terraria.WorldGen.MakeDungeon += WorldGen_MakeDungeon;
         }
 
         public static void Unload()
         {
             IL.Terraria.WorldGen.MakeDungeon -= WorldGen_MakeDungeon;
+            hellChestIndex = 0;
         }
 
         private static void WorldGen_MakeDungeon(ILContext il)
@@ -42,9 +47,11 @@ namespace AltLibrary.Common.Hooks
             c.Emit(OpCodes.Ldloc, 15);
             c.EmitDelegate<Func<int, int>>((orig) =>
             {
+                hellChestIndex = -1;
                 if (WorldBiomeManager.WorldHell != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).BiomeChestTile.HasValue)
                 {
-                    //orig++;
+                    hellChestIndex = orig + 1;
+                    return orig + 1;
                 }
                 return orig;
             });
@@ -63,7 +70,7 @@ namespace AltLibrary.Common.Hooks
 
             c.Index++;
             c.Emit(OpCodes.Ldloc, 93);
-            c.Emit(OpCodes.Ldc_I4, int.MinValue);
+            c.Emit(OpCodes.Ldc_I4, hellChestIndex);
             c.EmitDelegate<Func<int, int, int, int>>((contain, chests, hellChestIndex) =>
             {
                 if (chests == 0 && WorldBiomeManager.WorldJungle != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeChestItem.HasValue)
@@ -93,7 +100,7 @@ namespace AltLibrary.Common.Hooks
 
             c.Index++;
             c.Emit(OpCodes.Ldloc, 93);
-            c.Emit(OpCodes.Ldc_I4, int.MinValue);
+            c.Emit(OpCodes.Ldc_I4, hellChestIndex);
             c.EmitDelegate<Func<int, int, int, int>>((style, chests, hellChestIndex) =>
             {
                 if (chests == 0 && WorldBiomeManager.WorldJungle != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeChestTileStyle.HasValue)
@@ -123,7 +130,7 @@ namespace AltLibrary.Common.Hooks
 
             c.Index++;
             c.Emit(OpCodes.Ldloc, 93);
-            c.Emit(OpCodes.Ldc_I4, int.MinValue);
+            c.Emit(OpCodes.Ldc_I4, hellChestIndex);
             c.EmitDelegate<Func<int, int, int, int>>((chestTileType, chests, hellChestIndex) =>
             {
                 if (chests == 0 && WorldBiomeManager.WorldJungle != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeChestTile.HasValue)

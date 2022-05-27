@@ -66,6 +66,15 @@ namespace AltLibrary.Common
             HardmodeWallsInfo = GetGenPassInfo(il, "Hardmode Walls");
         }
 
+        public static void Unload()
+        {
+            ResetInfo = null;
+            ShiniesInfo = null;
+            CorruptionInfo = null;
+            AltarsInfo = null;
+            MicroBiomesInfo = null;
+        }
+
         private static MethodBase GetGenPassInfo(ILContext il, string name)
         {
             try

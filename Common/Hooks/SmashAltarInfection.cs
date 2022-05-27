@@ -12,6 +12,7 @@ using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Hooks
 {
+    [Autoload(Side = ModSide.Both)]
     internal class SmashAltarInfection
     {
         public static void Init()
@@ -48,48 +49,48 @@ namespace AltLibrary.Common.Hooks
                     {
                         if (WorldGen.SavedOreTiers.Cobalt == TileID.Cobalt)
                         {
-                            key = Language.GetTextValue("Mods.AltLibrary.AltOreName.Cobalt");
+                            key = Lang.misc[12].Value;
                         }
                         else if (WorldGen.SavedOreTiers.Cobalt == TileID.Palladium)
                         {
-                            key = Language.GetTextValue("Mods.AltLibrary.AltOreName.Palladium");
+                            key = Lang.misc[21].Value;
                         }
                         else
                         {
-                            key = AltLibrary.Ores.First(o => o.OreType == OreType.Cobalt && o.ore == WorldGen.SavedOreTiers.Cobalt).DisplayName.GetTranslation(Language.ActiveCulture);
+                            key = AltLibrary.Ores.First(o => o.OreType == OreType.Cobalt && o.ore == WorldGen.SavedOreTiers.Cobalt).BlessingMessage.GetTranslation(Language.ActiveCulture);
                         }
                     }
                     else if (j == 1)
                     {
                         if (WorldGen.SavedOreTiers.Mythril == TileID.Mythril)
                         {
-                            key = Language.GetTextValue("Mods.AltLibrary.AltOreName.Mythril");
+                            key = Lang.misc[13].Value;
                         }
                         else if (WorldGen.SavedOreTiers.Mythril == TileID.Orichalcum)
                         {
-                            key = Language.GetTextValue("Mods.AltLibrary.AltOreName.Orichalcum");
+                            key = Lang.misc[22].Value;
                         }
                         else
                         {
-                            key = AltLibrary.Ores.First(o => o.OreType == OreType.Mythril && o.ore == WorldGen.SavedOreTiers.Mythril).DisplayName.GetTranslation(Language.ActiveCulture);
+                            key = AltLibrary.Ores.First(o => o.OreType == OreType.Mythril && o.ore == WorldGen.SavedOreTiers.Mythril).BlessingMessage.GetTranslation(Language.ActiveCulture);
                         }
                     }
                     else
                     {
                         if (WorldGen.SavedOreTiers.Adamantite == TileID.Adamantite)
                         {
-                            key = Language.GetTextValue("Mods.AltLibrary.AltOreName.Adamantite");
+                            key = Lang.misc[14].Value;
                         }
                         else if (WorldGen.SavedOreTiers.Adamantite == TileID.Titanium)
                         {
-                            key = Language.GetTextValue("Mods.AltLibrary.AltOreName.Titanium");
+                            key = Lang.misc[23].Value;
                         }
                         else
                         {
-                            key = AltLibrary.Ores.First(o => o.OreType == OreType.Adamantite && o.ore == WorldGen.SavedOreTiers.Adamantite).DisplayName.GetTranslation(Language.ActiveCulture);
+                            key = AltLibrary.Ores.First(o => o.OreType == OreType.Adamantite && o.ore == WorldGen.SavedOreTiers.Adamantite).BlessingMessage.GetTranslation(Language.ActiveCulture);
                         }
                     }
-                    return Language.GetTextValue("Mods.AltLibrary.HardmodeOre", key);
+                    return key;
                 });
 
                 if (!c.TryGotoNext(i => i.MatchLdsfld<Lang>(nameof(Lang.misc)),
@@ -112,48 +113,48 @@ namespace AltLibrary.Common.Hooks
                     {
                         if (WorldGen.SavedOreTiers.Cobalt == TileID.Cobalt)
                         {
-                            key = Language.GetTextValue("Mods.AltLibrary.AltOreName.Cobalt");
+                            key = Lang.misc[12].Value;
                         }
                         else if (WorldGen.SavedOreTiers.Cobalt == TileID.Palladium)
                         {
-                            key = Language.GetTextValue("Mods.AltLibrary.AltOreName.Palladium");
+                            key = Lang.misc[21].Value;
                         }
                         else
                         {
-                            key = AltLibrary.Ores.First(o => o.OreType == OreType.Cobalt && o.ore == WorldGen.SavedOreTiers.Cobalt).DisplayName.GetTranslation(Language.ActiveCulture);
+                            key = AltLibrary.Ores.First(o => o.OreType == OreType.Cobalt && o.ore == WorldGen.SavedOreTiers.Cobalt).BlessingMessage.GetTranslation(Language.ActiveCulture);
                         }
                     }
                     else if (j == 1)
                     {
                         if (WorldGen.SavedOreTiers.Mythril == TileID.Mythril)
                         {
-                            key = Language.GetTextValue("Mods.AltLibrary.AltOreName.Mythril");
+                            key = Lang.misc[13].Value;
                         }
                         else if (WorldGen.SavedOreTiers.Mythril == TileID.Orichalcum)
                         {
-                            key = Language.GetTextValue("Mods.AltLibrary.AltOreName.Orichalcum");
+                            key = Lang.misc[22].Value;
                         }
                         else
                         {
-                            key = AltLibrary.Ores.First(o => o.OreType == OreType.Mythril && o.ore == WorldGen.SavedOreTiers.Mythril).DisplayName.GetTranslation(Language.ActiveCulture);
+                            key = AltLibrary.Ores.First(o => o.OreType == OreType.Mythril && o.ore == WorldGen.SavedOreTiers.Mythril).BlessingMessage.GetTranslation(Language.ActiveCulture);
                         }
                     }
                     else
                     {
                         if (WorldGen.SavedOreTiers.Adamantite == TileID.Adamantite)
                         {
-                            key = Language.GetTextValue("Mods.AltLibrary.AltOreName.Adamantite");
+                            key = Lang.misc[14].Value;
                         }
                         else if (WorldGen.SavedOreTiers.Adamantite == TileID.Titanium)
                         {
-                            key = Language.GetTextValue("Mods.AltLibrary.AltOreName.Titanium");
+                            key = Lang.misc[23].Value;
                         }
                         else
                         {
-                            key = AltLibrary.Ores.First(o => o.OreType == OreType.Adamantite && o.ore == WorldGen.SavedOreTiers.Adamantite).DisplayName.GetTranslation(Language.ActiveCulture);
+                            key = AltLibrary.Ores.First(o => o.OreType == OreType.Adamantite && o.ore == WorldGen.SavedOreTiers.Adamantite).BlessingMessage.GetTranslation(Language.ActiveCulture);
                         }
                     }
-                    return NetworkText.FromKey("Mods.AltLibrary.HardmodeOre", key);
+                    return NetworkText.FromLiteral(key);
                 });
             }
 

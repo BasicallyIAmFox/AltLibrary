@@ -17,6 +17,7 @@ using Terraria.UI;
 
 namespace AltLibrary.Common.Hooks
 {
+    [Autoload(Side = ModSide.Client)]
     internal static class WorldIcons
     {
         internal static int WarnUpdate = 0;
@@ -26,6 +27,7 @@ namespace AltLibrary.Common.Hooks
             IL.Terraria.GameContent.UI.Elements.UIWorldListItem.ctor += UIWorldListItem_ctor;
             IL.Terraria.GameContent.UI.Elements.UIWorldListItem.DrawSelf += UIWorldListItem_DrawSelf1;
             On.Terraria.GameContent.UI.Elements.UIWorldListItem.DrawSelf += UIWorldListItem_DrawSelf;
+            WarnUpdate = 0;
         }
 
         public static void Unload()
@@ -33,6 +35,7 @@ namespace AltLibrary.Common.Hooks
             IL.Terraria.GameContent.UI.Elements.UIWorldListItem.ctor -= UIWorldListItem_ctor;
             IL.Terraria.GameContent.UI.Elements.UIWorldListItem.DrawSelf -= UIWorldListItem_DrawSelf1;
             On.Terraria.GameContent.UI.Elements.UIWorldListItem.DrawSelf -= UIWorldListItem_DrawSelf;
+            WarnUpdate = 0;
         }
 
         private static void UIWorldListItem_DrawSelf1(ILContext il)

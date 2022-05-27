@@ -3,9 +3,11 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
 using Terraria;
+using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Hooks
 {
+    [Autoload(Side = ModSide.Both)]
     internal class MowingGrassTile
     {
         public static void Init()

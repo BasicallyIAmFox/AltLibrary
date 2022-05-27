@@ -102,7 +102,10 @@ namespace AltLibrary
             TimeHoveringOnIcon = 0;
             HallowBunnyUnlocked = false;
             PreviewWorldIcons = null;
-            Instance = null;
+            if (!Main.dedServ)
+            {
+                Instance = null;
+            }
             Biomes = null;
             Ores = null;
             LiquidStyles = null;
@@ -112,31 +115,6 @@ namespace AltLibrary
             evilStoppingOres = null;
             ILHooks.Unload();
             AltLibraryConfig.Config = null;
-            UIWorldCreationEdits.Adamantite = 0;
-            UIWorldCreationEdits.AltEvilBiomeChosenType = 0;
-            UIWorldCreationEdits.AltHallowBiomeChosenType = 0;
-            UIWorldCreationEdits.AltHellBiomeChosenType = 0;
-            UIWorldCreationEdits.AltJungleBiomeChosenType = 0;
-            UIWorldCreationEdits.chosenOption = UIWorldCreationEdits.CurrentAltOption.Biome;
-            UIWorldCreationEdits.chosingOption = null;
-            UIWorldCreationEdits.Cobalt = 0;
-            UIWorldCreationEdits.Copper = 0;
-            UIWorldCreationEdits.Gold = 0;
-            UIWorldCreationEdits.Iron = 0;
-            UIWorldCreationEdits.isCrimson = false;
-            UIWorldCreationEdits.Mythril = 0;
-            UIWorldCreationEdits.seed = null;
-            UIWorldCreationEdits.Silver = 0;
-            UIWorldCreationEdits._biomeElements = null;
-            UIWorldCreationEdits._biomeList = null;
-            UIWorldCreationEdits._oreElements = null;
-            UIWorldCreationEdits._oreHmElements = null;
-            UIWorldCreationEdits._oreHmList = null;
-            UIWorldCreationEdits._oreList = null;
-            WorldBiomeGeneration.dungeonSide = 0;
-            WorldBiomeGeneration.worldCrimson = 0;
-            WorldBiomeGeneration.worldCrimson2 = false;
-            WorldBiomeGeneration.worldCrimson3 = null;
         }
 
         internal struct CustomPreviews
@@ -150,19 +128,19 @@ namespace AltLibrary
             {
                 if (seed is null)
                 {
-                    throw new ArgumentNullException(nameof(seed), "'seed' cannot be null!");
+                    throw new ArgumentNullException(nameof(seed), "Cannot be null!");
                 }
                 if (pathSmall is null)
                 {
-                    throw new ArgumentNullException(nameof(pathSmall), "'pathSmall' cannot be null!");
+                    throw new ArgumentNullException(nameof(pathSmall), "Cannot be null!");
                 }
                 if (pathMedium is null)
                 {
-                    throw new ArgumentNullException(nameof(pathMedium), "'pathMedium' cannot be null!");
+                    throw new ArgumentNullException(nameof(pathMedium), "Cannot be null!");
                 }
                 if (pathLarge is null)
                 {
-                    throw new ArgumentNullException(nameof(pathLarge), "'pathLarge' cannot be null!");
+                    throw new ArgumentNullException(nameof(pathLarge), "Cannot be null!");
                 }
 
                 this.seed = seed;

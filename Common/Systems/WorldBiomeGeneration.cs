@@ -15,14 +15,22 @@ namespace AltLibrary.Common.Systems
     internal class WorldBiomeGeneration : ModSystem
     {
         public static int dungeonSide = 0;
-        private static readonly int beachBordersWidth = 275;
-        private static readonly int beachSandRandomCenter = beachBordersWidth + 45;
-        private static readonly int evilBiomeBeachAvoidance = beachSandRandomCenter + 60;
-        private static readonly int evilBiomeAvoidanceMidFixer = 50;
+        private const int beachBordersWidth = 275;
+        private const int beachSandRandomCenter = beachBordersWidth + 45;
+        private const int evilBiomeBeachAvoidance = beachSandRandomCenter + 60;
+        private const int evilBiomeAvoidanceMidFixer = 50;
 
         internal static int worldCrimson;
         internal static bool worldCrimson2;
         internal static AltBiome worldCrimson3;
+
+        public override void Unload()
+        {
+            dungeonSide = 0;
+            worldCrimson = 0;
+            worldCrimson2 = false;
+            worldCrimson3 = null;
+        }
 
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
         {

@@ -6,10 +6,12 @@ using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
 namespace AltLibrary.Common.Hooks
 {
+    [Autoload(Side = ModSide.Both)]
     internal static class HardmodeWorldGen
     {
         public static void Init()

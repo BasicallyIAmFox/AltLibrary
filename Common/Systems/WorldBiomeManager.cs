@@ -21,6 +21,22 @@ namespace AltLibrary.Common.Systems
         public static int Mythril { get; internal set; } = 0;
         public static int Adamantite { get; internal set; } = 0;
 
+        public override void Unload()
+        {
+            WorldEvil = null;
+            WorldHallow = null;
+            WorldHell = null;
+            WorldJungle = null;
+            drunkEvil = null;
+            Copper = 0;
+            Iron = 0;
+            Silver = 0;
+            Gold = 0;
+            Cobalt = 0;
+            Mythril = 0;
+            Adamantite = 0;
+        }
+
         public override void SaveWorldData(TagCompound tag)
         {
             tag.Add("AltLibrary:WorldEvil", WorldEvil);

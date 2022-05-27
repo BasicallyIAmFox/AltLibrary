@@ -15,6 +15,7 @@ using Terraria.WorldBuilding;
 
 namespace AltLibrary.Common.Hooks
 {
+    [Autoload(Side = ModSide.Both)]
     internal static class EvenMoreWorldGen
     {
         public static void Init()

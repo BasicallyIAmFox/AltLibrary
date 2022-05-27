@@ -17,11 +17,11 @@ namespace AltLibrary.Common.AltOres
         /// </summary>
         public int bar;
         /// <summary>
-        /// Whether or not this biome will appear on the selection menu.
+        /// Whether or not this ore will appear on the selection menu.
         /// </summary>
         public bool Selectable = true;
         /// <summary>
-        /// The color of this biome's name that will appear on the biome selection menu.
+        /// The color of this ore's name that will appear on the biome selection menu.
         /// </summary>
         public virtual Color NameColor => new(255, 255, 255);
         /// <summary>
@@ -50,6 +50,14 @@ namespace AltLibrary.Common.AltOres
             get;
             private set;
         }
+        /// <summary>
+        /// The 'World was blessed by ...' message. Used for hardmode ore alts.
+        /// </summary>
+        public ModTranslation BlessingMessage
+        {
+            get;
+            private set;
+        }
 
         protected sealed override void Register()
         {
@@ -61,6 +69,9 @@ namespace AltLibrary.Common.AltOres
             Description = (ModTranslation)typeof(LocalizationLoader).GetMethod("GetOrCreateTranslation",
                 BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static,
                 new Type[] { typeof(Mod), typeof(string), typeof(bool) }).Invoke(null, new object[] { Mod, $"AltOreDescription.{Name}", true });
+            BlessingMessage = (ModTranslation)typeof(LocalizationLoader).GetMethod("GetOrCreateTranslation",
+                BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static,
+                new Type[] { typeof(Mod), typeof(string), typeof(bool) }).Invoke(null, new object[] { Mod, $"AltOreBless.{Name}", true });
 
             AltLibrary.Ores.Add(this);
             Type = AltLibrary.Ores.Count;

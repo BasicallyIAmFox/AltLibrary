@@ -15,6 +15,7 @@ using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Hooks
 {
+    [Autoload(Side = ModSide.Client)]
     internal static class OuterVisual
     {
         public static void Init()

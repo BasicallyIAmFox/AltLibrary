@@ -2,10 +2,12 @@
 using AltLibrary.Common.Systems;
 using MonoMod.Cil;
 using Terraria.ID;
+using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
 namespace AltLibrary.Common.Hooks
 {
+    [Autoload(Side = ModSide.Both)]
     internal class BloodMoonCritterTransformations
     {
         public static void Init()

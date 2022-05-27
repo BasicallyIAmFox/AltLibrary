@@ -15,6 +15,7 @@ using Terraria.UI;
 
 namespace AltLibrary.Common.Hooks
 {
+    [Autoload(Side = ModSide.Client)]
     internal class AnimatedModIcon
     {
         private static MethodInfo Limits = null;

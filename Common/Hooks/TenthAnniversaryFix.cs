@@ -10,6 +10,7 @@ using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Hooks
 {
+    [Autoload(Side = ModSide.Both)]
     internal class TenthAnniversaryFix
     {
         public static void Init()

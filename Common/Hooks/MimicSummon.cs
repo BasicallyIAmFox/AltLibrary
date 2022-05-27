@@ -4,10 +4,12 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
 using Terraria.ID;
+using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
 namespace AltLibrary.Common.Hooks
 {
+    [Autoload(Side = ModSide.Both)]
     internal class MimicSummon
     {
         public static void Init()

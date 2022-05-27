@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace AltLibrary
@@ -20,8 +21,6 @@ namespace AltLibrary
         internal static Asset<Texture2D> ButtonClose;
         internal static Asset<Texture2D> OreIcons;
         internal static Asset<Texture2D> Empty;
-        [System.Obsolete]
-        internal static Asset<Texture2D> Empty2;
         internal static Asset<Texture2D> Random;
         internal static Asset<Texture2D> BestiaryIcons;
         internal static Asset<Texture2D> WorldIconNormal;
@@ -44,6 +43,11 @@ namespace AltLibrary
 
         internal static void Load()
         {
+            if (Main.netMode == NetmodeID.Server)
+            {
+                return;
+            }
+
             for (int i = 0; i < AnimatedModIcon.Length; i++)
             {
                 AnimatedModIcon[i] = ModContent.Request<Texture2D>($"AltLibrary/Assets/Icons/AMIcon_{i}", AssetRequestMode.ImmediateLoad);
@@ -58,7 +62,6 @@ namespace AltLibrary
             ButtonWarn = ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/ButtonWarn", AssetRequestMode.ImmediateLoad);
             OreIcons = ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/OreIcons", AssetRequestMode.ImmediateLoad);
             Empty = ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/Empty", AssetRequestMode.ImmediateLoad);
-            Empty2 = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldPreviews/Empty", AssetRequestMode.ImmediateLoad);
             Random = ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/Random", AssetRequestMode.ImmediateLoad);
             BestiaryIcons = Main.Assets.Request<Texture2D>("Images/UI/Bestiary/Icon_Tags_Shadow", AssetRequestMode.ImmediateLoad);
             WorldIconNormal = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/IconNormal", AssetRequestMode.ImmediateLoad);
@@ -87,6 +90,11 @@ namespace AltLibrary
 
         internal static void PostContentLoad()
         {
+            if (Main.netMode == NetmodeID.Server)
+            {
+                return;
+            }
+
             List<Asset<Texture2D>> biomeLarge = new();
             biomeLarge.Clear();
             foreach (AltBiome biome in AltLibrary.Biomes)
@@ -145,7 +153,6 @@ namespace AltLibrary
             ButtonClose = null;
             OreIcons = null;
             Empty = null;
-            Empty2 = null;
             Random = null;
             BestiaryIcons = null;
             WorldIconNormal = null;

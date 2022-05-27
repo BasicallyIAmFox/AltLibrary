@@ -3,9 +3,11 @@ using MonoMod.Cil;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Hooks
 {
+    [Autoload(Side = ModSide.Both)]
     internal class DryadText
     {
         public static void Init()

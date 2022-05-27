@@ -41,22 +41,22 @@ namespace AltLibrary.Common.Hooks
         {
             if (AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow).Any())
             {
-                foreach (AltBiome biome in AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow))
+                foreach (var _ in from AltBiome biome in AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow)
+                                  where biome.MechDropItemType != null
+                                  select new { })
                 {
-                    if (biome.MechDropItemType != null)
-                    {
-                        leadCond.ChainedRules.RemoveAt(1);
-                        break;
-                    }
+                    leadCond.ChainedRules.RemoveAt(1);
+                    break;
                 }
             }
-            foreach (AltBiome biome in AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow))
+
+            foreach (var biome in from AltBiome biome in AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow)
+                                  where biome.MechDropItemType != null && biome.MechDropItemType.HasValue
+                                  select biome)
             {
-                if (biome.MechDropItemType != null && biome.MechDropItemType.HasValue)
-                {
-                    leadCond.OnSuccess(ItemDropRule.ByCondition(new HallowedBarAltDropCondition(biome), biome.MechDropItemType.Value, 1, 15, 30));
-                }
+                leadCond.OnSuccess(ItemDropRule.ByCondition(new HallowedBarAltDropCondition(biome), biome.MechDropItemType.Value, 1, 15, 30));
             }
+
             return leadCond;
         }
     }
