@@ -40,6 +40,7 @@ namespace AltLibrary
         internal static Asset<Texture2D>[] BiomeLower;
         internal static Asset<Texture2D>[] PreviewSizes;
         internal static Asset<Texture2D>[,] PreviewSpecialSizes;
+        internal static Asset<Texture2D>[] UIWorldSeedIcon;
 
         internal static void Load()
         {
@@ -75,6 +76,9 @@ namespace AltLibrary
             NullPreview = ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/NullBiomePreview", AssetRequestMode.ImmediateLoad);
             OuterTexture = ModContent.Request<Texture2D>("AltLibrary/Assets/Loading/Outer Empty", AssetRequestMode.ImmediateLoad);
             OuterLowerTexture = ModContent.Request<Texture2D>("AltLibrary/Assets/Loading/Outer Lower Empty", AssetRequestMode.ImmediateLoad);
+            UIWorldSeedIcon = new Asset<Texture2D>[2];
+            UIWorldSeedIcon[0] = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/ShadowIcon", AssetRequestMode.ImmediateLoad);
+            UIWorldSeedIcon[1] = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/ShadowIcon2", AssetRequestMode.ImmediateLoad);
             PreviewSpecialSizes = new Asset<Texture2D>[6, 3];
             PreviewSpecialSizes[0, 0] = Main.Assets.Request<Texture2D>("Images/UI/WorldCreation/PreviewSizeSmall", AssetRequestMode.ImmediateLoad);
             PreviewSpecialSizes[0, 1] = Main.Assets.Request<Texture2D>("Images/UI/WorldCreation/PreviewSizeMedium", AssetRequestMode.ImmediateLoad);
@@ -171,6 +175,7 @@ namespace AltLibrary
             OuterLowerTexture = null;
             PreviewSizes = null;
             PreviewSpecialSizes = null;
+            UIWorldSeedIcon = null;
         }
     }
 }

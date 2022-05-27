@@ -27,6 +27,7 @@ namespace AltLibrary.Common.Hooks
             IL.Terraria.GameContent.UI.Elements.UIWorldListItem.ctor += UIWorldListItem_ctor;
             IL.Terraria.GameContent.UI.Elements.UIWorldListItem.DrawSelf += UIWorldListItem_DrawSelf1;
             On.Terraria.GameContent.UI.Elements.UIWorldListItem.DrawSelf += UIWorldListItem_DrawSelf;
+            On.Terraria.GameContent.UI.Elements.UIWorldListItem.GetIcon += UIWorldListItem_GetIcon;
             WarnUpdate = 0;
         }
 
@@ -35,7 +36,25 @@ namespace AltLibrary.Common.Hooks
             IL.Terraria.GameContent.UI.Elements.UIWorldListItem.ctor -= UIWorldListItem_ctor;
             IL.Terraria.GameContent.UI.Elements.UIWorldListItem.DrawSelf -= UIWorldListItem_DrawSelf1;
             On.Terraria.GameContent.UI.Elements.UIWorldListItem.DrawSelf -= UIWorldListItem_DrawSelf;
+            On.Terraria.GameContent.UI.Elements.UIWorldListItem.GetIcon -= UIWorldListItem_GetIcon;
             WarnUpdate = 0;
+        }
+
+        private static Asset<Texture2D> UIWorldListItem_GetIcon(On.Terraria.GameContent.UI.Elements.UIWorldListItem.orig_GetIcon orig, UIWorldListItem self)
+        {
+            Asset<Texture2D> asset = orig(self);
+            if (asset.Height() == 58)
+            {
+                if (asset.Width() == 59)
+                {
+                    return ALTextureAssets.UIWorldSeedIcon[1];
+                }
+                else if (asset.Width() == 60)
+                {
+                    return ALTextureAssets.UIWorldSeedIcon[0];
+                }
+            }
+            return asset;
         }
 
         private static void UIWorldListItem_DrawSelf1(ILContext il)
@@ -53,44 +72,43 @@ namespace AltLibrary.Common.Hooks
             {
                 return ALUtils.IsWorldValid(self) ? value : Color.MediumPurple;
             });
-
-            if (!c.TryGotoNext(i => i.MatchStloc(3)))
-            {
-                AltLibrary.Instance.Logger.Info("s $ 2");
-                return;
-            }
-
-            c.Index++;
-            c.Emit(OpCodes.Ldarg, 0);
-            c.Emit(OpCodes.Ldarg, 0);
-            c.Emit(OpCodes.Ldarg, 0);
-            c.Emit(OpCodes.Ldfld, typeof(UIWorldListItem).GetField("_canBePlayed", BindingFlags.NonPublic | BindingFlags.Instance));
-            c.EmitDelegate<Func<UIWorldListItem, bool, bool>>((self, canBePlayed) =>
-            {
-                if ((WorldFileData)typeof(UIWorldListItem).GetField("_data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self) == null)
-                    return canBePlayed;
-                return !canBePlayed && ALUtils.IsWorldValid(self);
-            });
-            c.Emit(OpCodes.Stfld, typeof(UIWorldListItem).GetField("_canBePlayed", BindingFlags.NonPublic | BindingFlags.Instance));
         }
 
         private static void UIWorldListItem_ctor(ILContext il)
         {
             ILCursor c = new(il);
-            if (!c.TryGotoNext(i => i.MatchLdftn(out _)))
+            FieldReference canBePlayed = null;
+            if (!c.TryGotoNext(i => i.MatchLdarg(3),
+                i => i.MatchStfld(out canBePlayed)))
             {
                 AltLibrary.Instance.Logger.Info("t $ 1");
+                return;
+            }
+
+            c.Index += 2;
+            c.Emit(OpCodes.Ldarg, 0);
+            c.Emit(OpCodes.Ldarg, 0);
+            c.Emit(OpCodes.Ldarg, 3);
+            c.EmitDelegate<Func<UIWorldListItem, bool, bool>>((self, canPlay) =>
+            {
+                return ALUtils.IsWorldValid(self) && canPlay;
+            });
+            c.Emit(OpCodes.Stfld, canBePlayed);
+
+            if (!c.TryGotoNext(i => i.MatchLdftn(out _)))
+            {
+                AltLibrary.Instance.Logger.Info("t $ 2");
                 return;
             }
             FieldReference fieldReference = null;
             if (!c.TryGotoNext(i => i.MatchLdfld(out fieldReference)))
             {
-                AltLibrary.Instance.Logger.Info("t $ 2");
+                AltLibrary.Instance.Logger.Info("t $ 3");
                 return;
             }
             if (!c.TryGotoNext(i => i.MatchCall(out _)))
             {
-                AltLibrary.Instance.Logger.Info("t $ 3");
+                AltLibrary.Instance.Logger.Info("t $ 4");
                 return;
             }
             c.Index++;

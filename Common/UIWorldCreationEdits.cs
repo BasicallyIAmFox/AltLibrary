@@ -309,14 +309,14 @@ namespace AltLibrary.Common
                 uIElement3.Top.Set(150f, 0f);
                 uIElement3.Height.Set(-150f, 1f);
                 uIElement3.HAlign = 1f;
-                uIElement3.OnUpdate += _UIElement3_OnUpdate;
+                uIElement3.OnUpdate += RUIElement3_OnUpdate;
                 self.Append(uIElement3);
                 UIPanel uIPanel = new();
                 uIPanel.Width.Set(0f, 1f);
                 uIPanel.Height.Set(-110f, 1f);
                 uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
                 uIPanel.PaddingTop = 0f;
-                uIPanel.OnUpdate += _UIPanel_OnUpdate;
+                uIPanel.OnUpdate += JUIPanel_OnUpdate;
                 uIElement3.Append(uIPanel);
                 _oreList = new UIList();
                 _oreList.Width.Set(25f, 1f);
@@ -324,7 +324,7 @@ namespace AltLibrary.Common
                 _oreList.Top.Set(25f, 0f);
                 _oreList.ListPadding = 5f;
                 _oreList.HAlign = 1f;
-                _oreList.OnUpdate += _oreList_OnUpdate;
+                _oreList.OnUpdate += M2oreList_OnUpdate;
                 uIPanel.Append(_oreList);
 
                 UIScrollbar uIScrollbar = new();
@@ -333,7 +333,7 @@ namespace AltLibrary.Common
                 uIScrollbar.Height.Set(-250f, 1f);
                 uIScrollbar.Top.Set(150f, 0f);
                 uIScrollbar.HAlign = 1f;
-                uIScrollbar.OnUpdate += _UIScrollbar_OnUpdate;
+                uIScrollbar.OnUpdate += GUIScrollbar_OnUpdate;
                 self.Append(uIScrollbar);
                 _oreList.SetScrollbar(uIScrollbar);
 
@@ -403,7 +403,7 @@ namespace AltLibrary.Common
                 _oreHmList.Top.Set(25f, 0f);
                 _oreHmList.ListPadding = 5f;
                 _oreHmList.HAlign = 1f;
-                _oreHmList.OnUpdate += _oreHmList_OnUpdate;
+                _oreHmList.OnUpdate += MoreHmList_OnUpdate;
                 uIPanel.Append(_oreHmList);
 
                 UIScrollbar uIScrollbar = new();
@@ -478,7 +478,7 @@ namespace AltLibrary.Common
                 _biomeList.Top.Set(25f, 0f);
                 _biomeList.ListPadding = 5f;
                 _biomeList.HAlign = 1f;
-                _biomeList.OnUpdate += _biomeList_OnUpdate;
+                _biomeList.OnUpdate += ZbiomeList_OnUpdate;
                 uIPanel.Append(_biomeList);
 
                 UIScrollbar uIScrollbar = new();
@@ -551,7 +551,7 @@ namespace AltLibrary.Common
             }
         }
 
-        private static void _oreHmList_OnUpdate(UIElement affectedElement)
+        private static void MoreHmList_OnUpdate(UIElement affectedElement)
         {
             UIList element = affectedElement as UIList;
             if (chosenOption == CurrentAltOption.HMOre)
@@ -616,7 +616,7 @@ namespace AltLibrary.Common
             }
         }
 
-        private static void _oreList_OnUpdate(UIElement affectedElement)
+        private static void M2oreList_OnUpdate(UIElement affectedElement)
         {
             UIList element = affectedElement as UIList;
             if (chosenOption == CurrentAltOption.Ore)
@@ -633,7 +633,7 @@ namespace AltLibrary.Common
             }
         }
 
-        private static void _UIScrollbar_OnUpdate(UIElement affectedElement)
+        private static void GUIScrollbar_OnUpdate(UIElement affectedElement)
         {
             UIScrollbar scrollbar = affectedElement as UIScrollbar;
             if (chosenOption == CurrentAltOption.Ore)
@@ -650,7 +650,7 @@ namespace AltLibrary.Common
             }
         }
 
-        private static void _UIPanel_OnUpdate(UIElement affectedElement)
+        private static void JUIPanel_OnUpdate(UIElement affectedElement)
         {
             UIPanel element = affectedElement as UIPanel;
             if (chosenOption == CurrentAltOption.Ore)
@@ -665,7 +665,7 @@ namespace AltLibrary.Common
             }
         }
 
-        private static void _UIElement3_OnUpdate(UIElement affectedElement)
+        private static void RUIElement3_OnUpdate(UIElement affectedElement)
         {
             UIElement element = affectedElement;
             if (chosenOption == CurrentAltOption.Ore)
@@ -806,7 +806,7 @@ namespace AltLibrary.Common
             });
         }
 
-        private static void _biomeList_OnUpdate(UIElement affectedElement)
+        private static void ZbiomeList_OnUpdate(UIElement affectedElement)
         {
             UIList element = affectedElement as UIList;
             if (chosenOption != CurrentAltOption.Biome)
