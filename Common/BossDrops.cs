@@ -37,143 +37,136 @@ namespace AltLibrary.Common
             }
 
             var entries = npcLoot.Get(false);
-            if (npc.type == NPCID.EyeofCthulhu)
+            switch (npc.type)
             {
-                foreach (var entry in entries)
-                {
-                    if (entry is ItemDropWithConditionRule conditionRule)
+                case NPCID.EyeofCthulhu:
                     {
-                        if (conditionRule.itemId == ItemID.DemoniteOre || conditionRule.itemId == ItemID.CrimtaneOre ||
-                            conditionRule.itemId == ItemID.CorruptSeeds || conditionRule.itemId == ItemID.CrimsonSeeds
-                            || conditionRule.itemId == ItemID.UnholyArrow)
+                        foreach (var entry in entries)
                         {
-                            npcLoot.Remove(entry);
+                            if (entry is ItemDropWithConditionRule conditionRule)
+                            {
+                                if (conditionRule.itemId == ItemID.DemoniteOre || conditionRule.itemId == ItemID.CrimtaneOre ||
+                                    conditionRule.itemId == ItemID.CorruptSeeds || conditionRule.itemId == ItemID.CrimsonSeeds
+                                    || conditionRule.itemId == ItemID.UnholyArrow)
+                                {
+                                    npcLoot.Remove(entry);
+                                }
+                            }
                         }
-                    }
-                }
-                var corroCrimCondition = new LeadingConditionRule(new CorroCrimDropCondition());
-                var corroCondition = new LeadingConditionRule(new Conditions.IsCorruptionAndNotExpert());
-                var crimCondition = new LeadingConditionRule(new Conditions.IsCrimsonAndNotExpert());
+                        var corroCrimCondition = new LeadingConditionRule(new CorroCrimDropCondition());
+                        var corroCondition = new LeadingConditionRule(new Conditions.IsCorruptionAndNotExpert());
+                        var crimCondition = new LeadingConditionRule(new Conditions.IsCrimsonAndNotExpert());
 
-                corroCrimCondition.OnSuccess(corroCondition);
-                corroCrimCondition.OnSuccess(crimCondition);
-                corroCondition.OnSuccess(ItemDropRule.Common(ItemID.DemoniteOre, 1, 30, 90));
-                corroCondition.OnSuccess(ItemDropRule.Common(ItemID.CorruptSeeds, 1, 1, 3));
-                corroCondition.OnSuccess(ItemDropRule.Common(ItemID.UnholyArrow, 1, 20, 50));
+                        corroCrimCondition.OnSuccess(corroCondition);
+                        corroCrimCondition.OnSuccess(crimCondition);
+                        corroCondition.OnSuccess(ItemDropRule.Common(ItemID.DemoniteOre, 1, 30, 90));
+                        corroCondition.OnSuccess(ItemDropRule.Common(ItemID.CorruptSeeds, 1, 1, 3));
+                        corroCondition.OnSuccess(ItemDropRule.Common(ItemID.UnholyArrow, 1, 20, 50));
 
-                crimCondition.OnSuccess(ItemDropRule.Common(ItemID.CrimtaneOre, 1, 30, 90));
-                crimCondition.OnSuccess(ItemDropRule.Common(ItemID.CrimsonSeeds, 1, 1, 3));
+                        crimCondition.OnSuccess(ItemDropRule.Common(ItemID.CrimtaneOre, 1, 30, 90));
+                        crimCondition.OnSuccess(ItemDropRule.Common(ItemID.CrimsonSeeds, 1, 1, 3));
 
-                npcLoot.Add(corroCrimCondition);
+                        npcLoot.Add(corroCrimCondition);
 
-                var expertCondition = new LeadingConditionRule(new Conditions.NotExpert());
+                        var expertCondition = new LeadingConditionRule(new Conditions.NotExpert());
 
-                foreach (AltBiome biome in EvilList)
-                {
-                    var biomeDropRule = new LeadingConditionRule(new EvilAltDropCondition(biome));
-                    if (biome.BiomeOreItem != null) biomeDropRule.OnSuccess(ItemDropRule.Common((int)biome.BiomeOreItem, 1, 30, 90));
-                    if (biome.SeedType != null) biomeDropRule.OnSuccess(ItemDropRule.Common((int)biome.SeedType, 1, 1, 3));
-                    if (biome.ArrowType != null) biomeDropRule.OnSuccess(ItemDropRule.Common((int)biome.ArrowType, 20, 50));
-                    expertCondition.OnSuccess(biomeDropRule);
-                }
-                npcLoot.Add(expertCondition);
-            }
-            if (npc.type == NPCID.WallofFlesh)
-            {
-                foreach (var entry in entries)
-                {
-                    if (entry is ItemDropWithConditionRule rule && rule.itemId == ItemID.Pwnhammer)
-                    {
-                        npcLoot.Remove(rule);
-                    }
-                }
-                var expertCondition = new LeadingConditionRule(new Conditions.NotExpert());
-                var hallowBarCondition = new LeadingConditionRule(new HallowedBarDropCondition());
-                expertCondition.OnSuccess(hallowBarCondition);
-                hallowBarCondition.OnSuccess(ItemDropRule.Common(ItemID.Pwnhammer));
-                foreach (AltBiome biome in HallowList)
-                {
-                    var biomeDropRule = new LeadingConditionRule(new HallowedBarAltDropCondition(biome));
-                    biomeDropRule.OnSuccess(ItemDropRule.Common(biome.HammerType));
-                    expertCondition.OnSuccess(biomeDropRule);
-                }
-                npcLoot.Add(expertCondition);
-            }
-            if (npc.type == NPCID.TheDestroyer || npc.type == NPCID.SkeletronPrime)
-            {
-                foreach (var entry in entries)
-                {
-                    if (entry is ItemDropWithConditionRule conditionRule && conditionRule.itemId == ItemID.HallowedBar)
-                    {
-                        npcLoot.Remove(entry);
+                        foreach (AltBiome biome in EvilList)
+                        {
+                            var biomeDropRule = new LeadingConditionRule(new EvilAltDropCondition(biome));
+                            if (biome.BiomeOreItem != null) biomeDropRule.OnSuccess(ItemDropRule.Common((int)biome.BiomeOreItem, 1, 30, 90));
+                            if (biome.SeedType != null) biomeDropRule.OnSuccess(ItemDropRule.Common((int)biome.SeedType, 1, 1, 3));
+                            if (biome.ArrowType != null) biomeDropRule.OnSuccess(ItemDropRule.Common((int)biome.ArrowType, 20, 50));
+                            expertCondition.OnSuccess(biomeDropRule);
+                        }
+                        npcLoot.Add(expertCondition);
                         break;
                     }
-                }
-                var expertCondition = new LeadingConditionRule(new Conditions.NotExpert());
-                var hallowBarCondition = new LeadingConditionRule(new HallowedBarDropCondition());
-                expertCondition.OnSuccess(hallowBarCondition);
-                hallowBarCondition.OnSuccess(ItemDropRule.Common(ItemID.HallowedBar, 1, 15, 30));
+                case NPCID.WallofFlesh:
+                    {
+                        foreach (var entry in entries)
+                        {
+                            if (entry is ItemDropWithConditionRule rule && rule.itemId == ItemID.Pwnhammer)
+                            {
+                                npcLoot.Remove(rule);
+                            }
+                        }
+                        var expertCondition = new LeadingConditionRule(new Conditions.NotExpert());
+                        var hallowBarCondition = new LeadingConditionRule(new HallowedBarDropCondition());
+                        expertCondition.OnSuccess(hallowBarCondition);
+                        hallowBarCondition.OnSuccess(ItemDropRule.Common(ItemID.Pwnhammer));
+                        foreach (AltBiome biome in HallowList)
+                        {
+                            var biomeDropRule = new LeadingConditionRule(new HallowedBarAltDropCondition(biome));
+                            biomeDropRule.OnSuccess(ItemDropRule.Common(biome.HammerType));
+                            expertCondition.OnSuccess(biomeDropRule);
+                        }
+                        npcLoot.Add(expertCondition);
+                        break;
+                    }
+                case NPCID.TheDestroyer:
+                case NPCID.SkeletronPrime:
+                    {
+                        foreach (var entry in entries)
+                        {
+                            if (entry is ItemDropWithConditionRule conditionRule && conditionRule.itemId == ItemID.HallowedBar)
+                            {
+                                npcLoot.Remove(entry);
+                                break;
+                            }
+                        }
+                        var expertCondition = new LeadingConditionRule(new Conditions.NotExpert());
+                        var hallowBarCondition = new LeadingConditionRule(new HallowedBarDropCondition());
+                        expertCondition.OnSuccess(hallowBarCondition);
+                        hallowBarCondition.OnSuccess(ItemDropRule.Common(ItemID.HallowedBar, 1, 15, 30));
 
-                foreach (AltBiome biome in HallowList)
-                {
-                    var biomeDropRule = new LeadingConditionRule(new HallowedBarAltDropCondition(biome));
-                    if (biome.MechDropItemType != null) biomeDropRule.OnSuccess(ItemDropRule.Common((int)biome.MechDropItemType, 1, 15, 30));
-                    expertCondition.OnSuccess(biomeDropRule);
-                }
-                npcLoot.Add(expertCondition);
+                        foreach (AltBiome biome in HallowList)
+                        {
+                            var biomeDropRule = new LeadingConditionRule(new HallowedBarAltDropCondition(biome));
+                            if (biome.MechDropItemType != null) biomeDropRule.OnSuccess(ItemDropRule.Common((int)biome.MechDropItemType, 1, 15, 30));
+                            expertCondition.OnSuccess(biomeDropRule);
+                        }
+                        npcLoot.Add(expertCondition);
+                        break;
+                    }
             }
         }
     }
+
     internal class HallowedBarDropCondition : IItemDropRuleCondition
     {
         public bool CanDrop(DropAttemptInfo info)
         {
-            if (!info.IsInSimulation && (WorldBiomeManager.WorldHallow == "" || WorldBiomeManager.WorldHallow == null))
-            {
-                return true;
-            }
-            return false;
+            return !info.IsInSimulation && WorldBiomeManager.WorldHallow == "";
         }
+
         public bool CanShowItemDropInUI()
         {
             return WorldBiomeManager.WorldHallow == "";
         }
+
         public string GetConditionDescription()
         {
-            return $"{Language.GetTextValue("Mods.AltLibrary.DropRule.Base")} {Language.GetTextValue("Mods.AltLibrary.BiomeName.HallowBiome")}";
+            return $"{Language.GetTextValue("Mods.AltLibrary.DropRule.Base")} {Language.GetTextValue("Mods.AltLibrary.AltBiomeName.HallowBiome")}";
         }
     }
 
     internal class CorroCrimDropCondition : IItemDropRuleCondition
     {
-        //public bool Crimson;
-        //public CorroCrimDropCondition(bool isCrimson)
-        //{
-        //    Crimson = isCrimson;
-        //}
         public bool CanDrop(DropAttemptInfo info)
         {
-            if (!info.IsInSimulation && (WorldBiomeManager.WorldEvil == "" || WorldBiomeManager.WorldEvil == null))
-            {
-                //return WorldGen.crimson == Crimson;
-                return true;
-            }
-            return false;
+            return !info.IsInSimulation && WorldBiomeManager.WorldEvil == "";
         }
+
         public bool CanShowItemDropInUI()
         {
-            if (WorldBiomeManager.WorldEvil == "" || WorldBiomeManager.WorldEvil == null)
-            {
-                //return WorldGen.crimson == Crimson;
-                return true;
-            }
-            return false;
+            return WorldBiomeManager.WorldEvil == "";
         }
+
         public string GetConditionDescription()
         {
             string biome;
-            if (WorldGen.crimson) biome = Language.GetTextValue("Mods.AltLibrary.BiomeName.CrimsonBiome");
-            else biome = Language.GetTextValue("Mods.AltLibrary.BiomeName.CorruptBiome");
+            if (WorldGen.crimson) biome = Language.GetTextValue("Mods.AltLibrary.AltBiomeName.CrimsonBiome");
+            else biome = Language.GetTextValue("Mods.AltLibrary.AltBiomeName.CorruptBiome");
             return Language.GetTextValue("Mods.AltLibrary.DropRule.Base", biome);
         }
     }
@@ -186,9 +179,9 @@ namespace AltLibrary.Common
             BiomeType = biomeType;
         }
 
-        public bool CanDrop(DropAttemptInfo info) // this may have the same issue as EvilAltDropCondition
+        public bool CanDrop(DropAttemptInfo info)
         {
-            if (!info.IsInSimulation && (BiomeType.FullName != null && BiomeType.FullName != ""))
+            if (!info.IsInSimulation && BiomeType.FullName != null && BiomeType.FullName != "")
             {
                 if (WorldBiomeManager.WorldHallow == BiomeType.FullName) return WorldBiomeManager.WorldHallow == BiomeType.FullName;
             }
@@ -232,74 +225,6 @@ namespace AltLibrary.Common
         public string GetConditionDescription()
         {
             return Language.GetTextValue("Mods.AltLibrary.DropRule.Base", BiomeType.DisplayName != null ? BiomeType.DisplayName.GetTranslation(Language.ActiveCulture) : BiomeType.Name);
-        }
-    }
-
-    internal class BossBags : GlobalItem
-    {
-        public override bool PreOpenVanillaBag(string context, Player player, int arg)
-        {
-            if (WorldBiomeManager.WorldHallow != "")
-            {
-                if (arg == ItemID.TwinsBossBag || arg == ItemID.SkeletronPrimeBossBag || arg == ItemID.DestroyerBossBag)
-                {
-                    NPCLoader.blockLoot.Add(ItemID.HallowedBar);
-                }
-                if (arg == ItemID.WallOfFleshBossBag && ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow).HammerType != ItemID.Pwnhammer)
-                {
-                    NPCLoader.blockLoot.Add(ItemID.Pwnhammer);
-                }
-            }
-            if (arg == ItemID.EyeOfCthulhuBossBag)
-            {
-                if (WorldBiomeManager.WorldEvil != "")
-                {
-                    NPCLoader.blockLoot.Add(ItemID.DemoniteOre);
-                    NPCLoader.blockLoot.Add(ItemID.CrimtaneOre);
-                    NPCLoader.blockLoot.Add(ItemID.CorruptSeeds);
-                    NPCLoader.blockLoot.Add(ItemID.CrimsonSeeds);
-                    NPCLoader.blockLoot.Add(ItemID.UnholyArrow);
-                }
-            }
-
-            return base.PreOpenVanillaBag(context, player, arg);
-        }
-
-        public override void OpenVanillaBag(string context, Player player, int arg)
-        {
-            var source = player.GetSource_OpenItem(arg);
-            if (WorldBiomeManager.WorldHallow != "")
-            {
-                var biome = ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow);
-                if (arg == ItemID.TwinsBossBag || arg == ItemID.SkeletronPrimeBossBag || arg == ItemID.DestroyerBossBag)
-                {
-                    var amount = Main.rand.Next(15, 31);
-                    player.QuickSpawnItem(source, (int)biome.MechDropItemType, amount);
-                }
-                if (arg == ItemID.WallOfFleshBossBag)
-                {
-                    player.QuickSpawnItem(source, biome.HammerType);
-                }
-            }
-            if (arg == ItemID.EyeOfCthulhuBossBag && WorldBiomeManager.WorldEvil != "")
-            {
-                var biome = ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil);
-                if (biome.BiomeOreItem != null)
-                {
-                    var amount = Main.rand.Next(30, 90);
-                    player.QuickSpawnItem(source, (int)biome.BiomeOreItem, amount);
-                }
-                if (biome.SeedType != null)
-                {
-                    var amount = Main.rand.Next(1, 4);
-                    player.QuickSpawnItem(source, (int)biome.SeedType, amount);
-                }
-                if (biome.ArrowType != null)
-                {
-                    var amount = Main.rand.Next(20, 51);
-                    player.QuickSpawnItem(source, (int)biome.ArrowType, amount);
-                }
-            }
         }
     }
 }

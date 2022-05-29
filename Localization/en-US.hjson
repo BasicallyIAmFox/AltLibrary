@@ -26,6 +26,10 @@ Mods: {
 				Label: "Randomized Altar infections"
 				Tooltip: "When true, the infectious blocks spawned by smashing Demon Altars can be of any installed biome"
 			}
+			VanillaShowUpIfOnlyAltVarExist: {
+				Label: "Biomes show up only if have alternative"
+				Tooltip: "When true, you won't be able to see some vanilla biomes if they don't have Alternative Biome"
+			}
 		}
 		HallowBunnyCageTooltip: "'I swear you'll pay!'"
 		AltOreName: {
@@ -83,9 +87,9 @@ Mods: {
 			UnderworldBiome: "A molten hot landscape ruined to time, filled with lava and demons to roam the ruined landscape."
 		}
 		Warn: {
-			VanillaBiome: "This biome is from Vanilla"
+			VanillaBiome: "This biome is from Terraria"
 			ModdedBiome: "This biome is from {0}"
-			VanillaOre: "This ore is from Vanilla"
+			VanillaOre: "This ore is from Terraria"
 			ModdedOre: "This ore is added by {0}"
 		}
 		RecipeGroups: {

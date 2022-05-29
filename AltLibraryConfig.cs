@@ -21,6 +21,10 @@ namespace AltLibrary
             public string drunkEvil;
         }
 
+        [Label("$Mods.AltLibrary.Config.VanillaShowUpIfOnlyAltVarExist.Label")]
+        [Tooltip("$Mods.AltLibrary.Config.VanillaShowUpIfOnlyAltVarExist.Tooltip")]
+        [DefaultValue(true)]
+        public bool VanillaShowUpIfOnlyAltVarExist;
         [Label("$Mods.AltLibrary.Config.SpecialSeedWorldPreview.Label")]
         [Tooltip("$Mods.AltLibrary.Config.SpecialSeedWorldPreview.Tooltip")]
         [DefaultValue(true)]

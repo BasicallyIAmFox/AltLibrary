@@ -34,6 +34,8 @@ namespace AltLibrary.Content.NPCs
             AnimationType = NPCID.Bunny;
         }
 
+        public override bool? CanBeCaughtBy(Item item, Player player) => AltLibrary.HallowBunnyUnlocked;
+
         public override void AI()
         {
             if (AltLibrary.HallowBunnyUnlocked)

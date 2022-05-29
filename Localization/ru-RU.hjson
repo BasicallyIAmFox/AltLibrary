@@ -146,9 +146,9 @@ Mods: {
 		}
 		ItemName: {
 			HallowBunny: "Святой кролик"
-			FoxShirt: "Свитер Фокса"
-			FoxMask: "Маска для лица Фокса"
-			FoxPants: "Брюки Фокса"
+			FoxShirt: "Свитер Fox"
+			FoxMask: "Маска для лица Fox"
+			FoxPants: "Брюки Fox"
 			CaceEars: "Cace's кошачьи уши"
 		}
 		BunReason: {

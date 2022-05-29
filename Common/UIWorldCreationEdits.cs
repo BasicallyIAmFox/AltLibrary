@@ -146,7 +146,7 @@ namespace AltLibrary.Common
                 }
                 if (!broken)
                 {
-                    int style = folder switch
+                    int style = AltLibraryConfig.Config.SpecialSeedWorldPreview ? (folder switch
                     {
                         "Drunk" => 1,
                         "NotTheBees" => 2,
@@ -154,15 +154,8 @@ namespace AltLibrary.Common
                         "Anniversary" => 4,
                         "Constant" => 5,
                         _ => 0,
-                    };
-                    if (style > 0 && AltLibraryConfig.Config.SpecialSeedWorldPreview)
-                    {
-                        spriteBatch.Draw(ALTextureAssets.PreviewSpecialSizes[style, size].Value, position, color);
-                    }
-                    else
-                    {
-                        spriteBatch.Draw(ALTextureAssets.PreviewSpecialSizes[0, size].Value, position, color);
-                    }
+                    }) : 0;
+                    spriteBatch.Draw(ALTextureAssets.PreviewSpecialSizes[style, size].Value, position, color);
                 }
                 Asset<Texture2D> asset = AltEvilBiomeChosenType switch
                 {
@@ -487,26 +480,50 @@ namespace AltLibrary.Common
                 List<AltBiome> list = new();
                 list.Clear();
                 list.Add(new RandomOptionBiome("RandomEvilBiome"));
-                if (AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow).Any())
+                if (AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow && x.Selectable).Any())
                 {
                     list.Add(new RandomOptionBiome("RandomHallowBiome"));
                 }
-                if (AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Jungle).Any())
+                if (AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Jungle && x.Selectable).Any())
                 {
                     list.Add(new RandomOptionBiome("RandomJungleBiome"));
                 }
-                if (AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hell).Any())
+                if (AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hell && x.Selectable).Any())
                 {
                     list.Add(new RandomOptionBiome("RandomUnderworldBiome"));
                 }
                 list.Add(new VanillaBiome("CorruptBiome", BiomeType.Evil, -333, Color.MediumPurple, false));
                 list.Add(new VanillaBiome("CrimsonBiome", BiomeType.Evil, -666, Color.IndianRed, true));
                 list.AddRange(AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Evil && x.Selectable));
-                list.Add(new VanillaBiome("HallowBiome", BiomeType.Hallow, -3, Color.HotPink));
+                bool bl = AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist == true && AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow && x.Selectable).Any();
+                if (AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist == false)
+                {
+                    bl = true;
+                }
+                if (bl)
+                {
+                    list.Add(new VanillaBiome("HallowBiome", BiomeType.Hallow, -3, Color.HotPink));
+                }
                 list.AddRange(AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow && x.Selectable));
-                list.Add(new VanillaBiome("JungleBiome", BiomeType.Jungle, -4, Color.SpringGreen));
+                bl = AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist == true && AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Jungle && x.Selectable).Any();
+                if (AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist == false)
+                {
+                    bl = true;
+                }
+                if (bl)
+                {
+                    list.Add(new VanillaBiome("JungleBiome", BiomeType.Jungle, -4, Color.SpringGreen));
+                }
                 list.AddRange(AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Jungle && x.Selectable));
-                list.Add(new VanillaBiome("UnderworldBiome", BiomeType.Hell, -5, Color.OrangeRed));
+                bl = AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist == true && AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hell && x.Selectable).Any();
+                if (AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist == false)
+                {
+                    bl = true;
+                }
+                if (bl)
+                {
+                    list.Add(new VanillaBiome("UnderworldBiome", BiomeType.Hell, -5, Color.OrangeRed));
+                }
                 list.AddRange(AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hell && x.Selectable));
                 foreach (AltBiome biome in list)
                 {
@@ -828,54 +845,140 @@ namespace AltLibrary.Common
             CalculatedStyle dimensions = self.GetDimensions();
             Vector2 position = new(dimensions.X + 4f, dimensions.Y + 4f);
             Color color = Color.White;
-            int x = 0;
             Rectangle mouseRectangle = Utils.CenteredRectangle(Main.MouseScreen, Vector2.One * 2f);
-            if (chosenOption == CurrentAltOption.Biome || AltLibraryConfig.Config.BiomeIconsVisibleOutsideBiomeUI)
+            int x = 0;
+
+            void DrawIcon(Func<bool> cond, Action<SpriteBatch> action)
             {
-                for (int i = 0; i < 4; i++)
+                if (cond.Invoke())
                 {
                     Asset<Texture2D> asset = ALTextureAssets.BestiaryIcons;
-                    if (i == 0 && AltHallowBiomeChosenType >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.Biomes[AltHallowBiomeChosenType].IconSmall ?? "AltLibrary/Assets/Menu/ButtonHallow", AssetRequestMode.ImmediateLoad);
-                    if (i == 1 && AltEvilBiomeChosenType > -1) asset = ModContent.Request<Texture2D>(AltLibrary.Biomes[AltEvilBiomeChosenType].IconSmall ?? "AltLibrary/Assets/Menu/ButtonCorrupt", AssetRequestMode.ImmediateLoad);
-                    if (i == 2 && AltHellBiomeChosenType >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.Biomes[AltHellBiomeChosenType].IconSmall ?? "AltLibrary/Assets/Menu/ButtonHell", AssetRequestMode.ImmediateLoad);
-                    if (i == 3 && AltJungleBiomeChosenType >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.Biomes[AltJungleBiomeChosenType].IconSmall ?? "AltLibrary/Assets/Menu/ButtonCorrupt", AssetRequestMode.ImmediateLoad);
+                    action.Invoke(spriteBatch);
+                    x++;
+                }
+            }
+
+            DrawIcon(() =>
+            {
+                bool isAlt = AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist == true;
+                if (isAlt) isAlt &= AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow && x.Selectable).Any();
+                if (AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist == false)
+                {
+                    isAlt = true;
+                }
+                return (chosenOption == CurrentAltOption.Biome || AltLibraryConfig.Config.BiomeIconsVisibleOutsideBiomeUI) && isAlt;
+            },
+                new Action<SpriteBatch>((spriteBatch) =>
+                {
+                    Asset<Texture2D> asset = ALTextureAssets.BestiaryIcons;
+                    if (AltHallowBiomeChosenType >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.Biomes[AltHallowBiomeChosenType].IconSmall ?? "AltLibrary/Assets/Menu/ButtonHallow", AssetRequestMode.ImmediateLoad);
                     Rectangle? rectangle = null;
-                    if (i == 0 && AltHallowBiomeChosenType < 0) rectangle = new(30, 30, 30, 30);
-                    if (i == 1 && AltEvilBiomeChosenType > -666 && AltEvilBiomeChosenType <= -333) rectangle = new(210, 0, 30, 30);
-                    if (i == 1 && AltEvilBiomeChosenType <= -666) rectangle = new(360, 0, 30, 30);
-                    if (i == 2 && AltHellBiomeChosenType < 0) rectangle = new(30, 60, 30, 30);
-                    if (i == 3 && AltJungleBiomeChosenType < 0) rectangle = new(180, 30, 30, 30);
+                    if (AltHallowBiomeChosenType < 0) rectangle = new(30, 30, 30, 30);
                     ValueTuple<Asset<Texture2D>, Rectangle?> valueTuple = new(asset, rectangle);
-                    spriteBatch.Draw(ALTextureAssets.Button.Value, new Vector2(position.X + 96f, position.Y + 26f * i), color * 0.8f);
-                    spriteBatch.Draw(valueTuple.Item1.Value, new Vector2(position.X + 99f, position.Y + 26f * i + 3f), valueTuple.Item2, color, 0f, new Vector2(0f, 0f), 0.5f, SpriteEffects.None, 0f);
-                    Vector2 vector2 = new(position.X + 96f, position.Y + 26f * i);
+                    spriteBatch.Draw(ALTextureAssets.Button.Value, new Vector2(position.X + 96f, position.Y + 26f * x), color * 0.8f);
+                    spriteBatch.Draw(valueTuple.Item1.Value, new Vector2(position.X + 99f, position.Y + 26f * x + 3f), valueTuple.Item2, color, 0f, new Vector2(0f, 0f), 0.5f, SpriteEffects.None, 0f);
+                    Vector2 vector2 = new(position.X + 96f, position.Y + 26f * x);
                     if (mouseRectangle.Intersects(Utils.CenteredRectangle(vector2 + new Vector2(7.5f, 7.5f), Utils.Size(new Rectangle(0, 0, 30, 30)))))
                     {
                         string line1 = "";
-                        if (i == 0 && AltHallowBiomeChosenType < 0) line1 = Language.GetTextValue("Mods.AltLibrary.AltBiomeName.HallowBiome");
-                        if (i == 0 && AltHallowBiomeChosenType >= 0) line1 = AltLibrary.Biomes[AltHallowBiomeChosenType].Name;
-                        if (i == 1 && AltEvilBiomeChosenType == -333) line1 = Language.GetTextValue("Mods.AltLibrary.AltBiomeName.CorruptBiome");
-                        if (i == 1 && AltEvilBiomeChosenType == -666) line1 = Language.GetTextValue("Mods.AltLibrary.AltBiomeName.CrimsonBiome");
-                        if (i == 1 && AltEvilBiomeChosenType >= 0) line1 = AltLibrary.Biomes[AltEvilBiomeChosenType].Name;
-                        if (i == 2 && AltHellBiomeChosenType < 0) line1 = Language.GetTextValue("Mods.AltLibrary.AltBiomeName.UnderworldBiome");
-                        if (i == 2 && AltHellBiomeChosenType >= 0) line1 = AltLibrary.Biomes[AltHellBiomeChosenType].Name;
-                        if (i == 3 && AltJungleBiomeChosenType < 0) line1 = Language.GetTextValue("Mods.AltLibrary.AltBiomeName.JungleBiome");
-                        if (i == 3 && AltJungleBiomeChosenType >= 0) line1 = AltLibrary.Biomes[AltJungleBiomeChosenType].Name;
+                        if (AltHallowBiomeChosenType < 0) line1 = Language.GetTextValue("Mods.AltLibrary.AltBiomeName.HallowBiome");
+                        if (AltHallowBiomeChosenType >= 0) line1 = AltLibrary.Biomes[AltHallowBiomeChosenType].Name;
                         string line2 = Language.GetTextValue("Mods.AltLibrary.AddedBy") + " ";
-                        if (i == 0 && AltHallowBiomeChosenType < 0) line2 += "Terraria";
-                        if (i == 0 && AltHallowBiomeChosenType >= 0) line2 += AltLibrary.Biomes[AltHallowBiomeChosenType].Mod.Name;
-                        if (i == 1 && AltEvilBiomeChosenType < 0) line2 += "Terraria";
-                        if (i == 1 && AltEvilBiomeChosenType >= 0) line2 += AltLibrary.Biomes[AltEvilBiomeChosenType].Mod.Name;
-                        if (i == 2 && AltHellBiomeChosenType < 0) line2 += "Terraria";
-                        if (i == 2 && AltHellBiomeChosenType >= 0) line2 += AltLibrary.Biomes[AltHellBiomeChosenType].Mod.Name;
-                        if (i == 3 && AltJungleBiomeChosenType < 0) line2 += "Terraria";
-                        if (i == 3 && AltJungleBiomeChosenType >= 0) line2 += AltLibrary.Biomes[AltJungleBiomeChosenType].Mod.Name;
+                        if (AltHallowBiomeChosenType < 0) line2 += "Terraria";
+                        if (AltHallowBiomeChosenType >= 0) line2 += AltLibrary.Biomes[AltHallowBiomeChosenType].Mod.Name;
                         string line = line1 + '\n' + line2;
                         Main.instance.MouseText(line);
                     }
+                }));
+            DrawIcon(() => chosenOption == CurrentAltOption.Biome || AltLibraryConfig.Config.BiomeIconsVisibleOutsideBiomeUI,
+                new Action<SpriteBatch>((spriteBatch) =>
+                {
+                    Asset<Texture2D> asset = ALTextureAssets.BestiaryIcons;
+                    if (AltEvilBiomeChosenType > -1) asset = ModContent.Request<Texture2D>(AltLibrary.Biomes[AltEvilBiomeChosenType].IconSmall ?? "AltLibrary/Assets/Menu/ButtonCorrupt", AssetRequestMode.ImmediateLoad);
+                    Rectangle? rectangle = null;
+                    if (AltEvilBiomeChosenType > -666 && AltEvilBiomeChosenType <= -333) rectangle = new(210, 0, 30, 30);
+                    if (AltEvilBiomeChosenType <= -666) rectangle = new(360, 0, 30, 30);
+                    ValueTuple<Asset<Texture2D>, Rectangle?> valueTuple = new(asset, rectangle);
+                    spriteBatch.Draw(ALTextureAssets.Button.Value, new Vector2(position.X + 96f, position.Y + 26f * x), color * 0.8f);
+                    spriteBatch.Draw(valueTuple.Item1.Value, new Vector2(position.X + 99f, position.Y + 26f * x + 3f), valueTuple.Item2, color, 0f, new Vector2(0f, 0f), 0.5f, SpriteEffects.None, 0f);
+                    Vector2 vector2 = new(position.X + 96f, position.Y + 26f * x);
+                    if (mouseRectangle.Intersects(Utils.CenteredRectangle(vector2 + new Vector2(7.5f, 7.5f), Utils.Size(new Rectangle(0, 0, 30, 30)))))
+                    {
+                        string line1 = "";
+                        if (AltEvilBiomeChosenType == -333) line1 = Language.GetTextValue("Mods.AltLibrary.AltBiomeName.CorruptBiome");
+                        if (AltEvilBiomeChosenType == -666) line1 = Language.GetTextValue("Mods.AltLibrary.AltBiomeName.CrimsonBiome");
+                        if (AltEvilBiomeChosenType >= 0) line1 = AltLibrary.Biomes[AltEvilBiomeChosenType].Name;
+                        string line2 = Language.GetTextValue("Mods.AltLibrary.AddedBy") + " ";
+                        if (AltEvilBiomeChosenType < 0) line2 += "Terraria";
+                        if (AltEvilBiomeChosenType >= 0) line2 += AltLibrary.Biomes[AltEvilBiomeChosenType].Mod.Name;
+                        string line = line1 + '\n' + line2;
+                        Main.instance.MouseText(line);
+                    }
+                }));
+            DrawIcon(() =>
+            {
+                bool isAlt = AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist == true;
+                if (isAlt) isAlt &= AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hell && x.Selectable).Any();
+                if (AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist == false)
+                {
+                    isAlt = true;
                 }
-                x = 4;
-            }
+                return (chosenOption == CurrentAltOption.Biome || AltLibraryConfig.Config.BiomeIconsVisibleOutsideBiomeUI) && isAlt;
+            },
+                new Action<SpriteBatch>((spriteBatch) =>
+                {
+                    Asset<Texture2D> asset = ALTextureAssets.BestiaryIcons;
+                    if (AltHellBiomeChosenType >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.Biomes[AltHellBiomeChosenType].IconSmall ?? "AltLibrary/Assets/Menu/ButtonHell", AssetRequestMode.ImmediateLoad);
+                    Rectangle? rectangle = null;
+                    if (AltHellBiomeChosenType < 0) rectangle = new(30, 60, 30, 30);
+                    ValueTuple<Asset<Texture2D>, Rectangle?> valueTuple = new(asset, rectangle);
+                    spriteBatch.Draw(ALTextureAssets.Button.Value, new Vector2(position.X + 96f, position.Y + 26f * x), color * 0.8f);
+                    spriteBatch.Draw(valueTuple.Item1.Value, new Vector2(position.X + 99f, position.Y + 26f * x + 3f), valueTuple.Item2, color, 0f, new Vector2(0f, 0f), 0.5f, SpriteEffects.None, 0f);
+                    Vector2 vector2 = new(position.X + 96f, position.Y + 26f * x);
+                    if (mouseRectangle.Intersects(Utils.CenteredRectangle(vector2 + new Vector2(7.5f, 7.5f), Utils.Size(new Rectangle(0, 0, 30, 30)))))
+                    {
+                        string line1 = "";
+                        if (AltHellBiomeChosenType < 0) line1 = Language.GetTextValue("Mods.AltLibrary.AltBiomeName.UnderworldBiome");
+                        if (AltHellBiomeChosenType >= 0) line1 = AltLibrary.Biomes[AltHellBiomeChosenType].Name;
+                        string line2 = Language.GetTextValue("Mods.AltLibrary.AddedBy") + " ";
+                        if (AltHallowBiomeChosenType < 0) line2 += "Terraria";
+                        if (AltHallowBiomeChosenType >= 0) line2 += AltLibrary.Biomes[AltHallowBiomeChosenType].Mod.Name;
+                        string line = line1 + '\n' + line2;
+                        Main.instance.MouseText(line);
+                    }
+                }));
+            DrawIcon(() =>
+            {
+                bool isAlt = AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist == true;
+                if (isAlt) isAlt &= AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Jungle && x.Selectable).Any();
+                if (AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist == false)
+                {
+                    isAlt = true;
+                }
+                return (chosenOption == CurrentAltOption.Biome || AltLibraryConfig.Config.BiomeIconsVisibleOutsideBiomeUI) && isAlt;
+            },
+                new Action<SpriteBatch>((spriteBatch) =>
+                {
+                    Asset<Texture2D> asset = ALTextureAssets.BestiaryIcons;
+                    if (AltJungleBiomeChosenType >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.Biomes[AltJungleBiomeChosenType].IconSmall ?? "AltLibrary/Assets/Menu/ButtonJungle", AssetRequestMode.ImmediateLoad);
+                    Rectangle? rectangle = null;
+                    if (AltHellBiomeChosenType < 0) rectangle = new(180, 30, 30, 30);
+                    ValueTuple<Asset<Texture2D>, Rectangle?> valueTuple = new(asset, rectangle);
+                    spriteBatch.Draw(ALTextureAssets.Button.Value, new Vector2(position.X + 96f, position.Y + 26f * x), color * 0.8f);
+                    spriteBatch.Draw(valueTuple.Item1.Value, new Vector2(position.X + 99f, position.Y + 26f * x + 3f), valueTuple.Item2, color, 0f, new Vector2(0f, 0f), 0.5f, SpriteEffects.None, 0f);
+                    Vector2 vector2 = new(position.X + 96f, position.Y + 26f * x);
+                    if (mouseRectangle.Intersects(Utils.CenteredRectangle(vector2 + new Vector2(7.5f, 7.5f), Utils.Size(new Rectangle(0, 0, 30, 30)))))
+                    {
+                        string line1 = "";
+                        if (AltJungleBiomeChosenType < 0) line1 = Language.GetTextValue("Mods.AltLibrary.AltBiomeName.JungleBiome");
+                        if (AltJungleBiomeChosenType >= 0) line1 = AltLibrary.Biomes[AltJungleBiomeChosenType].Name;
+                        string line2 = Language.GetTextValue("Mods.AltLibrary.AddedBy") + " ";
+                        if (AltJungleBiomeChosenType < 0) line2 += "Terraria";
+                        if (AltJungleBiomeChosenType >= 0) line2 += AltLibrary.Biomes[AltJungleBiomeChosenType].Mod.Name;
+                        string line = line1 + '\n' + line2;
+                        Main.instance.MouseText(line);
+                    }
+                }));
             if (chosenOption == CurrentAltOption.Ore || AltLibraryConfig.Config.OreIconsVisibleOutsideOreUI)
             {
                 for (int i = 0; i < 4; i++)

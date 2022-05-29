@@ -42,6 +42,8 @@ namespace AltLibrary.Common.Hooks
 
         internal static void Unload()
         {
+            var UIMods = typeof(Main).Assembly.GetType("Terraria.ModLoader.UI.UIModItem");
+            Limits = UIMods.GetMethod("OnInitialize", BindingFlags.Public | BindingFlags.Instance);
             ModifyLimits -= AnimatedModIcon_ModifyLimits;
             Limits = null;
             NoSecretItems.Unload();
