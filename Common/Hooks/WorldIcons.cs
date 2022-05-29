@@ -267,32 +267,7 @@ namespace AltLibrary.Common.Hooks
                 }
             }
 
-            bool valid = true;
-            if (tempDict.ContainsKey(path2))
-            {
-                if (tempDict[path2].worldHallow != "" && !ModContent.TryFind<AltBiome>(tempDict[path2].worldHallow, out _))
-                {
-                    valid = false;
-                }
-                if (tempDict[path2].worldEvil != "" && !ModContent.TryFind<AltBiome>(tempDict[path2].worldEvil, out _))
-                {
-                    valid = false;
-                }
-                if (tempDict[path2].worldHell != "" && !ModContent.TryFind<AltBiome>(tempDict[path2].worldHell, out _))
-                {
-                    valid = false;
-                }
-                if (tempDict[path2].worldJungle != "" && !ModContent.TryFind<AltBiome>(tempDict[path2].worldJungle, out _))
-                {
-                    valid = false;
-                }
-                if (tempDict[path2].drunkEvil != "" && !ModContent.TryFind<AltBiome>(tempDict[path2].drunkEvil, out _))
-                {
-                    valid = false;
-                }
-            }
-
-            if (!valid)
+            if (!ALUtils.IsWorldValid(self))
             {
                 Rectangle mouseRectangle = Utils.CenteredRectangle(Main.MouseScreen, Vector2.One * 2f);
                 Asset<Texture2D> asset = ALTextureAssets.ButtonWarn;

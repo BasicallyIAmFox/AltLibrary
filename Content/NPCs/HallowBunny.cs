@@ -56,7 +56,7 @@ namespace AltLibrary.Content.NPCs
                         };
                         if (player.name == "FoxXD_") pairs.Add(5);
 
-                        string reason = Language.GetTextValue($"Mods.AltLibrary.BunReason.{pairs[Main.rand.Next(pairs.Count)]}", player.name);
+                        string reason = Language.GetTextValue($"Mods.AltLibrary.BunReason.{Main.rand.Next(pairs)}", player.name);
                         player.Hurt(PlayerDeathReason.ByCustomReason(reason), Main.tenthAnniversaryWorld ? 2 : 100 + Main.rand.Next(0, 100), -1);
                         player.immuneTime = 2;
                     }

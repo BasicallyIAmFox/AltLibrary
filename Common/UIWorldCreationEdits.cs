@@ -236,38 +236,38 @@ namespace AltLibrary.Common
 
             List<int> evilBiomeTypes = new() { -333, -666 };
             AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Evil && x.Selectable).ToList().ForEach(x => evilBiomeTypes.Add(x.Type - 1));
-            AltEvilBiomeChosenType = evilBiomeTypes[Main.rand.Next(evilBiomeTypes.Count)];
+            AltEvilBiomeChosenType = Main.rand.Next(evilBiomeTypes);
             isCrimson = AltEvilBiomeChosenType == -666;
             List<int> hallowBiomeTypes = new() { -3 };
             AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow && x.Selectable).ToList().ForEach(x => hallowBiomeTypes.Add(x.Type - 1));
-            AltHallowBiomeChosenType = hallowBiomeTypes[Main.rand.Next(hallowBiomeTypes.Count)];
+            AltHallowBiomeChosenType = Main.rand.Next(hallowBiomeTypes);
             List<int> hellBiomeTypes = new() { -5 };
             AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hell && x.Selectable).ToList().ForEach(x => hellBiomeTypes.Add(x.Type - 1));
-            AltHellBiomeChosenType = hellBiomeTypes[Main.rand.Next(hellBiomeTypes.Count)];
+            AltHellBiomeChosenType = Main.rand.Next(hellBiomeTypes);
             List<int> jungleBiomeTypes = new() { -4 };
             AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Jungle && x.Selectable).ToList().ForEach(x => jungleBiomeTypes.Add(x.Type - 1));
-            AltJungleBiomeChosenType = jungleBiomeTypes[Main.rand.Next(jungleBiomeTypes.Count)];
+            AltJungleBiomeChosenType = Main.rand.Next(jungleBiomeTypes);
             List<int> ores = new() { -1, -2 };
             AltLibrary.Ores.Where(x => x.OreType == OreType.Copper && x.Selectable).ToList().ForEach(x => ores.Add(x.Type));
-            Copper = ores[Main.rand.Next(ores.Count)];
+            Copper = Main.rand.Next(ores);
             ores = new() { -3, -4 };
             AltLibrary.Ores.Where(x => x.OreType == OreType.Iron && x.Selectable).ToList().ForEach(x => ores.Add(x.Type));
-            Iron = ores[Main.rand.Next(ores.Count)];
+            Iron = Main.rand.Next(ores);
             ores = new() { -5, -6 };
             AltLibrary.Ores.Where(x => x.OreType == OreType.Silver && x.Selectable).ToList().ForEach(x => ores.Add(x.Type));
-            Silver = ores[Main.rand.Next(ores.Count)];
+            Silver = Main.rand.Next(ores);
             ores = new() { -7, -8 };
             AltLibrary.Ores.Where(x => x.OreType == OreType.Gold && x.Selectable).ToList().ForEach(x => ores.Add(x.Type));
-            Gold = ores[Main.rand.Next(ores.Count)];
+            Gold = Main.rand.Next(ores);
             ores = new() { -9, -10 };
             AltLibrary.Ores.Where(x => x.OreType == OreType.Cobalt && x.Selectable).ToList().ForEach(x => ores.Add(x.Type));
-            Cobalt = ores[Main.rand.Next(ores.Count)];
+            Cobalt = Main.rand.Next(ores);
             ores = new() { -11, -12 };
             AltLibrary.Ores.Where(x => x.OreType == OreType.Mythril && x.Selectable).ToList().ForEach(x => ores.Add(x.Type));
-            Mythril = ores[Main.rand.Next(ores.Count)];
+            Mythril = Main.rand.Next(ores);
             ores = new() { -13, -14 };
             AltLibrary.Ores.Where(x => x.OreType == OreType.Adamantite && x.Selectable).ToList().ForEach(x => ores.Add(x.Type));
-            Adamantite = ores[Main.rand.Next(ores.Count)];
+            Adamantite = Main.rand.Next(ores);
 
             orig(self);
 
@@ -802,6 +802,9 @@ namespace AltLibrary.Common
                 WorldBiomeManager.Cobalt = Cobalt;
                 WorldBiomeManager.Mythril = Mythril;
                 WorldBiomeManager.Adamantite = Adamantite;
+                WorldBiomeManager.cobaIndex = Cobalt < 0 ? (Cobalt == -10 ? 1 : 0) : AltLibrary.OrderedCobalt.FindIndex(x => x == AltLibrary.Ores.Find(x => x.Type == Cobalt).ore);
+                WorldBiomeManager.mythIndex = Mythril < 0 ? (Mythril == -12 ? 1 : 0) : AltLibrary.OrderedMythril.FindIndex(x => x == AltLibrary.Ores.Find(x => x.Type == Mythril).ore);
+                WorldBiomeManager.adamIndex = Adamantite < 0 ? (Adamantite == -14 ? 1 : 0) : AltLibrary.OrderedAdamant.FindIndex(x => x == AltLibrary.Ores.Find(x => x.Type == Adamantite).ore);
 
                 AltLibrary.Instance.Logger.Info($"On creating world - Hallow: {AltHallowBiomeChosenType} Corrupt: {AltEvilBiomeChosenType} Jungle: {AltJungleBiomeChosenType} Underworld: {AltHellBiomeChosenType}");
             });

@@ -180,7 +180,18 @@ namespace AltLibrary.Common.Hooks
                     }
                     else
                     {
-                        progress.Message = AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.drunkEvil).GenPassName.GetTranslation(Language.ActiveCulture);
+                        if (WorldBiomeManager.drunkEvil == "Terraria/Corrupt")
+                        {
+                            progress.Message = Lang.misc[20].Value;
+                        }
+                        else if (WorldBiomeManager.drunkEvil == "Terraria/Crimson")
+                        {
+                            progress.Message = Lang.misc[72].Value;
+                        }
+                        else
+                        {
+                            progress.Message = AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.drunkEvil).GenPassName.GetTranslation(Language.ActiveCulture);
+                        }
                     }
                 }
             });
@@ -761,7 +772,7 @@ namespace AltLibrary.Common.Hooks
                     AltLibrary.Ores.Where(x => x.OreType == OreType.Copper)
                                    .ToList()
                                    .ForEach(x => list.Add(x.ore));
-                    return list[WorldGen.genRand.Next(list.Count)];
+                    return WorldGen.genRand.Next(list);
                 });
             }
 
@@ -796,7 +807,7 @@ namespace AltLibrary.Common.Hooks
                     AltLibrary.Ores.Where(x => x.OreType == OreType.Iron)
                                    .ToList()
                                    .ForEach(x => list.Add(x.ore));
-                    return list[WorldGen.genRand.Next(list.Count)];
+                    return WorldGen.genRand.Next(list);
                 });
             }
 
@@ -831,7 +842,7 @@ namespace AltLibrary.Common.Hooks
                     AltLibrary.Ores.Where(x => x.OreType == OreType.Silver)
                                    .ToList()
                                    .ForEach(x => list.Add(x.ore));
-                    return list[WorldGen.genRand.Next(list.Count)];
+                    return WorldGen.genRand.Next(list);
                 });
             }
 
@@ -866,7 +877,7 @@ namespace AltLibrary.Common.Hooks
                     AltLibrary.Ores.Where(x => x.OreType == OreType.Gold)
                                    .ToList()
                                    .ForEach(x => list.Add(x.ore));
-                    return list[WorldGen.genRand.Next(list.Count)];
+                    return WorldGen.genRand.Next(list);
                 });
             }
 

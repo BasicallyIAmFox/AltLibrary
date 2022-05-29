@@ -152,43 +152,43 @@ namespace AltLibrary.Core.UIs
                         values.Add(-1);
                         values.Add(-2);
                         AltLibrary.Ores.Where(x => x.OreType == OreType.Copper && x.Selectable).ToList().ForEach(x => values.Add(x.Type));
-                        UIWorldCreationEdits.Copper = values[Main.rand.Next(values.Count)];
+                        UIWorldCreationEdits.Copper = Main.rand.Next(values);
                         break;
                     case "RandomIron":
                         values.Add(-3);
                         values.Add(-4);
                         AltLibrary.Ores.Where(x => x.OreType == OreType.Iron && x.Selectable).ToList().ForEach(x => values.Add(x.Type));
-                        UIWorldCreationEdits.Iron = values[Main.rand.Next(values.Count)];
+                        UIWorldCreationEdits.Iron = Main.rand.Next(values);
                         break;
                     case "RandomSilver":
                         values.Add(-5);
                         values.Add(-6);
                         AltLibrary.Ores.Where(x => x.OreType == OreType.Silver && x.Selectable).ToList().ForEach(x => values.Add(x.Type));
-                        UIWorldCreationEdits.Silver = values[Main.rand.Next(values.Count)];
+                        UIWorldCreationEdits.Silver = Main.rand.Next(values);
                         break;
                     case "RandomGold":
                         values.Add(-7);
                         values.Add(-8);
                         AltLibrary.Ores.Where(x => x.OreType == OreType.Gold && x.Selectable).ToList().ForEach(x => values.Add(x.Type));
-                        UIWorldCreationEdits.Gold = values[Main.rand.Next(values.Count)];
+                        UIWorldCreationEdits.Gold = Main.rand.Next(values);
                         break;
                     case "RandomCobalt":
                         values.Add(-9);
                         values.Add(-10);
                         AltLibrary.Ores.Where(x => x.OreType == OreType.Cobalt && x.Selectable).ToList().ForEach(x => values.Add(x.Type));
-                        UIWorldCreationEdits.Cobalt = values[Main.rand.Next(values.Count)];
+                        UIWorldCreationEdits.Cobalt = Main.rand.Next(values);
                         break;
                     case "RandomMythril":
                         values.Add(-11);
                         values.Add(-12);
                         AltLibrary.Ores.Where(x => x.OreType == OreType.Mythril && x.Selectable).ToList().ForEach(x => values.Add(x.Type));
-                        UIWorldCreationEdits.Mythril = values[Main.rand.Next(values.Count)];
+                        UIWorldCreationEdits.Mythril = Main.rand.Next(values);
                         break;
                     case "RandomAdamantite":
                         values.Add(-13);
                         values.Add(-14);
                         AltLibrary.Ores.Where(x => x.OreType == OreType.Adamantite && x.Selectable).ToList().ForEach(x => values.Add(x.Type));
-                        UIWorldCreationEdits.Adamantite = values[Main.rand.Next(values.Count)];
+                        UIWorldCreationEdits.Adamantite = Main.rand.Next(values);
                         break;
                 }
                 return;

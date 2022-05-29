@@ -134,7 +134,7 @@ namespace AltLibrary.Core.UIs
                         -333
                     };
                     AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Evil && x.Selectable).ToList().ForEach((x) => values.Add(x.Type - 1));
-                    UIWorldCreationEdits.AltEvilBiomeChosenType = values[Main.rand.Next(values.Count)];
+                    UIWorldCreationEdits.AltEvilBiomeChosenType = Main.rand.Next(values);
                     UIWorldCreationEdits.isCrimson = UIWorldCreationEdits.AltEvilBiomeChosenType == -666;
                 }
                 if (biome.Name.StartsWith("RandomHallow"))
@@ -144,7 +144,7 @@ namespace AltLibrary.Core.UIs
                         -3
                     };
                     AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow && x.Selectable).ToList().ForEach((x) => values.Add(x.Type - 1));
-                    UIWorldCreationEdits.AltHallowBiomeChosenType = values[Main.rand.Next(values.Count)];
+                    UIWorldCreationEdits.AltHallowBiomeChosenType = Main.rand.Next(values);
                 }
                 if (biome.Name.StartsWith("RandomJungle"))
                 {
@@ -153,7 +153,7 @@ namespace AltLibrary.Core.UIs
                         -4
                     };
                     AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Jungle && x.Selectable).ToList().ForEach((x) => values.Add(x.Type - 1));
-                    UIWorldCreationEdits.AltJungleBiomeChosenType = values[Main.rand.Next(values.Count)];
+                    UIWorldCreationEdits.AltJungleBiomeChosenType = Main.rand.Next(values);
                 }
                 if (biome.Name.StartsWith("RandomUnderworld"))
                 {
@@ -162,7 +162,7 @@ namespace AltLibrary.Core.UIs
                         -5
                     };
                     AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hell && x.Selectable).ToList().ForEach((x) => values.Add(x.Type - 1));
-                    UIWorldCreationEdits.AltHellBiomeChosenType = values[Main.rand.Next(values.Count)];
+                    UIWorldCreationEdits.AltHellBiomeChosenType = Main.rand.Next(values);
                 }
                 return;
             }

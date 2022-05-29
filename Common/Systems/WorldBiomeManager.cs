@@ -13,6 +13,7 @@ namespace AltLibrary.Common.Systems
         public static string WorldHell { get; internal set; } = "";
         public static string WorldJungle { get; internal set; } = "";
         internal static string drunkEvil = "";
+        internal static int drunkIndex = 0;
         public static int Copper { get; internal set; } = 0;
         public static int Iron { get; internal set; } = 0;
         public static int Silver { get; internal set; } = 0;
@@ -20,6 +21,9 @@ namespace AltLibrary.Common.Systems
         public static int Cobalt { get; internal set; } = 0;
         public static int Mythril { get; internal set; } = 0;
         public static int Adamantite { get; internal set; } = 0;
+        internal static int mythIndex = 0;
+        internal static int adamIndex = 0;
+        internal static int cobaIndex = 0;
 
         public override void Unload()
         {
@@ -35,6 +39,10 @@ namespace AltLibrary.Common.Systems
             Cobalt = 0;
             Mythril = 0;
             Adamantite = 0;
+            drunkIndex = 0;
+            cobaIndex = 0;
+            mythIndex = 0;
+            adamIndex = 0;
         }
 
         public override void SaveWorldData(TagCompound tag)
@@ -51,6 +59,10 @@ namespace AltLibrary.Common.Systems
             tag.Add("AltLibrary:Cobalt", Cobalt);
             tag.Add("AltLibrary:Mythril", Mythril);
             tag.Add("AltLibrary:Adamantite", Adamantite);
+            tag.Add("AltLibrary:DrunkIndex", drunkIndex);
+            tag.Add("AltLibrary:CobaIndex", cobaIndex);
+            tag.Add("AltLibrary:MythIndex", mythIndex);
+            tag.Add("AltLibrary:AdamIndex", adamIndex);
 
             Dictionary<string, AltLibraryConfig.WorldDataValues> tempDict = AltLibraryConfig.Config.GetWorldData();
             AltLibraryConfig.WorldDataValues worldData;
@@ -81,6 +93,10 @@ namespace AltLibrary.Common.Systems
             Cobalt = tag.GetInt("AltLibrary:Cobalt");
             Mythril = tag.GetInt("AltLibrary:Mythril");
             Adamantite = tag.GetInt("AltLibrary:Adamantite");
+            drunkIndex = tag.GetInt("AltLibrary:DrunkIndex");
+            cobaIndex = tag.GetInt("AltLibrary:CobaIndex");
+            mythIndex = tag.GetInt("AltLibrary:MythIndex");
+            adamIndex = tag.GetInt("AltLibrary:AdamIndex");
         }
 
         public override void NetSend(BinaryWriter writer)
@@ -97,6 +113,10 @@ namespace AltLibrary.Common.Systems
             writer.Write(Cobalt);
             writer.Write(Mythril);
             writer.Write(Adamantite);
+            writer.Write(drunkIndex);
+            writer.Write(cobaIndex);
+            writer.Write(mythIndex);
+            writer.Write(adamIndex);
         }
 
         public override void NetReceive(BinaryReader reader)
@@ -113,6 +133,10 @@ namespace AltLibrary.Common.Systems
             Cobalt = reader.ReadInt32();
             Mythril = reader.ReadInt32();
             Adamantite = reader.ReadInt32();
+            drunkIndex = reader.ReadInt32();
+            cobaIndex = reader.ReadInt32();
+            mythIndex = reader.ReadInt32();
+            adamIndex = reader.ReadInt32();
         }
     }
 }

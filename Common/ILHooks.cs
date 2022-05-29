@@ -37,6 +37,7 @@ namespace AltLibrary.Core
             TenthAnniversaryFix.Init();
             ShadowKeyReplacement.Init();
             LiquidILHooks.Init();
+            DrunkCrimsonFix.Load();
         }
 
         public static void Unload()
@@ -62,6 +63,7 @@ namespace AltLibrary.Core
             ShadowKeyReplacement.Unload();
             LiquidILHooks.Unload();
             GenPasses.Unload();
+            DrunkCrimsonFix.Unload();
         }
 
         private static void Main_EraseWorld(On.Terraria.Main.orig_EraseWorld orig, int i)

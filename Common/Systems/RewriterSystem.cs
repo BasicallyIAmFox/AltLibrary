@@ -10,6 +10,10 @@ namespace AltLibrary.Common.Systems
     {
         public override void OnWorldLoad()
         {
+            //WorldBiomeManager.cobaIndex = WorldBiomeManager.Cobalt < 0 ? (WorldBiomeManager.Cobalt == -10 ? 1 : 0) : AltLibrary.OrderedCobalt.FindIndex(x => x == AltLibrary.Ores.Find(x => x.Type == WorldBiomeManager.Cobalt).ore);
+            //WorldBiomeManager.mythIndex = WorldBiomeManager.Mythril < 0 ? (WorldBiomeManager.Mythril == -12 ? 1 : 0) : AltLibrary.OrderedMythril.FindIndex(x => x == AltLibrary.Ores.Find(x => x.Type == WorldBiomeManager.Mythril).ore);
+            //WorldBiomeManager.adamIndex = WorldBiomeManager.Adamantite < 0 ? (WorldBiomeManager.Adamantite == -14 ? 1 : 0) : AltLibrary.OrderedAdamant.FindIndex(x => x == AltLibrary.Ores.Find(x => x.Type == WorldBiomeManager.Adamantite).ore);
+
             if (WorldBiomeManager.WorldEvil == null) WorldBiomeManager.WorldEvil = "";
             if (WorldBiomeManager.WorldHallow == null) WorldBiomeManager.WorldHallow = "";
             if (WorldBiomeManager.WorldHell == null) WorldBiomeManager.WorldHell = "";

@@ -74,7 +74,7 @@ namespace AltLibrary.Common
                 {
                     valid = false;
                 }
-                if (tempDict[path2].drunkEvil != "" && !ModContent.TryFind<AltBiome>(tempDict[path2].drunkEvil, out _))
+                if (tempDict[path2].drunkEvil != "Terraria/Corrupt" && tempDict[path2].drunkEvil != "Terraria/Crimson" && tempDict[path2].drunkEvil != "" && !ModContent.TryFind<AltBiome>(tempDict[path2].drunkEvil, out _))
                 {
                     valid = false;
                 }

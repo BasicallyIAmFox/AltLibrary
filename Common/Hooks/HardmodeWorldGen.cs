@@ -63,7 +63,7 @@ namespace AltLibrary.Common.Hooks
                     // Vine here!
                     )
                 {
-                    orig = Find<AltBiome>(WorldBiomeManager.WorldHallow).HardmodeWalls[WorldGen.genRand.Next(Find<AltBiome>(WorldBiomeManager.WorldHallow).HardmodeWalls.Count)];
+                    orig = WorldGen.genRand.Next(Find<AltBiome>(WorldBiomeManager.WorldHallow).HardmodeWalls);
                 }
                 if (WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).HardmodeWalls.Count > 0 &&
                     ((Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeGrass.HasValue &&
@@ -81,7 +81,7 @@ namespace AltLibrary.Common.Hooks
                     // Vine here!
                     )
                 {
-                    orig = Find<AltBiome>(WorldBiomeManager.WorldEvil).HardmodeWalls[WorldGen.genRand.Next(Find<AltBiome>(WorldBiomeManager.WorldEvil).HardmodeWalls.Count)];
+                    orig = WorldGen.genRand.Next(Find<AltBiome>(WorldBiomeManager.WorldEvil).HardmodeWalls);
                 }
                 return orig;
             });

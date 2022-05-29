@@ -28,9 +28,84 @@ namespace AltLibrary.Common.Hooks
         private static void WorldGen_SmashAltar(ILContext il)
         {
             ILCursor c = new(il);
+            
+            if (!c.TryGotoNext(i => i.MatchLdsfld<Main>(nameof(Main.drunkWorld))))
+            {
+                AltLibrary.Instance.Logger.Info("n $ 0");
+                return;
+            }
+
+            c.Index++;
+            c.Emit(OpCodes.Pop);
+            c.EmitDelegate(() =>
+            {
+                if (Main.drunkWorld)
+                {
+                    int index = AltLibrary.OrderedAdamant[WorldBiomeManager.adamIndex % AltLibrary.OrderedAdamant.Count];
+                    WorldGen.SavedOreTiers.Adamantite = index;
+                    WorldBiomeManager.adamIndex++;
+                    if (WorldBiomeManager.adamIndex >= AltLibrary.OrderedAdamant.Count)
+                    {
+                        WorldBiomeManager.adamIndex = 0;
+                    }
+                }
+                return false;
+            });
 
             for (int j = 0; j < 3; j++)
             {
+                if (j == 1)
+                {
+                    if (!c.TryGotoNext(i => i.MatchLdsfld<Main>(nameof(Main.drunkWorld))))
+                    {
+                        AltLibrary.Instance.Logger.Info("n $ -1 " + j);
+                        return;
+                    }
+
+                    c.Index++;
+                    c.Emit(OpCodes.Pop);
+                    c.EmitDelegate(() =>
+                    {
+                        if (Main.drunkWorld)
+                        {
+                            int index = AltLibrary.OrderedMythril[WorldBiomeManager.mythIndex % AltLibrary.OrderedMythril.Count];
+                            WorldGen.SavedOreTiers.Mythril = index;
+                            WorldBiomeManager.mythIndex++;
+                            if (WorldBiomeManager.mythIndex >= AltLibrary.OrderedMythril.Count)
+                            {
+                                WorldBiomeManager.mythIndex = 0;
+                            }
+                        }
+                        return false;
+                    });
+                }
+                else if (j == 2)
+                {
+                    if (!c.TryGotoNext(i => i.MatchLdsfld<Main>(nameof(Main.drunkWorld))))
+                    {
+                        AltLibrary.Instance.Logger.Info("n $ -2 " + j);
+                        return;
+                    }
+
+                    c.Index++;
+                    c.Emit(OpCodes.Pop);
+                    c.EmitDelegate(() =>
+                    {
+                        if (Main.drunkWorld)
+                        {
+                            int index = AltLibrary.OrderedCobalt[WorldBiomeManager.cobaIndex % AltLibrary.OrderedCobalt.Count];
+                            WorldGen.SavedOreTiers.Cobalt = index;
+                            WorldBiomeManager.cobaIndex++;
+                            if (WorldBiomeManager.cobaIndex >= AltLibrary.OrderedCobalt.Count)
+                            {
+                                WorldBiomeManager.cobaIndex = 0;
+                            }
+                            AltLibrary.Instance.Logger.Info(WorldGen.SavedOreTiers.Cobalt.ToString());
+                        }
+                        return false;
+                    });
+                }
+
                 if (!c.TryGotoNext(i => i.MatchLdsfld<Lang>(nameof(Lang.misc)),
                     i => i.MatchLdloc(7 + j),
                     i => i.MatchLdelemRef(),
@@ -47,11 +122,12 @@ namespace AltLibrary.Common.Hooks
                     string key = "";
                     if (j == 0)
                     {
-                        if (WorldGen.SavedOreTiers.Cobalt == TileID.Cobalt)
+                        int index = AltLibrary.OrderedCobalt[WorldBiomeManager.cobaIndex % AltLibrary.OrderedCobalt.Count];
+                        if (index == TileID.Cobalt)
                         {
                             key = Lang.misc[12].Value;
                         }
-                        else if (WorldGen.SavedOreTiers.Cobalt == TileID.Palladium)
+                        else if (index == TileID.Palladium)
                         {
                             key = Lang.misc[21].Value;
                         }
@@ -111,11 +187,12 @@ namespace AltLibrary.Common.Hooks
                     string key = "";
                     if (j == 0)
                     {
-                        if (WorldGen.SavedOreTiers.Cobalt == TileID.Cobalt)
+                        int index = AltLibrary.OrderedCobalt[WorldBiomeManager.cobaIndex % AltLibrary.OrderedCobalt.Count];
+                        if (index == TileID.Cobalt)
                         {
                             key = Lang.misc[12].Value;
                         }
-                        else if (WorldGen.SavedOreTiers.Cobalt == TileID.Palladium)
+                        else if (index == TileID.Palladium)
                         {
                             key = Lang.misc[21].Value;
                         }
@@ -158,6 +235,37 @@ namespace AltLibrary.Common.Hooks
                 });
             }
 
+            if (!c.TryGotoNext(i => i.MatchLdcI4(203)))
+            {
+                AltLibrary.Instance.Logger.Info("n $ 4");
+                return;
+            }
+
+            c.Index++;
+            c.EmitDelegate<Func<int, int>>((orig) =>
+            {
+                if (!AltLibraryConfig.Config.SmashingAltarsSpreadsRandom)
+                {
+                    if (WorldBiomeManager.WorldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeStone.HasValue)
+                    {
+                        return ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeStone.Value;
+                    }
+                }
+                else
+                {
+                    List<int> indexToUse = new()
+                    {
+                        orig,
+                        TileID.Ebonstone
+                    };
+                    AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Evil && x.BiomeStone.HasValue)
+                                        .ToList()
+                                        .ForEach(x => indexToUse.Add(x.BiomeStone.Value));
+                    return Main.rand.Next(indexToUse);
+                }
+                return orig;
+            });
+
             if (!c.TryGotoNext(i => i.MatchLdcI4(25)))
             {
                 AltLibrary.Instance.Logger.Info("n $ 3");
@@ -178,19 +286,20 @@ namespace AltLibrary.Common.Hooks
                 {
                     List<int> indexToUse = new()
                     {
-                        orig
+                        orig,
+                        TileID.Crimstone
                     };
                     AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Evil && x.BiomeStone.HasValue)
                                         .ToList()
                                         .ForEach(x => indexToUse.Add(x.BiomeStone.Value));
-                    return indexToUse[Main.rand.Next(indexToUse.Count)];
+                    return Main.rand.Next(indexToUse);
                 }
                 return orig;
             });
 
             if (!c.TryGotoNext(i => i.MatchLdcI4(117)))
             {
-                AltLibrary.Instance.Logger.Info("n $ 4");
+                AltLibrary.Instance.Logger.Info("n $ 5");
                 return;
             }
 
@@ -213,7 +322,7 @@ namespace AltLibrary.Common.Hooks
                     AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow && x.BiomeStone.HasValue)
                                         .ToList()
                                         .ForEach(x => indexToUse.Add(x.BiomeStone.Value));
-                    return indexToUse[Main.rand.Next(indexToUse.Count)];
+                    return Main.rand.Next(indexToUse);
                 }
                 return orig;
             });
