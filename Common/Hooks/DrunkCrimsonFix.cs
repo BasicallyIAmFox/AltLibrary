@@ -51,7 +51,7 @@ namespace AltLibrary.Common.Hooks
                 List<int> AllBiomes = new() { -333, -666 };
                 AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Evil).ToList().ForEach(x => AllBiomes.Add(x.Type));
                 int gotIndex = AllBiomes[WorldBiomeManager.drunkIndex % AllBiomes.Count];
-                if (gotIndex == -333 || gotIndex == -666)
+                if (gotIndex < 0)
                 {
                     WorldBiomeManager.WorldEvil = "";
                 }
@@ -65,6 +65,7 @@ namespace AltLibrary.Common.Hooks
                 {
                     WorldBiomeManager.drunkIndex = 0;
                 }
+                AltLibrary.Instance.Logger.Info(WorldBiomeManager.WorldEvil + " " + WorldGen.crimson.ToInt() + " " + WorldBiomeManager.drunkIndex);
             });
         }
     }

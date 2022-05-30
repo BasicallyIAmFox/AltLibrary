@@ -1,5 +1,6 @@
 Mods: {
 	AltLibrary: {
+		BlessBase: "Your world has been blessed with {0}!"
 		WorldBreak: "One of the biomes this world was created with has been removed, this can lead to heavy breakage!"
 		AddedBy: "Added By:"
 		ChooseBiome: "Biomes"

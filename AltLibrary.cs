@@ -20,13 +20,13 @@ namespace AltLibrary
 
         public static AltLibrary Instance { get => instance; internal set => instance = value; }
 
-        internal static List<AltBiome> Biomes;
+        internal static List<AltBiome> Biomes = new();
 
-        internal static List<AltOre> Ores;
+        internal static List<AltOre> Ores = new();
 
-        internal static List<AltLiquidStyle> LiquidStyles;
+        internal static List<AltLiquidStyle> LiquidStyles = new();
 
-        internal static List<CustomPreviews> PreviewWorldIcons;
+        internal static List<CustomPreviews> PreviewWorldIcons = new();
 
         // Spreading related lists.
         internal static List<int> planteraBulbs;
@@ -56,10 +56,6 @@ namespace AltLibrary
             ModIconVariation = Main.rand.Next(ALTextureAssets.AnimatedModIcon.Length);
             TimeHoveringOnIcon = 0;
             HallowBunnyUnlocked = false;
-            PreviewWorldIcons = new();
-            Biomes = new();
-            Ores = new();
-            LiquidStyles = new();
             planteraBulbs = new() { TileID.PlanteraBulb };
             jungleGrass = new() { TileID.JungleGrass };
             jungleThorns = new() { TileID.JungleThorns };

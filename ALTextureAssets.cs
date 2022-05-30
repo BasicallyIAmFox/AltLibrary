@@ -115,7 +115,7 @@ namespace AltLibrary
             foreach (AltBiome biome in AltLibrary.Biomes)
             {
                 string path = "AltLibrary/Assets/Menu/Empty";
-                if (ModContent.RequestIfExists(biome.IconSmall, out Asset<Texture2D> asset))
+                if (biome.IconSmall != path && ModContent.RequestIfExists(biome.IconSmall, out Asset<Texture2D> asset))
                     path = asset.Name;
                 biomeSmall.Add(path != "AltLibrary/Assets/Menu/Empty" ? ModContent.Request<Texture2D>(path, AssetRequestMode.ImmediateLoad) : null);
             }
@@ -126,9 +126,9 @@ namespace AltLibrary
             foreach (AltBiome biome in AltLibrary.Biomes)
             {
                 string path = "AltLibrary/Assets/Loading/Outer Empty";
-                if (ModContent.RequestIfExists(biome.OuterTexture, out Asset<Texture2D> asset))
+                if (biome.OuterTexture != path && ModContent.RequestIfExists(biome.OuterTexture, out Asset<Texture2D> asset))
                     path = asset.Name;
-                biomeOuter.Add(path != "AltLibrary/Assets/Loading/Outer Empty" ? ModContent.Request<Texture2D>(path, AssetRequestMode.ImmediateLoad) : OuterTexture);
+                biomeOuter.Add(ModContent.Request<Texture2D>(path, AssetRequestMode.ImmediateLoad));
             }
             BiomeOuter = biomeOuter.ToArray();
 
@@ -137,9 +137,9 @@ namespace AltLibrary
             foreach (AltBiome biome in AltLibrary.Biomes)
             {
                 string path = "AltLibrary/Assets/Loading/Outer Lower Empty";
-                if (ModContent.RequestIfExists(biome.LowerTexture, out Asset<Texture2D> asset))
+                if (biome.LowerTexture != path && ModContent.RequestIfExists(biome.LowerTexture, out Asset<Texture2D> asset))
                     path = asset.Name;
-                biomeLower.Add(path != "AltLibrary/Assets/Loading/Outer Lower Empty" ? ModContent.Request<Texture2D>(path, AssetRequestMode.ImmediateLoad) : OuterLowerTexture);
+                biomeLower.Add(ModContent.Request<Texture2D>(path, AssetRequestMode.ImmediateLoad));
             }
             BiomeLower = biomeLower.ToArray();
         }

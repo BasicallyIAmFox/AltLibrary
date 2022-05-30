@@ -190,7 +190,7 @@ namespace AltLibrary.Common.Hooks
                         }
                         else
                         {
-                            progress.Message = AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.drunkEvil).GenPassName.GetTranslation(Language.ActiveCulture);
+                            progress.Message = AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.drunkEvil).GenPassName.GetTranslation(Language.ActiveCulture) ?? "Creating " + AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.drunkEvil).Name;
                         }
                     }
                 }

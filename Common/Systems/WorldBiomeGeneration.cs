@@ -606,7 +606,25 @@ namespace AltLibrary.Common.Systems
             }
             if (flag46)
             {
-                progress.Message = AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.drunkEvil).GenPassName.GetTranslation(Language.ActiveCulture);
+                if (WorldBiomeManager.drunkEvil == "Terraria/Corrupt")
+                {
+                    progress.Message = Lang.misc[20].Value;
+                }
+                else if (WorldBiomeManager.drunkEvil == "Terraria/Crimson")
+                {
+                    progress.Message = Lang.misc[71].Value;
+                }
+                else
+                {
+                    if (AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.drunkEvil).GenPassName != null)
+                    {
+                        progress.Message = AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.drunkEvil).GenPassName.GetTranslation(Language.ActiveCulture);
+                    }
+                    else
+                    {
+                        progress.Message = "Creating " + AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.drunkEvil).DisplayName.GetTranslation(Language.ActiveCulture);
+                    }
+                }
                 for (int num687 = 0; num687 < num686; num687++)
                 {
                     int num688 = num679;
@@ -927,7 +945,21 @@ namespace AltLibrary.Common.Systems
             }
             if (!flag46)
             {
-                progress.Message = AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.WorldEvil).GenPassName.GetTranslation(Language.ActiveCulture);
+                if (WorldBiomeManager.WorldEvil == "")
+                {
+                    progress.Message = Lang.misc[71].Value;
+                }
+                else
+                {
+                    if (AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.WorldEvil).GenPassName != null)
+                    {
+                        progress.Message = AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.WorldEvil).GenPassName.GetTranslation(Language.ActiveCulture) ?? "Creating " + AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.WorldEvil).DisplayName.GetTranslation(Language.ActiveCulture);
+                    }
+                    else
+                    {
+                        progress.Message = "Creating " + AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.WorldEvil).DisplayName.GetTranslation(Language.ActiveCulture);
+                    }
+                }
                 for (int num709 = 0; num709 < num686; num709++)
                 {
                     int num710 = num679;

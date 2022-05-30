@@ -2,6 +2,7 @@
 using System;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace AltLibrary.Common.AltOres
@@ -88,6 +89,10 @@ namespace AltLibrary.Common.AltOres
             if (DisplayName.IsDefault())
             {
                 DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
+            }
+            if (BlessingMessage.IsDefault())
+            {
+                BlessingMessage.SetDefault(Language.GetTextValue("Mods.AltLibrary.BlessBase", Name));
             }
         }
     }
