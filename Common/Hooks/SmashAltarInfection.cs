@@ -39,7 +39,7 @@ namespace AltLibrary.Common.Hooks
             c.Emit(OpCodes.Pop);
             c.EmitDelegate(() =>
             {
-                if (Main.drunkWorld)
+                /*if (Main.drunkWorld)
                 {
                     int index = AltLibrary.OrderedAdamant[WorldBiomeManager.adamIndex % AltLibrary.OrderedAdamant.Count];
                     WorldGen.SavedOreTiers.Adamantite = index;
@@ -48,7 +48,7 @@ namespace AltLibrary.Common.Hooks
                     {
                         WorldBiomeManager.adamIndex = 0;
                     }
-                }
+                }*/
                 return false;
             });
 
@@ -66,7 +66,7 @@ namespace AltLibrary.Common.Hooks
                     c.Emit(OpCodes.Pop);
                     c.EmitDelegate(() =>
                     {
-                        if (Main.drunkWorld)
+                        /*if (Main.drunkWorld)
                         {
                             int index = AltLibrary.OrderedMythril[WorldBiomeManager.mythIndex % AltLibrary.OrderedMythril.Count];
                             WorldGen.SavedOreTiers.Mythril = index;
@@ -75,7 +75,7 @@ namespace AltLibrary.Common.Hooks
                             {
                                 WorldBiomeManager.mythIndex = 0;
                             }
-                        }
+                        }*/
                         return false;
                     });
                 }
@@ -91,7 +91,7 @@ namespace AltLibrary.Common.Hooks
                     c.Emit(OpCodes.Pop);
                     c.EmitDelegate(() =>
                     {
-                        if (Main.drunkWorld)
+                        /*if (Main.drunkWorld)
                         {
                             int index = AltLibrary.OrderedCobalt[WorldBiomeManager.cobaIndex % AltLibrary.OrderedCobalt.Count];
                             WorldGen.SavedOreTiers.Cobalt = index;
@@ -101,7 +101,7 @@ namespace AltLibrary.Common.Hooks
                                 WorldBiomeManager.cobaIndex = 0;
                             }
                             AltLibrary.Instance.Logger.Info(WorldGen.SavedOreTiers.Cobalt.ToString());
-                        }
+                        }*/
                         return false;
                     });
                 }
@@ -122,12 +122,12 @@ namespace AltLibrary.Common.Hooks
                     string key = "";
                     if (j == 0)
                     {
-                        int index = AltLibrary.OrderedCobalt[WorldBiomeManager.cobaIndex % AltLibrary.OrderedCobalt.Count];
-                        if (index == TileID.Cobalt)
+                        //int index = AltLibrary.OrderedCobalt[WorldBiomeManager.cobaIndex % AltLibrary.OrderedCobalt.Count];
+                        if (WorldGen.SavedOreTiers == TileID.Cobalt)
                         {
                             key = Lang.misc[12].Value;
                         }
-                        else if (index == TileID.Palladium)
+                        else if (WorldGen.SavedOreTiers == TileID.Palladium)
                         {
                             key = Lang.misc[21].Value;
                         }
