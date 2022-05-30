@@ -53,6 +53,7 @@ namespace AltLibrary
             ILHooks.OnInitialize();
             AnimatedModIcon.Init();
             ALTextureAssets.Load();
+            ALConvert.Load();
             ModIconVariation = Main.rand.Next(ALTextureAssets.AnimatedModIcon.Length);
             TimeHoveringOnIcon = 0;
             HallowBunnyUnlocked = false;
@@ -119,6 +120,7 @@ namespace AltLibrary
         {
             AnimatedModIcon.Unload();
             ALTextureAssets.Unload();
+            ALConvert.Unload();
             AltLibraryConfig.Config = null;
             TimeHoveringOnIcon = 0;
             HallowBunnyUnlocked = false;

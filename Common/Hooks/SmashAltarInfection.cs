@@ -123,11 +123,11 @@ namespace AltLibrary.Common.Hooks
                     if (j == 0)
                     {
                         //int index = AltLibrary.OrderedCobalt[WorldBiomeManager.cobaIndex % AltLibrary.OrderedCobalt.Count];
-                        if (WorldGen.SavedOreTiers == TileID.Cobalt)
+                        if (WorldGen.SavedOreTiers.Cobalt == TileID.Cobalt)
                         {
                             key = Lang.misc[12].Value;
                         }
-                        else if (WorldGen.SavedOreTiers == TileID.Palladium)
+                        else if (WorldGen.SavedOreTiers.Cobalt == TileID.Palladium)
                         {
                             key = Lang.misc[21].Value;
                         }

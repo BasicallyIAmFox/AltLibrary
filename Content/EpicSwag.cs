@@ -1,5 +1,6 @@
 ﻿using AltLibrary.Common.AltBiomes;
 using AltLibrary.Common.AltOres;
+using System.Collections.Generic;
 using Terraria.ID;
 
 namespace AltLibrary.Content
@@ -8,7 +9,7 @@ namespace AltLibrary.Content
     {
         public override void SetStaticDefaults()
         {
-            BiomeType = BiomeType.Evil;
+            BiomeType = BiomeType.Hallow;
             BiomeGrass = TileID.GoldBrick;
             BiomeStone = TileID.Gold;
             BiomeSand = TileID.YellowStucco;
@@ -25,6 +26,14 @@ namespace AltLibrary.Content
             FountainTileStyle = 0;
             FountainActiveFrameY = 0;
         }
+
+        public override Dictionary<int, int> SpecialConversion => new()
+        {
+            [TileID.Dirt] = TileID.Glass
+        };
+
+        public override WallContext WallContext => new WallContext()
+            .AddReplacement(WallID.AdamantiteBeam, WallID.AmberGemspark);
     }
 
     internal class BaddaassssOre : AltOre

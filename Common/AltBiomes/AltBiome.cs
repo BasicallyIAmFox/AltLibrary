@@ -324,7 +324,7 @@ namespace AltLibrary.Common.AltBiomes
 
     public class WallContext
     {
-        public Dictionary<ushort, ushort> wallsReplacement;
+        internal Dictionary<ushort, ushort> wallsReplacement;
 
         public WallContext()
         {
