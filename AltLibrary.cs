@@ -39,10 +39,6 @@ namespace AltLibrary
         internal static bool HallowBunnyUnlocked;
         internal static int ModIconVariation;
 
-        internal static List<int> OrderedCobalt;
-        internal static List<int> OrderedMythril;
-        internal static List<int> OrderedAdamant;
-
         public AltLibrary()
         {
             Instance = this;
@@ -66,25 +62,6 @@ namespace AltLibrary
         public override void PostSetupContent()
         {
             ALTextureAssets.PostContentLoad();
-
-            OrderedCobalt = new()
-            {
-                TileID.Cobalt,
-                TileID.Palladium
-            };
-            Ores.Where(x => x.OreType == OreType.Cobalt).ToList().ForEach(x => OrderedCobalt.Add(x.ore));
-            OrderedMythril = new()
-            {
-                TileID.Mythril,
-                TileID.Orichalcum
-            };
-            Ores.Where(x => x.OreType == OreType.Mythril).ToList().ForEach(x => OrderedMythril.Add(x.ore));
-            OrderedAdamant = new()
-            {
-                TileID.Adamantite,
-                TileID.Titanium
-            };
-            Ores.Where(x => x.OreType == OreType.Adamantite).ToList().ForEach(x => OrderedAdamant.Add(x.ore));
         }
 
         public override object Call(params object[] args)
@@ -139,10 +116,11 @@ namespace AltLibrary
             ILHooks.Unload();
             AltLibraryConfig.Config = null;
             HallowBunnyCageRecipeIndex = 0;
-            OrderedCobalt = null;
-            OrderedMythril = null;
-            OrderedAdamant = null;
         }
+
+        public static AltBiome GetAltBiome(int type) => Biomes.Find(x => x.Type == type);
+
+        public static int AltBiomeType<T>() where T : AltBiome => ModContent.GetInstance<T>()?.Type ?? 0;
 
         internal struct CustomPreviews
         {

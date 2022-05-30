@@ -180,7 +180,7 @@ namespace AltLibrary.Common.Hooks
                     }
                     else
                     {
-                        if (WorldBiomeManager.drunkEvil == "Terraria/Corrupt")
+                        if (WorldBiomeManager.drunkEvil == "Terraria/Corruption")
                         {
                             progress.Message = Lang.misc[20].Value;
                         }

@@ -60,12 +60,20 @@ namespace AltLibrary.Common.Hooks
                     WorldBiomeManager.WorldEvil = AltLibrary.Biomes.Find(x => x.Type == gotIndex).FullName;
                 }
                 WorldGen.crimson = gotIndex == -666;
+                gotIndex = AllBiomes[(WorldBiomeManager.drunkIndex + 1) % AllBiomes.Count];
+                if (gotIndex < 0)
+                {
+                    WorldBiomeManager.drunkEvil = gotIndex == -666 ? "Terraria/Crimson" : "Terraria/Corruption";
+                }
+                else
+                {
+                    WorldBiomeManager.drunkEvil = AltLibrary.Biomes.Find(x => x.Type == gotIndex).FullName;
+                }
                 WorldBiomeManager.drunkIndex++;
                 if (WorldBiomeManager.drunkIndex >= AllBiomes.Count)
                 {
                     WorldBiomeManager.drunkIndex = 0;
                 }
-                AltLibrary.Instance.Logger.Info(WorldBiomeManager.WorldEvil + " " + WorldGen.crimson.ToInt() + " " + WorldBiomeManager.drunkIndex);
             });
         }
     }

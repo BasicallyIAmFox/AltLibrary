@@ -606,7 +606,7 @@ namespace AltLibrary.Common.Systems
             }
             if (flag46)
             {
-                if (WorldBiomeManager.drunkEvil == "Terraria/Corrupt")
+                if (WorldBiomeManager.drunkEvil == "Terraria/Corruption")
                 {
                     progress.Message = Lang.misc[20].Value;
                 }
