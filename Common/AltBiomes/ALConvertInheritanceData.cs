@@ -197,8 +197,21 @@ namespace AltLibrary.Common.AltBiomes
         {
             for (int x = 0; x < WallLoader.WallCount; x++)
             {
-
-                if (WallID.Sets.Conversion.Stone[x] && x != WallID.Stone)
+                if (WallID.Sets.Conversion.Grass[x] && x != WallID.Grass)
+                {
+                    switch (x)
+                    {
+                        case WallID.CorruptGrassUnsafe:
+                        case WallID.CrimsonGrassUnsafe:
+                        case WallID.HallowedGrassUnsafe:
+                            Parent.Add(x, GRASS_UNSAFE_DIFFERENT);
+                            break;
+                        default:
+                            Parent.Add(x, WallID.Grass);
+                            break;
+                    }
+                }
+                else if (WallID.Sets.Conversion.Stone[x] && x != WallID.Stone)
                     Parent.Add(x, WallID.Stone);
                 else if (WallID.Sets.Conversion.HardenedSand[x] && x != WallID.HardenedSand)
                     Parent.Add(x, WallID.HardenedSand);
@@ -219,15 +232,7 @@ namespace AltLibrary.Common.AltBiomes
 
             //Manual Grass conversionating to ensure safe grass walls cannot become unsafe through green solution conversion
 
-            Parent.Add(WallID.CorruptGrassUnsafe, GRASS_UNSAFE_DIFFERENT);
-            Parent.Add(WallID.CrimsonGrassUnsafe, GRASS_UNSAFE_DIFFERENT);
-            Parent.Add(WallID.HallowedGrassUnsafe, GRASS_UNSAFE_DIFFERENT);
-
             Parent.Add(GRASS_UNSAFE_DIFFERENT, WallID.Grass);
-            Parent.Add(WallID.GrassUnsafe, WallID.Grass);
-            Parent.Add(WallID.CorruptGrassEcho, WallID.Grass);
-            Parent.Add(WallID.CrimsonGrassEcho, WallID.Grass);
-            Parent.Add(WallID.HallowedGrassEcho, WallID.Grass);
 
             // Forest (this entire thing ensures that deconversion is possible)
 
