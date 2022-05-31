@@ -799,10 +799,10 @@ namespace AltLibrary.Common.AltBiomes
 				else
 				{
 					allWalls[m] = INVALID_TYPE;
-				}
-			}
+                }
+            }
 
-			for (int k = i - size; k <= i + size; k++)
+            for (int k = i - size; k <= i + size; k++)
             {
                 for (int l = j - size; l <= j + size; l++)
                 {
@@ -811,51 +811,104 @@ namespace AltLibrary.Common.AltBiomes
                         int type = Main.tile[k, l].TileType;
                         int wall = Main.tile[k, l].WallType;
 
-						if (allTiles[type] != INVALID_TYPE && type == allTiles[type] && repTiles[type] != INVALID_TYPE)
+                        if (allTiles[type] != INVALID_TYPE && type == allTiles[type] && repTiles[type] != INVALID_TYPE)
                         {
                             Main.tile[k, l].TileType = (ushort)repTiles[type];
                             WorldGen.SquareTileFrame(k, l, true);
                             NetMessage.SendTileSquare(-1, k, l, TileChangeType.None);
                         }
 
-						if (allWalls[wall] != INVALID_TYPE && wall == allWalls[wall] && repWalls[wall] != INVALID_TYPE)
-						{
-							Main.tile[k, l].WallType = (ushort)repWalls[wall];
-							WorldGen.SquareWallFrame(k, l, true);
-							NetMessage.SendTileSquare(-1, k, l, TileChangeType.None);
-						}
+                        if (allWalls[wall] != INVALID_TYPE && wall == allWalls[wall] && repWalls[wall] != INVALID_TYPE)
+                        {
+                            Main.tile[k, l].WallType = (ushort)repWalls[wall];
+                            WorldGen.SquareWallFrame(k, l, true);
+                            NetMessage.SendTileSquare(-1, k, l, TileChangeType.None);
+                        }
 
-						if ((Main.tileMoss[type] || TileID.Sets.Conversion.Stone[type]) && type != biome.BiomeStone.Value && biome.BiomeStone.HasValue)
+                        bool isGrass = TileID.Sets.Conversion.Grass[type];
+                        bool isTropicGrass = type == TileID.JungleGrass;
+                        bool isStone = TileID.Sets.Conversion.Stone[type];
+                        bool isGolfGrass = TileID.Sets.Conversion.GolfGrass[type];
+                        bool isIce = TileID.Sets.Conversion.Ice[type];
+                        bool isSand = TileID.Sets.Conversion.Sand[type];
+                        bool isHardSand = TileID.Sets.Conversion.HardenedSand[type];
+                        bool isSandstone = TileID.Sets.Conversion.Sandstone[type];
+                        if (biome.BiomeGrass.HasValue)
+                        {
+                            isGrass |= type == biome.BiomeGrass.Value;
+                        }
+                        if (biome.BiomeType == BiomeType.Jungle && biome.BiomeGrass.HasValue)
+                        {
+                            isTropicGrass |= type == biome.BiomeGrass.Value;
+                        }
+                        if (biome.BiomeStone.HasValue)
+                        {
+                            isStone |= type == biome.BiomeStone.Value;
+                        }
+                        if (biome.BiomeMowedGrass.HasValue)
+                        {
+                            isGolfGrass |= type == biome.BiomeMowedGrass.Value;
+                        }
+                        if (biome.BiomeIce.HasValue)
+                        {
+                            isIce |= type == biome.BiomeIce.Value;
+                        }
+                        if (biome.BiomeSand.HasValue)
+                        {
+                            isSand |= type == biome.BiomeSand.Value;
+                        }
+                        if (biome.BiomeHardenedSand.HasValue)
+                        {
+                            isHardSand |= type == biome.BiomeHardenedSand.Value;
+                        }
+                        if (biome.BiomeSandstone.HasValue)
+                        {
+                            isSandstone |= type == biome.BiomeSandstone.Value;
+                        }
+
+                        if ((Main.tileMoss[type] || isStone) && type != biome.BiomeStone.Value && biome.BiomeStone.HasValue)
                         {
                             Main.tile[k, l].TileType = (ushort)biome.BiomeStone.Value;
                             WorldGen.SquareWallFrame(k, l);
                             NetMessage.SendTileSquare(-1, k, l);
                         }
-                        else if (TileID.Sets.Conversion.Grass[type] && type != biome.BiomeGrass.Value && biome.BiomeGrass.HasValue)
+                        else if (isGrass && type != biome.BiomeGrass.Value && biome.BiomeGrass.HasValue)
                         {
                             Main.tile[k, l].TileType = (ushort)biome.BiomeGrass.Value;
                             WorldGen.SquareTileFrame(k, l, true);
                             NetMessage.SendTileSquare(-1, k, l, TileChangeType.None);
-                        }
-                        else if (TileID.Sets.Conversion.Ice[type] && type != biome.BiomeIce.Value && biome.BiomeIce.HasValue)
+						}
+						else if (isTropicGrass && type != biome.BiomeJungleGrass.Value && biome.BiomeJungleGrass.HasValue)
+						{
+							Main.tile[k, l].TileType = (ushort)biome.BiomeJungleGrass.Value;
+							WorldGen.SquareTileFrame(k, l, true);
+							NetMessage.SendTileSquare(-1, k, l, TileChangeType.None);
+						}
+						else if (isGolfGrass && type != biome.BiomeMowedGrass.Value && biome.BiomeMowedGrass.HasValue)
+						{
+							Main.tile[k, l].TileType = (ushort)biome.BiomeMowedGrass.Value;
+							WorldGen.SquareTileFrame(k, l, true);
+							NetMessage.SendTileSquare(-1, k, l, TileChangeType.None);
+						}
+						else if (isIce && type != biome.BiomeIce.Value && biome.BiomeIce.HasValue)
                         {
                             Main.tile[k, l].TileType = (ushort)biome.BiomeIce.Value;
                             WorldGen.SquareTileFrame(k, l, true);
                             NetMessage.SendTileSquare(-1, k, l, TileChangeType.None);
                         }
-                        else if (TileID.Sets.Conversion.Sand[type] && type != biome.BiomeSand.Value && biome.BiomeSand.HasValue)
+                        else if (isSand && type != biome.BiomeSand.Value && biome.BiomeSand.HasValue)
                         {
                             Main.tile[k, l].TileType = (ushort)biome.BiomeSand.Value;
                             WorldGen.SquareTileFrame(k, l, true);
                             NetMessage.SendTileSquare(-1, k, l, TileChangeType.None);
                         }
-                        else if (TileID.Sets.Conversion.HardenedSand[type] && type != biome.BiomeHardenedSand.Value && biome.BiomeHardenedSand.HasValue)
+                        else if (isHardSand && type != biome.BiomeHardenedSand.Value && biome.BiomeHardenedSand.HasValue)
                         {
                             Main.tile[k, l].TileType = (ushort)biome.BiomeHardenedSand.Value;
                             WorldGen.SquareTileFrame(k, l, true);
                             NetMessage.SendTileSquare(-1, k, l, TileChangeType.None);
                         }
-                        else if (TileID.Sets.Conversion.Sandstone[type] && type != biome.BiomeSandstone.Value && biome.BiomeSandstone.HasValue)
+                        else if (isSandstone && type != biome.BiomeSandstone.Value && biome.BiomeSandstone.HasValue)
                         {
                             Main.tile[k, l].TileType = (ushort)biome.BiomeSandstone.Value;
                             WorldGen.SquareTileFrame(k, l, true);
