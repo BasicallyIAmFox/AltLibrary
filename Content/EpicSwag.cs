@@ -36,6 +36,11 @@ namespace AltLibrary.Content
         
         private WallContext wallContext = new WallContext()
             .AddReplacement(WallID.AdamantiteBeam, WallID.AmberGemspark);
+            
+            
+
+         BakeTileChild(TileID.Glass, TileID.Dirt, new(true, true, true));
+        BakeTileChild(TileID.StardustBrick, TileID.ArgonMoss, new(true, true, true));
     }
 
     internal class BaddaassssOre : AltOre
