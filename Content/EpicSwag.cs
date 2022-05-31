@@ -32,7 +32,9 @@ namespace AltLibrary.Content
             [TileID.Dirt] = TileID.Glass
         };
 
-        public override WallContext WallContext => new WallContext()
+        public override WallContext WallContext => wallContext
+        
+        private WallContext wallContext = new WallContext()
             .AddReplacement(WallID.AdamantiteBeam, WallID.AmberGemspark);
     }
 
