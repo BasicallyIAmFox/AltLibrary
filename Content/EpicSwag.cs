@@ -35,13 +35,10 @@ namespace AltLibrary.Content
             [TileID.Dirt] = TileID.Glass
         };
 
-        public override WallContext WallContext => wallContext
+        public override WallContext WallContext => wallContext;
         
-        private WallContext wallContext = new WallContext()
+        private readonly WallContext wallContext = new WallContext()
             .AddReplacement(WallID.AdamantiteBeam, WallID.AmberGemspark);
-            
-            
-
     }
 
     internal class BaddaassssOre : AltOre
