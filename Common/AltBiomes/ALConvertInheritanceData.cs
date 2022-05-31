@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace AltLibrary.Common.AltBiomes
 {
-    public abstract class BlockParentageData
+    internal abstract class BlockParentageData
     {
         //tiles
         public Dictionary<int, int> Parent = new();
@@ -50,7 +50,7 @@ namespace AltLibrary.Common.AltBiomes
         }
     }
 
-    public class TileParentageData : BlockParentageData
+    internal class TileParentageData : BlockParentageData
     {
         public override void Bake()
         {
@@ -190,9 +190,8 @@ namespace AltLibrary.Common.AltBiomes
         }
     }
 
-    public class WallParentageData : BlockParentageData
+    internal class WallParentageData : BlockParentageData
     {
-
         const int GRASS_UNSAFE_DIFFERENT = -3;
         public override void Bake()
         {
@@ -369,7 +368,7 @@ namespace AltLibrary.Common.AltBiomes
         }
     }
 
-    public static class ALConvertInheritanceData
+    internal static class ALConvertInheritanceData
     {
         internal static TileParentageData tileParentageData;
         internal static WallParentageData wallParentageData;

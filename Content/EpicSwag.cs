@@ -25,7 +25,9 @@ namespace AltLibrary.Content
             FountainTile = TileID.SeaweedPlanter;
             FountainTileStyle = 0;
             FountainActiveFrameY = 0;
-            
+            WallContext = new WallContext()
+                .AddReplacement(WallID.AdamantiteBeam, WallID.AmberGemspark);
+
             BakeTileChild(TileID.Glass, TileID.Dirt, new(true, true, true));
             BakeTileChild(TileID.StardustBrick, TileID.ArgonMoss, new(true, true, true));
         }
@@ -34,11 +36,6 @@ namespace AltLibrary.Content
         {
             [TileID.Dirt] = TileID.Glass
         };
-
-        public override WallContext WallContext => wallContext;
-        
-        private readonly WallContext wallContext = new WallContext()
-            .AddReplacement(WallID.AdamantiteBeam, WallID.AmberGemspark);
     }
 
     internal class BaddaassssOre : AltOre

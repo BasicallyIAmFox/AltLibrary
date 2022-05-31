@@ -48,6 +48,7 @@ namespace AltLibrary.Content.Debug
             Projectile.penetrate = -1;
             Projectile.extraUpdates = 2;
             Projectile.ignoreWater = true;
+            Projectile.tileCollide = false;
         }
 
         public override void AI()

@@ -146,7 +146,7 @@ namespace AltLibrary.Common.AltBiomes
         /// </summary>
         public int? BossBulb = null;
 
-        public virtual WallContext WallContext => new();
+        public WallContext WallContext = new();
 
         public virtual List<int> HardmodeWalls => new();
         #endregion
