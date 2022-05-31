@@ -25,6 +25,9 @@ namespace AltLibrary.Content
             FountainTile = TileID.SeaweedPlanter;
             FountainTileStyle = 0;
             FountainActiveFrameY = 0;
+            
+            BakeTileChild(TileID.Glass, TileID.Dirt, new(true, true, true));
+            BakeTileChild(TileID.StardustBrick, TileID.ArgonMoss, new(true, true, true));
         }
 
         public override Dictionary<int, int> SpecialConversion => new()
@@ -39,8 +42,6 @@ namespace AltLibrary.Content
             
             
 
-         BakeTileChild(TileID.Glass, TileID.Dirt, new(true, true, true));
-        BakeTileChild(TileID.StardustBrick, TileID.ArgonMoss, new(true, true, true));
     }
 
     internal class BaddaassssOre : AltOre
