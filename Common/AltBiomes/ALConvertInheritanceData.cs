@@ -180,7 +180,7 @@ namespace AltLibrary.Common.AltBiomes
                         break;
                     default:
                         if(i == TileID.JungleGrass)
-                            test = AltBiome.BiomeJungleGrass;
+                            test = TileID.JungleGrass;
                         else if (!ForestConversion.TryGetValue(i, out test))
                             test = -1;
                         break;
