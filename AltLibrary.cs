@@ -62,6 +62,7 @@ namespace AltLibrary
         public override void PostSetupContent()
         {
             ALTextureAssets.PostContentLoad();
+            ALConvertInheritanceData.FillData();
         }
 
         public override object Call(params object[] args)
