@@ -90,7 +90,7 @@ namespace AltLibrary.Common.AltBiomes
             ForestConversion.Add(TileID.Sandstone, TileID.Sandstone);
             ForestConversion.Add(TileID.JungleThorns, TileID.JungleThorns);
 
-            BreakIfConversionFail.Add(TileID.JungleThorns, new());
+            BreakIfConversionFail.Add(TileID.JungleThorns, new(true, true, true, true));
 
             Parent.Add(TileID.JungleThorns, TileID.CorruptThorns); //hacky way to do jungle => corrupt one way conversion
 
@@ -114,7 +114,7 @@ namespace AltLibrary.Common.AltBiomes
             CorruptionConversion.Add(TileID.Sandstone, TileID.CorruptSandstone);
             CorruptionConversion.Add(TileID.CorruptThorns, TileID.CorruptThorns);
 
-            BreakIfConversionFail.Add(TileID.CorruptThorns, new());
+            BreakIfConversionFail.Add(TileID.CorruptThorns, new(true, true, true, true));
 
             // Crimson
 
@@ -126,7 +126,7 @@ namespace AltLibrary.Common.AltBiomes
             CrimsonConversion.Add(TileID.Sandstone, TileID.CorruptSandstone);
             CrimsonConversion.Add(TileID.CorruptThorns, TileID.CrimsonThorns);
 
-            BreakIfConversionFail.Add(TileID.CrimsonThorns, new());
+            BreakIfConversionFail.Add(TileID.CrimsonThorns, new(true, true, true, true));
 
             Parent.Add(TileID.CrimsonThorns, TileID.CorruptThorns);
 
