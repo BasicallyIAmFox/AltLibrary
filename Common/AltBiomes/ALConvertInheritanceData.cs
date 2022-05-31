@@ -79,9 +79,7 @@ namespace AltLibrary.Common.AltBiomes
                     Parent.Add(x, TileID.Sand);
             }
 
-            // Forest (this entire thing ensures that deconversion is possible)
-
-            ForestConversion.Add(TileID.JungleGrass, TileID.JungleGrass); //REPLACE LATER WITH A PROPER JUNGLE HANDLER
+            // Forest (this entire thing ensures that deconversion is possible
 
             ForestConversion.Add(TileID.Stone, TileID.Stone);
             ForestConversion.Add(TileID.Grass, TileID.Grass);
@@ -181,7 +179,9 @@ namespace AltLibrary.Common.AltBiomes
                             test = -1;
                         break;
                     default:
-                        if (!ForestConversion.TryGetValue(i, out test))
+                        if(i == TileID.JungleGrass)
+                            test = AltBiome.BiomeJungleGrass;
+                        else if (!ForestConversion.TryGetValue(i, out test))
                             test = -1;
                         break;
                 }
