@@ -378,7 +378,7 @@ namespace AltLibrary.Common.AltBiomes
         internal static TileParentageData tileParentageData;
         internal static WallParentageData wallParentageData;
 
-        public class ALConvertInheritanceData_Loader : ILoadable
+        internal class ALConvertInheritanceData_Loader : ILoadable
         {
             public void Load(Mod mod)
             {
@@ -409,6 +409,7 @@ namespace AltLibrary.Common.AltBiomes
         {
             return tileParentageData.GetConverted_Modded(baseTile, biome, x, y);
         }
+
         public static int GetConvertedWall_Vanilla(int baseWall, int ConversionType, int x, int y)
         {
             return wallParentageData.GetConverted_Vanilla(baseWall, ConversionType, x, y);

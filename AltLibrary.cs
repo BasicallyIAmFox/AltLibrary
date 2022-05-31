@@ -29,10 +29,10 @@ namespace AltLibrary
         internal static List<CustomPreviews> PreviewWorldIcons = new();
 
         // Spreading related lists.
-        internal static List<int> planteraBulbs;
-        internal static List<int> jungleGrass;
-        internal static List<int> jungleThorns;
-        internal static List<int> evilStoppingOres;
+        internal static List<int> planteraBulbs = new() { TileID.PlanteraBulb };
+        internal static List<int> jungleGrass = new() { TileID.JungleGrass };
+        internal static List<int> jungleThorns = new() { TileID.JungleThorns };
+        internal static List<int> evilStoppingOres = new() { TileID.Chlorophyte, TileID.ChlorophyteBrick };
 
         internal static int HallowBunnyCageRecipeIndex;
         internal static int TimeHoveringOnIcon;
@@ -53,10 +53,6 @@ namespace AltLibrary
             ModIconVariation = Main.rand.Next(ALTextureAssets.AnimatedModIcon.Length);
             TimeHoveringOnIcon = 0;
             HallowBunnyUnlocked = false;
-            planteraBulbs = new() { TileID.PlanteraBulb };
-            jungleGrass = new() { TileID.JungleGrass };
-            jungleThorns = new() { TileID.JungleThorns };
-            evilStoppingOres = new() { TileID.Chlorophyte, TileID.ChlorophyteBrick };
         }
 
         public override void PostSetupContent()
@@ -88,7 +84,7 @@ namespace AltLibrary
                             throw new ArgumentException("Fifth argument (large) is not string!");
                         PreviewWorldIcons.Add(new CustomPreviews(seed, small, medium, large));
                         Logger.Info($"Registered custom preview! Seed: {seed} Path: {small} {medium} {large}");
-                        break;
+                        return "Success";
                 }
             }
             return null;
