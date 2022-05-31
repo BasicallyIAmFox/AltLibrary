@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Generation;
 using Terraria.ID;
@@ -133,11 +134,6 @@ namespace AltLibrary.Common.AltBiomes
         /// This should generally include the biomeGrass, biomeStone, etc blocks, but they can be omitted if you for some reason do not wish for those blocks to spread the biome.
         /// </summary>
         public virtual List<int> SpreadingTiles => new();
-        /// <summary>
-        /// For Evil and Hallow alts. You may list additional tiles that this biome can convert into its own blocks.
-        /// The first value is the pure tile, the second value is its infected counterpart.
-        /// </summary>
-        public virtual Dictionary<int, int> SpecialConversion => new();
 
         /// <summary>
         /// For Evil alts, this is the TileID of this biome's equivalent to Demon Altars.
@@ -190,6 +186,12 @@ namespace AltLibrary.Common.AltBiomes
         /// For Hallow alts. The ItemID of your biome's counterpart to the Pwnhammer, if it has one. 
         /// </summary>
         public int HammerType = ItemID.Pwnhammer;
+
+        /// <summary>
+        /// For Evil and Hallow alts. You may list additional tiles that this biome can convert into its own blocks.
+        /// The first value is the pure tile, the second value is its infected counterpart.
+        /// </summary>
+        public virtual Dictionary<int, int> SpecialConversion => new();
 
         /// <summary>
         /// For Evil Alts. The ItemID of the seeds that Eye of Cthulhu will drop in worlds with this biome.
@@ -269,6 +271,7 @@ namespace AltLibrary.Common.AltBiomes
         {
             AutoStaticDefaults();
             SetStaticDefaults();
+            BakeAllAltBlockData();
         }
 
         public virtual void AutoStaticDefaults()
@@ -281,6 +284,84 @@ namespace AltLibrary.Common.AltBiomes
             {
                 GenPassName.SetDefault("Generating " + Regex.Replace(Name, "([A-Z])", " $1").Trim());
             }
+        }
+
+        /// <summary>
+        /// This is a lazy way to add blocks which should inherit from other blocks (when converting). For example, Hallowed Grass inherits from Grass.
+        /// </summary>
+        public void BakeTileChild(int Block, int ParentBlock, BitsByte? ForceDeconvert = null, BitsByte? BreakIfConversionFail = null)
+        {
+            TileChild.Add(ParentBlock, Block);
+            ALConvertInheritanceData.tileParentageData.Parent.Add(Block, ParentBlock);
+            if (ForceDeconvert != null)
+            {
+                ALConvertInheritanceData.tileParentageData.ForceDeconversion.Add(Block, ForceDeconvert.Value);
+            }
+            if (BreakIfConversionFail != null)
+            {
+                ALConvertInheritanceData.tileParentageData.BreakIfConversionFail.Add(Block, BreakIfConversionFail.Value);
+            }
+        }
+
+        internal Dictionary<int, int> TileChild = new();
+
+        /// <summary>
+        /// You have no reason to overwrite this. Just call BakeTileChild.
+        /// For Clentaminator purposes. Gets the alt block of the base block. Override this function and call base(BaseBlock) if you want to add new functionality.
+        /// Returns -1 if it's an invalid conversion
+        /// </summary>
+        public virtual int GetAltBlock(int BaseBlock, int posX, int posY)
+        {
+            switch (BaseBlock)
+            {
+                case TileID.Stone:
+                    return BiomeStone ?? -1;
+                case TileID.Grass:
+                    return BiomeGrass ?? -1;
+                case TileID.JungleGrass:
+                    return BiomeJungleGrass ?? -1;
+                case TileID.GolfGrass:
+                    return BiomeMowedGrass ?? -1;
+                case TileID.IceBlock:
+                    return BiomeIce ?? -1;
+                case TileID.Sand:
+                    return BiomeSand ?? -1;
+                case TileID.HardenedSand:
+                    return BiomeHardenedSand ?? -1;
+                case TileID.Sandstone:
+                    return BiomeSandstone ?? -1;
+                case TileID.CorruptThorns: //inherit all corrupt bushes from corrupt bush
+                    return BiomeThornBush ?? -1;
+            }
+            if (TileChild.TryGetValue(BaseBlock, out int val))
+                return val;
+            return -1;
+        }
+
+        /// <summary>
+        /// You have no reason to overwrite this unless for some reason you don't want your tiles to be converted back.
+        /// </summary>
+        public virtual void BakeAllAltBlockData()
+        {
+            TileParentageData data = ALConvertInheritanceData.tileParentageData;
+            if (BiomeStone != null)
+                data.Parent.Add(BiomeStone.Value, TileID.Stone);
+            if (BiomeGrass != null)
+                data.Parent.Add(BiomeGrass.Value, TileID.Grass);
+            if (BiomeJungleGrass != null)
+                data.Parent.Add(BiomeJungleGrass.Value, TileID.JungleGrass);
+            if (BiomeMowedGrass != null)
+                data.Parent.Add(BiomeMowedGrass.Value, TileID.GolfGrass);
+            if (BiomeIce != null)
+                data.Parent.Add(BiomeIce.Value, TileID.IceBlock);
+            if (BiomeSand != null)
+                data.Parent.Add(BiomeSand.Value, TileID.Sand);
+            if (BiomeHardenedSand != null)
+                data.Parent.Add(BiomeHardenedSand.Value, TileID.HardenedSand);
+            if (BiomeSandstone != null)
+                data.Parent.Add(BiomeSandstone.Value, TileID.Sandstone);
+            if (BiomeThornBush != null)
+                data.Parent.Add(BiomeThornBush.Value, TileID.CorruptThorns);
         }
 
         protected sealed override void Register()
@@ -334,6 +415,8 @@ namespace AltLibrary.Common.AltBiomes
         public WallContext AddReplacement(ushort orig, ushort with)
         {
             wallsReplacement.Add(orig, with);
+            ALConvertInheritanceData.wallParentageData.Parent.Add(with, orig);
+            ALConvertInheritanceData.wallParentageData.ForceDeconversion.Add(with, new(true, true, true, false));
             return this;
         }
 
@@ -342,7 +425,7 @@ namespace AltLibrary.Common.AltBiomes
             ushort type = ContentInstance<T>.Instance.Type;
             foreach (ushort original in orig)
             {
-                wallsReplacement.Add(original, type);
+                AddReplacement(type, original);
             }
             return this;
         }
