@@ -704,7 +704,7 @@ namespace AltLibrary.Common.AltBiomes
         }
 
         /// <summary>
-        /// Makes Solution AI for your custom solutions.
+        /// Makes solution converting effect.
         /// </summary>
         /// <param name="projectile"></param>
         /// <param name="mod"></param>
@@ -712,29 +712,29 @@ namespace AltLibrary.Common.AltBiomes
         /// <param name="dustType"></param>
         public static void SimulateSolution(Projectile projectile, Mod mod, string name) => SimulateSolution(projectile, AltLibrary.Biomes.Find(x => x.Mod == mod && x.Name == name));
 
-        /// <summary>
-        /// Makes Solution AI for your custom solutions.
-        /// </summary>
-        /// <param name="projectile"></param>
-        /// <param name="fullname"></param>
-        /// <param name="dustType"></param>
-        public static void SimulateSolution(Projectile projectile, string fullname) => SimulateSolution(projectile, AltLibrary.Biomes.Find(x => x.FullName == fullname));
+		/// <summary>
+		/// Makes solution converting effect.
+		/// </summary>
+		/// <param name="projectile"></param>
+		/// <param name="fullname"></param>
+		/// <param name="dustType"></param>
+		public static void SimulateSolution(Projectile projectile, string fullname) => SimulateSolution(projectile, AltLibrary.Biomes.Find(x => x.FullName == fullname));
 
-        /// <summary>
-        /// Makes Solution AI for your custom solutions.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="projectile"></param>
-        /// <param name="dustType"></param>
-        public static void SimulateSolution<T>(Projectile projectile) where T : AltBiome => SimulateSolution(projectile, ContentInstance<T>.Instance);
+		/// <summary>
+		/// Makes solution converting effect.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="projectile"></param>
+		/// <param name="dustType"></param>
+		public static void SimulateSolution<T>(Projectile projectile) where T : AltBiome => SimulateSolution(projectile, ContentInstance<T>.Instance);
 
-        /// <summary>
-        /// Makes Solution AI for your custom solutions.
-        /// </summary>
-        /// <param name="projectile"></param>
-        /// <param name="biome"></param>
-        /// <param name="dustType"></param>
-        public static void SimulateSolution(Projectile projectile, AltBiome biome)
+		/// <summary>
+		/// Makes solution converting effect.
+		/// </summary>
+		/// <param name="projectile"></param>
+		/// <param name="biome"></param>
+		/// <param name="dustType"></param>
+		public static void SimulateSolution(Projectile projectile, AltBiome biome)
         {
             Convert(biome, (int)(projectile.position.X + projectile.width / 2) / 16, (int)(projectile.position.Y + projectile.height / 2) / 16, 2);
         }
