@@ -83,6 +83,51 @@ namespace AltLibrary
                         PreviewWorldIcons.Add(new CustomPreviews(seed, small, medium, large));
                         Logger.Info($"Registered custom preview! Seed: {seed} Path: {small} {medium} {large}");
                         return "Success";
+                    case "ConversionAddChildTile":
+                        {
+                            if (args.Length != 5)
+                                throw new ArgumentException("Arguments cannot be less or more than 4 in length for AddChildTile");
+                            if (args[1] is not int block)
+                                throw new ArgumentException("Second argument (block) is not int!");
+                            if (args[2] is not int parentBlock)
+                                throw new ArgumentException("Third argument (parentBlock) is not int!");
+                            if (args[3] is not BitsByte ForceDeconvert)
+                                throw new ArgumentException("Fourth argument (ForceDeconvert) is not BitsByte!");
+                            if (args[4] is not BitsByte BreakIfConversionFail)
+                                throw new ArgumentException("Fifth argument (BreakIfConversionFail) is not BitsByte!");
+                            ALConvertInheritanceData.AddChildTile(block, parentBlock, ForceDeconvert, BreakIfConversionFail);
+                            return "success";
+                        }
+                    case "ConversionAddChildWall":
+                        {
+                            if (args.Length != 5)
+                                throw new ArgumentException("Arguments cannot be less or more than 4 in length for AddChildWall");
+                            if (args[1] is not int wall)
+                                throw new ArgumentException("Second argument (wall) is not int!");
+                            if (args[2] is not int parentWall)
+                                throw new ArgumentException("Third argument (parentWall) is not int!");
+                            if (args[3] is not BitsByte ForceDeconvert)
+                                throw new ArgumentException("Fourth argument (ForceDeconvert) is not BitsByte!");
+                            if (args[4] is not BitsByte BreakIfConversionFail)
+                                throw new ArgumentException("Fifth argument (BreakIfConversionFail) is not BitsByte!");
+                            ALConvertInheritanceData.AddChildWall(wall, parentWall, ForceDeconvert, BreakIfConversionFail);
+                            return "success";
+                        }
+                    case "ConversionGetTileParentDictionary":
+                        if (args.Length != 1)
+                            throw new ArgumentException("Arguments cannot be less or more than 0 in length for GetTileParentDictionary");
+                        return ALConvertInheritanceData.GetTileParentDict();
+                    case "ConversionGetWallParentDictionary":
+                        if (args.Length != 1)
+                            throw new ArgumentException("Arguments cannot be less or more than 0 in length for GetWallParentDictionary");
+                        return ALConvertInheritanceData.GetWallParentDict();
+                    case "ConversionGetUltimateParent":
+                        if (args.Length != 2)
+                            throw new ArgumentException("Arguments cannot be less or more than 0 in length for GetUltimateParent");
+                        if (args[1] is not int tile)
+                            throw new ArgumentException("Second argument (tile) is not int!");
+                        return ALConvertInheritanceData.GetUltimateParent(tile);
+
                 }
             }
             return null;
