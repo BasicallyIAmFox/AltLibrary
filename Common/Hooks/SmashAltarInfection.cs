@@ -1,4 +1,4 @@
-﻿using AltLibrary.Common.AltBiomes;
+using AltLibrary.Common.AltBiomes;
 using AltLibrary.Common.AltOres;
 using AltLibrary.Common.Systems;
 using Mono.Cecil.Cil;
@@ -192,53 +192,13 @@ namespace AltLibrary.Common.Hooks
             });
         }
 
-        //move to utility function later
-        private static void ShuffleArrayUsingSeed<T>(T[] list, UnifiedRandom seed)
-        {
-            int randIters = list.Length;
-            while (randIters > 0)
-            {
-                int thisRand = seed.Next(randIters);
-                randIters--;
-                if (thisRand != randIters)
-                {
-                    (list[thisRand], list[randIters]) = (list[randIters], list[thisRand]);
-                }
-            }
-        }
 
         private static bool GetDrunkSmashingData(bool drunk, int smashType)
         {
             if (!drunk || smashType != 0 || WorldGen.altarCount == 0)
                 return false;
 
-            //bake this entire block later
-            #region inefficientSetupWhichShouldBeBaked
-            UnifiedRandom rngSeed = new(WorldGen._genRandSeed); //bake seed later
-            List<AltOre> hardmodeListing = new();
-            hardmodeListing.Clear();
-            hardmodeListing.Add(new VanillaOre("Cobalt", "Cobalt", -9, TileID.Cobalt, ItemID.CobaltBar, OreType.Cobalt));
-            hardmodeListing.Add(new VanillaOre("Palladium", "Palladium", -10, TileID.Palladium, ItemID.PalladiumBar, OreType.Cobalt));
-            hardmodeListing.AddRange(AltLibrary.Ores.Where(x => x.OreType == OreType.Cobalt && x.Selectable));
-            hardmodeListing.Add(new VanillaOre("Mythril", "Mythril", -11, TileID.Mythril, ItemID.MythrilBar, OreType.Mythril));
-            hardmodeListing.Add(new VanillaOre("Orichalcum", "Orichalcum", -12, TileID.Orichalcum, ItemID.OrichalcumBar, OreType.Mythril));
-            hardmodeListing.AddRange(AltLibrary.Ores.Where(x => x.OreType == OreType.Mythril && x.Selectable));
-            hardmodeListing.Add(new VanillaOre("Adamantite", "Adamantite", -13, TileID.Adamantite, ItemID.AdamantiteBar, OreType.Adamantite));
-            hardmodeListing.Add(new VanillaOre("Titanium", "Titanium", -14, TileID.Titanium, ItemID.TitaniumBar, OreType.Adamantite));
-            hardmodeListing.AddRange(AltLibrary.Ores.Where(x => x.OreType == OreType.Adamantite && x.Selectable));
-
-            AltOre[] cobaltAlts = hardmodeListing.Where(x => x.OreType == OreType.Cobalt).ToArray();
-            AltOre[] mythrilOres = hardmodeListing.Where(x => x.OreType == OreType.Mythril).ToArray();
-            AltOre[] adamantiteores = hardmodeListing.Where(x => x.OreType == OreType.Adamantite).ToArray();
-            ShuffleArrayUsingSeed(cobaltAlts, rngSeed);
-            ShuffleArrayUsingSeed(mythrilOres, rngSeed);
-            ShuffleArrayUsingSeed(adamantiteores, rngSeed);
-            #endregion
-
-            WorldGen.SavedOreTiers.Cobalt = cobaltAlts[WorldBiomeManager.hmOreIndex % cobaltAlts.Length].ore;
-            WorldGen.SavedOreTiers.Mythril = mythrilOres[WorldBiomeManager.hmOreIndex % mythrilOres.Length].ore;
-            WorldGen.SavedOreTiers.Adamantite = adamantiteores[WorldBiomeManager.hmOreIndex % adamantiteores.Length].ore;
-            WorldBiomeManager.hmOreIndex++;
+            WorldBiomeManager.GetDrunkenOres();
 
             return false;
         }
