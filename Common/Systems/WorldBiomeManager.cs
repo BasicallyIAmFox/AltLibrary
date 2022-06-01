@@ -1,6 +1,7 @@
 using AltLibrary.Common.AltBiomes;
 using AltLibrary.Common.AltOres;
 using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -78,10 +79,23 @@ namespace AltLibrary.Common.Systems
 
         private static void SmAtcb(object threadContext)
         {
-            Main.npcChatText = Language.GetTextValue("Mods.AltLibrary.AnalysisDone");
-
+            int solid = 0;
             int purity = 0;
             int hallow = 0;
+            int evil = 0;
+            int crimson = 0;
+            int[] mods = new int[AltLibrary.Biomes.Count];
+            List<List<int>> modTiles = new();
+            foreach (AltBiome biome in AltLibrary.Biomes)
+            {
+                modTiles[biome.Type - 1] = new List<int>();
+                if (biome.BiomeGrass.HasValue) modTiles[biome.Type - 1].Add(biome.BiomeGrass.Value);
+                if (biome.BiomeStone.HasValue) modTiles[biome.Type - 1].Add(biome.BiomeStone.Value);
+                if (biome.BiomeSand.HasValue) modTiles[biome.Type - 1].Add(biome.BiomeSand.Value);
+                if (biome.BiomeIce.HasValue) modTiles[biome.Type - 1].Add(biome.BiomeIce.Value);
+                if (biome.BiomeSandstone.HasValue) modTiles[biome.Type - 1].Add(biome.BiomeSandstone.Value);
+                if (biome.BiomeHardenedSand.HasValue) modTiles[biome.Type - 1].Add(biome.BiomeHardenedSand.Value);
+            }
             for (int x = 0; x < Main.maxTilesX; x++)
             {
                 for (int y = 0; y < Main.maxTilesY; y++)
@@ -89,19 +103,49 @@ namespace AltLibrary.Common.Systems
                     Tile tile = Main.tile[x, y];
                     if (tile.TileType >= 0)
                     {
-                        if (TileID.Sets.Hallow[tile.TileType])
+                        int type = tile.TileType;
+                        if (type == 164 || type == 109 || type == 117 || type == 116 || type == TileID.HallowSandstone || type == TileID.HallowHardenedSand)
                         {
                             hallow++;
+                            solid++;
                         }
-                        else
+                        if (type == 23 || type == 163 || type == 112 || type == 25 || type == TileID.CorruptSandstone || type == TileID.CorruptHardenedSand)
+                        {
+                            evil++;
+                            solid++;
+                        }
+                        if (type == 199 || type == 234 || type == 203 || type == 200 || type == TileID.CrimsonSandstone || type == TileID.CrimsonHardenedSand)
+                        {
+                            crimson++;
+                            solid++;
+                        }
+                        if (type == 2 || type == 477 || type == 1 || type == 60 || type == 60 || type == 53 || type == 161 || type == TileID.Sandstone || type == TileID.HardenedSand)
                         {
                             purity++;
+                            solid++;
+                        }
+                        for (int i = 0; i < mods.Length; i++)
+                        {
+                            if (modTiles[i].Contains(type))
+                            {
+                                mods[i]++;
+                                solid++;
+                            }
                         }
                     }
                 }
             }
 
-            AltBiomePercentages[3] = purity / hallow;
+            AltBiomePercentages[0] = (float)(Math.Round((double)(purity / solid * 100f)) / 100f);
+            AltBiomePercentages[1] = (float)(Math.Round((double)(evil / solid * 100f)) / 100f);
+            AltBiomePercentages[2] = (float)(Math.Round((double)(crimson / solid * 100f)) / 100f);
+            AltBiomePercentages[3] = (float)(Math.Round((double)(hallow / solid * 100f)) / 100f);
+            for (int i = 0; i < mods.Length; i++)
+            {
+                AltBiomePercentages[i + 4] = (float)(Math.Round((double)(mods[i] / solid * 100f)) / 100f);
+            }
+
+            Main.npcChatText = Language.GetTextValue("Mods.AltLibrary.AnalysisDone") + "\n\n\n\n\n\n\n\n\n";
         }
 
         //move to utility function later

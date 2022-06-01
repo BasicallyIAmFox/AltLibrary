@@ -100,14 +100,16 @@ namespace AltLibrary.Content.NPCs
 		}
 
         public override void OnChatButtonClicked(bool firstButton, ref bool shop)
-        {
+		{
+			Main.LocalPlayer.GetModPlayer<ALPlayer>().IsAnalysing = false;
+			Main.LocalPlayer.GetModPlayer<ALPlayer>().IsAnalysingClick = false;
 			if (firstButton)
-            {
+			{
 				shop = true;
             }
 			else
             {
-				Main.LocalPlayer.GetModPlayer<ALPlayer>().IsAnalysing = true;
+				Main.LocalPlayer.GetModPlayer<ALPlayer>().IsAnalysingClick = true;
 				WorldBiomeManager.AnalysisTiles();
             }
 		}

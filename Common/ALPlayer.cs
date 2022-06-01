@@ -1,5 +1,4 @@
-﻿using AltLibrary.Content.Items;
-using Microsoft.Xna.Framework;
+﻿using AltLibrary.Content.NPCs;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -10,13 +9,23 @@ namespace AltLibrary.Common
     {
         public bool HasObtainedHallowBunnyAtleastOnce = false;
         public bool IsAnalysing = false;
+        public bool IsAnalysingClick = false;
+
+        public override void Unload()
+        {
+            HasObtainedHallowBunnyAtleastOnce = false;
+            IsAnalysing = false;
+            IsAnalysingClick = false;
+        }
 
         public override void PostUpdate()
         {
-            if (Player.HasItem(ModContent.ItemType<HallowBunny>()) && !HasObtainedHallowBunnyAtleastOnce)
+            if (Player.HasItem(ModContent.ItemType<Content.Items.HallowBunny>()) && !HasObtainedHallowBunnyAtleastOnce)
             {
                 HasObtainedHallowBunnyAtleastOnce = true;
             }
+            if (IsAnalysingClick) IsAnalysing = Player.talkNPC != -1;
+            else IsAnalysing = false;
         }
 
         public override void SaveData(TagCompound tag)

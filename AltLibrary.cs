@@ -3,11 +3,13 @@ using AltLibrary.Common.AltLiquidStyles;
 using AltLibrary.Common.AltOres;
 using AltLibrary.Common.Hooks;
 using AltLibrary.Core;
+using AltLibrary.Core.States;
 using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.UI;
 
 namespace AltLibrary
 {
@@ -41,6 +43,9 @@ namespace AltLibrary
         /// </summary>
         public bool CheckPointer { get; set; }
 
+        private UserInterface userInterface;
+        internal ALPieChartState pieChartState;
+
         public AltLibrary()
         {
             Instance = this;
@@ -57,6 +62,12 @@ namespace AltLibrary
             ModIconVariation = Main.rand.Next(ALTextureAssets.AnimatedModIcon.Length);
             TimeHoveringOnIcon = 0;
             HallowBunnyUnlocked = false;
+            if (!Main.dedServ)
+            {
+                pieChartState = new ALPieChartState();
+                userInterface = new UserInterface();
+                userInterface.SetState(pieChartState);
+            }
         }
 
         public override void PostSetupContent()
@@ -166,6 +177,8 @@ namespace AltLibrary
             ILHooks.Unload();
             AltLibraryConfig.Config = null;
             HallowBunnyCageRecipeIndex = 0;
+            pieChartState = null;
+            userInterface = null;
         }
 
         public static AltBiome GetAltBiome(int type) => Biomes.Find(x => x.Type == type);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AltLibrary.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -67,7 +68,7 @@ namespace AltLibrary.Core.UIs
 
                 if (IsMouseHovering && !string.IsNullOrEmpty(Tooltip))
                 {
-                    Utilities.DrawBoxedCursorTooltip(spriteBatch, Tooltip);
+                    ALUtils.DrawBoxedCursorTooltip(spriteBatch, Tooltip);
                 }
             }
         }

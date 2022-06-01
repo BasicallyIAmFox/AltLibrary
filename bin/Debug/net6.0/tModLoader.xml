@@ -7018,7 +7018,7 @@
         <member name="M:Terraria.ModLoader.ModContent.HasAsset(System.String)">
             <summary>
             Returns whether or not a asset with the specified name exists.
-            Includes the mod name prefix like GetAsset
+            Includes the mod name prefix like Request
             </summary>
         </member>
         <member name="M:Terraria.ModLoader.ModContent.GetModNPC(System.Int32)">
@@ -11988,7 +11988,7 @@
                 Enqueues a list of mods, if found on the browser (also used for ModPacks)
             </summary>
         </member>
-        <member name="T:Terraria.ModLoader.Utilities.NPCSpawnHelper">
+        <member name="T:Terraria.ModLoader.Utilities.SpawnCondition">
             <summary>
             This server as a central class to help modders spawn their npcs. It's basically the vanilla spawn code if-else chains condensed into objects. See ExampleMod for usages.
             </summary>
