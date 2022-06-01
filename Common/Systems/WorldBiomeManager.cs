@@ -1,8 +1,12 @@
-﻿using System.Collections.Generic;
+using AltLibrary.Common.AltOres;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using Terraria.Utilities;
 
 namespace AltLibrary.Common.Systems
 {
@@ -23,6 +27,97 @@ namespace AltLibrary.Common.Systems
         public static int Adamantite { get; internal set; } = 0;
         internal static int hmOreIndex = 0;
 
+        //do not need to sync, world seed should be constant between players
+        public static AltOre[] drunkCobaltCycle;
+        public static AltOre[] drunkMythrilCycle;
+        public static AltOre[] drunkAdamantiteCycle;
+
+        public override void Load()
+        {
+            drunkCobaltCycle = null;
+            drunkMythrilCycle = null;
+            drunkAdamantiteCycle = null;
+        }
+
+        //move to utility function later
+        private static void ShuffleArrayUsingSeed<T>(T[] list, UnifiedRandom seed)
+        {
+            int randIters = list.Length - 1; //-1 cause we don't wanna shuffle the back
+            if (randIters == 1)
+                return;
+            while (randIters > 1)
+            {
+                int thisRand = seed.Next(randIters);
+                randIters--;
+                if (thisRand != randIters)
+                {
+                    (list[thisRand], list[randIters]) = (list[randIters], list[thisRand]);
+                }
+            }
+        }
+
+        private static void SendOriginalToToBackOfList(AltOre[] list, int original)
+        {
+            if (list.Length <= 1)
+                return;
+            for (int x = 0; x < list.Length - 1; x++)
+            {
+                if (list[x].Type == original)
+                {
+                    AltOre temp = list[x];
+                    list[x] = list[list.Length - 1];
+                    list[list.Length - 1] = temp;
+                    return;
+                }
+            }
+        }
+
+        public static void BakeDrunken()
+        {
+            UnifiedRandom rngSeed = new(WorldGen._genRandSeed); //bake seed later
+            List<AltOre> hardmodeListing = new();
+            hardmodeListing.Clear();
+            hardmodeListing.Add(new VanillaOre("Cobalt", "Cobalt", -9, TileID.Cobalt, ItemID.CobaltBar, OreType.Cobalt));
+            hardmodeListing.Add(new VanillaOre("Palladium", "Palladium", -10, TileID.Palladium, ItemID.PalladiumBar, OreType.Cobalt));
+            hardmodeListing.AddRange(AltLibrary.Ores.Where(x => x.OreType == OreType.Cobalt && x.Selectable));
+            hardmodeListing.Add(new VanillaOre("Mythril", "Mythril", -11, TileID.Mythril, ItemID.MythrilBar, OreType.Mythril));
+            hardmodeListing.Add(new VanillaOre("Orichalcum", "Orichalcum", -12, TileID.Orichalcum, ItemID.OrichalcumBar, OreType.Mythril));
+            hardmodeListing.AddRange(AltLibrary.Ores.Where(x => x.OreType == OreType.Mythril && x.Selectable));
+            hardmodeListing.Add(new VanillaOre("Adamantite", "Adamantite", -13, TileID.Adamantite, ItemID.AdamantiteBar, OreType.Adamantite));
+            hardmodeListing.Add(new VanillaOre("Titanium", "Titanium", -14, TileID.Titanium, ItemID.TitaniumBar, OreType.Adamantite));
+            hardmodeListing.AddRange(AltLibrary.Ores.Where(x => x.OreType == OreType.Adamantite && x.Selectable));
+
+            drunkCobaltCycle = hardmodeListing.Where(x => x.OreType == OreType.Cobalt).ToArray();
+            drunkMythrilCycle = hardmodeListing.Where(x => x.OreType == OreType.Mythril).ToArray();
+            drunkAdamantiteCycle = hardmodeListing.Where(x => x.OreType == OreType.Adamantite).ToArray();
+
+            SendOriginalToToBackOfList(drunkCobaltCycle, Cobalt);
+            SendOriginalToToBackOfList(drunkMythrilCycle, Mythril);
+            SendOriginalToToBackOfList(drunkAdamantiteCycle, Adamantite);
+
+            ShuffleArrayUsingSeed(drunkCobaltCycle, rngSeed);
+            ShuffleArrayUsingSeed(drunkMythrilCycle, rngSeed);
+            ShuffleArrayUsingSeed(drunkAdamantiteCycle, rngSeed);
+        }
+
+        public static void GetDrunkenOres() {
+
+            if (drunkCobaltCycle == null)
+                BakeDrunken();
+
+            int cobaltCycle = hmOreIndex % drunkCobaltCycle.Length;
+            int mythrilCycle = hmOreIndex % drunkMythrilCycle.Length;
+            int adamantiteCycle = hmOreIndex % drunkAdamantiteCycle.Length;
+
+            WorldGen.SavedOreTiers.Cobalt = drunkCobaltCycle[cobaltCycle].ore;
+            WorldGen.SavedOreTiers.Mythril = drunkMythrilCycle[mythrilCycle].ore;
+            WorldGen.SavedOreTiers.Adamantite = drunkAdamantiteCycle[adamantiteCycle].ore;
+
+            if (cobaltCycle == 0 && mythrilCycle == 0 && adamantiteCycle == 0)
+                hmOreIndex = 0;
+            hmOreIndex++;
+        }
+
         public override void Unload()
         {
             WorldEvil = null;
@@ -39,6 +134,9 @@ namespace AltLibrary.Common.Systems
             Adamantite = 0;
             drunkIndex = 0;
             hmOreIndex = 0;
+            drunkCobaltCycle = null;
+            drunkMythrilCycle = null;
+            drunkAdamantiteCycle = null;
         }
 
         public override void SaveWorldData(TagCompound tag)
@@ -89,6 +187,11 @@ namespace AltLibrary.Common.Systems
             Adamantite = tag.GetInt("AltLibrary:Adamantite");
             drunkIndex = tag.GetInt("AltLibrary:DrunkIndex");
             hmOreIndex = tag.GetInt("AltLibrary:HardmodeOreIndex");
+
+            //reset every unload
+            drunkCobaltCycle = null;
+            drunkMythrilCycle = null;
+            drunkAdamantiteCycle = null;
         }
 
         public override void NetSend(BinaryWriter writer)
