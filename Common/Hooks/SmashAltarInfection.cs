@@ -192,7 +192,6 @@ namespace AltLibrary.Common.Hooks
             });
         }
 
-
         private static bool GetDrunkSmashingData(bool drunk, int smashType)
         {
             if (!drunk || smashType != 0 || WorldGen.altarCount == 0)
