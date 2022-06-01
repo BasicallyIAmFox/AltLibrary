@@ -9,9 +9,7 @@ using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Generation;
 using Terraria.ID;
-using Terraria.IO;
 using Terraria.ModLoader;
-using Terraria.WorldBuilding;
 
 namespace AltLibrary.Common.AltBiomes
 {

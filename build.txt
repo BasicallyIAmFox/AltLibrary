@@ -1,6 +1,6 @@
 displayName = Alternatives Library
 author = FoxXD_, RQXY // cace
-version = 1.0.2.1
+version = 1.0.2.2
 
 hideCode = false
 hideResources = true

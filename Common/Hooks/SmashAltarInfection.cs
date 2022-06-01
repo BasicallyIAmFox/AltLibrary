@@ -28,7 +28,7 @@ namespace AltLibrary.Common.Hooks
         private static void WorldGen_SmashAltar(ILContext il)
         {
             ILCursor c = new(il);
-            
+
             if (!c.TryGotoNext(i => i.MatchLdsfld<Main>(nameof(Main.drunkWorld))))
             {
                 AltLibrary.Instance.Logger.Info("n $ 0");

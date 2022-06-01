@@ -26,7 +26,8 @@ namespace AltLibrary.Common.AltBiomes
 
         public abstract int GetConverted_Modded(int baseTile, AltBiome biome, int x, int y);
 
-        public int GetConverted(int baseTile, Func<int, int> GetAltBlock, int ConversionType) {
+        public int GetConverted(int baseTile, Func<int, int> GetAltBlock, int ConversionType)
+        {
             int ForcedConvertedTile = -1;
             while (true)
             {
@@ -179,7 +180,7 @@ namespace AltLibrary.Common.AltBiomes
                             test = -1;
                         break;
                     default:
-                        if(i == TileID.JungleGrass)
+                        if (i == TileID.JungleGrass)
                             test = TileID.JungleGrass;
                         else if (!ForestConversion.TryGetValue(i, out test))
                             test = -1;

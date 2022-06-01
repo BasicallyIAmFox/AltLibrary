@@ -4,12 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using ReLogic.Content;
 using System;
-using System.Reflection;
-using Terraria;
-using Terraria.GameContent;
-using Terraria.Graphics.Effects;
 using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Hooks
@@ -62,7 +57,7 @@ namespace AltLibrary.Common.Hooks
             c.EmitDelegate<Func<Color, Color>>((orig) =>
             {
                 if (WorldBiomeManager.WorldHell != "")
-{
+                {
                     return ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).AltUnderworldColor;
                 }
                 return orig;

@@ -4,7 +4,6 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour.HookGen;
 using System;
-using System.Linq;
 using System.Reflection;
 using Terraria;
 using Terraria.Audio;

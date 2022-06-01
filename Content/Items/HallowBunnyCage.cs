@@ -30,8 +30,8 @@ namespace AltLibrary.Content.Items
         {
             Recipe recipe = CreateRecipe()
                 .AddIngredient(ItemID.Terrarium)
-                .AddIngredient(ModContent.ItemType<HallowBunny>());
-            recipe.Register();
+                .AddIngredient(ModContent.ItemType<HallowBunny>())
+                .Register();
             AltLibrary.HallowBunnyCageRecipeIndex = recipe.RecipeIndex;
         }
 
