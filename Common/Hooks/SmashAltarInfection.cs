@@ -209,7 +209,7 @@ namespace AltLibrary.Common.Hooks
 
         private static bool GetDrunkSmashingData(bool drunk, int smashType)
         {
-            if (!drunk || smashType != 0)
+            if (!drunk || smashType != 0 || WorldGen.altarCount == 0)
                 return false;
 
             //bake this entire block later
