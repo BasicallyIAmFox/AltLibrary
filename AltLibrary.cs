@@ -36,6 +36,11 @@ namespace AltLibrary
         internal static bool HallowBunnyUnlocked;
         internal static int ModIconVariation;
 
+        /// <summary>
+        ///     Gets or sets a value indicating whether the mouse should be checked in an interface or not.
+        /// </summary>
+        public bool CheckPointer { get; set; }
+
         public AltLibrary()
         {
             Instance = this;
@@ -48,6 +53,7 @@ namespace AltLibrary
             ALTextureAssets.Load();
             ALConvert.Load();
             GuideHelpText.Load();
+            UIChanges.Apply();
             ModIconVariation = Main.rand.Next(ALTextureAssets.AnimatedModIcon.Length);
             TimeHoveringOnIcon = 0;
             HallowBunnyUnlocked = false;
@@ -141,6 +147,7 @@ namespace AltLibrary
             ALTextureAssets.Unload();
             ALConvert.Unload();
             GuideHelpText.Unload();
+            UIChanges.Unapply();
             AltLibraryConfig.Config = null;
             TimeHoveringOnIcon = 0;
             HallowBunnyUnlocked = false;

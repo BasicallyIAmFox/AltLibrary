@@ -1,12 +1,17 @@
+using AltLibrary.Common.AltBiomes;
 using AltLibrary.Common.AltOres;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
+using PieData = AltLibrary.Core.UIs.ALUIPieChart.PieData;
 
 namespace AltLibrary.Common.Systems
 {
@@ -32,11 +37,71 @@ namespace AltLibrary.Common.Systems
         internal static AltOre[] drunkMythrilCycle;
         internal static AltOre[] drunkAdamantiteCycle;
 
+        internal static PieData[] AltBiomeData;
+        internal static float[] AltBiomePercentages;
+
         public override void Load()
         {
             drunkCobaltCycle = null;
             drunkMythrilCycle = null;
             drunkAdamantiteCycle = null;
+            AltBiomeData = null;
+            AltBiomePercentages = null;
+        }
+
+        public override void PostSetupContent()
+        {
+            List<PieData> pieDatas = new();
+            pieDatas.Clear();
+            AltBiomePercentages = new float[AltLibrary.Biomes.Count + 4];
+            pieDatas.Add(new PieData("Purity", Color.LawnGreen, () => AltBiomePercentages[0]));
+            pieDatas.Add(new PieData("Corruption", Color.MediumPurple, () => AltBiomePercentages[1]));
+            pieDatas.Add(new PieData("Crimson", Color.IndianRed, () => AltBiomePercentages[2]));
+            pieDatas.Add(new PieData("Hallow", Color.HotPink, () => AltBiomePercentages[3]));
+            for (int i = 0; i < AltLibrary.Biomes.Count; i++)
+            {
+                AltBiome biome = AltLibrary.Biomes[i];
+                if (biome.BiomeType == BiomeType.Evil || biome.BiomeType == BiomeType.Hallow)
+                {
+                    pieDatas.Add(new PieData(biome.DisplayName.GetTranslation(Language.ActiveCulture), biome.NameColor, () => AltBiomePercentages[i + 4]));
+                }
+            }
+            AltBiomeData = pieDatas.ToArray();
+        }
+
+        internal static void AnalysisTiles()
+        {
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return;
+            ThreadPool.QueueUserWorkItem(new WaitCallback(SmAtcb), 1);
+        }
+
+        private static void SmAtcb(object threadContext)
+        {
+            Main.npcChatText = Language.GetTextValue("Mods.AltLibrary.AnalysisDone");
+
+            int purity = 0;
+            int hallow = 0;
+            for (int x = 0; x < Main.maxTilesX; x++)
+            {
+                for (int y = 0; y < Main.maxTilesY; y++)
+                {
+                    Tile tile = Main.tile[x, y];
+                    if (tile.TileType >= 0)
+                    {
+                        if (TileID.Sets.Hallow[tile.TileType])
+                        {
+                            hallow++;
+                        }
+                        else
+                        {
+                            purity++;
+                        }
+                    }
+                }
+            }
+
+            AltBiomePercentages[3] = purity / hallow;
         }
 
         //move to utility function later
@@ -135,6 +200,8 @@ namespace AltLibrary.Common.Systems
             drunkCobaltCycle = null;
             drunkMythrilCycle = null;
             drunkAdamantiteCycle = null;
+            AltBiomeData = null;
+            AltBiomePercentages = null;
         }
 
         public override void SaveWorldData(TagCompound tag)

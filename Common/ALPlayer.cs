@@ -1,4 +1,6 @@
 ﻿using AltLibrary.Content.Items;
+using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -7,6 +9,7 @@ namespace AltLibrary.Common
     internal class ALPlayer : ModPlayer
     {
         public bool HasObtainedHallowBunnyAtleastOnce = false;
+        public bool IsAnalysing = false;
 
         public override void PostUpdate()
         {

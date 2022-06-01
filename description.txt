@@ -10,3 +10,4 @@ Wiki: https://github.com/TheLuxure/AltLibrary/wiki
 
 Extra Credits:
 Ouroel - advanced converting code, drunk hardmode ores
+Ghasttear1 - pie chart thing and lots of code for it
