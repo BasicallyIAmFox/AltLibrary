@@ -431,11 +431,13 @@ namespace AltLibrary.Common.AltBiomes
             }
         }
 
-        public static int GetParent(int baseTile)
+        public static Dictionary<int, int> GetTileParentDict()
         {
-            if (!tileParentageData.Parent.TryGetValue(baseTile, out int test))
-                return -1;
-            return test;
+            return tileParentageData.Parent;
+        }
+        public static Dictionary<int, int> GetWallParentDict()
+        {
+            return wallParentageData.Parent;
         }
 
         public static void AddChildTile(int Block, int ParentBlock, BitsByte? ForceDeconvert = null, BitsByte? BreakIfConversionFail = null)
