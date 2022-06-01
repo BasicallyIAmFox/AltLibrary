@@ -28,9 +28,9 @@ namespace AltLibrary.Common.Systems
         internal static int hmOreIndex = 0;
 
         //do not need to sync, world seed should be constant between players
-        public static AltOre[] drunkCobaltCycle;
-        public static AltOre[] drunkMythrilCycle;
-        public static AltOre[] drunkAdamantiteCycle;
+        internal static AltOre[] drunkCobaltCycle;
+        internal static AltOre[] drunkMythrilCycle;
+        internal static AltOre[] drunkAdamantiteCycle;
 
         public override void Load()
         {
@@ -64,9 +64,7 @@ namespace AltLibrary.Common.Systems
             {
                 if (list[x].Type == original)
                 {
-                    AltOre temp = list[x];
-                    list[x] = list[list.Length - 1];
-                    list[list.Length - 1] = temp;
+                    (list[^1], list[x]) = (list[x], list[^1]);
                     return;
                 }
             }
