@@ -70,20 +70,22 @@ namespace AltLibrary
                 switch (content.ToLower())
                 {
                     case "addcustomseedpreviews":
-                        if (args.Length != 5)
-                            throw new ArgumentException("Arguments cannot be less or more than 5 in length for AddCustomSeedPreviews");
-                        if (args[1] is not string seed)
-                            throw new ArgumentException("Second argument (seed) is not string!");
-                        if (args[2] is not string small)
-                            throw new ArgumentException("Third argument (small) is not string!");
-                        if (args[3] is not string medium)
-                            throw new ArgumentException("Fourth argument (medium) is not string!");
-                        if (args[4] is not string large)
-                            throw new ArgumentException("Fifth argument (large) is not string!");
-                        PreviewWorldIcons.Add(new CustomPreviews(seed, small, medium, large));
-                        Logger.Info($"Registered custom preview! Seed: {seed} Path: {small} {medium} {large}");
-                        return "Success";
-                    case "ConversionAddChildTile":
+                        {
+                            if (args.Length != 5)
+                                throw new ArgumentException("Arguments cannot be less or more than 5 in length for AddCustomSeedPreviews");
+                            if (args[1] is not string seed)
+                                throw new ArgumentException("Second argument (seed) is not string!");
+                            if (args[2] is not string small)
+                                throw new ArgumentException("Third argument (small) is not string!");
+                            if (args[3] is not string medium)
+                                throw new ArgumentException("Fourth argument (medium) is not string!");
+                            if (args[4] is not string large)
+                                throw new ArgumentException("Fifth argument (large) is not string!");
+                            PreviewWorldIcons.Add(new CustomPreviews(seed, small, medium, large));
+                            Logger.Info($"Registered custom preview! Seed: {seed} Path: {small} {medium} {large}");
+                            return "Success";
+                        }
+                    case "conversionaddchildtile":
                         {
                             if (args.Length != 5)
                                 throw new ArgumentException("Arguments cannot be less or more than 4 in length for AddChildTile");
@@ -96,9 +98,9 @@ namespace AltLibrary
                             if (args[4] is not BitsByte BreakIfConversionFail)
                                 throw new ArgumentException("Fifth argument (BreakIfConversionFail) is not BitsByte!");
                             ALConvertInheritanceData.AddChildTile(block, parentBlock, ForceDeconvert, BreakIfConversionFail);
-                            return "success";
+                            return "Success";
                         }
-                    case "ConversionAddChildWall":
+                    case "conversionaddchildwall":
                         {
                             if (args.Length != 5)
                                 throw new ArgumentException("Arguments cannot be less or more than 4 in length for AddChildWall");
@@ -111,17 +113,17 @@ namespace AltLibrary
                             if (args[4] is not BitsByte BreakIfConversionFail)
                                 throw new ArgumentException("Fifth argument (BreakIfConversionFail) is not BitsByte!");
                             ALConvertInheritanceData.AddChildWall(wall, parentWall, ForceDeconvert, BreakIfConversionFail);
-                            return "success";
+                            return "Success";
                         }
-                    case "ConversionGetTileParentDictionary":
+                    case "conversiongettileparentdictionary":
                         if (args.Length != 1)
                             throw new ArgumentException("Arguments cannot be less or more than 0 in length for GetTileParentDictionary");
                         return ALConvertInheritanceData.GetTileParentDict();
-                    case "ConversionGetWallParentDictionary":
+                    case "conversiongetwallparentdictionary":
                         if (args.Length != 1)
                             throw new ArgumentException("Arguments cannot be less or more than 0 in length for GetWallParentDictionary");
                         return ALConvertInheritanceData.GetWallParentDict();
-                    case "ConversionGetUltimateParent":
+                    case "conversiongetultimateparent":
                         if (args.Length != 2)
                             throw new ArgumentException("Arguments cannot be less or more than 0 in length for GetUltimateParent");
                         if (args[1] is not int tile)
