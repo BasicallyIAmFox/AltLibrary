@@ -12,7 +12,7 @@ namespace AltLibrary.Content.DevArmor.Cace
         {
             DisplayName.SetDefault("Cace's Cat Ears");
             Tooltip.SetDefault("Great for impersonating mod devs!");
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+            SacrificeTotal = 1;
             ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true;
         }
 

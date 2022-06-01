@@ -32,6 +32,7 @@ Mods: {
 				Tooltip: "When true, you won't be able to see some vanilla biomes if they don't have Alternative Biome"
 			}
 		}
+		OreHelpTextBase: "Try combining a Hellforge with some {0} ore. I bet you could make some really powerful stuff with that!"
 		HallowBunnyCageTooltip: "'I swear you'll pay!'"
 		AltOreName: {
 			RandomCopper: "Random Copper-Tier"

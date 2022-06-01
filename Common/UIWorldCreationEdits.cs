@@ -802,9 +802,6 @@ namespace AltLibrary.Common
                 WorldBiomeManager.Cobalt = Cobalt;
                 WorldBiomeManager.Mythril = Mythril;
                 WorldBiomeManager.Adamantite = Adamantite;
-                //WorldBiomeManager.cobaIndex = Cobalt < 0 ? (Cobalt == -10 ? 1 : 0) : AltLibrary.OrderedCobalt.FindIndex(x => x == AltLibrary.Ores.Find(x => x.Type == Cobalt).ore);
-                //WorldBiomeManager.mythIndex = Mythril < 0 ? (Mythril == -12 ? 1 : 0) : AltLibrary.OrderedMythril.FindIndex(x => x == AltLibrary.Ores.Find(x => x.Type == Mythril).ore);
-                //WorldBiomeManager.adamIndex = Adamantite < 0 ? (Adamantite == -14 ? 1 : 0) : AltLibrary.OrderedAdamant.FindIndex(x => x == AltLibrary.Ores.Find(x => x.Type == Adamantite).ore);
 
                 AltLibrary.Instance.Logger.Info($"On creating world - Hallow: {AltHallowBiomeChosenType} Corrupt: {AltEvilBiomeChosenType} Jungle: {AltJungleBiomeChosenType} Underworld: {AltHellBiomeChosenType}");
             });

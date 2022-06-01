@@ -1,20 +1,14 @@
 ﻿using AltLibrary.Common;
 using AltLibrary.Common.AltLiquidStyles.Hooks;
 using AltLibrary.Common.Hooks;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
-using Terraria.ModLoader;
 
 namespace AltLibrary.Core
 {
     internal class ILHooks
     {
-        public static Asset<Texture2D> EmptyAsset => ModContent.Request<Texture2D>("AltLibrary/Assets/Loading/Outer Empty");
-        public static Asset<Texture2D> EmptyLower => ModContent.Request<Texture2D>("AltLibrary/Assets/Loading/Outer Lower Empty");
-
         public static void OnInitialize()
         {
             On.Terraria.Main.EraseWorld += Main_EraseWorld;

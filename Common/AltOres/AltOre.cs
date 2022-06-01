@@ -59,6 +59,14 @@ namespace AltLibrary.Common.AltOres
             get;
             private set;
         }
+        /// <summary>
+        /// Used for adamantite ore alts.
+        /// </summary>
+        public ModTranslation GuideHelpText
+        {
+            get;
+            private set;
+        }
 
         protected sealed override void Register()
         {
@@ -73,6 +81,9 @@ namespace AltLibrary.Common.AltOres
             BlessingMessage = (ModTranslation)typeof(LocalizationLoader).GetMethod("GetOrCreateTranslation",
                 BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static,
                 new Type[] { typeof(Mod), typeof(string), typeof(bool) }).Invoke(null, new object[] { Mod, $"AltOreBless.{Name}", true });
+            GuideHelpText = (ModTranslation)typeof(LocalizationLoader).GetMethod("GetOrCreateTranslation",
+                BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static,
+                new Type[] { typeof(Mod), typeof(string), typeof(bool) }).Invoke(null, new object[] { Mod, $"AltOreHelpText.{Name}", true });
 
             AltLibrary.Ores.Add(this);
             Type = AltLibrary.Ores.Count;

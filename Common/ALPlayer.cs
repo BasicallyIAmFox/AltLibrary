@@ -18,12 +18,12 @@ namespace AltLibrary.Common
 
         public override void SaveData(TagCompound tag)
         {
-            tag.Add(nameof(HasObtainedHallowBunnyAtleastOnce), HasObtainedHallowBunnyAtleastOnce);
+            tag.Add("AltLibrary:" + nameof(HasObtainedHallowBunnyAtleastOnce), HasObtainedHallowBunnyAtleastOnce);
         }
 
         public override void LoadData(TagCompound tag)
         {
-            HasObtainedHallowBunnyAtleastOnce = tag.GetBool(nameof(HasObtainedHallowBunnyAtleastOnce));
+            HasObtainedHallowBunnyAtleastOnce = tag.GetBool("AltLibrary:" + nameof(HasObtainedHallowBunnyAtleastOnce));
         }
     }
 }

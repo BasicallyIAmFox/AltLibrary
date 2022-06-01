@@ -47,6 +47,7 @@ namespace AltLibrary
             AnimatedModIcon.Init();
             ALTextureAssets.Load();
             ALConvert.Load();
+            GuideHelpText.Load();
             ModIconVariation = Main.rand.Next(ALTextureAssets.AnimatedModIcon.Length);
             TimeHoveringOnIcon = 0;
             HallowBunnyUnlocked = false;
@@ -92,6 +93,7 @@ namespace AltLibrary
             AnimatedModIcon.Unload();
             ALTextureAssets.Unload();
             ALConvert.Unload();
+            GuideHelpText.Unload();
             AltLibraryConfig.Config = null;
             TimeHoveringOnIcon = 0;
             HallowBunnyUnlocked = false;
