@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -60,81 +60,81 @@ namespace AltLibrary.Common.AltBiomes
             for (int x = 0; x < TileLoader.TileCount; x++)
             {
                 if (TileID.Sets.Conversion.GolfGrass[x] && x != TileID.GolfGrass)
-                    Parent.Add(x, TileID.GolfGrass);
+                    Parent.TryAdd(x, TileID.GolfGrass);
                 else if (TileID.Sets.Conversion.Grass[x] && x != TileID.Grass)
-                    Parent.Add(x, TileID.Grass);
+                    Parent.TryAdd(x, TileID.Grass);
                 else if (Main.tileMoss[x] && x != TileID.Stone)
                 {
-                    ForestConversion.Add(x, x); //prevents deconversion of moss to stone
-                    Parent.Add(x, TileID.Stone);
+                    ForestConversion.TryAdd(x, x); //prevents deconversion of moss to stone
+                    Parent.TryAdd(x, TileID.Stone);
                 }
                 else if (TileID.Sets.Conversion.Stone[x] && x != TileID.Stone)
-                    Parent.Add(x, TileID.Stone);
+                    Parent.TryAdd(x, TileID.Stone);
                 else if (TileID.Sets.Conversion.Ice[x] && x != TileID.IceBlock)
-                    Parent.Add(x, TileID.IceBlock);
+                    Parent.TryAdd(x, TileID.IceBlock);
                 else if (TileID.Sets.Conversion.Sandstone[x] && x != TileID.Sandstone)
-                    Parent.Add(x, TileID.Sandstone);
+                    Parent.TryAdd(x, TileID.Sandstone);
                 else if (TileID.Sets.Conversion.HardenedSand[x] && x != TileID.HardenedSand)
-                    Parent.Add(x, TileID.HardenedSand);
+                    Parent.TryAdd(x, TileID.HardenedSand);
                 else if (TileID.Sets.Conversion.Sand[x] && x != TileID.Sand)
-                    Parent.Add(x, TileID.Sand);
+                    Parent.TryAdd(x, TileID.Sand);
             }
 
             // Forest (this entire thing ensures that deconversion is possible
 
-            ForestConversion.Add(TileID.Stone, TileID.Stone);
-            ForestConversion.Add(TileID.Grass, TileID.Grass);
-            ForestConversion.Add(TileID.GolfGrass, TileID.GolfGrass);
-            ForestConversion.Add(TileID.IceBlock, TileID.IceBlock);
-            ForestConversion.Add(TileID.Sand, TileID.Sand);
-            ForestConversion.Add(TileID.HardenedSand, TileID.HardenedSand);
-            ForestConversion.Add(TileID.Sandstone, TileID.Sandstone);
-            ForestConversion.Add(TileID.JungleThorns, TileID.JungleThorns);
+            ForestConversion.TryAdd(TileID.Stone, TileID.Stone);
+            ForestConversion.TryAdd(TileID.Grass, TileID.Grass);
+            ForestConversion.TryAdd(TileID.GolfGrass, TileID.GolfGrass);
+            ForestConversion.TryAdd(TileID.IceBlock, TileID.IceBlock);
+            ForestConversion.TryAdd(TileID.Sand, TileID.Sand);
+            ForestConversion.TryAdd(TileID.HardenedSand, TileID.HardenedSand);
+            ForestConversion.TryAdd(TileID.Sandstone, TileID.Sandstone);
+            ForestConversion.TryAdd(TileID.JungleThorns, TileID.JungleThorns);
 
-            BreakIfConversionFail.Add(TileID.JungleThorns, new(true, true, true, true));
+            BreakIfConversionFail.TryAdd(TileID.JungleThorns, new(true, true, true, true));
 
-            Parent.Add(TileID.JungleThorns, TileID.CorruptThorns); //hacky way to do jungle => corrupt one way conversion
+            Parent.TryAdd(TileID.JungleThorns, TileID.CorruptThorns); //hacky way to do jungle => corrupt one way conversion
 
             // Hallowed
 
-            HallowConversion.Add(TileID.Stone, TileID.Pearlstone);
-            HallowConversion.Add(TileID.Grass, TileID.HallowedGrass);
-            HallowConversion.Add(TileID.GolfGrass, TileID.GolfGrassHallowed);
-            HallowConversion.Add(TileID.IceBlock, TileID.HallowedIce);
-            HallowConversion.Add(TileID.Sand, TileID.Pearlsand);
-            HallowConversion.Add(TileID.HardenedSand, TileID.HallowHardenedSand);
-            HallowConversion.Add(TileID.Sandstone, TileID.HallowSandstone);
+            HallowConversion.TryAdd(TileID.Stone, TileID.Pearlstone);
+            HallowConversion.TryAdd(TileID.Grass, TileID.HallowedGrass);
+            HallowConversion.TryAdd(TileID.GolfGrass, TileID.GolfGrassHallowed);
+            HallowConversion.TryAdd(TileID.IceBlock, TileID.HallowedIce);
+            HallowConversion.TryAdd(TileID.Sand, TileID.Pearlsand);
+            HallowConversion.TryAdd(TileID.HardenedSand, TileID.HallowHardenedSand);
+            HallowConversion.TryAdd(TileID.Sandstone, TileID.HallowSandstone);
 
             // Corruption
 
-            CorruptionConversion.Add(TileID.Stone, TileID.Ebonstone);
-            CorruptionConversion.Add(TileID.Grass, TileID.CorruptGrass);
-            CorruptionConversion.Add(TileID.IceBlock, TileID.CorruptIce);
-            CorruptionConversion.Add(TileID.Sand, TileID.Ebonsand);
-            CorruptionConversion.Add(TileID.HardenedSand, TileID.CorruptHardenedSand);
-            CorruptionConversion.Add(TileID.Sandstone, TileID.CorruptSandstone);
-            CorruptionConversion.Add(TileID.CorruptThorns, TileID.CorruptThorns);
+            CorruptionConversion.TryAdd(TileID.Stone, TileID.Ebonstone);
+            CorruptionConversion.TryAdd(TileID.Grass, TileID.CorruptGrass);
+            CorruptionConversion.TryAdd(TileID.IceBlock, TileID.CorruptIce);
+            CorruptionConversion.TryAdd(TileID.Sand, TileID.Ebonsand);
+            CorruptionConversion.TryAdd(TileID.HardenedSand, TileID.CorruptHardenedSand);
+            CorruptionConversion.TryAdd(TileID.Sandstone, TileID.CorruptSandstone);
+            CorruptionConversion.TryAdd(TileID.CorruptThorns, TileID.CorruptThorns);
 
-            BreakIfConversionFail.Add(TileID.CorruptThorns, new(true, true, true, true));
+            BreakIfConversionFail.TryAdd(TileID.CorruptThorns, new(true, true, true, true));
 
             // Crimson
 
-            CrimsonConversion.Add(TileID.Stone, TileID.Crimstone);
-            CrimsonConversion.Add(TileID.Grass, TileID.CrimsonGrass);
-            CrimsonConversion.Add(TileID.IceBlock, TileID.FleshIce);
-            CrimsonConversion.Add(TileID.Sand, TileID.Crimsand);
-            CrimsonConversion.Add(TileID.HardenedSand, TileID.CorruptHardenedSand);
-            CrimsonConversion.Add(TileID.Sandstone, TileID.CorruptSandstone);
-            CrimsonConversion.Add(TileID.CorruptThorns, TileID.CrimsonThorns);
+            CrimsonConversion.TryAdd(TileID.Stone, TileID.Crimstone);
+            CrimsonConversion.TryAdd(TileID.Grass, TileID.CrimsonGrass);
+            CrimsonConversion.TryAdd(TileID.IceBlock, TileID.FleshIce);
+            CrimsonConversion.TryAdd(TileID.Sand, TileID.Crimsand);
+            CrimsonConversion.TryAdd(TileID.HardenedSand, TileID.CorruptHardenedSand);
+            CrimsonConversion.TryAdd(TileID.Sandstone, TileID.CorruptSandstone);
+            CrimsonConversion.TryAdd(TileID.CorruptThorns, TileID.CrimsonThorns);
 
-            BreakIfConversionFail.Add(TileID.CrimsonThorns, new(true, true, true, true));
+            BreakIfConversionFail.TryAdd(TileID.CrimsonThorns, new(true, true, true, true));
 
-            Parent.Add(TileID.CrimsonThorns, TileID.CorruptThorns);
+            Parent.TryAdd(TileID.CrimsonThorns, TileID.CorruptThorns);
 
             // Mushroom
 
-            MushroomConversion.Add(TileID.JungleGrass, TileID.MushroomGrass);
-            Parent.Add(TileID.MushroomGrass, TileID.JungleGrass);
+            MushroomConversion.TryAdd(TileID.JungleGrass, TileID.MushroomGrass);
+            Parent.TryAdd(TileID.MushroomGrass, TileID.JungleGrass);
         }
 
         public override int GetConverted_Modded(int baseTile, AltBiome biome, int x, int y)
@@ -205,79 +205,79 @@ namespace AltLibrary.Common.AltBiomes
                         case WallID.CorruptGrassUnsafe:
                         case WallID.CrimsonGrassUnsafe:
                         case WallID.HallowedGrassUnsafe:
-                            Parent.Add(x, GRASS_UNSAFE_DIFFERENT);
+                            Parent.TryAdd(x, GRASS_UNSAFE_DIFFERENT);
                             break;
                         default:
-                            Parent.Add(x, WallID.Grass);
+                            Parent.TryAdd(x, WallID.Grass);
                             break;
                     }
                 }
                 else if (WallID.Sets.Conversion.Stone[x] && x != WallID.Stone)
-                    Parent.Add(x, WallID.Stone);
+                    Parent.TryAdd(x, WallID.Stone);
                 else if (WallID.Sets.Conversion.HardenedSand[x] && x != WallID.HardenedSand)
-                    Parent.Add(x, WallID.HardenedSand);
+                    Parent.TryAdd(x, WallID.HardenedSand);
                 else if (WallID.Sets.Conversion.Sandstone[x] && x != WallID.Sandstone)
-                    Parent.Add(x, WallID.Sandstone);
+                    Parent.TryAdd(x, WallID.Sandstone);
                 else if (WallID.Sets.Conversion.NewWall1[x] && x != WallID.RocksUnsafe1)
-                    Parent.Add(x, WallID.RocksUnsafe1);
+                    Parent.TryAdd(x, WallID.RocksUnsafe1);
                 else if (WallID.Sets.Conversion.NewWall2[x] && x != WallID.RocksUnsafe2)
-                    Parent.Add(x, WallID.RocksUnsafe2);
+                    Parent.TryAdd(x, WallID.RocksUnsafe2);
                 else if (WallID.Sets.Conversion.NewWall3[x] && x != WallID.RocksUnsafe3)
-                    Parent.Add(x, WallID.RocksUnsafe3);
+                    Parent.TryAdd(x, WallID.RocksUnsafe3);
                 else if (WallID.Sets.Conversion.NewWall4[x] && x != WallID.RocksUnsafe4)
-                    Parent.Add(x, WallID.RocksUnsafe4);
+                    Parent.TryAdd(x, WallID.RocksUnsafe4);
 
                 if (WallID.Sets.CanBeConvertedToGlowingMushroom[x])
-                    MushroomConversion.Add(x, WallID.MushroomUnsafe);
+                    MushroomConversion.TryAdd(x, WallID.MushroomUnsafe);
             }
 
             //Manual Grass conversionating to ensure safe grass walls cannot become unsafe through green solution conversion
 
-            Parent.Add(GRASS_UNSAFE_DIFFERENT, WallID.Grass);
+            Parent.TryAdd(GRASS_UNSAFE_DIFFERENT, WallID.Grass);
 
             // Forest (this entire thing ensures that deconversion is possible)
 
-            ForestConversion.Add(WallID.GrassUnsafe, WallID.GrassUnsafe);
-            ForestConversion.Add(WallID.Stone, WallID.Stone);
-            ForestConversion.Add(WallID.HardenedSand, WallID.HardenedSand);
-            ForestConversion.Add(WallID.Sandstone, WallID.Sandstone);
-            ForestConversion.Add(WallID.RocksUnsafe1, WallID.RocksUnsafe1);
-            ForestConversion.Add(WallID.RocksUnsafe2, WallID.RocksUnsafe2);
-            ForestConversion.Add(WallID.RocksUnsafe3, WallID.RocksUnsafe3);
-            ForestConversion.Add(WallID.RocksUnsafe4, WallID.RocksUnsafe4);
+            ForestConversion.TryAdd(WallID.GrassUnsafe, WallID.GrassUnsafe);
+            ForestConversion.TryAdd(WallID.Stone, WallID.Stone);
+            ForestConversion.TryAdd(WallID.HardenedSand, WallID.HardenedSand);
+            ForestConversion.TryAdd(WallID.Sandstone, WallID.Sandstone);
+            ForestConversion.TryAdd(WallID.RocksUnsafe1, WallID.RocksUnsafe1);
+            ForestConversion.TryAdd(WallID.RocksUnsafe2, WallID.RocksUnsafe2);
+            ForestConversion.TryAdd(WallID.RocksUnsafe3, WallID.RocksUnsafe3);
+            ForestConversion.TryAdd(WallID.RocksUnsafe4, WallID.RocksUnsafe4);
 
             // Hallowed
 
-            HallowConversion.Add(WallID.Grass, WallID.HallowedGrassUnsafe);
-            HallowConversion.Add(WallID.Stone, WallID.PearlstoneBrickUnsafe);
-            HallowConversion.Add(WallID.HardenedSand, WallID.HallowHardenedSand);
-            HallowConversion.Add(WallID.Sandstone, WallID.HallowSandstone);
-            HallowConversion.Add(WallID.RocksUnsafe1, WallID.HallowUnsafe1);
-            HallowConversion.Add(WallID.RocksUnsafe2, WallID.HallowUnsafe2);
-            HallowConversion.Add(WallID.RocksUnsafe3, WallID.HallowUnsafe3);
-            HallowConversion.Add(WallID.RocksUnsafe4, WallID.HallowUnsafe4);
+            HallowConversion.TryAdd(WallID.Grass, WallID.HallowedGrassUnsafe);
+            HallowConversion.TryAdd(WallID.Stone, WallID.PearlstoneBrickUnsafe);
+            HallowConversion.TryAdd(WallID.HardenedSand, WallID.HallowHardenedSand);
+            HallowConversion.TryAdd(WallID.Sandstone, WallID.HallowSandstone);
+            HallowConversion.TryAdd(WallID.RocksUnsafe1, WallID.HallowUnsafe1);
+            HallowConversion.TryAdd(WallID.RocksUnsafe2, WallID.HallowUnsafe2);
+            HallowConversion.TryAdd(WallID.RocksUnsafe3, WallID.HallowUnsafe3);
+            HallowConversion.TryAdd(WallID.RocksUnsafe4, WallID.HallowUnsafe4);
 
             // Corruption
 
-            CorruptionConversion.Add(WallID.Grass, WallID.CorruptGrassUnsafe);
-            CorruptionConversion.Add(WallID.Stone, WallID.EbonstoneUnsafe);
-            CorruptionConversion.Add(WallID.HardenedSand, WallID.CorruptHardenedSand);
-            CorruptionConversion.Add(WallID.Sandstone, WallID.CorruptSandstone);
-            CorruptionConversion.Add(WallID.RocksUnsafe1, WallID.CorruptionUnsafe1);
-            CorruptionConversion.Add(WallID.RocksUnsafe2, WallID.CorruptionUnsafe2);
-            CorruptionConversion.Add(WallID.RocksUnsafe3, WallID.CorruptionUnsafe3);
-            CorruptionConversion.Add(WallID.RocksUnsafe4, WallID.CorruptionUnsafe4);
+            CorruptionConversion.TryAdd(WallID.Grass, WallID.CorruptGrassUnsafe);
+            CorruptionConversion.TryAdd(WallID.Stone, WallID.EbonstoneUnsafe);
+            CorruptionConversion.TryAdd(WallID.HardenedSand, WallID.CorruptHardenedSand);
+            CorruptionConversion.TryAdd(WallID.Sandstone, WallID.CorruptSandstone);
+            CorruptionConversion.TryAdd(WallID.RocksUnsafe1, WallID.CorruptionUnsafe1);
+            CorruptionConversion.TryAdd(WallID.RocksUnsafe2, WallID.CorruptionUnsafe2);
+            CorruptionConversion.TryAdd(WallID.RocksUnsafe3, WallID.CorruptionUnsafe3);
+            CorruptionConversion.TryAdd(WallID.RocksUnsafe4, WallID.CorruptionUnsafe4);
 
             // Crimson
 
-            CrimsonConversion.Add(WallID.Grass, WallID.CrimsonGrassUnsafe);
-            CrimsonConversion.Add(WallID.Stone, WallID.CrimstoneUnsafe);
-            CrimsonConversion.Add(WallID.HardenedSand, WallID.CrimsonHardenedSand);
-            CrimsonConversion.Add(WallID.Sandstone, WallID.CrimsonSandstone);
-            CrimsonConversion.Add(WallID.RocksUnsafe1, WallID.CrimsonUnsafe1);
-            CrimsonConversion.Add(WallID.RocksUnsafe2, WallID.CrimsonUnsafe2);
-            CrimsonConversion.Add(WallID.RocksUnsafe3, WallID.CrimsonUnsafe3);
-            CrimsonConversion.Add(WallID.RocksUnsafe4, WallID.CrimsonUnsafe4);
+            CrimsonConversion.TryAdd(WallID.Grass, WallID.CrimsonGrassUnsafe);
+            CrimsonConversion.TryAdd(WallID.Stone, WallID.CrimstoneUnsafe);
+            CrimsonConversion.TryAdd(WallID.HardenedSand, WallID.CrimsonHardenedSand);
+            CrimsonConversion.TryAdd(WallID.Sandstone, WallID.CrimsonSandstone);
+            CrimsonConversion.TryAdd(WallID.RocksUnsafe1, WallID.CrimsonUnsafe1);
+            CrimsonConversion.TryAdd(WallID.RocksUnsafe2, WallID.CrimsonUnsafe2);
+            CrimsonConversion.TryAdd(WallID.RocksUnsafe3, WallID.CrimsonUnsafe3);
+            CrimsonConversion.TryAdd(WallID.RocksUnsafe4, WallID.CrimsonUnsafe4);
 
             // Mushroom
 
@@ -428,6 +428,39 @@ namespace AltLibrary.Common.AltBiomes
                 if (!tileParentageData.Parent.TryGetValue(baseTile, out int test))
                     return baseTile;
                 baseTile = test;
+            }
+        }
+
+        public static int GetParent(int baseTile)
+        {
+            if (!tileParentageData.Parent.TryGetValue(baseTile, out int test))
+                return -1;
+            return test;
+        }
+
+        public static void AddChildTile(int Block, int ParentBlock, BitsByte? ForceDeconvert = null, BitsByte? BreakIfConversionFail = null)
+        {
+            tileParentageData.Parent.Add(Block, ParentBlock);
+            if (ForceDeconvert != null)
+            {
+                tileParentageData.ForceDeconversion.Add(Block, ForceDeconvert.Value);
+            }
+            if (BreakIfConversionFail != null)
+            {
+                tileParentageData.BreakIfConversionFail.Add(Block, BreakIfConversionFail.Value);
+            }
+        }
+
+        public static void AddChildWall(int Wall, int ParentWall, BitsByte? ForceDeconvert = null, BitsByte? BreakIfConversionFail = null)
+        {
+            wallParentageData.Parent.Add(Wall, ParentWall);
+            if (ForceDeconvert != null)
+            {
+                wallParentageData.ForceDeconversion.Add(Wall, ForceDeconvert.Value);
+            }
+            if (BreakIfConversionFail != null)
+            {
+                wallParentageData.BreakIfConversionFail.Add(Wall, BreakIfConversionFail.Value);
             }
         }
     }
