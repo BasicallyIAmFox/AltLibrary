@@ -3,10 +3,12 @@ using MonoMod.Cil;
 using System;
 using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader;
 using Terraria.Utilities;
 
 namespace AltLibrary.Common.Hooks
 {
+    [Autoload(Side = ModSide.Both)]
     internal class FishingCrateLoot
     {
         internal static void Load()

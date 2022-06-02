@@ -1,4 +1,5 @@
 ﻿using AltLibrary.Common.AltBiomes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -163,20 +164,22 @@ namespace AltLibrary.Common.Systems
         private void JunglesGrassTask(GenerationProgress progress, GameConfiguration passConfig)
         {
             progress.Message = Lang.gen[77].Value;
-            //WorldGen.NotTheBees(); 
-            // stinky re-logic and their private methods
+            typeof(WorldGen).GetMethod("NotTheBees", BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, Array.Empty<object>());
             int grass = TileID.JungleGrass;
-            foreach (AltBiome alt in AltLibrary.Biomes)
+            if (!WorldGen.notTheBees)
             {
-                if (alt.BiomeType == BiomeType.Jungle)
+                foreach (AltBiome alt in AltLibrary.Biomes)
                 {
-                    if (alt.BiomeGrass.HasValue)
+                    if (alt.BiomeType == BiomeType.Jungle)
                     {
-                        grass = alt.BiomeGrass.Value;
-                    }
-                    else if (alt.BiomeJungleGrass.HasValue)
-                    {
-                        grass = alt.BiomeJungleGrass.Value;
+                        if (alt.BiomeGrass.HasValue)
+                        {
+                            grass = alt.BiomeGrass.Value;
+                        }
+                        else if (alt.BiomeJungleGrass.HasValue)
+                        {
+                            grass = alt.BiomeJungleGrass.Value;
+                        }
                     }
                 }
             }
@@ -197,37 +200,9 @@ namespace AltLibrary.Common.Systems
             float rightBorder = Main.maxTilesX - 20;
             for (int i = 10; i < Main.maxTilesX - 10; i++)
             {
-                ScanTileColumnAndRemoveClumps(i);
+                typeof(WorldGen).GetMethod("ScanTileColumnAndRemoveClumps", BindingFlags.NonPublic | BindingFlags.Static, new Type[] { typeof(int) }).Invoke(null, new object[] { i });
                 float num835 = (i - 10) / rightBorder;
                 progress.Set(0.2f + num835 * 0.8f);
-            }
-        }
-
-        private static void ScanTileColumnAndRemoveClumps(int x)
-        {
-            int num = 0;
-            int y = 0;
-            for (int i = 10; i < Main.maxTilesY - 10; i++)
-            {
-                if (Main.tile[x, i].HasUnactuatedTile && Main.tileSolid[Main.tile[x, i].TileType] && TileID.Sets.CanBeClearedDuringGeneration[Main.tile[x, i].TileType])
-                {
-                    if (num == 0)
-                    {
-                        y = i;
-                    }
-                    num++;
-                    continue;
-                }
-                if (num > 0 && num < 20)
-                {
-                    WorldGen.SmallConsecutivesFound++;
-                    if (WorldGen.tileCounter(x, y) < 20)
-                    {
-                        WorldGen.SmallConsecutivesEliminated++;
-                        WorldGen.tileCounterKill();
-                    }
-                }
-                num = 0;
             }
         }
 
@@ -342,9 +317,9 @@ namespace AltLibrary.Common.Systems
                     current = !WorldGen.crimson ? (WorldBiomeManager.WorldEvil == "" ? -333 : AltLibrary.Biomes.FindIndex(x => x.Type == vs[index] + 1)) : -666;
                 }
                 int worldCrimson = vs[index];
-                bool worldCrimson2 = worldCrimson < 0;
+                bool worldCrimson2 = worldCrimson == -666;
                 AltBiome worldCrimson3 = worldCrimson >= 0 ? AltLibrary.Biomes[worldCrimson] : null;
-                WorldBiomeManager.drunkEvil = worldCrimson3 != null ? worldCrimson3.FullName : (worldCrimson == -333 ? "Terraria/Corruption" : "Terraria/Crimson");
+                WorldBiomeManager.drunkEvil = worldCrimson3 != null ? worldCrimson3.FullName : (!worldCrimson2 ? "Terraria/Corruption" : "Terraria/Crimson");
                 WorldBiomeGeneration.worldCrimson = worldCrimson;
                 WorldBiomeGeneration.worldCrimson2 = worldCrimson2;
                 WorldBiomeGeneration.worldCrimson3 = worldCrimson3;
@@ -718,6 +693,10 @@ namespace AltLibrary.Common.Systems
                             flag48 = false;
                         }
                     }
+                    if (WorldBiomeManager.drunkEvil == "Terraria/Crimson")
+                    {
+                        WorldGen.CrimStart(num692, (int)WorldGen.worldSurfaceLow - 10);
+                    }
                     for (int num697 = num693; num697 < num694; num697++)
                     {
                         for (int num698 = (int)WorldGen.worldSurfaceLow; num698 < Main.worldSurface - 1.0; num698++)
@@ -938,6 +917,7 @@ namespace AltLibrary.Common.Systems
                         }
                     }
                 }
+                WorldGen.CrimPlaceHearts();
             }
             if (WorldGen.drunkWorldGen)
             {

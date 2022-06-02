@@ -207,7 +207,7 @@ namespace AltLibrary.Common.Hooks
                 return;
             }
 
-            c.EmitDelegate(() => !WorldGen.crimson);
+            c.EmitDelegate(() => !WorldGen.crimson || WorldBiomeManager.drunkEvil != "Terraria/Crimson");
             c.Emit(OpCodes.Brtrue_S, label);
             c.Index += 6;
             c.MarkLabel(label);
@@ -218,7 +218,7 @@ namespace AltLibrary.Common.Hooks
                 return;
             }
 
-            c.EmitDelegate(() => !WorldGen.crimson);
+            c.EmitDelegate(() => !WorldGen.crimson || WorldBiomeManager.drunkEvil != "Terraria/Crimson");
             c.Emit(OpCodes.Brtrue_S, label);
             c.Index++;
             c.MarkLabel(label);

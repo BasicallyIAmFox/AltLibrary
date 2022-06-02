@@ -196,9 +196,7 @@ namespace AltLibrary.Common.Hooks
         {
             if (!drunk || smashType != 0 || WorldGen.altarCount == 0)
                 return false;
-
             WorldBiomeManager.GetDrunkenOres();
-
             return false;
         }
 

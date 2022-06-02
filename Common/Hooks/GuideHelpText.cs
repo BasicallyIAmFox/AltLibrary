@@ -3,9 +3,11 @@ using MonoMod.Cil;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Hooks
 {
+    [Autoload(Side = ModSide.Client)]
     internal class GuideHelpText
     {
         public static void Load()
