@@ -408,7 +408,6 @@ namespace AltLibrary.Common.AltBiomes
         {
             wallsReplacement.TryAdd(orig, with);
             ALConvertInheritanceData.wallParentageData.Parent.TryAdd(with, orig);
-            ALConvertInheritanceData.wallParentageData.ForceDeconversion.TryAdd(with, new(true, true, true, false));
             return this;
         }
 
