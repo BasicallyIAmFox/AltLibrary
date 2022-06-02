@@ -416,7 +416,7 @@ namespace AltLibrary.Common.AltBiomes
             ushort type = ContentInstance<T>.Instance.Type;
             foreach (ushort original in orig)
             {
-                AddReplacement(type, original);
+                AddReplacement(original, type);
             }
             return this;
         }
