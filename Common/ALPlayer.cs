@@ -24,8 +24,11 @@ namespace AltLibrary.Common
             {
                 HasObtainedHallowBunnyAtleastOnce = true;
             }
-            if (IsAnalysingClick) IsAnalysing = Player.talkNPC != -1;
-            else IsAnalysing = false;
+            if (Player.talkNPC == -1)
+            {
+                IsAnalysing = false;
+                IsAnalysingClick = false;
+            }
         }
 
         public override void SaveData(TagCompound tag)

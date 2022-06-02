@@ -43,7 +43,7 @@ namespace AltLibrary
         /// </summary>
         public bool CheckPointer { get; set; }
 
-        private UserInterface userInterface;
+        internal static UserInterface userInterface;
         internal ALPieChartState pieChartState;
 
         public AltLibrary()

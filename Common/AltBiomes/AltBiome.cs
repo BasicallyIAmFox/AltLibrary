@@ -412,9 +412,9 @@ namespace AltLibrary.Common.AltBiomes
 
         public WallContext AddReplacement(ushort orig, ushort with)
         {
-            wallsReplacement.Add(orig, with);
-            ALConvertInheritanceData.wallParentageData.Parent.Add(with, orig);
-            ALConvertInheritanceData.wallParentageData.ForceDeconversion.Add(with, new(true, true, true, false));
+            wallsReplacement.TryAdd(orig, with);
+            ALConvertInheritanceData.wallParentageData.Parent.TryAdd(with, orig);
+            ALConvertInheritanceData.wallParentageData.ForceDeconversion.TryAdd(with, new(true, true, true, false));
             return this;
         }
 

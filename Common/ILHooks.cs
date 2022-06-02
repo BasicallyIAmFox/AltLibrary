@@ -1,9 +1,12 @@
 ﻿using AltLibrary.Common;
 using AltLibrary.Common.AltLiquidStyles.Hooks;
 using AltLibrary.Common.Hooks;
+using AltLibrary.Content.NPCs;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.Localization;
+using Terraria.ModLoader;
 
 namespace AltLibrary.Core
 {
@@ -12,6 +15,7 @@ namespace AltLibrary.Core
         public static void OnInitialize()
         {
             On.Terraria.Main.EraseWorld += Main_EraseWorld;
+            On.Terraria.Main.GUIChatDrawInner += Main_GUIChatDrawInner;
             WorldIcons.Init();
             OuterVisual.Init();
             EvenMoreWorldGen.Init();
@@ -37,6 +41,7 @@ namespace AltLibrary.Core
         public static void Unload()
         {
             On.Terraria.Main.EraseWorld -= Main_EraseWorld;
+            On.Terraria.Main.GUIChatDrawInner -= Main_GUIChatDrawInner;
             WorldIcons.Unload();
             OuterVisual.Unload();
             EvenMoreWorldGen.Unload();
@@ -58,6 +63,16 @@ namespace AltLibrary.Core
             LiquidILHooks.Unload();
             GenPasses.Unload();
             DrunkCrimsonFix.Unload();
+        }
+
+        private static void Main_GUIChatDrawInner(On.Terraria.Main.orig_GUIChatDrawInner orig, Main self)
+        {
+            orig(self);
+            if (Main.npcChatText.StartsWith(Language.GetTextValue("Mods.AltLibrary.AnalysisDone")) && Main.LocalPlayer.GetModPlayer<ALPlayer>().IsAnalysingClick)
+            {
+                AltLibrary.userInterface.Update(Main._drawInterfaceGameTime);
+                AltLibrary.userInterface.Draw(Main.spriteBatch, Main._drawInterfaceGameTime);
+            }
         }
 
         private static void Main_EraseWorld(On.Terraria.Main.orig_EraseWorld orig, int i)

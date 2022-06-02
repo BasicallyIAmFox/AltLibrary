@@ -46,28 +46,6 @@ namespace AltLibrary.Common.Systems
             drunkCobaltCycle = null;
             drunkMythrilCycle = null;
             drunkAdamantiteCycle = null;
-            AltBiomeData = null;
-            AltBiomePercentages = null;
-        }
-
-        public override void PostSetupContent()
-        {
-            List<PieData> pieDatas = new();
-            pieDatas.Clear();
-            AltBiomePercentages = new float[AltLibrary.Biomes.Count + 4];
-            pieDatas.Add(new PieData("Purity", Color.LawnGreen, () => AltBiomePercentages[0]));
-            pieDatas.Add(new PieData("Corruption", Color.MediumPurple, () => AltBiomePercentages[1]));
-            pieDatas.Add(new PieData("Crimson", Color.IndianRed, () => AltBiomePercentages[2]));
-            pieDatas.Add(new PieData("Hallow", Color.HotPink, () => AltBiomePercentages[3]));
-            for (int i = 0; i < AltLibrary.Biomes.Count; i++)
-            {
-                AltBiome biome = AltLibrary.Biomes[i];
-                if (biome.BiomeType == BiomeType.Evil || biome.BiomeType == BiomeType.Hallow)
-                {
-                    pieDatas.Add(new PieData(biome.DisplayName.GetTranslation(Language.ActiveCulture), biome.NameColor, () => AltBiomePercentages[i + 4]));
-                }
-            }
-            AltBiomeData = pieDatas.ToArray();
         }
 
         internal static void AnalysisTiles()
@@ -85,7 +63,8 @@ namespace AltLibrary.Common.Systems
             int evil = 0;
             int crimson = 0;
             int[] mods = new int[AltLibrary.Biomes.Count];
-            List<List<int>> modTiles = new();
+            List<int>[] modTiles = new List<int>[AltLibrary.Biomes.Count];
+            List<int> extraPureSolid = new();
             foreach (AltBiome biome in AltLibrary.Biomes)
             {
                 modTiles[biome.Type - 1] = new List<int>();
@@ -95,13 +74,21 @@ namespace AltLibrary.Common.Systems
                 if (biome.BiomeIce.HasValue) modTiles[biome.Type - 1].Add(biome.BiomeIce.Value);
                 if (biome.BiomeSandstone.HasValue) modTiles[biome.Type - 1].Add(biome.BiomeSandstone.Value);
                 if (biome.BiomeHardenedSand.HasValue) modTiles[biome.Type - 1].Add(biome.BiomeHardenedSand.Value);
+                if (biome.SpecialConversion.Count > 0)
+                {
+                    foreach (KeyValuePair<int, int> pair in biome.SpecialConversion)
+                    {
+                        extraPureSolid.Add(pair.Key);
+                        modTiles[biome.Type - 1].Add(pair.Value);
+                    }
+                }
             }
             for (int x = 0; x < Main.maxTilesX; x++)
             {
                 for (int y = 0; y < Main.maxTilesY; y++)
                 {
-                    Tile tile = Main.tile[x, y];
-                    if (tile.TileType >= 0)
+                    Tile tile = Framing.GetTileSafely(x, y);
+                    if (tile.HasTile)
                     {
                         int type = tile.TileType;
                         if (type == 164 || type == 109 || type == 117 || type == 116 || type == TileID.HallowSandstone || type == TileID.HallowHardenedSand)
@@ -119,7 +106,7 @@ namespace AltLibrary.Common.Systems
                             crimson++;
                             solid++;
                         }
-                        if (type == 2 || type == 477 || type == 1 || type == 60 || type == 60 || type == 53 || type == 161 || type == TileID.Sandstone || type == TileID.HardenedSand)
+                        if (type == 2 || type == 477 || type == 1 || type == 60 || type == 60 || type == 53 || type == 161 || type == TileID.Sandstone || type == TileID.HardenedSand || extraPureSolid.Contains(type))
                         {
                             purity++;
                             solid++;
@@ -136,16 +123,15 @@ namespace AltLibrary.Common.Systems
                 }
             }
 
-            AltBiomePercentages[0] = (float)(Math.Round((double)(purity / solid * 100f)) / 100f);
-            AltBiomePercentages[1] = (float)(Math.Round((double)(evil / solid * 100f)) / 100f);
-            AltBiomePercentages[2] = (float)(Math.Round((double)(crimson / solid * 100f)) / 100f);
-            AltBiomePercentages[3] = (float)(Math.Round((double)(hallow / solid * 100f)) / 100f);
+            AltBiomePercentages[0] = purity * 100f / (solid * 100f);
+            AltBiomePercentages[1] = evil * 100f / (solid * 100f);
+            AltBiomePercentages[2] = crimson * 100f / (solid * 100f);
+            AltBiomePercentages[3] = hallow * 100f / (solid * 100f);
             for (int i = 0; i < mods.Length; i++)
             {
-                AltBiomePercentages[i + 4] = (float)(Math.Round((double)(mods[i] / solid * 100f)) / 100f);
+                AltBiomePercentages[i + 4] = mods[i] * 100f / (solid * 100f);
             }
-
-            Main.npcChatText = Language.GetTextValue("Mods.AltLibrary.AnalysisDone") + "\n\n\n\n\n\n\n\n\n";
+            Main.npcChatText = Language.GetTextValue("Mods.AltLibrary.AnalysisDone") + "\n\n\n\n\n\n\n\n\n\n";
         }
 
         //move to utility function later

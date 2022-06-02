@@ -26,6 +26,7 @@ namespace AltLibrary.Common.Hooks
         }
 
         [JITWhenModsEnabled("HEROsMod")]
+        [ExtendsFromMod]
         internal static class HerosDetour
         {
             private static Mod mod;
@@ -68,6 +69,7 @@ namespace AltLibrary.Common.Hooks
         }
 
         [JITWhenModsEnabled("CheatSheet")]
+        [ExtendsFromMod]
         internal static class CheatSheetChanges
         {
             private static Mod mod;
