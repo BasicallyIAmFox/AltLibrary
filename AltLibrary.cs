@@ -59,6 +59,7 @@ namespace AltLibrary
             ALConvert.Load();
             GuideHelpText.Load();
             UIChanges.Apply();
+            FishingCrateLoot.Load();
             ModIconVariation = Main.rand.Next(ALTextureAssets.AnimatedModIcon.Length);
             TimeHoveringOnIcon = 0;
             HallowBunnyUnlocked = false;
@@ -159,6 +160,7 @@ namespace AltLibrary
             ALConvert.Unload();
             GuideHelpText.Unload();
             UIChanges.Unapply();
+            FishingCrateLoot.Unload();
             AltLibraryConfig.Config = null;
             TimeHoveringOnIcon = 0;
             HallowBunnyUnlocked = false;
