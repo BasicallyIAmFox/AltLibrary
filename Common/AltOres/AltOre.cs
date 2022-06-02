@@ -72,18 +72,10 @@ namespace AltLibrary.Common.AltOres
         {
             ModTypeLookup<AltOre>.Register(this);
 
-            DisplayName = (ModTranslation)typeof(LocalizationLoader).GetMethod("GetOrCreateTranslation",
-                BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static,
-                new Type[] { typeof(Mod), typeof(string), typeof(bool) }).Invoke(null, new object[] { Mod, $"AltOreName.{Name}", false });
-            Description = (ModTranslation)typeof(LocalizationLoader).GetMethod("GetOrCreateTranslation",
-                BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static,
-                new Type[] { typeof(Mod), typeof(string), typeof(bool) }).Invoke(null, new object[] { Mod, $"AltOreDescription.{Name}", true });
-            BlessingMessage = (ModTranslation)typeof(LocalizationLoader).GetMethod("GetOrCreateTranslation",
-                BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static,
-                new Type[] { typeof(Mod), typeof(string), typeof(bool) }).Invoke(null, new object[] { Mod, $"AltOreBless.{Name}", true });
-            GuideHelpText = (ModTranslation)typeof(LocalizationLoader).GetMethod("GetOrCreateTranslation",
-                BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static,
-                new Type[] { typeof(Mod), typeof(string), typeof(bool) }).Invoke(null, new object[] { Mod, $"AltOreHelpText.{Name}", true });
+            DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"AltOreName.{Name}", false);
+            Description = LocalizationLoader.GetOrCreateTranslation(Mod, $"AltOreDescription.{Name}", true);
+            BlessingMessage = LocalizationLoader.GetOrCreateTranslation(Mod, $"AltOreBless.{Name}", true);
+            GuideHelpText = LocalizationLoader.GetOrCreateTranslation(Mod, $"AltBiomeHelpText.{Name}", true);
 
             AltLibrary.Ores.Add(this);
             Type = AltLibrary.Ores.Count;

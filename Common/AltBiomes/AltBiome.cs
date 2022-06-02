@@ -366,15 +366,9 @@ namespace AltLibrary.Common.AltBiomes
         {
             ModTypeLookup<AltBiome>.Register(this);
 
-            DisplayName = (ModTranslation)typeof(LocalizationLoader).GetMethod("GetOrCreateTranslation",
-                BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static,
-                new Type[] { typeof(Mod), typeof(string), typeof(bool) }).Invoke(null, new object[] { Mod, $"AltBiomeName.{Name}", false });
-            Description = (ModTranslation)typeof(LocalizationLoader).GetMethod("GetOrCreateTranslation",
-                BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static,
-                new Type[] { typeof(Mod), typeof(string), typeof(bool) }).Invoke(null, new object[] { Mod, $"AltBiomeDescription.{Name}", true });
-            GenPassName = (ModTranslation)typeof(LocalizationLoader).GetMethod("GetOrCreateTranslation",
-                BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static,
-                new Type[] { typeof(Mod), typeof(string), typeof(bool) }).Invoke(null, new object[] { Mod, $"AltBiomeGen.{Name}", true });
+            DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"AltBiomeName.{Name}", false);
+            Description = LocalizationLoader.GetOrCreateTranslation(Mod, $"AltBiomeDescription.{Name}", true);
+            GenPassName = LocalizationLoader.GetOrCreateTranslation(Mod, $"AltBiomeGen.{Name}", true);
 
             AltLibrary.Biomes.Add(this);
             if (BossBulb != null) AltLibrary.planteraBulbs.Add((int)BossBulb);
