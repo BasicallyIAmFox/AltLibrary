@@ -27,13 +27,10 @@ namespace AltLibrary.Core
             SmashAltarInfection.Init();
             MowingGrassTile.Init();
             MimicSummon.Init();
-            BloodMoonCritterTransformations.Init();
+            SimpleReplacements.Load();
             DryadText.Init();
             JungleHuts.Init(); // TODO: redo?
-            NearbyAltChloro.Init();
-            EvilWofBox.Init();
             TenthAnniversaryFix.Init();
-            ShadowKeyReplacement.Init();
             LiquidILHooks.Init();
             DrunkCrimsonFix.Load();
         }
@@ -53,13 +50,10 @@ namespace AltLibrary.Core
             SmashAltarInfection.Unload();
             MowingGrassTile.Unload();
             MimicSummon.Unload();
-            BloodMoonCritterTransformations.Unload();
+            SimpleReplacements.Unload();
             DryadText.Unload();
             JungleHuts.Unload();
-            NearbyAltChloro.Unload();
-            EvilWofBox.Unload();
             TenthAnniversaryFix.Unload();
-            ShadowKeyReplacement.Unload();
             LiquidILHooks.Unload();
             GenPasses.Unload();
             DrunkCrimsonFix.Unload();
