@@ -131,8 +131,9 @@ namespace AltLibrary.Common.Systems
             {
                 AltBiomePercentages[i + 4] = mods[i] * 100f / (solid * 100f);
             }
-            Main.npcChatText = Language.GetTextValue("Mods.AltLibrary.AnalysisDone") + "\n\n\n\n\n\n\n\n\n\n";
+            Main.npcChatText = Language.GetTextValue("Mods.AltLibrary.AnalysisDone") + AnalysisDoneSpaces;
         }
+        internal const string AnalysisDoneSpaces = "\n\n\n\n\n\n\n\n\n\n";
 
         //move to utility function later
         private static void ShuffleArrayUsingSeed<T>(T[] list, UnifiedRandom seed)
