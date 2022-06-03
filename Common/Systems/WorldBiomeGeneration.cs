@@ -13,24 +13,26 @@ using Terraria.WorldBuilding;
 
 namespace AltLibrary.Common.Systems
 {
-    internal class WorldBiomeGeneration : ModSystem
+    public class WorldBiomeGeneration : ModSystem
     {
-        public static int dungeonSide = 0;
+        public static int DungeonSide { get; internal set; } = 0;
+        public static int DungeonLocation { get; internal set; } = 0;
         private const int beachBordersWidth = 275;
         private const int beachSandRandomCenter = beachBordersWidth + 45;
         private const int evilBiomeBeachAvoidance = beachSandRandomCenter + 60;
         private const int evilBiomeAvoidanceMidFixer = 50;
 
-        internal static int worldCrimson;
-        internal static bool worldCrimson2;
-        internal static AltBiome worldCrimson3;
+        public static int WorldCrimson { get; internal set; }
+        public static bool WorldCrimson2 { get; internal set; }
+        public static AltBiome WorldCrimson3 { get; internal set; }
 
         public override void Unload()
         {
-            dungeonSide = 0;
-            worldCrimson = 0;
-            worldCrimson2 = false;
-            worldCrimson3 = null;
+            DungeonSide = 0;
+            DungeonLocation = 0;
+            WorldCrimson = 0;
+            WorldCrimson2 = false;
+            WorldCrimson3 = null;
         }
 
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
@@ -320,9 +322,9 @@ namespace AltLibrary.Common.Systems
                 bool worldCrimson2 = worldCrimson == -666;
                 AltBiome worldCrimson3 = worldCrimson >= 0 ? AltLibrary.Biomes[worldCrimson] : null;
                 WorldBiomeManager.drunkEvil = worldCrimson3 != null ? worldCrimson3.FullName : (!worldCrimson2 ? "Terraria/Corruption" : "Terraria/Crimson");
-                WorldBiomeGeneration.worldCrimson = worldCrimson;
-                WorldBiomeGeneration.worldCrimson2 = worldCrimson2;
-                WorldBiomeGeneration.worldCrimson3 = worldCrimson3;
+                WorldBiomeGeneration.WorldCrimson = worldCrimson;
+                WorldBiomeGeneration.WorldCrimson2 = worldCrimson2;
+                WorldBiomeGeneration.WorldCrimson3 = worldCrimson3;
             }
         }
 
@@ -644,11 +646,11 @@ namespace AltLibrary.Common.Systems
                         {
                             num692 = num694 - evilBiomeAvoidanceMidFixer;
                         }
-                        if (dungeonSide < 0 && num693 < 400)
+                        if (DungeonSide < 0 && num693 < 400)
                         {
                             num693 = 400;
                         }
-                        else if (dungeonSide > 0 && num693 > Main.maxTilesX - 400)
+                        else if (DungeonSide > 0 && num693 > Main.maxTilesX - 400)
                         {
                             num693 = Main.maxTilesX - 400;
                         }
@@ -676,7 +678,7 @@ namespace AltLibrary.Common.Systems
                         {
                             flag48 = false;
                         }
-                        if (num693 < dungeonSide + num685 && num694 > dungeonSide - num685)
+                        if (num693 < DungeonSide + num685 && num694 > DungeonSide - num685)
                         {
                             flag48 = false;
                         }
@@ -760,14 +762,14 @@ namespace AltLibrary.Common.Systems
                                     tile59 = Main.tile[i2, num703];
                                     int value1 = TileID.Crimsand;
                                     int value2 = TileID.Ebonsand;
-                                    int value3 = worldCrimson3 != null ? (worldCrimson3.BiomeSand ?? TileID.Sand) : TileID.Sand;
-                                    tile59.TileType = (ushort)(worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                                    int value3 = WorldCrimson3 != null ? (WorldCrimson3.BiomeSand ?? TileID.Sand) : TileID.Sand;
+                                    tile59.TileType = (ushort)(WorldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
                                 }
                                 tile59 = Main.tile[i2, num703];
-                                if (tile59.TileType == TileID.Dirt && num703 < Main.worldSurface - 1.0 && !flag49 && worldCrimson3 != null && worldCrimson3.BiomeGrass.HasValue)
+                                if (tile59.TileType == TileID.Dirt && num703 < Main.worldSurface - 1.0 && !flag49 && WorldCrimson3 != null && WorldCrimson3.BiomeGrass.HasValue)
                                 {
                                     typeof(WorldGen).GetField("grassSpread", BindingFlags.NonPublic | BindingFlags.Static).SetValue(null, 0);
-                                    WorldGen.SpreadGrass(i2, num703, 0, worldCrimson3.BiomeGrass.Value, true, 0);
+                                    WorldGen.SpreadGrass(i2, num703, 0, WorldCrimson3.BiomeGrass.Value, true, 0);
                                 }
                                 flag49 = true;
                                 tile59 = Main.tile[i2, num703];
@@ -793,8 +795,8 @@ namespace AltLibrary.Common.Systems
                                         tile59 = Main.tile[i2, num703];
                                         int value1 = TileID.Crimstone;
                                         int value2 = TileID.Ebonstone;
-                                        int value3 = worldCrimson3 != null ? (worldCrimson3.BiomeStone ?? TileID.Stone) : TileID.Stone;
-                                        tile59.TileType = (ushort)(worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                                        int value3 = WorldCrimson3 != null ? (WorldCrimson3.BiomeStone ?? TileID.Stone) : TileID.Stone;
+                                        tile59.TileType = (ushort)(WorldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
                                     }
                                 }
                                 else
@@ -805,8 +807,8 @@ namespace AltLibrary.Common.Systems
                                         tile59 = Main.tile[i2, num703];
                                         int value1 = TileID.CrimsonGrass;
                                         int value2 = TileID.CorruptGrass;
-                                        int value3 = worldCrimson3 != null ? (worldCrimson3.BiomeGrass ?? TileID.Grass) : TileID.Grass;
-                                        tile59.TileType = (ushort)(worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                                        int value3 = WorldCrimson3 != null ? (WorldCrimson3.BiomeGrass ?? TileID.Grass) : TileID.Grass;
+                                        tile59.TileType = (ushort)(WorldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
                                     }
                                     else
                                     {
@@ -816,8 +818,8 @@ namespace AltLibrary.Common.Systems
                                             tile59 = Main.tile[i2, num703];
                                             int value1 = 200;
                                             int value2 = TileID.CorruptIce;
-                                            int value3 = worldCrimson3 != null ? (worldCrimson3.BiomeIce ?? TileID.IceBlock) : TileID.IceBlock;
-                                            tile59.TileType = (ushort)(worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                                            int value3 = WorldCrimson3 != null ? (WorldCrimson3.BiomeIce ?? TileID.IceBlock) : TileID.IceBlock;
+                                            tile59.TileType = (ushort)(WorldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
                                         }
                                         else
                                         {
@@ -827,8 +829,8 @@ namespace AltLibrary.Common.Systems
                                                 tile59 = Main.tile[i2, num703];
                                                 int value1 = TileID.CrimsonSandstone;
                                                 int value2 = TileID.CorruptSandstone;
-                                                int value3 = worldCrimson3 != null ? (worldCrimson3.BiomeSandstone ?? TileID.Sandstone) : TileID.Sandstone;
-                                                tile59.TileType = (ushort)(worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                                                int value3 = WorldCrimson3 != null ? (WorldCrimson3.BiomeSandstone ?? TileID.Sandstone) : TileID.Sandstone;
+                                                tile59.TileType = (ushort)(WorldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
                                             }
                                             else
                                             {
@@ -838,8 +840,8 @@ namespace AltLibrary.Common.Systems
                                                     tile59 = Main.tile[i2, num703];
                                                     int value1 = TileID.CrimsonHardenedSand;
                                                     int value2 = TileID.CorruptHardenedSand;
-                                                    int value3 = worldCrimson3 != null ? (worldCrimson3.BiomeHardenedSand ?? TileID.HardenedSand) : TileID.HardenedSand;
-                                                    tile59.TileType = (ushort)(worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                                                    int value3 = WorldCrimson3 != null ? (WorldCrimson3.BiomeHardenedSand ?? TileID.HardenedSand) : TileID.HardenedSand;
+                                                    tile59.TileType = (ushort)(WorldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
                                                 }
                                             }
                                         }
@@ -903,7 +905,7 @@ namespace AltLibrary.Common.Systems
                                 if (tile59.HasTile)
                                 {
                                     tile59 = Main.tile[x27, num708 + 1];
-                                    if (worldCrimson3 != null && worldCrimson3.BiomeStone.HasValue && tile59.TileType == worldCrimson3.BiomeStone.Value)
+                                    if (WorldCrimson3 != null && WorldCrimson3.BiomeStone.HasValue && tile59.TileType == WorldCrimson3.BiomeStone.Value)
                                     {
                                     }
                                 }
@@ -917,7 +919,10 @@ namespace AltLibrary.Common.Systems
                         }
                     }
                 }
-                WorldGen.CrimPlaceHearts();
+                if (WorldBiomeManager.drunkEvil == "Terraria/Crimson")
+                {
+                    WorldGen.CrimPlaceHearts();
+                }
             }
             if (WorldGen.drunkWorldGen)
             {
@@ -999,7 +1004,7 @@ namespace AltLibrary.Common.Systems
                         {
                             flag51 = false;
                         }
-                        if (num715 < dungeonSide + num685 && num716 > dungeonSide - num685)
+                        if (num715 < DungeonSide + num685 && num716 > DungeonSide - num685)
                         {
                             flag51 = false;
                         }

@@ -7,7 +7,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.WorldBuilding;
 
-namespace AltLibrary.Common.AltBiomes
+namespace AltLibrary.Common
 {
     public class EvilBiomeGenerationPass
     {

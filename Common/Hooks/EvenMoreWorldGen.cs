@@ -56,9 +56,6 @@ namespace AltLibrary.Common.Hooks
 
             c.Index++;
             c.EmitDelegate(() => WorldBiomeManager.WorldJungle == "");
-            //c.Emit(OpCodes.Ldsfld, typeof(WorldBiomeManager).GetField(nameof(WorldBiomeManager.worldJungle), BindingFlags.Public | BindingFlags.Static));
-            //c.Emit(OpCodes.Ldstr, "");
-            //c.Emit(OpCodes.Call, typeof(string).GetMethod("op_Equality", new Type[] { typeof(string), typeof(string) }));
             c.Emit(OpCodes.Brfalse_S, label);
 
             if (!c.TryGotoNext(i => i.MatchLdstr("..Long Minecart Tracks")))
@@ -107,11 +104,8 @@ namespace AltLibrary.Common.Hooks
                 AltLibrary.Instance.Logger.Info("d2 $ 1");
                 return;
             }
-
-
             c.Index++;
             c.EmitDelegate((bool i) => true);
-
             c.Index = index;
 
             ILLabel label = c.DefineLabel();
@@ -125,8 +119,8 @@ namespace AltLibrary.Common.Hooks
                 {
                     int value1 = TileID.Crimsand;
                     int value2 = TileID.Ebonsand;
-                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeSand ?? TileID.Sand) : TileID.Sand;
-                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                    int value3 = WorldBiomeGeneration.WorldCrimson3 != null ? (WorldBiomeGeneration.WorldCrimson3.BiomeSand ?? TileID.Sand) : TileID.Sand;
+                    return (ushort)(WorldBiomeGeneration.WorldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
                 },
                 (orig) => true);
             ALUtils.ReplaceIDs(il, TileID.CrimsonGrass,
@@ -134,8 +128,8 @@ namespace AltLibrary.Common.Hooks
                 {
                     int value1 = TileID.CrimsonGrass;
                     int value2 = TileID.CorruptGrass;
-                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeGrass ?? TileID.Grass) : TileID.Grass;
-                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                    int value3 = WorldBiomeGeneration.WorldCrimson3 != null ? (WorldBiomeGeneration.WorldCrimson3.BiomeGrass ?? TileID.Grass) : TileID.Grass;
+                    return (ushort)(WorldBiomeGeneration.WorldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
                 },
                 (orig) => true);
             ALUtils.ReplaceIDs(il, TileID.FleshIce,
@@ -143,8 +137,8 @@ namespace AltLibrary.Common.Hooks
                 {
                     int value1 = TileID.FleshIce;
                     int value2 = TileID.CorruptIce;
-                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeIce ?? TileID.IceBlock) : TileID.IceBlock;
-                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                    int value3 = WorldBiomeGeneration.WorldCrimson3 != null ? (WorldBiomeGeneration.WorldCrimson3.BiomeIce ?? TileID.IceBlock) : TileID.IceBlock;
+                    return (ushort)(WorldBiomeGeneration.WorldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
                 },
                 (orig) => true);
             ALUtils.ReplaceIDs(il, TileID.CrimsonSandstone,
@@ -152,8 +146,8 @@ namespace AltLibrary.Common.Hooks
                 {
                     int value1 = TileID.CrimsonSandstone;
                     int value2 = TileID.CorruptSandstone;
-                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeSandstone ?? TileID.Sandstone) : TileID.Sandstone;
-                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                    int value3 = WorldBiomeGeneration.WorldCrimson3 != null ? (WorldBiomeGeneration.WorldCrimson3.BiomeSandstone ?? TileID.Sandstone) : TileID.Sandstone;
+                    return (ushort)(WorldBiomeGeneration.WorldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
                 },
                 (orig) => true);
             ALUtils.ReplaceIDs(il, TileID.CrimsonHardenedSand,
@@ -161,8 +155,8 @@ namespace AltLibrary.Common.Hooks
                 {
                     int value1 = TileID.CrimsonHardenedSand;
                     int value2 = TileID.CorruptHardenedSand;
-                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeHardenedSand ?? TileID.HardenedSand) : TileID.HardenedSand;
-                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                    int value3 = WorldBiomeGeneration.WorldCrimson3 != null ? (WorldBiomeGeneration.WorldCrimson3.BiomeHardenedSand ?? TileID.HardenedSand) : TileID.HardenedSand;
+                    return (ushort)(WorldBiomeGeneration.WorldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
                 },
                 (orig) => true);
 
@@ -341,8 +335,8 @@ namespace AltLibrary.Common.Hooks
                 {
                     int value1 = TileID.Crimsand;
                     int value2 = TileID.Ebonsand;
-                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeSand ?? TileID.Sand) : TileID.Sand;
-                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                    int value3 = WorldBiomeGeneration.WorldCrimson3 != null ? (WorldBiomeGeneration.WorldCrimson3.BiomeSand ?? TileID.Sand) : TileID.Sand;
+                    return (ushort)(WorldBiomeGeneration.WorldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
                 }
                 return orig;
             });
@@ -360,8 +354,8 @@ namespace AltLibrary.Common.Hooks
                 {
                     int value1 = TileID.CrimsonGrass;
                     int value2 = TileID.CorruptGrass;
-                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeGrass ?? TileID.Grass) : TileID.Grass;
-                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                    int value3 = WorldBiomeGeneration.WorldCrimson3 != null ? (WorldBiomeGeneration.WorldCrimson3.BiomeGrass ?? TileID.Grass) : TileID.Grass;
+                    return (ushort)(WorldBiomeGeneration.WorldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
                 }
                 return orig;
             });
@@ -379,8 +373,8 @@ namespace AltLibrary.Common.Hooks
                 {
                     int value1 = TileID.Crimstone;
                     int value2 = TileID.Ebonstone;
-                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeStone ?? TileID.Stone) : TileID.Stone;
-                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                    int value3 = WorldBiomeGeneration.WorldCrimson3 != null ? (WorldBiomeGeneration.WorldCrimson3.BiomeStone ?? TileID.Stone) : TileID.Stone;
+                    return (ushort)(WorldBiomeGeneration.WorldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
                 }
                 return orig;
             });
@@ -398,8 +392,8 @@ namespace AltLibrary.Common.Hooks
                 {
                     int value1 = TileID.CrimsonGrass;
                     int value2 = TileID.CorruptGrass;
-                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeGrass ?? TileID.Grass) : TileID.Grass;
-                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                    int value3 = WorldBiomeGeneration.WorldCrimson3 != null ? (WorldBiomeGeneration.WorldCrimson3.BiomeGrass ?? TileID.Grass) : TileID.Grass;
+                    return (ushort)(WorldBiomeGeneration.WorldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
                 }
                 return orig;
             });
@@ -417,8 +411,8 @@ namespace AltLibrary.Common.Hooks
                 {
                     int value1 = orig;
                     int value2 = TileID.CorruptIce;
-                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeIce ?? TileID.IceBlock) : TileID.IceBlock;
-                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                    int value3 = WorldBiomeGeneration.WorldCrimson3 != null ? (WorldBiomeGeneration.WorldCrimson3.BiomeIce ?? TileID.IceBlock) : TileID.IceBlock;
+                    return (ushort)(WorldBiomeGeneration.WorldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
                 }
                 return orig;
             });
@@ -436,8 +430,8 @@ namespace AltLibrary.Common.Hooks
                 {
                     int value1 = TileID.CrimsonSandstone;
                     int value2 = TileID.CorruptSandstone;
-                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeSandstone ?? TileID.Sandstone) : TileID.Sandstone;
-                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                    int value3 = WorldBiomeGeneration.WorldCrimson3 != null ? (WorldBiomeGeneration.WorldCrimson3.BiomeSandstone ?? TileID.Sandstone) : TileID.Sandstone;
+                    return (ushort)(WorldBiomeGeneration.WorldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
                 }
                 return orig;
             });
@@ -455,8 +449,8 @@ namespace AltLibrary.Common.Hooks
                 {
                     int value1 = TileID.CrimsonHardenedSand;
                     int value2 = TileID.CorruptHardenedSand;
-                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeHardenedSand ?? TileID.HardenedSand) : TileID.HardenedSand;
-                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                    int value3 = WorldBiomeGeneration.WorldCrimson3 != null ? (WorldBiomeGeneration.WorldCrimson3.BiomeHardenedSand ?? TileID.HardenedSand) : TileID.HardenedSand;
+                    return (ushort)(WorldBiomeGeneration.WorldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
                 }
                 return orig;
             });
@@ -494,8 +488,8 @@ namespace AltLibrary.Common.Hooks
                 {
                     int value1 = TileID.Crimsand;
                     int value2 = TileID.Ebonsand;
-                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeSand ?? TileID.Sand) : TileID.Sand;
-                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                    int value3 = WorldBiomeGeneration.WorldCrimson3 != null ? (WorldBiomeGeneration.WorldCrimson3.BiomeSand ?? TileID.Sand) : TileID.Sand;
+                    return (ushort)(WorldBiomeGeneration.WorldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
                 }
                 return orig;
             });
@@ -513,8 +507,8 @@ namespace AltLibrary.Common.Hooks
                 {
                     int value1 = TileID.CrimsonGrass;
                     int value2 = TileID.CorruptGrass;
-                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeGrass ?? TileID.Grass) : TileID.Grass;
-                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                    int value3 = WorldBiomeGeneration.WorldCrimson3 != null ? (WorldBiomeGeneration.WorldCrimson3.BiomeGrass ?? TileID.Grass) : TileID.Grass;
+                    return (ushort)(WorldBiomeGeneration.WorldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
                 }
                 return orig;
             });
@@ -532,8 +526,8 @@ namespace AltLibrary.Common.Hooks
                 {
                     int value1 = TileID.Crimstone;
                     int value2 = TileID.Ebonstone;
-                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeStone ?? TileID.Stone) : TileID.Stone;
-                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                    int value3 = WorldBiomeGeneration.WorldCrimson3 != null ? (WorldBiomeGeneration.WorldCrimson3.BiomeStone ?? TileID.Stone) : TileID.Stone;
+                    return (ushort)(WorldBiomeGeneration.WorldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
                 }
                 return orig;
             });
@@ -551,8 +545,8 @@ namespace AltLibrary.Common.Hooks
                 {
                     int value1 = TileID.CrimsonGrass;
                     int value2 = TileID.CorruptGrass;
-                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeGrass ?? TileID.Grass) : TileID.Grass;
-                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                    int value3 = WorldBiomeGeneration.WorldCrimson3 != null ? (WorldBiomeGeneration.WorldCrimson3.BiomeGrass ?? TileID.Grass) : TileID.Grass;
+                    return (ushort)(WorldBiomeGeneration.WorldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
                 }
                 return orig;
             });
@@ -570,8 +564,8 @@ namespace AltLibrary.Common.Hooks
                 {
                     int value1 = TileID.FleshIce;
                     int value2 = TileID.CorruptIce;
-                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeIce ?? TileID.IceBlock) : TileID.IceBlock;
-                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                    int value3 = WorldBiomeGeneration.WorldCrimson3 != null ? (WorldBiomeGeneration.WorldCrimson3.BiomeIce ?? TileID.IceBlock) : TileID.IceBlock;
+                    return (ushort)(WorldBiomeGeneration.WorldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
                 }
                 return orig;
             });
@@ -589,8 +583,8 @@ namespace AltLibrary.Common.Hooks
                 {
                     int value1 = TileID.CrimsonSandstone;
                     int value2 = TileID.CorruptSandstone;
-                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeSand ?? TileID.Sandstone) : TileID.Sandstone;
-                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                    int value3 = WorldBiomeGeneration.WorldCrimson3 != null ? (WorldBiomeGeneration.WorldCrimson3.BiomeSand ?? TileID.Sandstone) : TileID.Sandstone;
+                    return (ushort)(WorldBiomeGeneration.WorldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
                 }
                 return orig;
             });
@@ -608,8 +602,8 @@ namespace AltLibrary.Common.Hooks
                 {
                     int value1 = TileID.CrimsonHardenedSand;
                     int value2 = TileID.CorruptHardenedSand;
-                    int value3 = WorldBiomeGeneration.worldCrimson3 != null ? (WorldBiomeGeneration.worldCrimson3.BiomeHardenedSand ?? TileID.HardenedSand) : TileID.HardenedSand;
-                    return (ushort)(WorldBiomeGeneration.worldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
+                    int value3 = WorldBiomeGeneration.WorldCrimson3 != null ? (WorldBiomeGeneration.WorldCrimson3.BiomeHardenedSand ?? TileID.HardenedSand) : TileID.HardenedSand;
+                    return (ushort)(WorldBiomeGeneration.WorldCrimson2 ? (WorldGen.crimson ? value2 : value1) : value3);
                 }
                 return orig;
             });
@@ -736,7 +730,7 @@ namespace AltLibrary.Common.Hooks
 
             c.EmitDelegate<Func<int, int>>(dungeonSide =>
             {
-                WorldBiomeGeneration.dungeonSide = dungeonSide;
+                WorldBiomeGeneration.DungeonSide = dungeonSide;
                 return dungeonSide;
             });
 
@@ -744,6 +738,21 @@ namespace AltLibrary.Common.Hooks
             replaceValues(() => WorldBiomeManager.Iron, (-3, TileID.Iron), (-4, TileID.Lead), iron);
             replaceValues(() => WorldBiomeManager.Silver, (-5, TileID.Silver), (-6, TileID.Tungsten), silver);
             replaceValues(() => WorldBiomeManager.Gold, (-7, TileID.Gold), (-8, TileID.Platinum), gold);
+
+            for (int i = 0; i < 2; i++)
+            {
+                if (!c.TryGotoNext(i => i.MatchRet()))
+                {
+                    return;
+                }
+                c.Index--;
+                c.EmitDelegate<Func<int, int>>(dungeonLocation =>
+                {
+                    WorldBiomeGeneration.DungeonLocation = dungeonLocation;
+                    return dungeonLocation;
+                });
+                c.Index += 2;
+            }
 
             void replaceValues(Func<int> type, ValueTuple<int, int> value1, ValueTuple<int, int> value2, FieldReference field)
             {

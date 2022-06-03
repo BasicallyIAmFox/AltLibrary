@@ -1,20 +1,13 @@
-using AltLibrary.Common.Systems;
-using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
 
 namespace AltLibrary.Common.AltBiomes
 {
-
-	internal static class EvilBiomeGenerationPassHandler {
+    internal static class EvilBiomeGenerationPassHandler {
 		internal static bool GenerateAllCorruption(
 			object encapsulated,
 			GenerationProgress progress)
@@ -31,7 +24,7 @@ namespace AltLibrary.Common.AltBiomes
 			for (int i = 0; i < Main.maxTilesX; i++)
 			{
 				int snowJungleIter = 0;
-				while ((double)snowJungleIter < Main.worldSurface)
+				while (snowJungleIter < Main.worldSurface)
 				{
 					if (Main.tile[i, snowJungleIter].HasTile)
 					{
@@ -82,11 +75,9 @@ namespace AltLibrary.Common.AltBiomes
 				{
 					n--;
 					int k = WorldGen.genRand.Next(n + 1);
-					EvilBiomeGenerationPass value = EvilBiomes[k];
-					EvilBiomes[k] = EvilBiomes[n];
-					EvilBiomes[n] = value;
-				}
-			}
+                    (EvilBiomes[n], EvilBiomes[k]) = (EvilBiomes[k], EvilBiomes[n]);
+                }
+            }
 			else
 			{
 				if (UIWorldCreationEdits.AltEvilBiomeChosenType == -333)
@@ -98,7 +89,7 @@ namespace AltLibrary.Common.AltBiomes
 			}
 			
 
-			double numberPasses = (double)Main.maxTilesX * 0.00045;
+			double numberPasses = Main.maxTilesX * 0.00045;
 			numberPasses /= EvilBiomes.Count;
 
 			int drunkIter = 0;
@@ -109,14 +100,10 @@ namespace AltLibrary.Common.AltBiomes
 				progress.Message = i.ProgressMessage;
 
 				int passesDone = 0;
-				while ((double)passesDone < numberPasses)
+				while (passesDone < numberPasses)
 				{
-					int evilMid;
-					int evilLeft;
-					int evilRight;
-
-					i.GetEvilSpawnLocation(dungeonSide, dungeonLocation, SnowBoundMinX, SnowBoundMaxX, JungleBoundMinX, JungleBoundMaxX, drunkIter, drunkMax, out evilMid, out evilLeft, out evilRight);
-					i.GenerateEvil(evilMid, evilLeft, evilRight);
+                    i.GetEvilSpawnLocation(dungeonSide, dungeonLocation, SnowBoundMinX, SnowBoundMaxX, JungleBoundMinX, JungleBoundMaxX, drunkIter, drunkMax, out int evilMid, out int evilLeft, out int evilRight);
+                    i.GenerateEvil(evilMid, evilLeft, evilRight);
 					passesDone++;
 				}
 				i.PostGenerateEvil();
@@ -132,9 +119,9 @@ namespace AltLibrary.Common.AltBiomes
 		private const int beachBordersWidth = 275;
 		private const int beachSandRandomCenter = beachBordersWidth + 5 + 40;
 		private const int evilBiomeBeachAvoidance = beachSandRandomCenter + 60;
-		public virtual int evilBiomeAvoidanceMidFixer => 50;
-		public virtual int nonDrunkBorderDist => 500;
-		public virtual int dungeonGive => 100;
+		public virtual int EvilBiomeAvoidanceMidFixer => 50;
+		public virtual int NonDrunkBorderDist => 500;
+		public virtual int DungeonGive => 100;
 
 		public virtual int DrunkRNGMapCenterGive => 200; //100 if crimson
 
@@ -192,10 +179,10 @@ namespace AltLibrary.Common.AltBiomes
 				{
 					MapCenterGive = DrunkRNGMapCenterGive;
 
-					int diff = Main.maxTilesX - nonDrunkBorderDist - nonDrunkBorderDist;
+					int diff = Main.maxTilesX - NonDrunkBorderDist - NonDrunkBorderDist;
 
-					int left = nonDrunkBorderDist + diff * currentDrunkIter / (maxDrunkBorders);
-					int right = nonDrunkBorderDist + diff * (currentDrunkIter + 1) / (maxDrunkBorders);
+					int left = NonDrunkBorderDist + diff * currentDrunkIter / (maxDrunkBorders);
+					int right = NonDrunkBorderDist + diff * (currentDrunkIter + 1) / (maxDrunkBorders);
 
 					evilBiomePosition = WorldGen.genRand.Next(left, right);
 
@@ -207,7 +194,7 @@ namespace AltLibrary.Common.AltBiomes
 				}
 				else
 				{
-					evilBiomePosition = WorldGen.genRand.Next(nonDrunkBorderDist, Main.maxTilesX - nonDrunkBorderDist);
+					evilBiomePosition = WorldGen.genRand.Next(NonDrunkBorderDist, Main.maxTilesX - NonDrunkBorderDist);
 				}
 				evilBiomePositionWestBound = evilBiomePosition - WorldGen.genRand.Next(200) - 100;
 				evilBiomePositionEastBound = evilBiomePosition + WorldGen.genRand.Next(200) + 100;
@@ -220,13 +207,13 @@ namespace AltLibrary.Common.AltBiomes
 				{
 					evilBiomePositionEastBound = Main.maxTilesX - evilBiomeBeachAvoidance;
 				}
-				if (evilBiomePosition < evilBiomePositionWestBound + evilBiomeAvoidanceMidFixer)
+				if (evilBiomePosition < evilBiomePositionWestBound + EvilBiomeAvoidanceMidFixer)
 				{
-					evilBiomePosition = evilBiomePositionWestBound + evilBiomeAvoidanceMidFixer;
+					evilBiomePosition = evilBiomePositionWestBound + EvilBiomeAvoidanceMidFixer;
 				}
-				if (evilBiomePosition > evilBiomePositionEastBound - evilBiomeAvoidanceMidFixer)
+				if (evilBiomePosition > evilBiomePositionEastBound - EvilBiomeAvoidanceMidFixer)
 				{
-					evilBiomePosition = evilBiomePositionEastBound - evilBiomeAvoidanceMidFixer;
+					evilBiomePosition = evilBiomePositionEastBound - EvilBiomeAvoidanceMidFixer;
 				}
 				//DIFFERENCE 2 - CRIMSON ONLY
 				if (!CanGenerateNearDungeonOcean)
@@ -265,7 +252,7 @@ namespace AltLibrary.Common.AltBiomes
 				{
 					FoundEvilLocation = false;
 				}
-				if (evilBiomePositionWestBound < dungeonLocation + dungeonGive && evilBiomePositionEastBound > dungeonLocation - dungeonGive)
+				if (evilBiomePositionWestBound < dungeonLocation + DungeonGive && evilBiomePositionEastBound > dungeonLocation - DungeonGive)
 				{
 					FoundEvilLocation = false;
 				}
