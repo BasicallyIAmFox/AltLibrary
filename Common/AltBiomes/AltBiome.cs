@@ -45,6 +45,16 @@ namespace AltLibrary.Common.AltBiomes
             private set;
         }
 
+        /// <summary>
+        /// Set this to something if for some reason you need RNG generation types or something
+        /// </summary>
+        public virtual EvilBiomeGenerationPass GetEvilBiomeGenerationPass() { return EvilBiomeGenerationPass; }
+
+        /// <summary>
+        /// Set this to something so your evil biome can generate
+        /// </summary>
+        public EvilBiomeGenerationPass EvilBiomeGenerationPass = null;
+
         #region Dungeon Loot
         /// <summary>
         /// For Underworld alts. If your biome uses a different kind of locked chest than a Shadow Chest, set this field to your equivalent to a Shadow Key so that it may appear in the Dungeon
