@@ -2,12 +2,10 @@
 using AltLibrary.Common.AltLiquidStyles.Hooks;
 using AltLibrary.Common.Hooks;
 using AltLibrary.Common.Systems;
-using AltLibrary.Content.NPCs;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Localization;
-using Terraria.ModLoader;
 
 namespace AltLibrary.Core
 {

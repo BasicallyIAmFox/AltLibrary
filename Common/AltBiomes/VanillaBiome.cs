@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using AltLibrary.Core.Generation;
+using Microsoft.Xna.Framework;
 using Terraria.ModLoader;
 
 namespace AltLibrary.Common.AltBiomes
@@ -11,7 +12,7 @@ namespace AltLibrary.Common.AltBiomes
 
         private readonly string name;
         private readonly Color nameColor;
-        
+
         public override EvilBiomeGenerationPass GetEvilBiomeGenerationPass()
         {
             switch (SpecialValueForWorldUIDoNotTouchElseYouCanBreakStuff)
@@ -24,7 +25,7 @@ namespace AltLibrary.Common.AltBiomes
 
         internal static readonly EvilBiomeGenerationPass corruptPass = new CorruptionEvilBiomeGenerationPass();
         internal static readonly EvilBiomeGenerationPass crimsonPass = new CrimsonEvilBiomeGenerationPass();
-        
+
         public VanillaBiome(string name, BiomeType biome, int type, Color nameColor, bool? fix = null)
         {
             this.name = name;

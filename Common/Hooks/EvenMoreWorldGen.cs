@@ -1,5 +1,6 @@
 using AltLibrary.Common.AltBiomes;
 using AltLibrary.Common.Systems;
+using AltLibrary.Core.Generation;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;

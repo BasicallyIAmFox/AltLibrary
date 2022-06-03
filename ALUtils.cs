@@ -16,7 +16,7 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 
-namespace AltLibrary.Common
+namespace AltLibrary
 {
     internal static class ALUtils
     {
@@ -170,9 +170,9 @@ namespace AltLibrary.Common
 
             Vector2 vector = new Vector2(Main.mouseX, Main.mouseY) + new Vector2(16f);
             vector += new Vector2(8f, 2f);
-            if (vector.Y > Main.screenHeight - (30 * lineAmount))
+            if (vector.Y > Main.screenHeight - 30 * lineAmount)
             {
-                vector.Y = Main.screenHeight - (30 * lineAmount);
+                vector.Y = Main.screenHeight - 30 * lineAmount;
             }
 
             if (vector.X > Main.screenWidth - num7)
@@ -187,12 +187,12 @@ namespace AltLibrary.Common
             const int num9 = 5;
             Utils.DrawInvBG(
                 spriteBatch,
-                new Rectangle((int)vector.X - num8, (int)vector.Y - num9, (int)num7 + (num8 * 2),
-                    (30 * lineAmount) + num9 + (num9 / 2)), new Color(23, 25, 81, 255) * 0.925f * 0.85f);
+                new Rectangle((int)vector.X - num8, (int)vector.Y - num9, (int)num7 + num8 * 2,
+                    30 * lineAmount + num9 + num9 / 2), new Color(23, 25, 81, 255) * 0.925f * 0.85f);
             for (int m = 0; m < lineAmount; m++)
             {
                 Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value, array[m], vector.X,
-                    vector.Y + (m * 30), color, Color.Black, Vector2.Zero);
+                    vector.Y + m * 30, color, Color.Black, Vector2.Zero);
             }
         }
 

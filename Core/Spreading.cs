@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace AltLibrary.Common
+namespace AltLibrary.Core
 {
     internal class Spreading : GlobalTile
     {
@@ -32,7 +32,7 @@ namespace AltLibrary.Common
                 }
                 if (biome.BiomeType == BiomeType.Jungle)
                 {
-                    if (type == biome.BiomeGrass || (!biome.BiomeGrass.HasValue && type == biome.BiomeJungleGrass))
+                    if (type == biome.BiomeGrass || !biome.BiomeGrass.HasValue && type == biome.BiomeJungleGrass)
                     {
                         isGrass = true;
                         isOreGrowingTile = true;
@@ -86,8 +86,8 @@ namespace AltLibrary.Common
                         if (WorldGen.InWorld(targetX, targetY) && Main.tile[targetX, targetY].TileType == TileID.Mud)
                         {
                             if (Main.tile[targetX, targetY].IsActuated ||
-                                (Main.tile[targetX, targetY - 1].TileType != TileID.Trees && Main.tile[targetX, targetY - 1].TileType != TileID.LifeFruit
-                                && !AltLibrary.planteraBulbs.Contains(Main.tile[targetX, targetY - 1].TileType)))
+                                Main.tile[targetX, targetY - 1].TileType != TileID.Trees && Main.tile[targetX, targetY - 1].TileType != TileID.LifeFruit
+                                && !AltLibrary.planteraBulbs.Contains(Main.tile[targetX, targetY - 1].TileType))
                             {
                                 target.TileType = 211;
                                 WorldGen.SquareTileFrame(targetX, targetY);
@@ -220,7 +220,7 @@ namespace AltLibrary.Common
                         var oldTileType = target.TileType;
                         int newTileType = -1;
 
-                        if (biome.BiomeType == BiomeType.Evil && (WorldGen.CountNearBlocksTypes(targetX, targetY, 2, 1, TileID.Sunflower) > 0) && NearbyEvilSlowingOres(targetX, targetY)) continue;
+                        if (biome.BiomeType == BiomeType.Evil && WorldGen.CountNearBlocksTypes(targetX, targetY, 2, 1, TileID.Sunflower) > 0 && NearbyEvilSlowingOres(targetX, targetY)) continue;
                         if (canSpread)
                         {
                             if (biome.SpecialConversion.ContainsKey(oldTileType)) newTileType = (ushort)biome.SpecialConversion[oldTileType];

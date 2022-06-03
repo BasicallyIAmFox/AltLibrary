@@ -1,9 +1,11 @@
-﻿using System;
+﻿using AltLibrary.Common.AltBiomes;
+using AltLibrary.Core.Baking;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace AltLibrary.Common.AltBiomes
+namespace AltLibrary.Core
 {
     public static class ALConvert
     {
@@ -87,8 +89,8 @@ namespace AltLibrary.Common.AltBiomes
         /// <param name="fullName"></param>
         public static void SimulateThrownWater(Projectile projectile, string fullName)
         {
-            int i = (int)(projectile.position.X + (projectile.width / 2)) / 16;
-            int j = (int)(projectile.position.Y + (projectile.height / 2)) / 16;
+            int i = (int)(projectile.position.X + projectile.width / 2) / 16;
+            int j = (int)(projectile.position.Y + projectile.height / 2) / 16;
             Convert(fullName, i, j, 4);
         }
 
@@ -100,8 +102,8 @@ namespace AltLibrary.Common.AltBiomes
         /// <param name="name"></param>
         public static void SimulateThrownWater(Projectile projectile, Mod mod, string name)
         {
-            int i = (int)(projectile.position.X + (projectile.width / 2)) / 16;
-            int j = (int)(projectile.position.Y + (projectile.height / 2)) / 16;
+            int i = (int)(projectile.position.X + projectile.width / 2) / 16;
+            int j = (int)(projectile.position.Y + projectile.height / 2) / 16;
             Convert(mod, name, i, j, 4);
         }
 
@@ -112,8 +114,8 @@ namespace AltLibrary.Common.AltBiomes
         /// <param name="projectile"></param>
         public static void SimulateThrownWater<T>(Projectile projectile) where T : AltBiome
         {
-            int i = (int)(projectile.position.X + (projectile.width / 2)) / 16;
-            int j = (int)(projectile.position.Y + (projectile.height / 2)) / 16;
+            int i = (int)(projectile.position.X + projectile.width / 2) / 16;
+            int j = (int)(projectile.position.Y + projectile.height / 2) / 16;
             Convert<T>(i, j, 4);
         }
 
@@ -124,8 +126,8 @@ namespace AltLibrary.Common.AltBiomes
         /// <param name="biome"></param>
         public static void SimulateThrownWater(Projectile projectile, AltBiome biome)
         {
-            int i = (int)(projectile.position.X + (projectile.width / 2)) / 16;
-            int j = (int)(projectile.position.Y + (projectile.height / 2)) / 16;
+            int i = (int)(projectile.position.X + projectile.width / 2) / 16;
+            int j = (int)(projectile.position.Y + projectile.height / 2) / 16;
             Convert(biome, i, j, 4);
         }
 
@@ -137,8 +139,8 @@ namespace AltLibrary.Common.AltBiomes
         public static void SimulateThrownWater<TProj, TBiome>() where TBiome : AltBiome where TProj : Projectile
         {
             Projectile projectile = ContentInstance<TProj>.Instance;
-            int i = (int)(projectile.position.X + (projectile.width / 2)) / 16;
-            int j = (int)(projectile.position.Y + (projectile.height / 2)) / 16;
+            int i = (int)(projectile.position.X + projectile.width / 2) / 16;
+            int j = (int)(projectile.position.Y + projectile.height / 2) / 16;
             Convert<TBiome>(i, j, 4);
         }
 

@@ -1,6 +1,5 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;

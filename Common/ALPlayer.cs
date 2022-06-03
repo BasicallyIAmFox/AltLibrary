@@ -1,5 +1,4 @@
-﻿using AltLibrary.Content.NPCs;
-using Terraria;
+﻿using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 

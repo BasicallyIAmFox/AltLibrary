@@ -1,10 +1,11 @@
+using AltLibrary.Common.AltBiomes;
 using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace AltLibrary.Common.AltBiomes
+namespace AltLibrary.Core.Baking
 {
     internal abstract class BlockParentageData
     {

@@ -3,6 +3,7 @@ using AltLibrary.Common.AltLiquidStyles;
 using AltLibrary.Common.AltOres;
 using AltLibrary.Common.Hooks;
 using AltLibrary.Core;
+using AltLibrary.Core.Baking;
 using AltLibrary.Core.States;
 using System;
 using System.Collections.Generic;

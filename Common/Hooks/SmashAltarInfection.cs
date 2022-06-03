@@ -1,6 +1,6 @@
 using AltLibrary.Common.AltBiomes;
-using AltLibrary.Common.AltOres;
 using AltLibrary.Common.Systems;
+using AltLibrary.Core.Baking;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
@@ -10,7 +10,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.Utilities;
 
 namespace AltLibrary.Common.Hooks
 {
@@ -39,7 +38,7 @@ namespace AltLibrary.Common.Hooks
 
             c.Index++;
             c.Emit(OpCodes.Ldloc_0);
-            c.EmitDelegate(GetDrunkSmashingData);
+            c.EmitDelegate(DrunkenBaking.GetDrunkSmashingData);
 
             for (int j = 0; j < 3; j++)
             {
@@ -80,7 +79,7 @@ namespace AltLibrary.Common.Hooks
                 c.Index += 4;
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_I4, j);
-                c.EmitDelegate(GetSmashAltarText);
+                c.EmitDelegate(DrunkenBaking.GetSmashAltarText);
 
                 if (!c.TryGotoNext(i => i.MatchLdsfld<Lang>(nameof(Lang.misc)),
                     i => i.MatchLdloc(7 + j),
@@ -96,7 +95,7 @@ namespace AltLibrary.Common.Hooks
                 c.Index += 6;
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_I4, j);
-                c.EmitDelegate<Func<int, NetworkText>>((j) => NetworkText.FromLiteral(GetSmashAltarText(j)));
+                c.EmitDelegate<Func<int, NetworkText>>((j) => NetworkText.FromLiteral(DrunkenBaking.GetSmashAltarText(j)));
             }
 
             if (!c.TryGotoNext(i => i.MatchLdcI4(203)))
@@ -190,46 +189,6 @@ namespace AltLibrary.Common.Hooks
                 }
                 return orig;
             });
-        }
-
-        private static bool GetDrunkSmashingData(bool drunk, int smashType)
-        {
-            if (!drunk || smashType != 0 || WorldGen.altarCount == 0)
-                return false;
-            WorldBiomeManager.GetDrunkenOres();
-            return false;
-        }
-
-        private static string GetTranslation(AltOre ore)
-        {
-            return ore.BlessingMessage.GetTranslation(Language.ActiveCulture) ?? Language.GetTextValue("Mods.AltLibrary.BlessBase", ore.DisplayName.GetTranslation(Language.ActiveCulture));
-        }
-
-        private static string GetSmashAltarText(int j)
-        {
-            string key = "";
-            key = j switch
-            {
-                0 => WorldGen.SavedOreTiers.Cobalt switch
-                {
-                    TileID.Cobalt => Lang.misc[12].Value,
-                    TileID.Palladium => Lang.misc[21].Value,
-                    _ => GetTranslation(AltLibrary.Ores.First(o => o.OreType == OreType.Cobalt && o.ore == WorldGen.SavedOreTiers.Cobalt)),
-                },
-                1 => WorldGen.SavedOreTiers.Mythril switch
-                {
-                    TileID.Mythril => Lang.misc[13].Value,
-                    TileID.Orichalcum => Lang.misc[22].Value,
-                    _ => GetTranslation(AltLibrary.Ores.First(o => o.OreType == OreType.Mythril && o.ore == WorldGen.SavedOreTiers.Mythril)),
-                },
-                _ => WorldGen.SavedOreTiers.Adamantite switch
-                {
-                    TileID.Adamantite => Lang.misc[14].Value,
-                    TileID.Titanium => Lang.misc[23].Value,
-                    _ => GetTranslation(AltLibrary.Ores.First(o => o.OreType == OreType.Adamantite && o.ore == WorldGen.SavedOreTiers.Adamantite)),
-                },
-            };
-            return key;
         }
     }
 }

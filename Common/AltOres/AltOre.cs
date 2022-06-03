@@ -1,6 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using Terraria.Localization;
 using Terraria.ModLoader;

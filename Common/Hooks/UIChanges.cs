@@ -1,6 +1,4 @@
-﻿using System;
-using System.Reflection;
-using AltLibrary.Core.UIs;
+﻿using AltLibrary.Core.UIs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil.Cil;
@@ -9,6 +7,8 @@ using MonoMod.RuntimeDetour.HookGen;
 using On.Terraria;
 using On.Terraria.UI;
 using ReLogic.Graphics;
+using System;
+using System.Reflection;
 using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Hooks
