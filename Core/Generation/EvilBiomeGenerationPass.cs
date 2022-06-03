@@ -1,5 +1,6 @@
 using AltLibrary.Common;
 using AltLibrary.Common.AltBiomes;
+using AltLibrary.Common.Systems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,14 +12,10 @@ namespace AltLibrary.Core.Generation
     internal static class EvilBiomeGenerationPassHandler
     {
         internal static bool GenerateAllCorruption(
-            object encapsulated,
+            int dungeonSide,
+            int dungeonLocation,
             GenerationProgress progress)
         {
-            Type encapsuType = encapsulated.GetType();
-            ;
-            int dungeonSide = (int)encapsuType.GetField("dungeonSide").GetValue(encapsulated);
-            int dungeonLocation = (int)encapsuType.GetField("dungeonLocation").GetValue(encapsulated);
-
             int JungleBoundMinX = Main.maxTilesX;
             int JungleBoundMaxX = 0;
             int SnowBoundMinX = Main.maxTilesX;
@@ -82,12 +79,12 @@ namespace AltLibrary.Core.Generation
             }
             else
             {
-                if (UIWorldCreationEdits.AltEvilBiomeChosenType == -333)
+                if (WorldBiomeManager.WorldEvil == "" && !WorldGen.crimson)
                     EvilBiomes.Add(VanillaBiome.corruptPass);
-                else if (UIWorldCreationEdits.AltEvilBiomeChosenType == -666)
+                else if (WorldBiomeManager.WorldEvil == "" && WorldGen.crimson)
                     EvilBiomes.Add(VanillaBiome.crimsonPass);
                 else
-                    EvilBiomes.Add(AltLibrary.Biomes[UIWorldCreationEdits.AltEvilBiomeChosenType].GetEvilBiomeGenerationPass());
+                    EvilBiomes.Add(AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.WorldEvil).GetEvilBiomeGenerationPass());
             }
 
 
@@ -134,20 +131,10 @@ namespace AltLibrary.Core.Generation
         /* This is the code which allows you to spawn the evil */
         public abstract void GenerateEvil(int evilBiomePosition, int evilBiomePositionWestBound, int evilBiomePositionEastBound);
 
-        //use this if you need to do stuff after spawning all chasms
+        /// <summary>
+        /// Use this if you need to do stuff after spawning all chasms.
+        /// </summary>
         public abstract void PostGenerateEvil();
-
-        /*public sealed override void SetupContent()
-		{
-			SetStaticDefaults();
-		}
-
-        protected sealed override void Register()
-        {
-			if (EvilBiomeGenerationPassHandler.EvilBiomes == null)
-				EvilBiomeGenerationPassHandler.EvilBiomes = new();
-			EvilBiomeGenerationPassHandler.EvilBiomes.Add(this);
-        }*/
 
         /// <summary>
         /// Call this method if you somehow need to know a valid evil spawn location.

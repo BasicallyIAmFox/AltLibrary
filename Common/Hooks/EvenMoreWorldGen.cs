@@ -87,16 +87,9 @@ namespace AltLibrary.Common.Hooks
             }
             c.Index++;
             c.Emit(OpCodes.Pop);
-
-            c.Emit(OpCodes.Ldarg_0);
-            c.Emit(OpCodes.Ldarg_1);
-            /*
-            MethodInfo methodInfo = GenPasses.CorruptionInfo.;
-            Type predicateType = methodInfo.GetParameters()[0].ParameterType;
-            c.Emit(OpCodes.Ldarg_0);
-            c.Emit(OpCodes.Ldfld, methodInfo.GetType().GetField("dungeonSide"));
-            c.Emit(OpCodes.Ldarg_0);
-            c.Emit(OpCodes.Ldfld, methodInfo.GetType().GetField("dungeonLocation"));*/
+            c.EmitDelegate(() => WorldBiomeGeneration.DungeonSide);
+            c.EmitDelegate(() => WorldBiomeGeneration.DungeonLocation);
+            c.Emit(OpCodes.Ldarg, 1);
             c.EmitDelegate(EvilBiomeGenerationPassHandler.GenerateAllCorruption);
 
             if (!c.TryGotoNext(i => i.MatchLdloc(7),
@@ -744,6 +737,7 @@ namespace AltLibrary.Common.Hooks
             {
                 if (!c.TryGotoNext(i => i.MatchRet()))
                 {
+                    AltLibrary.Instance.Logger.Info("f $ 15 " + i);
                     return;
                 }
                 c.Index--;

@@ -1,4 +1,5 @@
 ﻿using AltLibrary.Common.AltBiomes;
+using AltLibrary.Core.Generation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,7 +46,7 @@ namespace AltLibrary.Common.Systems
             int corruptionIndex = tasks.FindIndex(i => i.Name.Equals("Corruption"));
             if (WorldBiomeManager.WorldEvil != "" && corruptionIndex != -1)
             {
-                //tasks[corruptionIndex] = new PassLegacy("Corruption", new WorldGenLegacyMethod(WorldEvilAltTask));
+                tasks[corruptionIndex] = new PassLegacy("Corruption", new WorldGenLegacyMethod(EvilTaskGen));
             }
             if (WorldBiomeManager.WorldHell != "")
             {
@@ -123,6 +124,11 @@ namespace AltLibrary.Common.Systems
                     tasks.RemoveAt(jungleIndex);
                 }
             }
+        }
+
+        private void EvilTaskGen(GenerationProgress progress, GameConfiguration configuration)
+        {
+            EvilBiomeGenerationPassHandler.GenerateAllCorruption(DungeonSide, DungeonLocation, progress);
         }
 
         private void JunglesWetTask(GenerationProgress progress, GameConfiguration configuration)
@@ -500,6 +506,7 @@ namespace AltLibrary.Common.Systems
             }
         }
 
+        /*
         private void WorldEvilAltTask(GenerationProgress progress, GameConfiguration configuration)
         {
             int num677 = Main.maxTilesX;
@@ -1150,5 +1157,6 @@ namespace AltLibrary.Common.Systems
                 }
             }
         }
+        */
     }
 }
