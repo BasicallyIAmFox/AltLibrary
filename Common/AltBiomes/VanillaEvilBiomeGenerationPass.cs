@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,8 +10,9 @@ namespace AltLibrary.Common.AltBiomes
 	internal class CorruptionEvilBiomeGenerationPass : EvilBiomeGenerationPass
 	{
 		public override string ProgressMessage => Lang.gen[20].Value;
+		public override bool CanGenerateNearDungeonOcean => false;
 
-		public override void GenerateEvil(int num33, int num34, int num35)
+        public override void GenerateEvil(int num33, int num34, int num35)
 		{
 			bool worldCrimson = WorldGen.crimson;
 			WorldGen.crimson = false;
@@ -175,7 +176,8 @@ namespace AltLibrary.Common.AltBiomes
     internal class CrimsonEvilBiomeGenerationPass : EvilBiomeGenerationPass
 	{
 		public override string ProgressMessage => Lang.gen[72].Value;
-		public override void GenerateEvil(int num15, int num16, int num17)
+		public override int DrunkRNGMapCenterGive => 100;
+        public override void GenerateEvil(int num15, int num16, int num17)
         {
 			WorldGen.CrimStart(num15, (int)WorldGen.worldSurfaceLow - 10);
 			for (int j = num16; j < num17; j++)
