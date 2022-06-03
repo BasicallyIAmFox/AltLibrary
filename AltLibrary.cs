@@ -53,6 +53,7 @@ namespace AltLibrary
 
         public override void Load()
         {
+            ALReflection.Init();
             ILHooks.OnInitialize();
             AnimatedModIcon.Init();
             ALTextureAssets.Load();
@@ -161,6 +162,7 @@ namespace AltLibrary
             GuideHelpText.Unload();
             UIChanges.Unapply();
             FishingCrateLoot.Unload();
+            ALReflection.Unload();
             AltLibraryConfig.Config = null;
             TimeHoveringOnIcon = 0;
             HallowBunnyUnlocked = false;

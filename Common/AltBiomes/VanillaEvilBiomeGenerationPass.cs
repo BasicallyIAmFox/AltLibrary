@@ -1,3 +1,4 @@
+using AltLibrary.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -96,7 +97,7 @@ namespace AltLibrary.Common.AltBiomes
                         }
                         if (Main.tile[i2, num45].TileType == 0 && num45 < Main.worldSurface - 1.0 && !flag7)
                         {
-                            typeof(WorldGen).GetField("grassSpread", BindingFlags.NonPublic | BindingFlags.Static).SetValue(null, 0);
+                            ALReflection.WorldGen_GrassSpread = 0;
                             WorldGen.SpreadGrass(i2, num45, 0, 23, true, 0);
                         }
                         flag7 = true;
@@ -227,7 +228,7 @@ namespace AltLibrary.Common.AltBiomes
 						}
 						if (Main.tile[i2, num23].TileType == 0 && num23 < Main.worldSurface - 1.0 && !flag4)
                         {
-                            typeof(WorldGen).GetField("grassSpread", BindingFlags.NonPublic | BindingFlags.Static).SetValue(null, 0);
+                            ALReflection.WorldGen_GrassSpread = 0;
                             WorldGen.SpreadGrass(i2, num23, 0, 199, true, 0);
 						}
 						flag4 = true;
