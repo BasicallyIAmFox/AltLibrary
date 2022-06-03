@@ -38,7 +38,7 @@ namespace AltLibrary.Core.States
             pieChart.Height.Set(200, 0f);
             pieChart.Left.Set(0, 0.425f);
             pieChart.Top.Set(0, 0.25f);
-            pieChart.BorderColor = Color.MediumBlue * 0.4f;
+            pieChart.BorderColor = Color.Black;
             foreach (PieData data in WorldBiomeManager.AltBiomeData)
             {
                 pieChart.PieChart.RegisterData(data);

@@ -149,8 +149,22 @@ namespace AltLibrary.Core.Generation
 			EvilBiomeGenerationPassHandler.EvilBiomes.Add(this);
         }*/
 
-        //Call this method if you somehow need to know a valid evil spawn location. This is automatically called when generating the world.
-        //This is a very long function. Please do not overwrite this unless you absolutely know what you are doing.
+        /// <summary>
+        /// Call this method if you somehow need to know a valid evil spawn location.
+        /// <br/>This is automatically called when generating the world.
+        /// <br/>This is a very long function. Please do not overwrite this unless you absolutely know what you are doing.
+        /// </summary>
+        /// <param name="dungeonSide"></param>
+        /// <param name="dungeonLocation"></param>
+        /// <param name="SnowBoundMinX"></param>
+        /// <param name="SnowBoundMaxX"></param>
+        /// <param name="JungleBoundMinX"></param>
+        /// <param name="JungleBoundMaxX"></param>
+        /// <param name="currentDrunkIter"></param>
+        /// <param name="maxDrunkBorders"></param>
+        /// <param name="evilBiomePosition"></param>
+        /// <param name="evilBiomePositionWestBound"></param>
+        /// <param name="evilBiomePositionEastBound"></param>
         public virtual void GetEvilSpawnLocation(
             int dungeonSide,
             int dungeonLocation,

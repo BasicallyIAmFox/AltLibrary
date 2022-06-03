@@ -127,7 +127,7 @@ namespace AltLibrary.Common.Systems
             {
                 AltBiomePercentages[i + 4] = mods[i] * 100f / (solid * 100f);
             }
-            Main.npcChatText = Language.GetTextValue("Mods.AltLibrary.AnalysisDone") + AnalysisDoneSpaces;
+            Main.npcChatText = Language.GetTextValue("Mods.AltLibrary.AnalysisDone", Main.LocalPlayer.name, Main.worldName) + AnalysisDoneSpaces;
         }
         internal const string AnalysisDoneSpaces = "\n\n\n\n\n\n\n\n\n\n";
 

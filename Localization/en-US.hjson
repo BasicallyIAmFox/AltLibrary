@@ -1,7 +1,7 @@
 Mods: {
 	AltLibrary: {
 		Analysis: "Analysis"
-		AnalysisDone: "ayo you stinky"
+		AnalysisDone: "Hey {0}, I've been running some data on {1}. Take a look!"
 		BlessBase: "Your world has been blessed with {0}!"
 		WorldBreak: "One of the biomes this world was created with has been removed, this can lead to heavy breakage!"
 		AddedBy: "Added By:"

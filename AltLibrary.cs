@@ -102,7 +102,7 @@ namespace AltLibrary
                             if (args[4] is not string large)
                                 throw new ArgumentException("Fifth argument (large) is not string!");
                             PreviewWorldIcons.Add(new CustomPreviews(seed, small, medium, large));
-                            Logger.Info($"Registered custom preview! Seed: {seed} Path: {small} {medium} {large}");
+                            Logger.Debug($"Registered custom preview! Seed: {seed} Path: {small} {medium} {large}");
                             return "Success";
                         }
                     case "conversionaddchildtile":
@@ -149,7 +149,38 @@ namespace AltLibrary
                         if (args[1] is not int tile)
                             throw new ArgumentException("Second argument (tile) is not int!");
                         return ALConvertInheritanceData.GetUltimateParent(tile);
-
+                    case "convert":
+                        if (args.Length == 6)
+                        {
+                            if (args[1] is not Mod mod)
+                                throw new ArgumentException("Second argument (mod) is not Mod!");
+                            if (args[2] is not string name)
+                                throw new ArgumentException("Third argument (name) is not string!");
+                            if (args[3] is not int i)
+                                throw new ArgumentException("Fourth argument (i) is not int!");
+                            if (args[4] is not int j)
+                                throw new ArgumentException("Fifth argument (j) is not int!");
+                            if (args[5] is not int size)
+                                throw new ArgumentException("Sixth argument (size) is not int!");
+                            ALConvert.Convert(mod, name, i, j, size);
+                        }
+                        else if (args.Length == 5)
+                        {
+                            if (args[1] is not string fullname)
+                                throw new ArgumentException("Second argument (fullname) is not string!");
+                            if (args[2] is not int i)
+                                throw new ArgumentException("Third argument (i) is not int!");
+                            if (args[3] is not int j)
+                                throw new ArgumentException("Fourth argument (j) is not int!");
+                            if (args[4] is not int size)
+                                throw new ArgumentException("Fifth argument (size) is not int!");
+                            ALConvert.Convert(fullname, i, j, size);
+                        }
+                        else
+                        {
+                            throw new ArgumentException("Arguments cannot be less or more than 5 or 6 in length for Convert");
+                        }
+                        return "Success";
                 }
             }
             return null;

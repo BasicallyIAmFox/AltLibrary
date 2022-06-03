@@ -1,10 +1,9 @@
 ﻿using AltLibrary.Common.AltBiomes;
-using AltLibrary.Common.Systems;
+using AltLibrary.Common.Condition;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace AltLibrary.Common
@@ -129,102 +128,6 @@ namespace AltLibrary.Common
                         break;
                     }
             }
-        }
-    }
-
-    internal class HallowedBarDropCondition : IItemDropRuleCondition
-    {
-        public bool CanDrop(DropAttemptInfo info)
-        {
-            return !info.IsInSimulation && WorldBiomeManager.WorldHallow == "";
-        }
-
-        public bool CanShowItemDropInUI()
-        {
-            return WorldBiomeManager.WorldHallow == "";
-        }
-
-        public string GetConditionDescription()
-        {
-            return $"{Language.GetTextValue("Mods.AltLibrary.DropRule.Base")} {Language.GetTextValue("Mods.AltLibrary.AltBiomeName.HallowBiome")}";
-        }
-    }
-
-    internal class CorroCrimDropCondition : IItemDropRuleCondition
-    {
-        public bool CanDrop(DropAttemptInfo info)
-        {
-            return !info.IsInSimulation && WorldBiomeManager.WorldEvil == "";
-        }
-
-        public bool CanShowItemDropInUI()
-        {
-            return WorldBiomeManager.WorldEvil == "";
-        }
-
-        public string GetConditionDescription()
-        {
-            string biome;
-            if (WorldGen.crimson) biome = Language.GetTextValue("Mods.AltLibrary.AltBiomeName.CrimsonBiome");
-            else biome = Language.GetTextValue("Mods.AltLibrary.AltBiomeName.CorruptBiome");
-            return Language.GetTextValue("Mods.AltLibrary.DropRule.Base", biome);
-        }
-    }
-
-    internal class HallowedBarAltDropCondition : IItemDropRuleCondition
-    {
-        public AltBiome BiomeType;
-        public HallowedBarAltDropCondition(AltBiome biomeType)
-        {
-            BiomeType = biomeType;
-        }
-
-        public bool CanDrop(DropAttemptInfo info)
-        {
-            if (!info.IsInSimulation && BiomeType.FullName != null && BiomeType.FullName != "")
-            {
-                if (WorldBiomeManager.WorldHallow == BiomeType.FullName) return WorldBiomeManager.WorldHallow == BiomeType.FullName;
-            }
-            return false;
-        }
-
-        public bool CanShowItemDropInUI()
-        {
-            return WorldBiomeManager.WorldHallow == BiomeType.FullName;
-        }
-
-        public string GetConditionDescription()
-        {
-            string name = BiomeType.DisplayName != null ? BiomeType.DisplayName.GetTranslation(Language.ActiveCulture) : BiomeType.Name;
-            return Language.GetTextValue("Mods.AltLibrary.DropRule.Base", name);
-        }
-    }
-
-    internal class EvilAltDropCondition : IItemDropRuleCondition
-    {
-        public AltBiome BiomeType;
-        public EvilAltDropCondition(AltBiome biomeType)
-        {
-            BiomeType = biomeType;
-        }
-
-        public bool CanDrop(DropAttemptInfo info)
-        {
-            if (!info.IsInSimulation && BiomeType.FullName != null && BiomeType.FullName != "")
-            {
-                if (WorldBiomeManager.WorldEvil != "") return WorldBiomeManager.WorldEvil == BiomeType.FullName;
-            }
-            return false;
-        }
-
-        public bool CanShowItemDropInUI()
-        {
-            return WorldBiomeManager.WorldEvil == BiomeType.FullName;
-        }
-
-        public string GetConditionDescription()
-        {
-            return Language.GetTextValue("Mods.AltLibrary.DropRule.Base", BiomeType.DisplayName != null ? BiomeType.DisplayName.GetTranslation(Language.ActiveCulture) : BiomeType.Name);
         }
     }
 }
