@@ -1,4 +1,4 @@
-﻿using AltLibrary.Common.AltBiomes;
+using AltLibrary.Common.AltBiomes;
 using AltLibrary.Common.Systems;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -78,6 +78,41 @@ namespace AltLibrary.Common.Hooks
         private static void ILGenPassCorruption(ILContext il)
         {
             ILCursor c = new(il);
+
+            int index = c.Index;
+
+            if (!c.TryGotoNext(i => i.MatchLdloc(7),
+                i => i.MatchBrfalse(out ILLabel _)))
+            {
+                AltLibrary.Instance.Logger.Info("d2 $ 1");
+                return;
+            }
+            c.Index++;
+            c.Emit(OpCodes.Pop);
+
+            c.Emit(OpCodes.Ldarg_0);
+            c.Emit(OpCodes.Ldarg_1);
+            /*
+            MethodInfo methodInfo = GenPasses.CorruptionInfo.;
+            Type predicateType = methodInfo.GetParameters()[0].ParameterType;
+            c.Emit(OpCodes.Ldarg_0);
+            c.Emit(OpCodes.Ldfld, methodInfo.GetType().GetField("dungeonSide"));
+            c.Emit(OpCodes.Ldarg_0);
+            c.Emit(OpCodes.Ldfld, methodInfo.GetType().GetField("dungeonLocation"));*/
+            c.EmitDelegate(EvilBiomeGenerationPassHandler.GenerateAllCorruption);
+
+            if (!c.TryGotoNext(i => i.MatchLdloc(7),
+                i => i.MatchBrfalse(out ILLabel _)))
+            {
+                AltLibrary.Instance.Logger.Info("d2 $ 1");
+                return;
+            }
+
+
+            c.Index++;
+            c.EmitDelegate((bool i) => true);
+
+            c.Index = index;
 
             ILLabel label = c.DefineLabel();
 
