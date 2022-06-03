@@ -11,6 +11,20 @@ namespace AltLibrary.Common.AltBiomes
 
         private readonly string name;
         private readonly Color nameColor;
+        
+        public override EvilBiomeGenerationPass GetEvilBiomeGenerationPass()
+        {
+            switch (SpecialValueForWorldUIDoNotTouchElseYouCanBreakStuff)
+            {
+                case -1:
+                    return corruptPass;
+            }
+            return crimsonPass;
+        }
+
+        internal static readonly EvilBiomeGenerationPass corruptPass = new CorruptionEvilBiomeGenerationPass();
+        internal static readonly EvilBiomeGenerationPass crimsonPass = new CrimsonEvilBiomeGenerationPass();
+        
         public VanillaBiome(string name, BiomeType biome, int type, Color nameColor, bool? fix = null)
         {
             this.name = name;
