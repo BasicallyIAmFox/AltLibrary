@@ -1,4 +1,4 @@
-﻿using AltLibrary.Common.Systems;
+using AltLibrary.Common.Systems;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -132,11 +132,13 @@ namespace AltLibrary.Common.AltBiomes
 		private const int beachBordersWidth = 275;
 		private const int beachSandRandomCenter = beachBordersWidth + 5 + 40;
 		private const int evilBiomeBeachAvoidance = beachSandRandomCenter + 60;
-		private const int evilBiomeAvoidanceMidFixer = 50;
-		private const int nonDrunkBorderDist = 500;
-		private const int dungeonGive = 100;
+		public virtual int evilBiomeAvoidanceMidFixer => 50;
+		public virtual int nonDrunkBorderDist => 500;
+		public virtual int dungeonGive => 100;
 
 		public virtual int DrunkRNGMapCenterGive => 200; //100 if crimson
+
+		public virtual bool CanGenerateNearDungeonOcean => true;
 
 		public virtual string ProgressMessage => "";
 
@@ -227,13 +229,16 @@ namespace AltLibrary.Common.AltBiomes
 					evilBiomePosition = evilBiomePositionEastBound - evilBiomeAvoidanceMidFixer;
 				}
 				//DIFFERENCE 2 - CRIMSON ONLY
-				if (dungeonSide < 0 && evilBiomePositionWestBound < 400)
+				if (!CanGenerateNearDungeonOcean)
 				{
-					evilBiomePositionWestBound = 400;
-				}
-				else if (dungeonSide > 0 && evilBiomePositionWestBound > Main.maxTilesX - 400)
-				{
-					evilBiomePositionWestBound = Main.maxTilesX - 400;
+					if (dungeonSide < 0 && evilBiomePositionWestBound < 400)
+					{
+						evilBiomePositionWestBound = 400;
+					}
+					else if (dungeonSide > 0 && evilBiomePositionWestBound > Main.maxTilesX - 400)
+					{
+						evilBiomePositionWestBound = Main.maxTilesX - 400;
+					}
 				}
 				//DIFFERENCE 2 END
 				if (evilBiomePosition > MapCenter - MapCenterGive && evilBiomePosition < MapCenter + MapCenterGive)
