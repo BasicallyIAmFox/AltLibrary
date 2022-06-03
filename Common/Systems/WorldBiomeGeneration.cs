@@ -45,12 +45,7 @@ namespace AltLibrary.Common.Systems
             int corruptionIndex = tasks.FindIndex(i => i.Name.Equals("Corruption"));
             if (WorldBiomeManager.WorldEvil != "" && corruptionIndex != -1)
             {
-                tasks[corruptionIndex] = new PassLegacy("Corruption", new WorldGenLegacyMethod(WorldEvilAltTask));
-                AltBiome biome = AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.WorldEvil);
-                if (biome.WorldGenPassLegacy != null)
-                {
-                    tasks.Insert(corruptionIndex + 1, biome.WorldGenPassLegacy);
-                }
+                //tasks[corruptionIndex] = new PassLegacy("Corruption", new WorldGenLegacyMethod(WorldEvilAltTask));
             }
             if (WorldBiomeManager.WorldHell != "")
             {
