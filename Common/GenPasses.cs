@@ -11,7 +11,7 @@ namespace AltLibrary.Common
     {
         private static MethodBase ResetInfo;
         private static MethodBase ShiniesInfo;
-        private static MethodBase CorruptionInfo;
+        private static MethodBase UnderworldInfo;
         private static MethodBase AltarsInfo;
         private static MethodBase MicroBiomesInfo;
         private static MethodBase HardmodeWallsInfo;
@@ -28,10 +28,10 @@ namespace AltLibrary.Common
             remove => HookEndpointManager.Unmodify(ShiniesInfo, value);
         }
 
-        internal static event ILContext.Manipulator HookGenPassCorruption
+        internal static event ILContext.Manipulator HookGenPassUnderworld
         {
-            add => HookEndpointManager.Modify(CorruptionInfo, value);
-            remove => HookEndpointManager.Unmodify(CorruptionInfo, value);
+            add => HookEndpointManager.Modify(UnderworldInfo, value);
+            remove => HookEndpointManager.Unmodify(UnderworldInfo, value);
         }
 
         internal static event ILContext.Manipulator HookGenPassAltars
@@ -56,7 +56,7 @@ namespace AltLibrary.Common
         {
             ResetInfo = GetGenPassInfo(il, "Reset");
             ShiniesInfo = GetGenPassInfo(il, "Shinies");
-            CorruptionInfo = GetGenPassInfo(il, "Corruption");
+            UnderworldInfo = GetGenPassInfo(il, "Underworld");
             AltarsInfo = GetGenPassInfo(il, "Altars");
             MicroBiomesInfo = GetGenPassInfo(il, "Micro Biomes");
         }
@@ -70,9 +70,10 @@ namespace AltLibrary.Common
         {
             ResetInfo = null;
             ShiniesInfo = null;
-            CorruptionInfo = null;
+            UnderworldInfo = null;
             AltarsInfo = null;
             MicroBiomesInfo = null;
+            HardmodeWallsInfo = null;
         }
 
         private static MethodBase GetGenPassInfo(ILContext il, string name)
