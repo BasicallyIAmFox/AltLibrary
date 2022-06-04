@@ -1,8 +1,15 @@
 ﻿using AltLibrary.Common;
 using AltLibrary.Common.Systems;
+using AltLibrary.Content.Items.AnalystItems;
+using AltLibrary.Core.Baking;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Mono.Cecil.Cil;
+using MonoMod.Cil;
 using ReLogic.Content;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
@@ -17,9 +24,106 @@ namespace AltLibrary.Content.NPCs
     [AutoloadHead]
     internal class PieChartTownNPC : ModNPC
     {
+        internal static int CurrentPage = 0;
+
+        public override void Load()
+        {
+            CurrentPage = 0;
+            IL.Terraria.Main.GUIChatDrawInner += Main_GUIChatDrawInner;
+        }
+
+        private void Main_GUIChatDrawInner(ILContext il)
+        {
+            ILCursor c = new(il);
+            if (!c.TryGotoNext(i => i.MatchLdsfld<Main>(nameof(Main.npcChatCornerItem)),
+                i => i.MatchBrfalse(out _),
+                i => i.MatchLdloca(21)))
+            {
+                AltLibrary.Instance.Logger.Info("10 $ 1");
+                return;
+            }
+
+            if (!c.TryGotoNext(i => i.MatchStloc(24)))
+            {
+                AltLibrary.Instance.Logger.Info("10 $ 2");
+                return;
+            }
+
+            c.Index++;
+            c.Emit(OpCodes.Ldloc, 24);
+            c.Emit(OpCodes.Ldloc, 22);
+            c.EmitDelegate<Func<Texture2D, Item, Texture2D>>((value, item) =>
+            {
+                if (Main.npc[Main.LocalPlayer.talkNPC].type == Type && item.type == ItemID.DirtBlock && SellableItems().Count / 40 >= 1)
+                {
+                    return ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/ButtonCorrupt", AssetRequestMode.ImmediateLoad).Value;
+                }
+                return value;
+            });
+            c.Emit(OpCodes.Stloc, 24);
+
+            if (!c.TryGotoNext(i => i.MatchCallvirt<Item>("get_Name")))
+            {
+                AltLibrary.Instance.Logger.Info("10 $ 3");
+                return;
+            }
+
+            c.Index++;
+            c.Emit(OpCodes.Ldloc, 22);
+            c.EmitDelegate<Func<string, Item, string>>((value, item) =>
+            {
+                if (Main.npc[Main.LocalPlayer.talkNPC].type == Type && item.type == ItemID.DirtBlock && SellableItems().Count / 40 >= 1)
+                {
+                    return Language.GetTextValue("Mods.AltLibrary.AnalysisNext");
+                }
+                return value;
+            });
+
+            if (!c.TryGotoNext(i => i.MatchLdcI4(-11)))
+            {
+                AltLibrary.Instance.Logger.Info("10 $ 4");
+                return;
+            }
+
+            c.Index++;
+            c.Emit(OpCodes.Ldloc, 22);
+            c.EmitDelegate<Func<int, Item, int>>((rare, item) =>
+            {
+                if (Main.npc[Main.LocalPlayer.talkNPC].type == Type && item.type == ItemID.DirtBlock && SellableItems().Count / 40 >= 1)
+                {
+                    return ItemRarityID.Blue;
+                }
+                return rare;
+            });
+
+            if (!c.TryGotoNext(i => i.MatchCall(out _)))
+            {
+                AltLibrary.Instance.Logger.Info("10 $ 5");
+                return;
+            }
+
+            c.Index++;
+            c.EmitDelegate(() =>
+            {
+                if (Main.npc[Main.LocalPlayer.talkNPC].type == Type && Main.mouseLeft && Main.mouseLeftRelease && SellableItems().Count / 40 >= 1)
+                {
+                    CurrentPage++;
+                    if (CurrentPage >= SellableItems().Count / 40)
+                        CurrentPage = 0;
+                    Main.mouseLeftRelease = false;
+                }
+            });
+        }
+
+        public override void Unload()
+        {
+            IL.Terraria.Main.GUIChatDrawInner -= Main_GUIChatDrawInner;
+            CurrentPage = 0;
+        }
+
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Pie Charter");
+            DisplayName.SetDefault("Analyst");
 
             Main.npcFrameCount[Type] = 25;
 
@@ -84,15 +188,53 @@ namespace AltLibrary.Content.NPCs
 
         public override string GetChat()
         {
+            CurrentPage = 0;
             WeightedRandom<string> chat = new();
-            chat.Add("Sometimes I feel like I'm different from everyone else here.");
+            for (int i = 0; i < ALUtils.AdvancedGetSizeOfCategory("Mods.AltLibrary.Analyser.Dialog", out LocalizedText[] texts); i++)
+            {
+                chat.Add(texts[i].Value);
+            }
             return chat;
         }
 
         public override void SetChatButtons(ref string button, ref string button2)
         {
-            button = Language.GetTextValue("LegacyInterface.28");
+            button = Language.GetTextValue("LegacyInterface.28") + ((SellableItems().Count / 40) > 1 ? " " + Language.GetTextValue("Mods.AltLibrary.AnalysisPage", CurrentPage + 1) : "");
             button2 = Language.GetTextValue("Mods.AltLibrary.Analysis");
+        }
+
+        public override void SetupShop(Chest shop, ref int nextSlot)
+        {
+            nextSlot = 0;
+
+            List<int> sellableItems = SellableItems();
+            int i = 0;
+            int startOffset = CurrentPage * 40;
+            if (startOffset < 0)
+                startOffset = 0;
+
+            foreach (int type in sellableItems)
+            {
+                if (++i < startOffset)
+                    continue;
+                if (nextSlot >= 40)
+                    break;
+                shop.item[nextSlot].SetDefaults(type);
+                nextSlot++;
+            }
+        }
+
+        internal static List<int> SellableItems()
+        {
+            List<int> items = new();
+            foreach (AnalystItem item in AnalystShopLoader.Items)
+            {
+                if (item.availability.Invoke())
+                {
+                    items.Add(item.itemid);
+                }
+            }
+            return items;
         }
 
         public override void OnChatButtonClicked(bool firstButton, ref bool shop)

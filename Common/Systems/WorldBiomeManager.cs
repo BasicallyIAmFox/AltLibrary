@@ -36,6 +36,34 @@ namespace AltLibrary.Common.Systems
 
         internal static PieData[] AltBiomeData;
         internal static float[] AltBiomePercentages;
+        public static float PurityBiomePercentage
+        {
+            get
+            {
+                return AltBiomePercentages == null ? 0f : AltBiomePercentages[0];
+            }
+        }
+        public static float CorruptionBiomePercentage
+        {
+            get
+            {
+                return AltBiomePercentages == null ? 0f : AltBiomePercentages[1];
+            }
+        }
+        public static float CrimsonBiomePercentage
+        {
+            get
+            {
+                return AltBiomePercentages == null ? 0f : AltBiomePercentages[2];
+            }
+        }
+        public static float HallowBiomePercentage
+        {
+            get
+            {
+                return AltBiomePercentages == null ? 0f : AltBiomePercentages[3];
+            }
+        }
 
         public override void Load()
         {
@@ -44,11 +72,29 @@ namespace AltLibrary.Common.Systems
             drunkAdamantiteCycle = null;
         }
 
-        internal static void AnalysisTiles()
+        public override void OnWorldLoad()
+        {
+            AltBiomePercentages = new float[AltLibrary.Biomes.Count + 5];
+            AnalysisTiles(false);
+        }
+
+        public override void OnWorldUnload()
+        {
+            AltBiomeData = null;
+            AltBiomePercentages = null;
+        }
+
+        internal static void AnalysisTiles(bool includeText = true)
         {
             if (Main.netMode == NetmodeID.MultiplayerClient)
                 return;
             ThreadPool.QueueUserWorkItem(new WaitCallback(SmAtcb), 1);
+            if (includeText)
+            {
+                ThreadPool.QueueUserWorkItem(new WaitCallback(text), 1);
+            }
+
+            static void text(object threadContext) => Main.npcChatText = Language.GetTextValue("Mods.AltLibrary.AnalysisDone", Main.LocalPlayer.name, Main.worldName) + AnalysisDoneSpaces;
         }
 
         private static void SmAtcb(object threadContext)
@@ -87,22 +133,22 @@ namespace AltLibrary.Common.Systems
                     if (tile.HasTile)
                     {
                         int type = tile.TileType;
-                        if (type == 164 || type == 109 || type == 117 || type == 116 || type == TileID.HallowSandstone || type == TileID.HallowHardenedSand)
+                        if (type == TileID.HallowedGrass || type == TileID.HallowedIce || type == TileID.Pearlsand || type == TileID.Pearlstone || type == TileID.HallowSandstone || type == TileID.HallowHardenedSand || type == TileID.GolfGrassHallowed)
                         {
                             hallow++;
                             solid++;
                         }
-                        if (type == 23 || type == 163 || type == 112 || type == 25 || type == TileID.CorruptSandstone || type == TileID.CorruptHardenedSand)
+                        if (type == TileID.CorruptGrass || type == TileID.CorruptIce || type == TileID.Ebonsand || type == TileID.Ebonstone || type == TileID.CorruptSandstone || type == TileID.CorruptHardenedSand)
                         {
                             evil++;
                             solid++;
                         }
-                        if (type == 199 || type == 234 || type == 203 || type == 200 || type == TileID.CrimsonSandstone || type == TileID.CrimsonHardenedSand)
+                        if (type == TileID.CrimsonGrass || type == TileID.FleshIce || type == TileID.Crimsand || type == TileID.Crimstone || type == TileID.CrimsonSandstone || type == TileID.CrimsonHardenedSand)
                         {
                             crimson++;
                             solid++;
                         }
-                        if (type == 2 || type == 477 || type == 1 || type == 60 || type == 60 || type == 53 || type == 161 || type == TileID.Sandstone || type == TileID.HardenedSand || extraPureSolid.Contains(type))
+                        if (type == TileID.Grass || type == TileID.GolfGrass || type == TileID.Stone || type == TileID.JungleGrass || type == TileID.Sand || type == TileID.IceBlock || type == TileID.Sandstone || type == TileID.HardenedSand || extraPureSolid.Contains(type))
                         {
                             purity++;
                             solid++;
@@ -127,7 +173,6 @@ namespace AltLibrary.Common.Systems
             {
                 AltBiomePercentages[i + 4] = mods[i] * 100f / (solid * 100f);
             }
-            Main.npcChatText = Language.GetTextValue("Mods.AltLibrary.AnalysisDone", Main.LocalPlayer.name, Main.worldName) + AnalysisDoneSpaces;
         }
         internal const string AnalysisDoneSpaces = "\n\n\n\n\n\n\n\n\n\n";
 

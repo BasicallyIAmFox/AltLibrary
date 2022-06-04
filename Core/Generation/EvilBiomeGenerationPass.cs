@@ -166,7 +166,6 @@ namespace AltLibrary.Core.Generation
 
             out int evilBiomePosition, out int evilBiomePositionWestBound, out int evilBiomePositionEastBound)
         {
-
             bool FoundEvilLocation = false;
             evilBiomePosition = 0;
             evilBiomePositionWestBound = 0;

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
 
@@ -32,6 +33,7 @@ namespace AltLibrary.Common.Hooks
             IL.Terraria.WorldGen.GenerateWorld -= GenPasses.ILGenerateWorld;
             GenPasses.HookGenPassReset -= GenPasses_HookGenPassReset;
             GenPasses.HookGenPassShinies -= GenPasses_HookGenPassShinies;
+            GenPasses.HookGenPassUnderworld -= GenPasses_HookGenPassUnderworld;
             GenPasses.HookGenPassAltars -= ILGenPassAltars;
             GenPasses.HookGenPassMicroBiomes -= GenPasses_HookGenPassMicroBiomes;
         }
@@ -39,6 +41,22 @@ namespace AltLibrary.Common.Hooks
         private static void GenPasses_HookGenPassUnderworld(ILContext il)
         {
             ILCursor c = new(il);
+
+            if (!c.TryGotoNext(i => i.MatchCallvirt<GenerationProgress>("set_Message")))
+            {
+                AltLibrary.Instance.Logger.Info("d $ 1");
+                return;
+            }
+
+            c.Index++;
+            c.Emit(OpCodes.Ldarg, 1);
+            c.EmitDelegate<Action<GenerationProgress>>((progress) =>
+            {
+                if (WorldBiomeManager.WorldHell != "")
+                {
+                    progress.Message = ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).GenPassName.GetTranslation(Language.ActiveCulture);
+                }
+            });
 
             ALUtils.ReplaceIDs(il, TileID.Ash,
                 (orig) => (ushort?)ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).BiomeOre ?? orig,
@@ -49,7 +67,7 @@ namespace AltLibrary.Common.Hooks
 
             if (!c.TryGotoNext(i => i.MatchCall<WorldGen>(nameof(WorldGen.AddHellHouses))))
             {
-                AltLibrary.Instance.Logger.Info("d $ 1");
+                AltLibrary.Instance.Logger.Info("d $ 2");
                 return;
             }
 

@@ -12,6 +12,7 @@ using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.IO;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
@@ -20,6 +21,26 @@ namespace AltLibrary
 {
     internal static class ALUtils
     {
+        internal static int AdvancedGetSizeOfCategory(string key, out LocalizedText[] texts)
+        {
+            int num = 0;
+            List<LocalizedText> localizedTexts = new();
+            for (int i = 0; i < 420; i++)
+            {
+                if (Language.Exists(key + "." + i.ToString()))
+                {
+                    localizedTexts.Add(Language.GetText(key + "." + i.ToString()));
+                    num++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            texts = localizedTexts.ToArray();
+            return num;
+        }
+
         internal static void ReplaceIDs<T>(ILContext il, T id, Func<T, T> replace, Func<T, bool> check)
         {
             ILCursor c = new(il);

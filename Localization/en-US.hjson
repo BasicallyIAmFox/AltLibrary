@@ -1,7 +1,16 @@
 Mods: {
 	AltLibrary: {
 		Analysis: "Analysis"
+		AnalysisNext: "Next Page"
+		AnalysisPage: "(Page #{0})"
 		AnalysisDone: "Hey {0}, I've been running some data on {1}. Take a look!"
+		Analyser: {
+			Dialog: {
+				0: "1"
+				1: "2"
+				2: "3"
+			}
+		}
 		BlessBase: "Your world has been blessed with {0}!"
 		WorldBreak: "One of the biomes this world was created with has been removed, this can lead to heavy breakage!"
 		AddedBy: "Added By:"

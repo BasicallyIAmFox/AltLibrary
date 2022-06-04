@@ -2,10 +2,13 @@
 using AltLibrary.Common.AltLiquidStyles.Hooks;
 using AltLibrary.Common.Hooks;
 using AltLibrary.Common.Systems;
+using AltLibrary.Content.NPCs;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader;
 
 namespace AltLibrary.Core
 {
@@ -61,10 +64,17 @@ namespace AltLibrary.Core
         private static void Main_GUIChatDrawInner(On.Terraria.Main.orig_GUIChatDrawInner orig, Main self)
         {
             orig(self);
-            if (Main.npcChatText == Language.GetTextValue("Mods.AltLibrary.AnalysisDone", Main.LocalPlayer.name, Main.worldName) + WorldBiomeManager.AnalysisDoneSpaces && Main.LocalPlayer.GetModPlayer<ALPlayer>().IsAnalysingClick)
+            if (Main.npc[Main.LocalPlayer.talkNPC].type == ModContent.NPCType<PieChartTownNPC>())
             {
-                AltLibrary.userInterface.Update(Main._drawInterfaceGameTime);
-                AltLibrary.userInterface.Draw(Main.spriteBatch, Main._drawInterfaceGameTime);
+                if (PieChartTownNPC.SellableItems().Count / 40 >= 1)
+                {
+                    Main.npcChatCornerItem = ItemID.DirtBlock;
+                }
+                if (Main.npcChatText == Language.GetTextValue("Mods.AltLibrary.AnalysisDone", Main.LocalPlayer.name, Main.worldName) + WorldBiomeManager.AnalysisDoneSpaces && Main.LocalPlayer.GetModPlayer<ALPlayer>().IsAnalysingClick)
+                {
+                    AltLibrary.userInterface.Update(Main._drawInterfaceGameTime);
+                    AltLibrary.userInterface.Draw(Main.spriteBatch, Main._drawInterfaceGameTime);
+                }
             }
         }
 
