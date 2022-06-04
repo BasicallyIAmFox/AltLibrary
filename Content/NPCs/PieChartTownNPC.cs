@@ -1,15 +1,12 @@
 ﻿using AltLibrary.Common;
 using AltLibrary.Common.Systems;
-using AltLibrary.Content.Items.AnalystItems;
 using AltLibrary.Core.Baking;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
@@ -25,6 +22,8 @@ namespace AltLibrary.Content.NPCs
     internal class PieChartTownNPC : ModNPC
     {
         internal static int CurrentPage = 0;
+
+        public override bool IsLoadingEnabled(Mod mod) => false;
 
         public override void Load()
         {

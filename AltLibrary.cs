@@ -2,6 +2,7 @@ using AltLibrary.Common.AltBiomes;
 using AltLibrary.Common.AltLiquidStyles;
 using AltLibrary.Common.AltOres;
 using AltLibrary.Common.Hooks;
+using AltLibrary.Common.Systems;
 using AltLibrary.Core;
 using AltLibrary.Core.Baking;
 using AltLibrary.Core.States;
@@ -182,6 +183,70 @@ namespace AltLibrary
                             throw new ArgumentException("Arguments cannot be less or more than 5 or 6 in length for Convert");
                         }
                         return "Success";
+                    case "addanalystitem":
+                        {
+                            if (args.Length == 4)
+                            {
+                                if (args[1] is not int itemid)
+                                    throw new ArgumentException("Second argument (itemid) is not int!");
+                                if (args[2] is not AltBiome biome)
+                                    throw new ArgumentException("Third argument (biome) is not AltBiome!");
+                                if (args[3] is not float percentage)
+                                    throw new ArgumentException("Fourth argument (percentage) is not float!");
+                                AnalystShopLoader.AddAnalystItem(new AnalystItem(itemid, biome, percentage));
+                            }
+                            else if (args.Length == 3)
+                            {
+                                if (args[1] is not int itemid)
+                                    throw new ArgumentException("Second argument (itemid) is not int!");
+                                if (args[2] is not Func<bool> availability)
+                                    throw new ArgumentException("Third argument (availability) is not availability!");
+                                AnalystShopLoader.AddAnalystItem(new AnalystItem(itemid, availability));
+                            }
+                            else if (args.Length == 2)
+                            {
+                                if (args[1] is not int itemid)
+                                    throw new ArgumentException("Second argument (itemid) is not int!");
+                                AnalystShopLoader.AddAnalystItem(new AnalystItem(itemid));
+                            }
+                            else
+                            {
+                                throw new ArgumentException("Arguments cannot be less or more than in range of 2 to 4 in length for Convert");
+                            }
+                        }
+                        return "Success";
+                    case "getbiomepercentage":
+                        {
+                            if (args[1] is string type)
+                            {
+                                string type2 = type.ToLower();
+                                switch (type2)
+                                {
+                                    case "purity":
+                                        return WorldBiomeManager.PurityBiomePercentage;
+                                    case "corruption":
+                                        return WorldBiomeManager.CorruptionBiomePercentage;
+                                    case "crimson":
+                                        return WorldBiomeManager.CrimsonBiomePercentage;
+                                    case "hallow":
+                                        return WorldBiomeManager.HallowBiomePercentage;
+                                }
+                                foreach (AltBiome biome in Biomes)
+                                {
+                                    if (type2 == biome.FullName.ToLower())
+                                    {
+                                        return WorldBiomeManager.AltBiomePercentages[biome.Type + 3];
+                                    }
+                                }
+                            }
+                            else if (args[1] is AltBiome biome)
+                            {
+                                return WorldBiomeManager.AltBiomePercentages[biome.Type + 3];
+                            }
+                            throw new ArgumentException("Second argument (type) is not string, AltBiome or invalid type!");
+                        }
+                    default:
+                        throw new ArgumentException("Invalid option!");
                 }
             }
             return null;

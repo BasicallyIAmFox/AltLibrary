@@ -1,7 +1,5 @@
-using AltLibrary.Common;
 using AltLibrary.Common.AltBiomes;
 using AltLibrary.Common.Systems;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
