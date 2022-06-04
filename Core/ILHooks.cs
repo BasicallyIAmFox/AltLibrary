@@ -3,6 +3,7 @@ using AltLibrary.Common.AltLiquidStyles.Hooks;
 using AltLibrary.Common.Hooks;
 using AltLibrary.Common.Systems;
 using AltLibrary.Content.NPCs;
+using AltLibrary.Core.Baking;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
@@ -66,7 +67,7 @@ namespace AltLibrary.Core
             orig(self);
             if (Main.npc[Main.LocalPlayer.talkNPC].type == ModContent.NPCType<PieChartTownNPC>())
             {
-                if (PieChartTownNPC.SellableItems().Count / 40 >= 1)
+                if (AnalystShopLoader.MaxShopCount() >= 1)
                 {
                     Main.npcChatCornerItem = ItemID.DirtBlock;
                 }

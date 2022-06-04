@@ -16,6 +16,7 @@ namespace AltLibrary.Core.Baking
         internal static void Load()
         {
             Items = new();
+
             AddAnalystItem(new AnalystItem(ModContent.ItemType<HallowFanBunnyMask>(), () => Main.hardMode && WorldBiomeManager.HallowBiomePercentage >= 0.1f));
         }
 
@@ -27,6 +28,21 @@ namespace AltLibrary.Core.Baking
                 return true;
             }
             return false;
+        }
+
+        public static int MaxShopCount() => SellableItems().Count / 40;
+
+        internal static List<int> SellableItems()
+        {
+            List<int> items = new();
+            foreach (AnalystItem item in Items)
+            {
+                if (item.availability.Invoke())
+                {
+                    items.Add(item.itemid);
+                }
+            }
+            return items;
         }
 
         internal static void Unload() => Items = null;

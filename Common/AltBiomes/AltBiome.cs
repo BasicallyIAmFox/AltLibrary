@@ -1,4 +1,5 @@
-﻿using AltLibrary.Core.Baking;
+﻿using AltLibrary.Core;
+using AltLibrary.Core.Baking;
 using AltLibrary.Core.Generation;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -377,9 +378,9 @@ namespace AltLibrary.Common.AltBiomes
         {
             ModTypeLookup<AltBiome>.Register(this);
 
-            DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"AltBiomeName.{Name}", false);
-            Description = LocalizationLoader.GetOrCreateTranslation(Mod, $"AltBiomeDescription.{Name}", true);
-            GenPassName = LocalizationLoader.GetOrCreateTranslation(Mod, $"AltBiomeGen.{Name}", true);
+            DisplayName = ALReflection.LocalizationLoader_GetOrCreateTranslation(Mod, $"AltBiomeName.{Name}", false);
+            Description = ALReflection.LocalizationLoader_GetOrCreateTranslation(Mod, $"AltBiomeDescription.{Name}", true);
+            GenPassName = ALReflection.LocalizationLoader_GetOrCreateTranslation(Mod, $"AltBiomeGen.{Name}", true);
 
             AltLibrary.Biomes.Add(this);
             if (BossBulb != null) AltLibrary.planteraBulbs.Add((int)BossBulb);

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using AltLibrary.Core;
+using Microsoft.Xna.Framework;
 using System.Text.RegularExpressions;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -70,10 +71,10 @@ namespace AltLibrary.Common.AltOres
         {
             ModTypeLookup<AltOre>.Register(this);
 
-            DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"AltOreName.{Name}", false);
-            Description = LocalizationLoader.GetOrCreateTranslation(Mod, $"AltOreDescription.{Name}", true);
-            BlessingMessage = LocalizationLoader.GetOrCreateTranslation(Mod, $"AltOreBless.{Name}", true);
-            GuideHelpText = LocalizationLoader.GetOrCreateTranslation(Mod, $"AltBiomeHelpText.{Name}", true);
+            DisplayName = ALReflection.LocalizationLoader_GetOrCreateTranslation(Mod, $"AltOreName.{Name}", false);
+            Description = ALReflection.LocalizationLoader_GetOrCreateTranslation(Mod, $"AltOreDescription.{Name}", true);
+            BlessingMessage = ALReflection.LocalizationLoader_GetOrCreateTranslation(Mod, $"AltOreBless.{Name}", true);
+            GuideHelpText = ALReflection.LocalizationLoader_GetOrCreateTranslation(Mod, $"AltBiomeHelpText.{Name}", true);
 
             AltLibrary.Ores.Add(this);
             Type = AltLibrary.Ores.Count;

@@ -54,7 +54,7 @@ namespace AltLibrary.Content.NPCs
             c.Emit(OpCodes.Ldloc, 22);
             c.EmitDelegate<Func<Texture2D, Item, Texture2D>>((value, item) =>
             {
-                if (Main.npc[Main.LocalPlayer.talkNPC].type == Type && item.type == ItemID.DirtBlock && SellableItems().Count / 40 >= 1)
+                if (Main.npc[Main.LocalPlayer.talkNPC].type == Type && item.type == ItemID.DirtBlock && AnalystShopLoader.MaxShopCount() >= 1)
                 {
                     return ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/ButtonCorrupt", AssetRequestMode.ImmediateLoad).Value;
                 }
@@ -72,7 +72,7 @@ namespace AltLibrary.Content.NPCs
             c.Emit(OpCodes.Ldloc, 22);
             c.EmitDelegate<Func<string, Item, string>>((value, item) =>
             {
-                if (Main.npc[Main.LocalPlayer.talkNPC].type == Type && item.type == ItemID.DirtBlock && SellableItems().Count / 40 >= 1)
+                if (Main.npc[Main.LocalPlayer.talkNPC].type == Type && item.type == ItemID.DirtBlock && AnalystShopLoader.MaxShopCount() >= 1)
                 {
                     return Language.GetTextValue("Mods.AltLibrary.AnalysisNext");
                 }
@@ -89,7 +89,7 @@ namespace AltLibrary.Content.NPCs
             c.Emit(OpCodes.Ldloc, 22);
             c.EmitDelegate<Func<int, Item, int>>((rare, item) =>
             {
-                if (Main.npc[Main.LocalPlayer.talkNPC].type == Type && item.type == ItemID.DirtBlock && SellableItems().Count / 40 >= 1)
+                if (Main.npc[Main.LocalPlayer.talkNPC].type == Type && item.type == ItemID.DirtBlock && AnalystShopLoader.MaxShopCount() >= 1)
                 {
                     return ItemRarityID.Blue;
                 }
@@ -105,10 +105,10 @@ namespace AltLibrary.Content.NPCs
             c.Index++;
             c.EmitDelegate(() =>
             {
-                if (Main.npc[Main.LocalPlayer.talkNPC].type == Type && Main.mouseLeft && Main.mouseLeftRelease && SellableItems().Count / 40 >= 1)
+                if (Main.npc[Main.LocalPlayer.talkNPC].type == Type && Main.mouseLeft && Main.mouseLeftRelease && AnalystShopLoader.MaxShopCount() >= 1)
                 {
                     CurrentPage++;
-                    if (CurrentPage >= SellableItems().Count / 40)
+                    if (CurrentPage >= AnalystShopLoader.MaxShopCount())
                         CurrentPage = 0;
                     Main.mouseLeftRelease = false;
                 }
@@ -199,7 +199,7 @@ namespace AltLibrary.Content.NPCs
 
         public override void SetChatButtons(ref string button, ref string button2)
         {
-            button = Language.GetTextValue("LegacyInterface.28") + ((SellableItems().Count / 40) > 1 ? " " + Language.GetTextValue("Mods.AltLibrary.AnalysisPage", CurrentPage + 1) : "");
+            button = Language.GetTextValue("LegacyInterface.28") + (AnalystShopLoader.MaxShopCount() > 1 ? " " + Language.GetTextValue("Mods.AltLibrary.AnalysisPage", CurrentPage + 1) : "");
             button2 = Language.GetTextValue("Mods.AltLibrary.Analysis");
         }
 
@@ -207,7 +207,7 @@ namespace AltLibrary.Content.NPCs
         {
             nextSlot = 0;
 
-            List<int> sellableItems = SellableItems();
+            List<int> sellableItems = AnalystShopLoader.SellableItems();
             int i = 0;
             int startOffset = CurrentPage * 40;
             if (startOffset < 0)
@@ -222,19 +222,6 @@ namespace AltLibrary.Content.NPCs
                 shop.item[nextSlot].SetDefaults(type);
                 nextSlot++;
             }
-        }
-
-        internal static List<int> SellableItems()
-        {
-            List<int> items = new();
-            foreach (AnalystItem item in AnalystShopLoader.Items)
-            {
-                if (item.availability.Invoke())
-                {
-                    items.Add(item.itemid);
-                }
-            }
-            return items;
         }
 
         public override void OnChatButtonClicked(bool firstButton, ref bool shop)
