@@ -41,6 +41,9 @@ namespace AltLibrary.Common.AltBiomes
             get;
             private set;
         }
+        /// <summary>
+        /// The message that will appear during world generation. Used by Underworld and Jungle alts. Yet.
+        /// </summary>
         public ModTranslation GenPassName
         {
             get;

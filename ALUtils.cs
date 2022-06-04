@@ -41,7 +41,7 @@ namespace AltLibrary
             return num;
         }
 
-        internal static void ReplaceIDs<T>(ILContext il, T id, Func<T, T> replace, Func<T, bool> check)
+        internal static void ReplaceIDs<T>(ILContext il, T id, Func<T, T> replace, Func<T, bool> check, Func<T, T> replaceCheck = null)
         {
             ILCursor c = new(il);
             switch (id)
@@ -51,7 +51,7 @@ namespace AltLibrary
                         while (c.TryGotoNext(i => i.MatchLdcI4(num) && i.Offset != 0))
                         {
                             c.Index++;
-                            c.EmitDelegate<Func<T, T>>(orig => check.Invoke(orig) ? replace.Invoke(orig) : orig);
+                            c.EmitDelegate<Func<T, T>>(orig => check.Invoke(orig) ? replace.Invoke(orig) : (replaceCheck == null ? orig : replaceCheck.Invoke(orig)));
                         }
                         break;
                     }
@@ -60,7 +60,7 @@ namespace AltLibrary
                         while (c.TryGotoNext(i => i.MatchLdcI4(num) && i.Offset != 0))
                         {
                             c.Index++;
-                            c.EmitDelegate<Func<T, T>>(orig => check.Invoke(orig) ? replace.Invoke(orig) : orig);
+                            c.EmitDelegate<Func<T, T>>(orig => check.Invoke(orig) ? replace.Invoke(orig) : (replaceCheck == null ? orig : replaceCheck.Invoke(orig)));
                         }
                         break;
                     }
@@ -69,7 +69,7 @@ namespace AltLibrary
                         while (c.TryGotoNext(i => i.MatchLdcI4(num) && i.Offset != 0))
                         {
                             c.Index++;
-                            c.EmitDelegate<Func<T, T>>(orig => check.Invoke(orig) ? replace.Invoke(orig) : orig);
+                            c.EmitDelegate<Func<T, T>>(orig => check.Invoke(orig) ? replace.Invoke(orig) : (replaceCheck == null ? orig : replaceCheck.Invoke(orig)));
                         }
                         break;
                     }

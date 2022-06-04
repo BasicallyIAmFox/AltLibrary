@@ -9,6 +9,7 @@ using Terraria.GameContent.Generation;
 using Terraria.ID;
 using Terraria.IO;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 using Terraria.WorldBuilding;
 
 namespace AltLibrary.Common.Systems
@@ -17,6 +18,7 @@ namespace AltLibrary.Common.Systems
     {
         public static int DungeonSide { get; internal set; } = 0;
         public static int DungeonLocation { get; internal set; } = 0;
+        public static int WofKilledTimes { get; internal set; } = 0;
 
         public static int WorldCrimson { get; internal set; }
         public static bool WorldCrimson2 { get; internal set; }
@@ -321,6 +323,23 @@ namespace AltLibrary.Common.Systems
                 WorldCrimson2 = worldCrimson2;
                 WorldCrimson3 = worldCrimson3;
             }
+        }
+
+        public override void SaveWorldData(TagCompound tag)
+        {
+            tag.Add("AltLibrary:WofKilledTimes", WofKilledTimes);
+            tag.Add("AltLibrary:WorldCrimson", WorldCrimson);
+            tag.Add("AltLibrary:WorldCrimson2", WorldCrimson2);
+            tag.Add("AltLibrary:WorldCrimson3", WorldCrimson3?.FullName);
+        }
+
+        public override void LoadWorldData(TagCompound tag)
+        {
+            WofKilledTimes = tag.GetInt("AltLibrary:WofKilledTimes");
+            WorldCrimson = tag.GetInt("AltLibrary:WorldCrimson");
+            WorldCrimson2 = tag.GetBool("AltLibrary:WorldCrimson2");
+            string fullname = tag.GetString("AltLibrary:WorldCrimson3");
+            WorldCrimson3 = AltLibrary.Biomes.Find(x => x.FullName == fullname);
         }
     }
 }
