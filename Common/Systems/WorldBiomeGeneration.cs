@@ -1,4 +1,5 @@
 ﻿using AltLibrary.Common.AltBiomes;
+using AltLibrary.Core;
 using AltLibrary.Core.Generation;
 using System;
 using System.Collections.Generic;
@@ -188,7 +189,7 @@ namespace AltLibrary.Common.Systems
                 {
                     if (Main.tile[i, j].HasUnactuatedTile)
                     {
-                        typeof(WorldGen).GetField("grassSpread", BindingFlags.NonPublic | BindingFlags.Static).SetValue(null, 0);
+                        ALReflection.WorldGen_GrassSpread = 0;
                         WorldGen.SpreadGrass(i, j, TileID.Mud, grass, repeat: true, 0);
                     }
                     progress.Set(0.2f * ((i * Main.maxTilesY + j) / (float)(Main.maxTilesX * Main.maxTilesY)));
@@ -199,7 +200,7 @@ namespace AltLibrary.Common.Systems
             float rightBorder = Main.maxTilesX - 20;
             for (int i = 10; i < Main.maxTilesX - 10; i++)
             {
-                typeof(WorldGen).GetMethod("ScanTileColumnAndRemoveClumps", BindingFlags.NonPublic | BindingFlags.Static, new Type[] { typeof(int) }).Invoke(null, new object[] { i });
+                ALReflection.WorldGen_ScanTileColumnAndRemoveClumps(i);
                 float num835 = (i - 10) / rightBorder;
                 progress.Set(0.2f + num835 * 0.8f);
             }

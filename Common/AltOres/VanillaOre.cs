@@ -10,7 +10,7 @@ namespace AltLibrary.Common.AltOres
         internal readonly string oreTexture;
         private readonly string name;
         private readonly string desc;
-        internal VanillaOre(string texture, string name, int type, int ore, int bar, OreType oreType, string desc = "")
+        internal VanillaOre(string texture, string name, int type, int ore, int bar, OreType oreType, string desc = "", bool avalon = false)
         {
             oreTexture = texture;
             OreType = oreType;
@@ -19,6 +19,7 @@ namespace AltLibrary.Common.AltOres
             this.ore = ore;
             this.bar = bar;
             this.desc = desc;
+            IsForAvalon = avalon;
         }
 
         public override void SetStaticDefaults()

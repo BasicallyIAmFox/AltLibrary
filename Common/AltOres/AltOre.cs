@@ -8,6 +8,8 @@ namespace AltLibrary.Common.AltOres
 {
     public abstract class AltOre : ModTexturedType
     {
+        internal bool IsForAvalon = false;
+
         /// <summary>
         /// The TileID of the ore that will generate in the world.
         /// </summary>

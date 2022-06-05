@@ -94,16 +94,22 @@ namespace AltLibrary.Core.Generation
 
             EvilBiomes.ForEach(i =>
             {
-                progress.Message = i.ProgressMessage;
+                progress.Message = i?.ProgressMessage == null ? "No ProgressMessage! Report that to Mod Developer!" : i?.ProgressMessage;
 
                 int passesDone = 0;
                 while (passesDone < numberPasses)
                 {
-                    i.GetEvilSpawnLocation(dungeonSide, dungeonLocation, SnowBoundMinX, SnowBoundMaxX, JungleBoundMinX, JungleBoundMaxX, drunkIter, drunkMax, out int evilMid, out int evilLeft, out int evilRight);
-                    i.GenerateEvil(evilMid, evilLeft, evilRight);
+                    if (i != null)
+                    {
+                        i.GetEvilSpawnLocation(dungeonSide, dungeonLocation, SnowBoundMinX, SnowBoundMaxX, JungleBoundMinX, JungleBoundMaxX, drunkIter, drunkMax, out int evilMid, out int evilLeft, out int evilRight);
+                        i.GenerateEvil(evilMid, evilLeft, evilRight);
+                    }
                     passesDone++;
                 }
-                i.PostGenerateEvil();
+                if (i != null)
+                {
+                    i?.PostGenerateEvil();
+                }
                 drunkIter++;
             });
 

@@ -23,8 +23,6 @@ namespace AltLibrary.Content.NPCs
     {
         internal static int CurrentPage = 0;
 
-        public override bool IsLoadingEnabled(Mod mod) => false;
-
         public override void Load()
         {
             CurrentPage = 0;
@@ -151,6 +149,11 @@ namespace AltLibrary.Content.NPCs
             ;
         }
 
+        public override void AI()
+        {
+            NPC.Transform(0);
+        }
+
         public override void SetDefaults()
         {
             NPC.townNPC = true;
@@ -253,7 +256,7 @@ namespace AltLibrary.Content.NPCs
     {
         public int GetHeadTextureIndex(NPC npc)
         {
-            return ModContent.GetModHeadSlot("AltLibrary/Content/NPCs/PieChartTownNPC_Head"); ;
+            return ModContent.GetModHeadSlot("AltLibrary/Content/NPCs/PieChartTownNPC_Head");
         }
 
         public string GetNameForVariant(NPC npc)
@@ -265,10 +268,6 @@ namespace AltLibrary.Content.NPCs
         {
             if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
                 return ModContent.Request<Texture2D>("AltLibrary/Content/NPCs/PieChartTownNPC");
-
-            if (npc.altTexture == 1)
-                return ModContent.Request<Texture2D>("AltLibrary/Content/NPCs/PieChartTownNPC_Party");
-
             return ModContent.Request<Texture2D>("AltLibrary/Content/NPCs/PieChartTownNPC");
         }
 

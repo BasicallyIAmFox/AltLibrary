@@ -59,7 +59,7 @@ namespace AltLibrary.Common.Hooks
             });
 
             ALUtils.ReplaceIDs(il, TileID.Ash,
-                (orig) => (ushort?)ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).BiomeOre ?? orig,
+                (orig) => (ushort?)ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).BiomeStone ?? orig,
                 (orig) => WorldBiomeManager.WorldHell != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).BiomeStone.HasValue);
             ALUtils.ReplaceIDs(il, TileID.Hellstone,
                 (orig) => (ushort?)ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).BiomeOre ?? orig,

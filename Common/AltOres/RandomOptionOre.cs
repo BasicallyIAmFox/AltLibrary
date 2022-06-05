@@ -9,9 +9,19 @@ namespace AltLibrary.Common.AltOres
         public override string Name => name;
 
         private readonly string name;
-        public RandomOptionOre(string name) : base()
+        private readonly string display;
+        public RandomOptionOre(string name, string overrideDisplay = "") : base()
         {
             this.name = name;
+            display = overrideDisplay;
+        }
+
+        public override void SetStaticDefaults()
+        {
+            if (display != "")
+            {
+                DisplayName.SetDefault(display);
+            }
         }
 
         public override bool IsLoadingEnabled(Mod mod) => false;
