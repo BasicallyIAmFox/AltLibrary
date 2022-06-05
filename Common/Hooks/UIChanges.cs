@@ -260,21 +260,18 @@ namespace AltLibrary.Common.Hooks
         private static void ILUIElementRecalculate(ILContext il)
         {
             var c = new ILCursor(il);
-            if (!c.TryGotoNext(i =>
-                    i.MatchCallvirt(
-                        typeof(Terraria.UI.UIElement).GetMethod(nameof(Terraria.UI.UIElement.RecalculateChildren)))))
-            {
-                return;
-            }
+            c.GotoNext(i => i.MatchCallvirt(typeof(Terraria.UI.UIElement).GetMethod(
+                nameof(Terraria.UI.UIElement.RecalculateChildren),
+                BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly, null, Type.EmptyTypes, null)));
+            c.Index--;
 
-            c.Remove();
-            c.EmitDelegate<Action<Terraria.UI.UIElement>>(element =>
-            {
-                if (element is not ALUIElement)
-                {
-                    element.RecalculateChildren();
-                }
-            });
+            ILLabel label = c.DefineLabel();
+
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Func<Terraria.UI.UIElement, bool>>(element => element is ALUIElement);
+            c.Emit(OpCodes.Brtrue, label)
+                .GotoNext(i => i.MatchRet())
+                .MarkLabel(label);
         }
 
         // Fixes vanilla's decision to clamp the clipping rectangle from 0 to the screen width which doesnt respect the position of the element... smh
