@@ -524,9 +524,9 @@ namespace AltLibrary.Common
 
                 if (AltLibrary.Avalon != null)
                 {
-                    //ALReflection.ExxoWorldGen_RhodiumOre = Rhodium * -1 - 1;
-                    //ALReflection.ExxoWorldGen_SHMTier1Ore = SHMTier1 * -1 - 4;
-                    //ALReflection.ExxoWorldGen_SHMTier2Ore = SHMTier2 * -1 - 6;
+                    AltLibrary.Avalon.Call(0, 0, Rhodium * -1 - 1);
+                    AltLibrary.Avalon.Call(0, 1, SHMTier1 * -1 - 1);
+                    AltLibrary.Avalon.Call(0, 2, SHMTier2 * -1 - 1);
                 }
 
                 AltLibrary.Instance.Logger.Info($"On creating world - Hallow: {AltHallowBiomeChosenType} Corrupt: {AltEvilBiomeChosenType} Jungle: {AltJungleBiomeChosenType} Underworld: {AltHellBiomeChosenType}");
