@@ -11,6 +11,24 @@ Mods: {
 				2: "3"
 			}
 		}
+		TownNPCMood: {
+			PieChartTownNPC: {
+				Content: Nothing much to report.
+				NoHome: I'm no stranger to the dangers of this world, but it would be nice to have a home base.
+				LoveSpace: I have just enough room to not be interrupted!
+				FarFromHome: This expedition has been fascinating, but I would like to go home now.
+				DislikeCrowded: It's distracting having this many people around.
+				HateCrowded: Give me some space, people! I can't function like this!
+				LikeBiome: "The cool breeze of {BiomeName} keeps my tech at tip-top performance!"
+				LoveBiome: "Organizing my files is a breeze here in {BiomeName}!"
+				DislikeBiome: "I can't say I like {BiomeName}, my equipment overheats far too easily."
+				HateBiome: "While {BiomeName} makes for a great research trip, I really would rather not stay here."
+				LikeNPC: "I could collect so much data using {NPCName}!"
+				LoveNPC: "{NPCName} makes me feel things I don't understand!"
+				DislikeNPC: "{NPCName} just will not leave me alone."
+				HateNPC: "I need {NPCName} out of my life. ASAP."
+			}
+		}
 		BlessBase: "Your world has been blessed with {0}!"
 		WorldBreak: "One of the biomes this world was created with has been removed, this can lead to heavy breakage!"
 		AddedBy: "Added By:"

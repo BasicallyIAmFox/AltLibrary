@@ -124,7 +124,7 @@ namespace AltLibrary.Content.NPCs
         {
             DisplayName.SetDefault("Analyst");
 
-            Main.npcFrameCount[Type] = 25;
+            Main.npcFrameCount[Type] = Main.npcFrameCount[NPCID.Mechanic];
 
             NPCID.Sets.ExtraFramesCount[Type] = 9;
             NPCID.Sets.AttackFrameCount[Type] = 4;
@@ -141,13 +141,13 @@ namespace AltLibrary.Content.NPCs
 
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
 
-            NPC.Happiness
-                .SetBiomeAffection<ForestBiome>(AffectionLevel.Like)
-                .SetBiomeAffection<SnowBiome>(AffectionLevel.Dislike)
-                .SetNPCAffection(NPCID.Dryad, AffectionLevel.Love)
-                .SetNPCAffection(NPCID.Guide, AffectionLevel.Like)
-                .SetNPCAffection(NPCID.Merchant, AffectionLevel.Dislike)
-                .SetNPCAffection(NPCID.Demolitionist, AffectionLevel.Hate)
+            NPC.Happiness // if/when cyber becomes a mod, make analyst love cyber
+                .SetBiomeAffection<SnowBiome>(AffectionLevel.Like)
+                .SetBiomeAffection<DesertBiome>(AffectionLevel.Dislike)
+                .SetNPCAffection(NPCID.Steampunker, AffectionLevel.Love)
+                .SetNPCAffection(NPCID.Cyborg, AffectionLevel.Like)
+                .SetNPCAffection(NPCID.Angler, AffectionLevel.Like)
+                .SetNPCAffection(NPCID.PartyGirl, AffectionLevel.Dislike)
             ;
         }
 
@@ -164,7 +164,7 @@ namespace AltLibrary.Content.NPCs
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = SoundID.NPCDeath1;
             NPC.knockBackResist = 0.5f;
-            AnimationType = NPCID.Guide;
+            AnimationType = NPCID.Mechanic;
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -181,7 +181,15 @@ namespace AltLibrary.Content.NPCs
         {
             return new()
             {
-                "Ahabrammamaobaama",
+                "Kenzie",
+                "Harley",
+                "Tristen",
+                "Nicole",
+                "Jaden",
+                "Marie",
+                "Flo",
+                "Susan",
+                "Penny"
             };
         }
 
@@ -238,7 +246,7 @@ namespace AltLibrary.Content.NPCs
             }
         }
 
-        public override bool CanGoToStatue(bool toKingStatue) => true;
+        public override bool CanGoToStatue(bool toQueenStatue) => true;
     }
 
     internal class PieChartTownNPCProfile : ITownNPCProfile
@@ -267,6 +275,26 @@ namespace AltLibrary.Content.NPCs
         public int RollVariation()
         {
             return 0;
+        }
+    }
+
+    internal class AnalystNPCRelationships : GlobalNPC
+    {
+        public override void SetStaticDefaults()
+        {
+            int analystType = ModContent.NPCType<PieChartTownNPC>(); 
+
+            var otherNPC = NPCHappiness.Get(NPCID.Steampunker); 
+            otherNPC.SetNPCAffection(analystType, AffectionLevel.Love);
+
+            otherNPC = NPCHappiness.Get(NPCID.Dryad);
+            otherNPC.SetNPCAffection(analystType, AffectionLevel.Hate);
+
+            otherNPC = NPCHappiness.Get(NPCID.TaxCollector);
+            otherNPC.SetNPCAffection(analystType, AffectionLevel.Dislike);
+
+            otherNPC = NPCHappiness.Get(NPCID.Clothier);
+            otherNPC.SetNPCAffection(analystType, AffectionLevel.Like);
         }
     }
 }
