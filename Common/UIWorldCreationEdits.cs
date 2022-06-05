@@ -117,7 +117,7 @@ namespace AltLibrary.Common
                     "not the bees" or "not the bees!" => "NotTheBees",
                     "for the worthy" => "ForTheWorthy",
                     "celebrationmk10" or "05162011" or "5162011" or "05162021" or "5162021" => "Anniversary",
-                    "constant" or "theconstant" or "​the constant" or "eye4aneye" or "eye4aneye" => "Constant",
+                    "constant" or "theconstant" or "the constant" or "eye4aneye" or "eye4aneye" => "Constant",
                     _ => "",
                 };
                 bool broken = false;
@@ -826,18 +826,16 @@ namespace AltLibrary.Common
 
         public static void ILMakeInfoMenu(ILContext il)
         {
-            ILCursor c = new(il);
-            if (!c.TryGotoNext(i => i.MatchLdstr("evil")))
-            {
-                AltLibrary.Instance.Logger.Info("1 $ 1");
-                return;
-            }
-            if (!c.TryGotoNext(i => i.MatchLdloc(1)))
-            {
-                AltLibrary.Instance.Logger.Info("1 $ 2");
-                return;
-            }
-            RemoveUntilInstruction(c, i => i.MatchLdarg(0));
+            var c = new ILCursor(il);
+
+            c.GotoNext(i => i.MatchLdstr("evil"))
+                .GotoNext(i => i.MatchLdloc(1), i => i.MatchLdcR4(48f));
+
+            ILLabel label = c.DefineLabel();
+            c.Emit(OpCodes.Br, label)
+                .GotoNext(i => i.MatchLdarg(0), i => i.MatchLdloc(0), i => i.MatchLdloc(1), i => i.MatchLdstr("desc"));
+
+            c.MarkLabel(label);
         }
 
         internal static void WorldCreationUIIcons(UIWorldCreationPreview self, SpriteBatch spriteBatch)
