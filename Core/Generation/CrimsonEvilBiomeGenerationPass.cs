@@ -1,4 +1,6 @@
+using AltLibrary.Common.Hooks;
 using Terraria;
+using Terraria.ID;
 
 namespace AltLibrary.Core.Generation
 {
@@ -19,7 +21,7 @@ namespace AltLibrary.Core.Generation
                         int num21 = num20 + WorldGen.genRand.Next(10, 14);
                         for (int k = num20; k < num21; k++)
                         {
-                            if ((Main.tile[j, k].TileType == 59 || Main.tile[j, k].TileType == 60) && j >= num16 + WorldGen.genRand.Next(5) && j < num17 - WorldGen.genRand.Next(5))
+                            if ((Main.tile[j, k].TileType == TileID.Mud || Main.tile[j, k].TileType == TileID.JungleGrass) && j >= num16 + WorldGen.genRand.Next(5) && j < num17 - WorldGen.genRand.Next(5))
                             {
                                 Main.tile[j, k].TileType = 0;
                             }

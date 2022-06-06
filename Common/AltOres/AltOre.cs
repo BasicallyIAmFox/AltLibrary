@@ -1,5 +1,6 @@
 ﻿using AltLibrary.Core;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -8,8 +9,6 @@ namespace AltLibrary.Common.AltOres
 {
     public abstract class AltOre : ModTexturedType
     {
-        internal bool IsForAvalon = false;
-
         /// <summary>
         /// The TileID of the ore that will generate in the world.
         /// </summary>
@@ -69,14 +68,45 @@ namespace AltLibrary.Common.AltOres
             private set;
         }
 
+        /// <summary>
+        /// Override if you want custom selection
+        /// </summary>
+        /// <param name="list"></param>
+        public virtual void CustomSelection(OreType thisOreType, List<AltOre> list)
+        {
+            int index = list.FindLastIndex(x => x.OreType == thisOreType);
+            if (index != -1)
+            {
+                list.Insert(index + 1, this);
+            }
+        }
+
+        /// <summary>
+        /// Override if you want to have random value whenever creating new world. Should be used just for custom tiers.
+        /// </summary>
+        public virtual void OnInitialize()
+        {
+        }
+
+        /// <summary>
+        /// If you want custom action on click, then use this. Useful for "RandomX" options and custom tiers.
+        /// </summary>
+        public virtual void OnClick()
+        {
+        }
+
+        public virtual void AddOreOnScreenIcon(List<ALOreDrawingStruct> list)
+        {
+        }
+
         protected sealed override void Register()
         {
             ModTypeLookup<AltOre>.Register(this);
 
-            DisplayName = ALReflection.LocalizationLoader_GetOrCreateTranslation(Mod, $"AltOreName.{Name}", false);
-            Description = ALReflection.LocalizationLoader_GetOrCreateTranslation(Mod, $"AltOreDescription.{Name}", true);
-            BlessingMessage = ALReflection.LocalizationLoader_GetOrCreateTranslation(Mod, $"AltOreBless.{Name}", true);
-            GuideHelpText = ALReflection.LocalizationLoader_GetOrCreateTranslation(Mod, $"AltBiomeHelpText.{Name}", true);
+            DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"AltOreName.{Name}", false);
+            Description = LocalizationLoader.GetOrCreateTranslation(Mod, $"AltOreDescription.{Name}", true);
+            BlessingMessage = LocalizationLoader.GetOrCreateTranslation(Mod, $"AltOreBless.{Name}", true);
+            GuideHelpText = LocalizationLoader.GetOrCreateTranslation(Mod, $"AltBiomeHelpText.{Name}", true);
 
             AltLibrary.Ores.Add(this);
             Type = AltLibrary.Ores.Count;

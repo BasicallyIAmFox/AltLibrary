@@ -48,8 +48,6 @@ namespace AltLibrary
         internal static UserInterface userInterface;
         internal ALPieChartState pieChartState;
 
-        internal static Mod Avalon { get; private set; }
-
         public AltLibrary()
         {
             Instance = this;
@@ -57,10 +55,6 @@ namespace AltLibrary
 
         public override void Load()
         {
-            if (ModLoader.TryGetMod("AvalonTesting", out Mod mod))
-            {
-                Avalon = mod;
-            }
             ALReflection.Init();
             ILHooks.OnInitialize();
             AnimatedModIcon.Init();
@@ -83,6 +77,7 @@ namespace AltLibrary
 
         public override void PostSetupContent()
         {
+            ALWorldCreationLists.FillData();
             ALTextureAssets.PostContentLoad();
             ALConvertInheritanceData.FillData();
         }
@@ -260,7 +255,6 @@ namespace AltLibrary
 
         public override void Unload()
         {
-            Avalon = null;
             AnimatedModIcon.Unload();
             ALTextureAssets.Unload();
             ALConvert.Unload();

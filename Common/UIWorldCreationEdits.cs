@@ -1,7 +1,7 @@
 ﻿using AltLibrary.Common.AltBiomes;
 using AltLibrary.Common.AltOres;
 using AltLibrary.Common.Systems;
-using AltLibrary.Core;
+using AltLibrary.Core.Baking;
 using AltLibrary.Core.UIs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -15,18 +15,17 @@ using System.Reflection;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
-using Terraria.ID;
 using Terraria.IO;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
+using static AltLibrary.Common.UIWorldCreationEdits;
 
 namespace AltLibrary.Common
 {
     [Autoload(Side = ModSide.Client)]
     internal class UIWorldCreationEdits
     {
-        private const string AvalonOreIconPath = "AvalonTesting/Assets/Ores/";
         internal static ALGroupOptionButton<CurrentAltOption>[] chosingOption;
         internal static CurrentAltOption chosenOption;
         internal static int AltEvilBiomeChosenType;
@@ -46,9 +45,6 @@ namespace AltLibrary.Common
         internal static int Cobalt;
         internal static int Mythril;
         internal static int Adamantite;
-        internal static int Rhodium;
-        internal static int SHMTier1;
-        internal static int SHMTier2;
         internal static bool isCrimson;
         internal static string seed;
         internal enum CurrentAltOption
@@ -99,9 +95,6 @@ namespace AltLibrary.Common
             Cobalt = 0;
             Mythril = 0;
             Adamantite = 0;
-            Rhodium = 0;
-            SHMTier1 = 0;
-            SHMTier2 = 0;
             seed = null;
         }
 
@@ -143,14 +136,9 @@ namespace AltLibrary.Common
             AltLibrary.Ores.Where(x => x.OreType == OreType.Adamantite && x.Selectable).ToList().ForEach(x => ores.Add(x.Type));
             Adamantite = Main.rand.Next(ores);
 
-            if (AltLibrary.Avalon != null)
+            foreach (AltOre ore in AltLibrary.Ores)
             {
-                ores = new() { -1, -2, -3 };
-                Rhodium = Main.rand.Next(ores);
-                ores = new() { -4, -5 };
-                SHMTier1 = Main.rand.Next(ores);
-                ores = new() { -6, -7 };
-                SHMTier2 = Main.rand.Next(ores);
+                ore.OnInitialize();
             }
         }
 
@@ -162,25 +150,7 @@ namespace AltLibrary.Common
             prehmList.Add(new RandomOptionOre("RandomIron"));
             prehmList.Add(new RandomOptionOre("RandomSilver"));
             prehmList.Add(new RandomOptionOre("RandomGold"));
-            if (AltLibrary.Avalon != null) prehmList.Add(new RandomOptionOre("RandomRhodium"));
-            prehmList.Add(new VanillaOre("Copper", "Copper", -1, TileID.Copper, ItemID.CopperBar, OreType.Copper));
-            prehmList.Add(new VanillaOre("Tin", "Tin", -2, TileID.Tin, ItemID.TinBar, OreType.Copper));
-            prehmList.AddRange(AltLibrary.Ores.Where(x => x.OreType == OreType.Copper && x.Selectable));
-            prehmList.Add(new VanillaOre("Iron", "Iron", -3, TileID.Iron, ItemID.IronBar, OreType.Iron));
-            prehmList.Add(new VanillaOre("Lead", "Lead", -4, TileID.Lead, ItemID.LeadBar, OreType.Iron));
-            prehmList.AddRange(AltLibrary.Ores.Where(x => x.OreType == OreType.Iron && x.Selectable));
-            prehmList.Add(new VanillaOre("Silver", "Silver", -5, TileID.Silver, ItemID.SilverBar, OreType.Silver));
-            prehmList.Add(new VanillaOre("Tungsten", "Tungsten", -6, TileID.Tungsten, ItemID.TungstenBar, OreType.Silver));
-            prehmList.AddRange(AltLibrary.Ores.Where(x => x.OreType == OreType.Silver && x.Selectable));
-            prehmList.Add(new VanillaOre("Gold", "Gold", -7, TileID.Gold, ItemID.GoldBar, OreType.Gold));
-            prehmList.Add(new VanillaOre("Platinum", "Platinum", -8, TileID.Platinum, ItemID.PlatinumBar, OreType.Gold));
-            prehmList.AddRange(AltLibrary.Ores.Where(x => x.OreType == OreType.Gold && x.Selectable));
-            if (AltLibrary.Avalon != null)
-            {
-                prehmList.Add(new VanillaOre("Rhodium", "Rhodium", -1, AltLibrary.Avalon.Find<ModTile>("RhodiumOre").Type, AltLibrary.Avalon.Find<ModItem>("RhodiumBar").Type, OreType.Gold, avalon: true));
-                prehmList.Add(new VanillaOre("Osmium", "Osmium", -2, AltLibrary.Avalon.Find<ModTile>("OsmiumOre").Type, AltLibrary.Avalon.Find<ModItem>("OsmiumBar").Type, OreType.Gold, avalon: true));
-                prehmList.Add(new VanillaOre("Iridium", "Iridium", -3, AltLibrary.Avalon.Find<ModTile>("IridiumOre").Type, AltLibrary.Avalon.Find<ModItem>("IridiumBar").Type, OreType.Gold, avalon: true));
-            }
+            prehmList.AddRange(ALWorldCreationLists.prehmOreData.Ores);
             return prehmList;
         }
 
@@ -191,27 +161,7 @@ namespace AltLibrary.Common
             hardmodeListing.Add(new RandomOptionOre("RandomCobalt"));
             hardmodeListing.Add(new RandomOptionOre("RandomMythril"));
             hardmodeListing.Add(new RandomOptionOre("RandomAdamantite"));
-            if (AltLibrary.Avalon != null)
-            {
-                hardmodeListing.Add(new RandomOptionOre("RandomSHMTier1"));
-                hardmodeListing.Add(new RandomOptionOre("RandomSHMTier2"));
-            }
-            hardmodeListing.Add(new VanillaOre("Cobalt", "Cobalt", -9, TileID.Cobalt, ItemID.CobaltBar, OreType.Cobalt));
-            hardmodeListing.Add(new VanillaOre("Palladium", "Palladium", -10, TileID.Palladium, ItemID.PalladiumBar, OreType.Cobalt));
-            hardmodeListing.AddRange(AltLibrary.Ores.Where(x => x.OreType == OreType.Cobalt && x.Selectable));
-            hardmodeListing.Add(new VanillaOre("Mythril", "Mythril", -11, TileID.Mythril, ItemID.MythrilBar, OreType.Mythril));
-            hardmodeListing.Add(new VanillaOre("Orichalcum", "Orichalcum", -12, TileID.Orichalcum, ItemID.OrichalcumBar, OreType.Mythril));
-            hardmodeListing.AddRange(AltLibrary.Ores.Where(x => x.OreType == OreType.Mythril && x.Selectable));
-            hardmodeListing.Add(new VanillaOre("Adamantite", "Adamantite", -13, TileID.Adamantite, ItemID.AdamantiteBar, OreType.Adamantite));
-            hardmodeListing.Add(new VanillaOre("Titanium", "Titanium", -14, TileID.Titanium, ItemID.TitaniumBar, OreType.Adamantite));
-            hardmodeListing.AddRange(AltLibrary.Ores.Where(x => x.OreType == OreType.Adamantite && x.Selectable));
-            if (AltLibrary.Avalon != null)
-            {
-                hardmodeListing.Add(new VanillaOre("Tritanorium", "Tritanorium", -4, AltLibrary.Avalon.Find<ModTile>("TritanoriumOre").Type, AltLibrary.Avalon.Find<ModItem>("TritanoriumBar").Type, OreType.Mythril, avalon: true));
-                hardmodeListing.Add(new VanillaOre("Pyroscoric", "Pyroscoric", -5, AltLibrary.Avalon.Find<ModTile>("PyroscoricOre").Type, AltLibrary.Avalon.Find<ModItem>("PyroscoricBar").Type, OreType.Mythril, avalon: true));
-                hardmodeListing.Add(new VanillaOre("Unvolandite", "Unvolandite", -6, AltLibrary.Avalon.Find<ModTile>("UnvolanditeOre").Type, AltLibrary.Avalon.Find<ModItem>("UnvolanditeBar").Type, OreType.Adamantite, avalon: true));
-                hardmodeListing.Add(new VanillaOre("Vorazylcum", "Vorazylcum", -7, AltLibrary.Avalon.Find<ModTile>("VorazylcumOre").Type, AltLibrary.Avalon.Find<ModItem>("VorazylcumBar").Type, OreType.Adamantite, avalon: true));
-            }
+            hardmodeListing.AddRange(ALWorldCreationLists.hmOreData.Ores);
             return hardmodeListing;
         }
 
@@ -522,13 +472,6 @@ namespace AltLibrary.Common
                 WorldBiomeManager.Mythril = Mythril;
                 WorldBiomeManager.Adamantite = Adamantite;
 
-                if (AltLibrary.Avalon != null)
-                {
-                    AltLibrary.Avalon.Call(0, 0, Rhodium * -1 - 1);
-                    AltLibrary.Avalon.Call(0, 1, SHMTier1 * -1 - 1);
-                    AltLibrary.Avalon.Call(0, 2, SHMTier2 * -1 - 1);
-                }
-
                 AltLibrary.Instance.Logger.Info($"On creating world - Hallow: {AltHallowBiomeChosenType} Corrupt: {AltEvilBiomeChosenType} Jungle: {AltJungleBiomeChosenType} Underworld: {AltHellBiomeChosenType}");
             });
         }
@@ -541,17 +484,30 @@ namespace AltLibrary.Common
             Rectangle mouseRectangle = Utils.CenteredRectangle(Main.MouseScreen, Vector2.One * 2f);
             int x = 0;
 
-            void DrawIcon(Func<bool> cond, Action<SpriteBatch> action)
+            void DrawBiomeIcon(Func<bool> cond, Func<Asset<Texture2D>, Asset<Texture2D>> func, Func<Rectangle?> rect, Func<string> onHoverName, Func<string, string> onHoverMod)
             {
                 if (cond.Invoke())
                 {
-                    Asset<Texture2D> asset = ALTextureAssets.BestiaryIcons;
-                    action.Invoke(spriteBatch);
+                    Asset<Texture2D> asset = func.Invoke(ALTextureAssets.BestiaryIcons);
+                    Rectangle? rectangle = null;
+                    if (rect.Invoke() != null) rectangle = rect.Invoke();
+                    ValueTuple<Asset<Texture2D>, Rectangle?> valueTuple = new(asset, rectangle);
+                    spriteBatch.Draw(ALTextureAssets.Button.Value, new Vector2(position.X + 96f, position.Y + 26f * x), color * 0.8f);
+                    spriteBatch.Draw(valueTuple.Item1.Value, new Vector2(position.X + 99f, position.Y + 26f * x + 3f), valueTuple.Item2, color, 0f, new Vector2(0f, 0f), 0.5f, SpriteEffects.None, 0f);
+                    Vector2 vector2 = new(position.X + 96f, position.Y + 26f * x);
+                    if (mouseRectangle.Intersects(Utils.CenteredRectangle(vector2 + new Vector2(7.5f, 7.5f), Utils.Size(new Rectangle(0, 0, 30, 30)))))
+                    {
+                        string line1 = onHoverName.Invoke();
+                        string line2 = Language.GetTextValue("Mods.AltLibrary.AddedBy") + " " + onHoverMod.Invoke("Terraria");
+                        string line = line1 + '\n' + line2;
+                        Main.instance.MouseText(line);
+                    }
                     x++;
                 }
             }
 
-            DrawIcon(() =>
+            #region Hallow
+            DrawBiomeIcon(() =>
             {
                 bool isAlt = AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist == true;
                 if (isAlt) isAlt &= AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow && x.Selectable).Any();
@@ -560,55 +516,65 @@ namespace AltLibrary.Common
                     isAlt = true;
                 }
                 return (chosenOption == CurrentAltOption.Biome || AltLibraryConfig.Config.BiomeIconsVisibleOutsideBiomeUI) && isAlt;
-            },
-                new Action<SpriteBatch>((spriteBatch) =>
+            }, (value) =>
+            {
+                return AltHallowBiomeChosenType >= 0
+                    ? ModContent.Request<Texture2D>(AltLibrary.Biomes[AltHallowBiomeChosenType].IconSmall
+                                                    ?? "AltLibrary/Assets/Menu/ButtonHallow", AssetRequestMode.ImmediateLoad)
+                    : value;
+            }, () =>
+            {
+                return AltHallowBiomeChosenType switch
                 {
-                    Asset<Texture2D> asset = ALTextureAssets.BestiaryIcons;
-                    if (AltHallowBiomeChosenType >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.Biomes[AltHallowBiomeChosenType].IconSmall ?? "AltLibrary/Assets/Menu/ButtonHallow", AssetRequestMode.ImmediateLoad);
-                    Rectangle? rectangle = null;
-                    if (AltHallowBiomeChosenType < 0) rectangle = new(30, 30, 30, 30);
-                    ValueTuple<Asset<Texture2D>, Rectangle?> valueTuple = new(asset, rectangle);
-                    spriteBatch.Draw(ALTextureAssets.Button.Value, new Vector2(position.X + 96f, position.Y + 26f * x), color * 0.8f);
-                    spriteBatch.Draw(valueTuple.Item1.Value, new Vector2(position.X + 99f, position.Y + 26f * x + 3f), valueTuple.Item2, color, 0f, new Vector2(0f, 0f), 0.5f, SpriteEffects.None, 0f);
-                    Vector2 vector2 = new(position.X + 96f, position.Y + 26f * x);
-                    if (mouseRectangle.Intersects(Utils.CenteredRectangle(vector2 + new Vector2(7.5f, 7.5f), Utils.Size(new Rectangle(0, 0, 30, 30)))))
-                    {
-                        string line1 = "";
-                        if (AltHallowBiomeChosenType < 0) line1 = Language.GetTextValue("Mods.AltLibrary.AltBiomeName.HallowBiome");
-                        if (AltHallowBiomeChosenType >= 0) line1 = AltLibrary.Biomes[AltHallowBiomeChosenType].Name;
-                        string line2 = Language.GetTextValue("Mods.AltLibrary.AddedBy") + " ";
-                        if (AltHallowBiomeChosenType < 0) line2 += "Terraria";
-                        if (AltHallowBiomeChosenType >= 0) line2 += AltLibrary.Biomes[AltHallowBiomeChosenType].Mod.Name;
-                        string line = line1 + '\n' + line2;
-                        Main.instance.MouseText(line);
-                    }
-                }));
-            DrawIcon(() => chosenOption == CurrentAltOption.Biome || AltLibraryConfig.Config.BiomeIconsVisibleOutsideBiomeUI,
-                new Action<SpriteBatch>((spriteBatch) =>
+                    < 0 => new(30, 30, 30, 30),
+                    _ => null
+                };
+            }, () =>
+            {
+                return AltHallowBiomeChosenType < 0
+                    ? Language.GetTextValue("Mods.AltLibrary.AltBiomeName.HallowBiome")
+                    : AltLibrary.Biomes[AltHallowBiomeChosenType].Name;
+            }, (mod) =>
+            {
+                return AltHallowBiomeChosenType switch
                 {
-                    Asset<Texture2D> asset = ALTextureAssets.BestiaryIcons;
-                    if (AltEvilBiomeChosenType > -1) asset = ModContent.Request<Texture2D>(AltLibrary.Biomes[AltEvilBiomeChosenType].IconSmall ?? "AltLibrary/Assets/Menu/ButtonCorrupt", AssetRequestMode.ImmediateLoad);
-                    Rectangle? rectangle = null;
-                    if (AltEvilBiomeChosenType > -666 && AltEvilBiomeChosenType <= -333) rectangle = new(210, 0, 30, 30);
-                    if (AltEvilBiomeChosenType <= -666) rectangle = new(360, 0, 30, 30);
-                    ValueTuple<Asset<Texture2D>, Rectangle?> valueTuple = new(asset, rectangle);
-                    spriteBatch.Draw(ALTextureAssets.Button.Value, new Vector2(position.X + 96f, position.Y + 26f * x), color * 0.8f);
-                    spriteBatch.Draw(valueTuple.Item1.Value, new Vector2(position.X + 99f, position.Y + 26f * x + 3f), valueTuple.Item2, color, 0f, new Vector2(0f, 0f), 0.5f, SpriteEffects.None, 0f);
-                    Vector2 vector2 = new(position.X + 96f, position.Y + 26f * x);
-                    if (mouseRectangle.Intersects(Utils.CenteredRectangle(vector2 + new Vector2(7.5f, 7.5f), Utils.Size(new Rectangle(0, 0, 30, 30)))))
-                    {
-                        string line1 = "";
-                        if (AltEvilBiomeChosenType == -333) line1 = Language.GetTextValue("Mods.AltLibrary.AltBiomeName.CorruptBiome");
-                        if (AltEvilBiomeChosenType == -666) line1 = Language.GetTextValue("Mods.AltLibrary.AltBiomeName.CrimsonBiome");
-                        if (AltEvilBiomeChosenType >= 0) line1 = AltLibrary.Biomes[AltEvilBiomeChosenType].Name;
-                        string line2 = Language.GetTextValue("Mods.AltLibrary.AddedBy") + " ";
-                        if (AltEvilBiomeChosenType < 0) line2 += "Terraria";
-                        if (AltEvilBiomeChosenType >= 0) line2 += AltLibrary.Biomes[AltEvilBiomeChosenType].Mod.Name;
-                        string line = line1 + '\n' + line2;
-                        Main.instance.MouseText(line);
-                    }
-                }));
-            DrawIcon(() =>
+                    >= 0 => AltLibrary.Biomes[AltHallowBiomeChosenType].Mod.Name,
+                    _ => mod
+                };
+            });
+            #endregion
+            #region Evil
+            DrawBiomeIcon(() => chosenOption == CurrentAltOption.Biome || AltLibraryConfig.Config.BiomeIconsVisibleOutsideBiomeUI,
+                (value) =>
+            {
+                return AltEvilBiomeChosenType >= 0
+                    ? ModContent.Request<Texture2D>(AltLibrary.Biomes[AltEvilBiomeChosenType].IconSmall
+                                                    ?? "AltLibrary/Assets/Menu/ButtonCorrupt", AssetRequestMode.ImmediateLoad)
+                    : value;
+            }, () =>
+            {
+                return AltEvilBiomeChosenType switch
+                {
+                    > -666 and <= -333 => new(210, 0, 30, 30),
+                    <= -666 => new(360, 0, 30, 30),
+                    _ => null
+                };
+            }, () =>
+            {
+                if (AltEvilBiomeChosenType == -333) return Language.GetTextValue("Mods.AltLibrary.AltBiomeName.CorruptBiome");
+                if (AltEvilBiomeChosenType == -666) return Language.GetTextValue("Mods.AltLibrary.AltBiomeName.CrimsonBiome");
+                return AltLibrary.Biomes[AltEvilBiomeChosenType].Name;
+            }, (mod) =>
+            {
+                return AltEvilBiomeChosenType switch
+                {
+                    >= 0 => AltLibrary.Biomes[AltEvilBiomeChosenType].Mod.Name,
+                    _ => mod
+                };
+            });
+            #endregion
+            #region Underworld
+            DrawBiomeIcon(() =>
             {
                 bool isAlt = AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist == true;
                 if (isAlt) isAlt &= AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hell && x.Selectable).Any();
@@ -617,30 +583,35 @@ namespace AltLibrary.Common
                     isAlt = true;
                 }
                 return (chosenOption == CurrentAltOption.Biome || AltLibraryConfig.Config.BiomeIconsVisibleOutsideBiomeUI) && isAlt;
-            },
-                new Action<SpriteBatch>((spriteBatch) =>
+            }, (value) =>
+            {
+                return AltHellBiomeChosenType >= 0
+                    ? ModContent.Request<Texture2D>(AltLibrary.Biomes[AltHellBiomeChosenType].IconSmall
+                                                    ?? "AltLibrary/Assets/Menu/ButtonHell", AssetRequestMode.ImmediateLoad)
+                    : value;
+            }, () =>
+            {
+                return AltHellBiomeChosenType switch
                 {
-                    Asset<Texture2D> asset = ALTextureAssets.BestiaryIcons;
-                    if (AltHellBiomeChosenType >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.Biomes[AltHellBiomeChosenType].IconSmall ?? "AltLibrary/Assets/Menu/ButtonHell", AssetRequestMode.ImmediateLoad);
-                    Rectangle? rectangle = null;
-                    if (AltHellBiomeChosenType < 0) rectangle = new(30, 60, 30, 30);
-                    ValueTuple<Asset<Texture2D>, Rectangle?> valueTuple = new(asset, rectangle);
-                    spriteBatch.Draw(ALTextureAssets.Button.Value, new Vector2(position.X + 96f, position.Y + 26f * x), color * 0.8f);
-                    spriteBatch.Draw(valueTuple.Item1.Value, new Vector2(position.X + 99f, position.Y + 26f * x + 3f), valueTuple.Item2, color, 0f, new Vector2(0f, 0f), 0.5f, SpriteEffects.None, 0f);
-                    Vector2 vector2 = new(position.X + 96f, position.Y + 26f * x);
-                    if (mouseRectangle.Intersects(Utils.CenteredRectangle(vector2 + new Vector2(7.5f, 7.5f), Utils.Size(new Rectangle(0, 0, 30, 30)))))
-                    {
-                        string line1 = "";
-                        if (AltHellBiomeChosenType < 0) line1 = Language.GetTextValue("Mods.AltLibrary.AltBiomeName.UnderworldBiome");
-                        if (AltHellBiomeChosenType >= 0) line1 = AltLibrary.Biomes[AltHellBiomeChosenType].Name;
-                        string line2 = Language.GetTextValue("Mods.AltLibrary.AddedBy") + " ";
-                        if (AltHellBiomeChosenType < 0) line2 += "Terraria";
-                        if (AltHellBiomeChosenType >= 0) line2 += AltLibrary.Biomes[AltHallowBiomeChosenType].Mod.Name;
-                        string line = line1 + '\n' + line2;
-                        Main.instance.MouseText(line);
-                    }
-                }));
-            DrawIcon(() =>
+                    < 0 => new(30, 60, 30, 30),
+                    _ => null
+                };
+            }, () =>
+            {
+                return AltHellBiomeChosenType < 0
+                    ? Language.GetTextValue("Mods.AltLibrary.AltBiomeName.UnderworldBiome")
+                    : AltLibrary.Biomes[AltHellBiomeChosenType].Name;
+            }, (mod) =>
+            {
+                return AltHellBiomeChosenType switch
+                {
+                    >= 0 => AltLibrary.Biomes[AltHellBiomeChosenType].Mod.Name,
+                    _ => mod
+                };
+            });
+            #endregion
+            #region Jungle
+            DrawBiomeIcon(() =>
             {
                 bool isAlt = AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist == true;
                 if (isAlt) isAlt &= AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Jungle && x.Selectable).Any();
@@ -649,145 +620,307 @@ namespace AltLibrary.Common
                     isAlt = true;
                 }
                 return (chosenOption == CurrentAltOption.Biome || AltLibraryConfig.Config.BiomeIconsVisibleOutsideBiomeUI) && isAlt;
-            },
-                new Action<SpriteBatch>((spriteBatch) =>
+            }, (value) =>
+            {
+                return AltJungleBiomeChosenType >= 0
+                    ? ModContent.Request<Texture2D>(AltLibrary.Biomes[AltJungleBiomeChosenType].IconSmall
+                                                    ?? "AltLibrary/Assets/Menu/ButtonJungle", AssetRequestMode.ImmediateLoad)
+                    : value;
+            }, () =>
+            {
+                return AltJungleBiomeChosenType switch
                 {
-                    Asset<Texture2D> asset = ALTextureAssets.BestiaryIcons;
-                    if (AltJungleBiomeChosenType >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.Biomes[AltJungleBiomeChosenType].IconSmall ?? "AltLibrary/Assets/Menu/ButtonJungle", AssetRequestMode.ImmediateLoad);
+                    < 0 => new(180, 30, 30, 30),
+                    _ => null
+                };
+            }, () =>
+            {
+                return AltJungleBiomeChosenType < 0
+                    ? Language.GetTextValue("Mods.AltLibrary.AltBiomeName.JungleBiome")
+                    : AltLibrary.Biomes[AltJungleBiomeChosenType].Name;
+            }, (mod) =>
+            {
+                return AltJungleBiomeChosenType switch
+                {
+                    >= 0 => AltLibrary.Biomes[AltJungleBiomeChosenType].Mod.Name,
+                    _ => mod
+                };
+            });
+            #endregion
+
+            void DrawOreIcon(Func<bool> cond, Func<Asset<Texture2D>, Asset<Texture2D>> func, Func<Rectangle?> rect, Func<string> onHoverName, Func<string, string> onHoverMod)
+            {
+                if (cond.Invoke())
+                {
+                    Asset<Texture2D> asset = func.Invoke(ALTextureAssets.OreIcons);
                     Rectangle? rectangle = null;
-                    if (AltJungleBiomeChosenType < 0) rectangle = new(180, 30, 30, 30);
+                    if (rect.Invoke() != null) rectangle = rect.Invoke();
                     ValueTuple<Asset<Texture2D>, Rectangle?> valueTuple = new(asset, rectangle);
                     spriteBatch.Draw(ALTextureAssets.Button.Value, new Vector2(position.X + 96f, position.Y + 26f * x), color * 0.8f);
-                    spriteBatch.Draw(valueTuple.Item1.Value, new Vector2(position.X + 99f, position.Y + 26f * x + 3f), valueTuple.Item2, color, 0f, new Vector2(0f, 0f), 0.5f, SpriteEffects.None, 0f);
+                    spriteBatch.Draw(valueTuple.Item1.Value, new Vector2(position.X + 99f, position.Y + 26f * x + 3f), valueTuple.Item2, color, 0f, new Vector2(1f, 1f), 0.5f, SpriteEffects.None, 0f);
                     Vector2 vector2 = new(position.X + 96f, position.Y + 26f * x);
                     if (mouseRectangle.Intersects(Utils.CenteredRectangle(vector2 + new Vector2(7.5f, 7.5f), Utils.Size(new Rectangle(0, 0, 30, 30)))))
                     {
-                        string line1 = "";
-                        if (AltJungleBiomeChosenType < 0) line1 = Language.GetTextValue("Mods.AltLibrary.AltBiomeName.JungleBiome");
-                        if (AltJungleBiomeChosenType >= 0) line1 = AltLibrary.Biomes[AltJungleBiomeChosenType].Name;
-                        string line2 = Language.GetTextValue("Mods.AltLibrary.AddedBy") + " ";
-                        if (AltJungleBiomeChosenType < 0) line2 += "Terraria";
-                        if (AltJungleBiomeChosenType >= 0) line2 += AltLibrary.Biomes[AltJungleBiomeChosenType].Mod.Name;
+                        string line1 = onHoverName.Invoke();
+                        string line2 = Language.GetTextValue("Mods.AltLibrary.AddedBy") + " " + onHoverMod.Invoke("Terraria");
                         string line = line1 + '\n' + line2;
                         Main.instance.MouseText(line);
                     }
-                }));
-            if (chosenOption == CurrentAltOption.Ore || AltLibraryConfig.Config.OreIconsVisibleOutsideOreUI)
-            {
-                for (int i = 0; i < (AltLibrary.Avalon == null ? 4 : 5); i++)
-                {
-                    Asset<Texture2D> asset = ALTextureAssets.OreIcons;
-                    if (i == 0 && Copper >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.Ores[Copper - 1].Texture);
-                    if (i == 1 && Iron >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.Ores[Iron - 1].Texture);
-                    if (i == 2 && Silver >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.Ores[Silver - 1].Texture);
-                    if (i == 3 && Gold >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.Ores[Gold - 1].Texture);
-                    if (i == 4 && Rhodium == -1) asset = ModContent.Request<Texture2D>(AvalonOreIconPath + "RhodiumOreIcon", AssetRequestMode.ImmediateLoad);
-                    if (i == 4 && Rhodium == -2) asset = ModContent.Request<Texture2D>(AvalonOreIconPath + "OsmiumOreIcon", AssetRequestMode.ImmediateLoad);
-                    if (i == 4 && Rhodium == -3) asset = ModContent.Request<Texture2D>(AvalonOreIconPath + "IridiumOreIcon", AssetRequestMode.ImmediateLoad);
-                    Rectangle? rectangle = null;
-                    if (i == 0 && Copper == -1) rectangle = new(0, 0, 30, 30);
-                    if (i == 0 && Copper == -2) rectangle = new(30, 0, 30, 30);
-                    if (i == 1 && Iron == -3) rectangle = new(60, 0, 30, 30);
-                    if (i == 1 && Iron == -4) rectangle = new(90, 0, 30, 30);
-                    if (i == 2 && Silver == -5) rectangle = new(120, 0, 30, 30);
-                    if (i == 2 && Silver == -6) rectangle = new(150, 0, 30, 30);
-                    if (i == 3 && Gold == -7) rectangle = new(180, 0, 30, 30);
-                    if (i == 3 && Gold == -8) rectangle = new(210, 0, 30, 30);
-                    if (i == 4) rectangle = new(0, 0, 30, 30);
-                    ValueTuple<Asset<Texture2D>, Rectangle?> valueTuple = new(asset, rectangle);
-                    spriteBatch.Draw(ALTextureAssets.Button.Value, new Vector2(position.X + 96f, position.Y + 26f * (i + x)), color * 0.8f);
-                    spriteBatch.Draw(valueTuple.Item1.Value, new Vector2(position.X + 99f, position.Y + 26f * (i + x) + 3f), valueTuple.Item2, color, 0f, new Vector2(1f, 1f), 0.5f, SpriteEffects.None, 0f);
-                    Vector2 vector2 = new(position.X + 96f, position.Y + 26f * (i + x));
-                    if (mouseRectangle.Intersects(Utils.CenteredRectangle(vector2 + new Vector2(7.5f, 7.5f), Utils.Size(new Rectangle(0, 0, 30, 30)))))
-                    {
-                        string line1 = "";
-                        if (i == 0 && Copper == -1) line1 = Language.GetTextValue("Mods.AltLibrary.AltOreName.Copper");
-                        if (i == 0 && Copper == -2) line1 = Language.GetTextValue("Mods.AltLibrary.AltOreName.Tin");
-                        if (i == 0 && Copper >= 0) line1 = AltLibrary.Ores[Copper - 1].Name;
-                        if (i == 1 && Iron == -3) line1 = Language.GetTextValue("Mods.AltLibrary.AltOreName.Iron");
-                        if (i == 1 && Iron == -4) line1 = Language.GetTextValue("Mods.AltLibrary.AltOreName.Lead");
-                        if (i == 1 && Iron >= 0) line1 = AltLibrary.Ores[Iron - 1].Name;
-                        if (i == 2 && Silver == -5) line1 = Language.GetTextValue("Mods.AltLibrary.AltOreName.Silver");
-                        if (i == 2 && Silver == -6) line1 = Language.GetTextValue("Mods.AltLibrary.AltOreName.Tungsten");
-                        if (i == 2 && Silver >= 0) line1 = AltLibrary.Ores[Silver - 1].Name;
-                        if (i == 3 && Gold == -7) line1 = Language.GetTextValue("Mods.AltLibrary.AltOreName.Gold");
-                        if (i == 3 && Gold == -8) line1 = Language.GetTextValue("Mods.AltLibrary.AltOreName.Platinum");
-                        if (i == 3 && Gold >= 0) line1 = AltLibrary.Ores[Gold - 1].Name;
-                        if (i == 4 && Rhodium == -1) line1 = Language.GetTextValue("Mods.AltLibrary.AltOreName.Rhodium");
-                        if (i == 4 && Rhodium == -2) line1 = Language.GetTextValue("Mods.AltLibrary.AltOreName.Osmium");
-                        if (i == 4 && Rhodium == -3) line1 = Language.GetTextValue("Mods.AltLibrary.AltOreName.Iridium");
-                        string line2 = Language.GetTextValue("Mods.AltLibrary.AddedBy") + " ";
-                        if (i == 0 && Copper < 0) line2 += "Terraria";
-                        if (i == 0 && Copper >= 0) line2 += AltLibrary.Ores[Copper - 1].Mod.Name;
-                        if (i == 1 && Iron < 0) line2 += "Terraria";
-                        if (i == 1 && Iron >= 0) line2 += AltLibrary.Ores[Iron - 1].Mod.Name;
-                        if (i == 2 && Silver < 0) line2 += "Terraria";
-                        if (i == 2 && Silver >= 0) line2 += AltLibrary.Ores[Silver - 1].Mod.Name;
-                        if (i == 3 && Gold < 0) line2 += "Terraria";
-                        if (i == 3 && Gold >= 0) line2 += AltLibrary.Ores[Gold - 1].Mod.Name;
-                        if (i == 4) line2 += "AvalonTesting";
-                        string line = line1 + '\n' + line2;
-                        Main.instance.MouseText(line);
-                    }
+                    x++;
                 }
-                x += AltLibrary.Avalon == null ? 4 : 5;
             }
-            if (chosenOption == CurrentAltOption.HMOre || AltLibraryConfig.Config.OreIconsVisibleOutsideOreUI)
+
+            List<ALOreDrawingStruct> quene = new()
             {
-                AltLibrary.Instance.Logger.Info(SHMTier1.ToString() + " " + SHMTier2.ToString());
-                for (int i = 0; i < (AltLibrary.Avalon == null ? 3 : 5); i++)
+                #region Pre-HM Ores
+#region Copper
+                new(false, (value) =>
+            {
+                return Copper switch
                 {
-                    Asset<Texture2D> asset = ALTextureAssets.OreIcons;
-                    if (i == 0 && Cobalt >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.Ores[Cobalt - 1].Texture);
-                    if (i == 1 && Mythril >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.Ores[Mythril - 1].Texture);
-                    if (i == 2 && Adamantite >= 0) asset = ModContent.Request<Texture2D>(AltLibrary.Ores[Adamantite - 1].Texture);
-                    if (i == 3 && SHMTier1 == -4) asset = ModContent.Request<Texture2D>(AvalonOreIconPath + "TritanoriumOreIcon", AssetRequestMode.ImmediateLoad);
-                    if (i == 3 && SHMTier1 == -5) asset = ModContent.Request<Texture2D>(AvalonOreIconPath + "PyroscoricOreIcon", AssetRequestMode.ImmediateLoad);
-                    if (i == 4 && SHMTier2 == -6) asset = ModContent.Request<Texture2D>(AvalonOreIconPath + "UnvolanditeOreIcon", AssetRequestMode.ImmediateLoad);
-                    if (i == 4 && SHMTier2 == -7) asset = ModContent.Request<Texture2D>(AvalonOreIconPath + "VorazylcumOreIcon", AssetRequestMode.ImmediateLoad);
-                    Rectangle? rectangle = null;
-                    if (i == 0 && Cobalt == -9) rectangle = new(0, 30, 30, 30);
-                    if (i == 0 && Cobalt == -10) rectangle = new(30, 30, 30, 30);
-                    if (i == 1 && Mythril == -11) rectangle = new(60, 30, 30, 30);
-                    if (i == 1 && Mythril == -12) rectangle = new(90, 30, 30, 30);
-                    if (i == 2 && Adamantite == -13) rectangle = new(120, 30, 30, 30);
-                    if (i == 2 && Adamantite == -14) rectangle = new(150, 30, 30, 30);
-                    if (i == 3 && SHMTier1 == -4) rectangle = new(0, 0, 30, 30);
-                    if (i == 3 && SHMTier1 == -5) rectangle = new(0, 0, 30, 30);
-                    if (i == 4 && SHMTier2 == -6) rectangle = new(0, 0, 30, 30);
-                    if (i == 4 && SHMTier2 == -7) rectangle = new(0, 0, 30, 30);
-                    ValueTuple<Asset<Texture2D>, Rectangle?> valueTuple = new(asset, rectangle);
-                    spriteBatch.Draw(ALTextureAssets.Button.Value, new Vector2(position.X + 96f, position.Y + 26f * (i + x)), color * 0.8f);
-                    spriteBatch.Draw(valueTuple.Item1.Value, new Vector2(position.X + 99f, position.Y + 26f * (i + x) + 3f), valueTuple.Item2, color, 0f, new Vector2(1f, 1f), 0.5f, SpriteEffects.None, 0f);
-                    Vector2 vector2 = new(position.X + 96f, position.Y + 26f * (i + x));
-                    if (mouseRectangle.Intersects(Utils.CenteredRectangle(vector2 + new Vector2(7.5f, 7.5f), Utils.Size(new Rectangle(0, 0, 30, 30)))))
+                    >= 0 => ModContent.Request<Texture2D>(AltLibrary.Ores[Copper - 1].Texture),
+                    _ => value
+                };
+            }, () =>
+            {
+                return Copper switch
+                {
+                    -1 => new(0, 0, 30, 30),
+                    -2 => new(30, 0, 30, 30),
+                    _ => null,
+                };
+            }, () =>
+            {
+                return Copper switch
+                {
+                    -1 => Language.GetTextValue("Mods.AltLibrary.AltOreName.Copper"),
+                    -2 => Language.GetTextValue("Mods.AltLibrary.AltOreName.Tin"),
+                    _ => AltLibrary.Ores[Copper - 1].Name
+                };
+            }, (mod) =>
+            {
+                return Copper switch
+                {
+                    >= 0 => AltLibrary.Ores[Copper - 1].Mod.Name,
+                    _ => mod
+                };
+            }),
+                #endregion
+#region Iron
+                new(false,
+                (value) =>
+                {
+                    return Iron switch
                     {
-                        string line1 = "";
-                        if (i == 0 && Cobalt == -9) line1 = Language.GetTextValue("Mods.AltLibrary.AltOreName.Cobalt");
-                        if (i == 0 && Cobalt == -10) line1 = Language.GetTextValue("Mods.AltLibrary.AltOreName.Palladium");
-                        if (i == 0 && Cobalt >= 0) line1 = AltLibrary.Ores[Cobalt - 1].Name;
-                        if (i == 1 && Mythril == -11) line1 = Language.GetTextValue("Mods.AltLibrary.AltOreName.Mythril");
-                        if (i == 1 && Mythril == -12) line1 = Language.GetTextValue("Mods.AltLibrary.AltOreName.Orichalcum");
-                        if (i == 1 && Mythril >= 0) line1 = AltLibrary.Ores[Mythril - 1].Name;
-                        if (i == 2 && Adamantite == -13) line1 = Language.GetTextValue("Mods.AltLibrary.AltOreName.Adamantite");
-                        if (i == 2 && Adamantite == -14) line1 = Language.GetTextValue("Mods.AltLibrary.AltOreName.Titanium");
-                        if (i == 2 && Adamantite >= 0) line1 = AltLibrary.Ores[Adamantite - 1].Name;
-                        if (i == 3 && SHMTier1 == -4) line1 = Language.GetTextValue("Mods.AltLibrary.AltOreName.Tritanorium");
-                        if (i == 3 && SHMTier1 == -5) line1 = Language.GetTextValue("Mods.AltLibrary.AltOreName.Pyroscoric");
-                        if (i == 4 && SHMTier2 == -6) line1 = Language.GetTextValue("Mods.AltLibrary.AltOreName.Unvolandite");
-                        if (i == 4 && SHMTier2 == -7) line1 = Language.GetTextValue("Mods.AltLibrary.AltOreName.Vorazylcum");
-                        string line2 = Language.GetTextValue("Mods.AltLibrary.AddedBy") + " ";
-                        if (i == 0 && Cobalt < 0) line2 += "Terraria";
-                        if (i == 0 && Cobalt >= 0) line2 += AltLibrary.Ores[Cobalt - 1].Mod.Name;
-                        if (i == 1 && Mythril < 0) line2 += "Terraria";
-                        if (i == 1 && Mythril >= 0) line2 += AltLibrary.Ores[Mythril - 1].Mod.Name;
-                        if (i == 2 && Adamantite < 0) line2 += "Terraria";
-                        if (i == 2 && Adamantite >= 0) line2 += AltLibrary.Ores[Adamantite - 1].Mod.Name;
-                        if (i >= 3) line2 += "AvalonTesting";
-                        string line = line1 + '\n' + line2;
-                        Main.instance.MouseText(line);
-                    }
-                }
+                        >= 0 => ModContent.Request<Texture2D>(AltLibrary.Ores[Iron - 1].Texture),
+                        _ => value
+                    };
+                }, () =>
+                {
+                    return Iron switch
+                    {
+                        -3 => new(60, 0, 30, 30),
+                        -4 => new(90, 0, 30, 30),
+                        _ => null,
+                    };
+                }, () =>
+                {
+                    return Iron switch
+                    {
+                        -3 => Language.GetTextValue("Mods.AltLibrary.AltOreName.Iron"),
+                        -4 => Language.GetTextValue("Mods.AltLibrary.AltOreName.Lead"),
+                        _ => AltLibrary.Ores[Iron - 1].Name
+                    };
+                }, (mod) =>
+                {
+                    return Iron switch
+                    {
+                        >= 0 => AltLibrary.Ores[Iron - 1].Mod.Name,
+                        _ => mod
+                    };
+                }),
+                #endregion
+#region Silver
+                new(false,
+                (value) =>
+                {
+                    return Silver switch
+                    {
+                        >= 0 => ModContent.Request<Texture2D>(AltLibrary.Ores[Silver - 1].Texture),
+                        _ => value
+                    };
+                }, () =>
+                {
+                    return Silver switch
+                    {
+                        -5 => new(120, 0, 30, 30),
+                        -6 => new(150, 0, 30, 30),
+                        _ => null,
+                    };
+                }, () =>
+                {
+                    return Silver switch
+                    {
+                        -5 => Language.GetTextValue("Mods.AltLibrary.AltOreName.Silver"),
+                        -6 => Language.GetTextValue("Mods.AltLibrary.AltOreName.Tungsten"),
+                        _ => AltLibrary.Ores[Silver - 1].Name
+                    };
+                }, (mod) =>
+                {
+                    return Silver switch
+                    {
+                        >= 0 => AltLibrary.Ores[Silver - 1].Mod.Name,
+                        _ => mod
+                    };
+                }),
+                #endregion
+#region Gold
+                new(false,
+                (value) =>
+                {
+                    return Gold switch
+                    {
+                        >= 0 => ModContent.Request<Texture2D>(AltLibrary.Ores[Gold - 1].Texture),
+                        _ => value
+                    };
+                }, () =>
+                {
+                    return Gold switch
+                    {
+                        -7 => new(180, 0, 30, 30),
+                        -8 => new(210, 0, 30, 30),
+                        _ => null,
+                    };
+                }, () =>
+                {
+                    return Gold switch
+                    {
+                        -7 => Language.GetTextValue("Mods.AltLibrary.AltOreName.Gold"),
+                        -8 => Language.GetTextValue("Mods.AltLibrary.AltOreName.Platinum"),
+                        _ => AltLibrary.Ores[Gold - 1].Name
+                    };
+                }, (mod) =>
+                {
+                    return Gold switch
+                    {
+                        >= 0 => AltLibrary.Ores[Gold - 1].Mod.Name,
+                        _ => mod
+                    };
+                }),
+                #endregion
+                #endregion
+                #region HM Ores
+#region Cobalt
+                new(true,
+                (value) =>
+                {
+                    return Cobalt switch
+                    {
+                        >= 0 => ModContent.Request<Texture2D>(AltLibrary.Ores[Cobalt - 1].Texture),
+                        _ => value
+                    };
+                }, () =>
+                {
+                    return Cobalt switch
+                    {
+                        -9 => new(0, 30, 30, 30),
+                        -10 => new(30, 30, 30, 30),
+                        _ => null,
+                    };
+                }, () =>
+                {
+                    return Cobalt switch
+                    {
+                        -9 => Language.GetTextValue("Mods.AltLibrary.AltOreName.Cobalt"),
+                        -10 => Language.GetTextValue("Mods.AltLibrary.AltOreName.Palladium"),
+                        _ => AltLibrary.Ores[Cobalt - 1].Name
+                    };
+                }, (mod) =>
+                {
+                    return Cobalt switch
+                    {
+                        >= 0 => AltLibrary.Ores[Cobalt - 1].Mod.Name,
+                        _ => mod
+                    };
+                }),
+                #endregion
+#region Mythril
+                new(true,
+                (value) =>
+                {
+                    return Mythril switch
+                    {
+                        >= 0 => ModContent.Request<Texture2D>(AltLibrary.Ores[Mythril - 1].Texture),
+                        _ => value
+                    };
+                }, () =>
+                {
+                    return Mythril switch
+                    {
+                        -11 => new(60, 30, 30, 30),
+                        -12 => new(90, 30, 30, 30),
+                        _ => null,
+                    };
+                }, () =>
+                {
+                    return Mythril switch
+                    {
+                        -11 => Language.GetTextValue("Mods.AltLibrary.AltOreName.Mythril"),
+                        -12 => Language.GetTextValue("Mods.AltLibrary.AltOreName.Orichalcum"),
+                        _ => AltLibrary.Ores[Mythril - 1].Name
+                    };
+                }, (mod) =>
+                {
+                    return Mythril switch
+                    {
+                        >= 0 => AltLibrary.Ores[Mythril - 1].Mod.Name,
+                        _ => mod
+                    };
+                }),
+                #endregion
+#region Adamantite
+                new(true,
+                (value) =>
+                {
+                    return Adamantite switch
+                    {
+                        >= 0 => ModContent.Request<Texture2D>(AltLibrary.Ores[Adamantite - 1].Texture),
+                        _ => value
+                    };
+                }, () =>
+                {
+                    return Adamantite switch
+                    {
+                        -13 => new(120, 30, 30, 30),
+                        -14 => new(150, 30, 30, 30),
+                        _ => null,
+                    };
+                }, () =>
+                {
+                    return Adamantite switch
+                    {
+                        -13 => Language.GetTextValue("Mods.AltLibrary.AltOreName.Adamantite"),
+                        -14 => Language.GetTextValue("Mods.AltLibrary.AltOreName.Titanium"),
+                        _ => AltLibrary.Ores[Adamantite - 1].Name
+                    };
+                }, (mod) =>
+                {
+                    return Adamantite switch
+                    {
+                        >= 0 => AltLibrary.Ores[Adamantite - 1].Mod.Name,
+                        _ => mod
+                    };
+                })
+#endregion
+                #endregion
+            };
+            foreach (AltOre ore in AltLibrary.Ores)
+            {
+                ore.AddOreOnScreenIcon(quene);
+            }
+            foreach (ALOreDrawingStruct ore in quene)
+            {
+                DrawOreIcon(ore.cond, ore.func, ore.rect, ore.onHoverName, ore.onHoverMod);
             }
         }
         #endregion
@@ -1252,5 +1385,23 @@ namespace AltLibrary.Common
             }
         }
         #endregion
+    }
+
+    public struct ALOreDrawingStruct
+    {
+        internal Func<bool> cond;
+        internal Func<Asset<Texture2D>, Asset<Texture2D>> func;
+        internal Func<Rectangle?> rect;
+        internal Func<string> onHoverName;
+        internal Func<string, string> onHoverMod;
+
+        public ALOreDrawingStruct(bool isHardmode, Func<Asset<Texture2D>, Asset<Texture2D>> func, Func<Rectangle?> rect, Func<string> onHoverName, Func<string, string> onHoverMod)
+        {
+            cond = isHardmode ? () => chosenOption == CurrentAltOption.HMOre || AltLibraryConfig.Config.OreIconsVisibleOutsideOreUI : () => chosenOption == CurrentAltOption.Ore || AltLibraryConfig.Config.OreIconsVisibleOutsideOreUI;
+            this.func = func;
+            this.rect = rect;
+            this.onHoverName = onHoverName;
+            this.onHoverMod = onHoverMod;
+        }
     }
 }

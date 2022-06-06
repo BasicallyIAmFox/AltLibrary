@@ -1,4 +1,5 @@
 ﻿using AltLibrary.Common.AltBiomes;
+using AltLibrary.Common.Hooks;
 using AltLibrary.Core;
 using AltLibrary.Core.Generation;
 using System;
@@ -165,24 +166,6 @@ namespace AltLibrary.Common.Systems
         {
             progress.Message = Lang.gen[77].Value;
             typeof(WorldGen).GetMethod("NotTheBees", BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, Array.Empty<object>());
-            int grass = TileID.JungleGrass;
-            if (!WorldGen.notTheBees)
-            {
-                foreach (AltBiome alt in AltLibrary.Biomes)
-                {
-                    if (alt.BiomeType == BiomeType.Jungle)
-                    {
-                        if (alt.BiomeGrass.HasValue)
-                        {
-                            grass = alt.BiomeGrass.Value;
-                        }
-                        else if (alt.BiomeJungleGrass.HasValue)
-                        {
-                            grass = alt.BiomeJungleGrass.Value;
-                        }
-                    }
-                }
-            }
             for (int i = 0; i < Main.maxTilesX; i++)
             {
                 for (int j = 0; j < Main.maxTilesY; j++)
@@ -190,7 +173,7 @@ namespace AltLibrary.Common.Systems
                     if (Main.tile[i, j].HasUnactuatedTile)
                     {
                         ALReflection.WorldGen_GrassSpread = 0;
-                        WorldGen.SpreadGrass(i, j, TileID.Mud, grass, repeat: true, 0);
+                        WorldGen.SpreadGrass(i, j, TileID.Mud, !WorldGen.notTheBees ? ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeGrass.GetValueOrDefault() : TileID.JungleGrass, repeat: true, 0);
                     }
                     progress.Set(0.2f * ((i * Main.maxTilesY + j) / (float)(Main.maxTilesX * Main.maxTilesY)));
                 }

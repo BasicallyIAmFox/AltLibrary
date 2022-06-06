@@ -124,6 +124,10 @@ namespace AltLibrary.Common.AltBiomes
         /// For Evil and Hallow alts. The tile which convertable ice will be turned into.
         /// </summary>
         public int? BiomeIce = null;
+        /// <summary>
+        /// For Jungle alts. The tile which will replace vanilla Mud.
+        /// </summary>
+        public int? BiomeMud = null;
 
         /// <summary>
         /// For Evil alts. Whether or not this biome will turn mud into dirt, as the Corruption and Crimson do. Defaults to false.
@@ -381,9 +385,9 @@ namespace AltLibrary.Common.AltBiomes
         {
             ModTypeLookup<AltBiome>.Register(this);
 
-            DisplayName = ALReflection.LocalizationLoader_GetOrCreateTranslation(Mod, $"AltBiomeName.{Name}", false);
-            Description = ALReflection.LocalizationLoader_GetOrCreateTranslation(Mod, $"AltBiomeDescription.{Name}", true);
-            GenPassName = ALReflection.LocalizationLoader_GetOrCreateTranslation(Mod, $"AltBiomeGen.{Name}", true);
+            DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"AltBiomeName.{Name}", false);
+            Description = LocalizationLoader.GetOrCreateTranslation(Mod, $"AltBiomeDescription.{Name}", true);
+            GenPassName = LocalizationLoader.GetOrCreateTranslation(Mod, $"AltBiomeGen.{Name}", true);
 
             AltLibrary.Biomes.Add(this);
             if (BossBulb != null) AltLibrary.planteraBulbs.Add((int)BossBulb);

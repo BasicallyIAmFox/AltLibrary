@@ -81,102 +81,58 @@ namespace AltLibrary.Core.UIs
                 (affectedElement as UIImageFramed).SetImage(ALTextureAssets.Random, new(0, 0, 30, 30));
                 return;
             }
-            if (!ore.IsForAvalon)
+            switch (ore.Type)
             {
-                switch (ore.Type)
-                {
-                    case -1:
-                        set(0);
-                        break;
-                    case -2:
-                        set(1);
-                        break;
-                    case -3:
-                        set(2);
-                        break;
-                    case -4:
-                        set(3);
-                        break;
-                    case -5:
-                        set(4);
-                        break;
-                    case -6:
-                        set(5);
-                        break;
-                    case -7:
-                        set(6);
-                        break;
-                    case -8:
-                        set(7);
-                        break;
-                    case -9:
-                        set(8);
-                        break;
-                    case -10:
-                        set(9);
-                        break;
-                    case -11:
-                        set(10);
-                        break;
-                    case -12:
-                        set(11);
-                        break;
-                    case -13:
-                        set(12);
-                        break;
-                    case -14:
-                        set(13);
-                        break;
-                    case -15:
-                        set(14);
-                        break;
-                }
-                if (ore.Type >= 0 && ore.Mod != null)
-                {
-                    (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>(ore.Texture), new(0, 0, 30, 30));
-                }
+                case -1:
+                    set(0);
+                    break;
+                case -2:
+                    set(1);
+                    break;
+                case -3:
+                    set(2);
+                    break;
+                case -4:
+                    set(3);
+                    break;
+                case -5:
+                    set(4);
+                    break;
+                case -6:
+                    set(5);
+                    break;
+                case -7:
+                    set(6);
+                    break;
+                case -8:
+                    set(7);
+                    break;
+                case -9:
+                    set(8);
+                    break;
+                case -10:
+                    set(9);
+                    break;
+                case -11:
+                    set(10);
+                    break;
+                case -12:
+                    set(11);
+                    break;
+                case -13:
+                    set(12);
+                    break;
+                case -14:
+                    set(13);
+                    break;
+                case -15:
+                    set(14);
+                    break;
             }
-            else
+            if (ore.Type >= 0 && ore.Mod != null)
             {
-                if (ore.OreType == OreType.Gold)
-                {
-                    if (ore.Type == -1)
-                    {
-                        (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>("AvalonTesting/Assets/Ores/RhodiumOreIcon", AssetRequestMode.ImmediateLoad), new Rectangle(0, 0, 30, 30));
-                    }
-                    else if (ore.Type == -2)
-                    {
-                        (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>("AvalonTesting/Assets/Ores/OsmiumOreIcon", AssetRequestMode.ImmediateLoad), new Rectangle(0, 0, 30, 30));
-                    }
-                    else if (ore.Type == -3)
-                    {
-                        (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>("AvalonTesting/Assets/Ores/IridiumOreIcon", AssetRequestMode.ImmediateLoad), new Rectangle(0, 0, 30, 30));
-                    }
-                }
-                else if (ore.OreType == OreType.Mythril)
-                {
-                    if (ore.Type == -4)
-                    {
-                        (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>("AvalonTesting/Assets/Ores/TritanoriumOreIcon", AssetRequestMode.ImmediateLoad), new Rectangle(0, 0, 30, 30));
-                    }
-                    else if (ore.Type == -5)
-                    {
-                        (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>("AvalonTesting/Assets/Ores/PyroscoricOreIcon", AssetRequestMode.ImmediateLoad), new Rectangle(0, 0, 30, 30));
-                    }
-                }
-                else if (ore.OreType == OreType.Adamantite)
-                {
-                    if (ore.Type == -6)
-                    {
-                        (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>("AvalonTesting/Assets/Ores/UnvolanditeOreIcon", AssetRequestMode.ImmediateLoad), new Rectangle(0, 0, 30, 30));
-                    }
-                    else if (ore.Type == -7)
-                    {
-                        (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>("AvalonTesting/Assets/Ores/VorazylcumOreIcon", AssetRequestMode.ImmediateLoad), new Rectangle(0, 0, 30, 30));
-                    }
-                }
+                (affectedElement as UIImageFramed).SetImage(ModContent.Request<Texture2D>(ore.Texture), new(0, 0, 30, 30));
             }
-
             void set(int i)
             {
                 (affectedElement as UIImageFramed).SetImage(ALTextureAssets.OreIcons, new(i % 8 * 30, i / 8 * 30, 30, 30));
@@ -214,12 +170,6 @@ namespace AltLibrary.Core.UIs
                         AltLibrary.Ores.Where(x => x.OreType == OreType.Gold && x.Selectable).ToList().ForEach(x => values.Add(x.Type));
                         UIWorldCreationEdits.Gold = Main.rand.Next(values);
                         break;
-                    case "RandomRhodium":
-                        values.Add(-1);
-                        values.Add(-2);
-                        values.Add(-3);
-                        UIWorldCreationEdits.Rhodium = Main.rand.Next(values);
-                        break;
                     case "RandomCobalt":
                         values.Add(-9);
                         values.Add(-10);
@@ -238,45 +188,17 @@ namespace AltLibrary.Core.UIs
                         AltLibrary.Ores.Where(x => x.OreType == OreType.Adamantite && x.Selectable).ToList().ForEach(x => values.Add(x.Type));
                         UIWorldCreationEdits.Adamantite = Main.rand.Next(values);
                         break;
-                    case "RandomSHMTier1":
-                        values.Add(-4);
-                        values.Add(-5);
-                        UIWorldCreationEdits.SHMTier1 = Main.rand.Next(values);
-                        break;
-                    case "RandomSHMTier2":
-                        values.Add(-6);
-                        values.Add(-7);
-                        UIWorldCreationEdits.SHMTier2 = Main.rand.Next(values);
-                        break;
                 }
                 return;
             }
 
-            if (!ore.IsForAvalon)
-            {
-                if (ore.Type <= -1 && ore.Type >= -2) UIWorldCreationEdits.Copper = ore.Type;
-                if (ore.Type <= -3 && ore.Type >= -4) UIWorldCreationEdits.Iron = ore.Type;
-                if (ore.Type <= -5 && ore.Type >= -6) UIWorldCreationEdits.Silver = ore.Type;
-                if (ore.Type <= -7 && ore.Type >= -8) UIWorldCreationEdits.Gold = ore.Type;
-                if (ore.Type <= -9 && ore.Type >= -10) UIWorldCreationEdits.Cobalt = ore.Type;
-                if (ore.Type <= -11 && ore.Type >= -12) UIWorldCreationEdits.Mythril = ore.Type;
-                if (ore.Type <= -13 && ore.Type >= -14) UIWorldCreationEdits.Adamantite = ore.Type;
-            }
-            else
-            {
-                if (ore.OreType == OreType.Gold)
-                {
-                    UIWorldCreationEdits.Rhodium = ore.Type;
-                }
-                else if (ore.OreType == OreType.Mythril)
-                {
-                    UIWorldCreationEdits.SHMTier1 = ore.Type;
-                }
-                else if (ore.OreType == OreType.Adamantite)
-                {
-                    UIWorldCreationEdits.SHMTier2 = ore.Type;
-                }
-            }
+            if (ore.Type <= -1 && ore.Type >= -2) UIWorldCreationEdits.Copper = ore.Type;
+            if (ore.Type <= -3 && ore.Type >= -4) UIWorldCreationEdits.Iron = ore.Type;
+            if (ore.Type <= -5 && ore.Type >= -6) UIWorldCreationEdits.Silver = ore.Type;
+            if (ore.Type <= -7 && ore.Type >= -8) UIWorldCreationEdits.Gold = ore.Type;
+            if (ore.Type <= -9 && ore.Type >= -10) UIWorldCreationEdits.Cobalt = ore.Type;
+            if (ore.Type <= -11 && ore.Type >= -12) UIWorldCreationEdits.Mythril = ore.Type;
+            if (ore.Type <= -13 && ore.Type >= -14) UIWorldCreationEdits.Adamantite = ore.Type;
 
             if (ore.Type < 0)
                 return;
@@ -304,6 +226,7 @@ namespace AltLibrary.Core.UIs
                     UIWorldCreationEdits.Adamantite = ore.Type;
                     break;
             }
+            ore.OnClick();
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
@@ -334,9 +257,6 @@ namespace AltLibrary.Core.UIs
                     case "RandomCobalt": descValue = Language.GetTextValue($"Mods.AltLibrary.AltOreDescription.{ore.Name}"); break;
                     case "RandomMythril": descValue = Language.GetTextValue($"Mods.AltLibrary.AltOreDescription.{ore.Name}"); break;
                     case "RandomAdamantite": descValue = Language.GetTextValue($"Mods.AltLibrary.AltOreDescription.{ore.Name}"); break;
-                    case "RandomRhodium": descValue = Language.GetTextValue($"Mods.AltLibrary.AltOreDescription.{ore.Name}"); break;
-                    case "RandomSHMTier1": descValue = Language.GetTextValue($"Mods.AltLibrary.AltOreDescription.{ore.Name}"); break;
-                    case "RandomSHMTier2": descValue = Language.GetTextValue($"Mods.AltLibrary.AltOreDescription.{ore.Name}"); break;
                     default: break;
                 }
             }
@@ -381,13 +301,6 @@ namespace AltLibrary.Core.UIs
                     case "Orichalcum": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
                     case "Adamantite": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
                     case "Titanium": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
-                    case "Rhodium": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
-                    case "Osmium": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
-                    case "Iridium": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
-                    case "Tritanorium": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
-                    case "Pyroscoric": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
-                    case "Unvolandite": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
-                    case "Vorazylcum": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
                     case "RandomCopper": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
                     case "RandomIron": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
                     case "RandomSilver": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
@@ -395,9 +308,6 @@ namespace AltLibrary.Core.UIs
                     case "RandomCobalt": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
                     case "RandomMythril": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
                     case "RandomAdamantite": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
-                    case "RandomRhodium": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
-                    case "RandomSHMTier1": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
-                    case "RandomSHMTier2": displayNameValue = Language.GetTextValue($"Mods.AltLibrary.AltOreName.{ore.Name}"); break;
                     default: break;
                 }
             }
@@ -417,10 +327,6 @@ namespace AltLibrary.Core.UIs
             if (mouseRectangle.Intersects(Utils.CenteredRectangle(vector2 + new Vector2(11f, 11f), Utils.Size(texture))))
             {
                 string text = ore.Mod == null ? Language.GetTextValue("Mods.AltLibrary.Warn.VanillaOre") : Language.GetTextValue("Mods.AltLibrary.Warn.ModdedOre", ore.Mod.Name);
-                if (ore.IsForAvalon)
-                {
-                    text = Language.GetTextValue("Mods.AltLibrary.Warn.ModdedOre", AltLibrary.Avalon.Name);
-                }
                 Main.instance.MouseText(text);
             }
         }
