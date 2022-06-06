@@ -50,12 +50,8 @@ namespace AltLibrary.Core.Baking
                 {
                     if (ore.OreType <= OreType.Gold)
                     {
-                        ore.CustomSelection(ore.OreType, preOrder);
+                        ore.CustomSelection(preOrder);
                     }
-                }
-                foreach (AltOre ore in preOrder)
-                {
-                    AltLibrary.Instance.Logger.Info(ore.Name);
                 }
                 Ores = preOrder;
             }
@@ -78,12 +74,8 @@ namespace AltLibrary.Core.Baking
                 {
                     if (ore.OreType >= OreType.Cobalt)
                     {
-                        ore.CustomSelection(ore.OreType, preOrder);
+                        ore.CustomSelection(preOrder);
                     }
-                }
-                foreach (AltOre ore in preOrder)
-                {
-                    AltLibrary.Instance.Logger.Info(ore.Name);
                 }
                 Ores = preOrder;
             }

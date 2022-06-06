@@ -13,12 +13,12 @@ namespace AltLibrary.Common.AltOres
         internal VanillaOre(string texture, string name, int type, int ore, int bar, OreType oreType, string desc = "")
         {
             oreTexture = texture;
-            OreType = oreType;
             Type = type;
             this.name = name;
             this.ore = ore;
             this.bar = bar;
             this.desc = desc;
+            OreType = oreType;
         }
 
         public override void SetStaticDefaults()

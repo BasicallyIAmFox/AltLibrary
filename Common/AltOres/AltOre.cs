@@ -28,7 +28,7 @@ namespace AltLibrary.Common.AltOres
         /// <summary>
         /// Tells the Library what ore this is an alternative to
         /// </summary>
-        public OreType OreType;
+        public OreType OreType = OreType.Copper;
 
         public int? Candle = null;
         public int? Watch = null;
@@ -72,9 +72,9 @@ namespace AltLibrary.Common.AltOres
         /// Override if you want custom selection
         /// </summary>
         /// <param name="list"></param>
-        public virtual void CustomSelection(OreType thisOreType, List<AltOre> list)
+        public virtual void CustomSelection(List<AltOre> list)
         {
-            int index = list.FindLastIndex(x => x.OreType == thisOreType);
+            int index = list.FindLastIndex(x => x.OreType == AltLibrary.Ores.Find(x => x.FullName == FullName).OreType);
             if (index != -1)
             {
                 list.Insert(index + 1, this);
