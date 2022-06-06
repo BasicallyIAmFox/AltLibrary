@@ -44,7 +44,7 @@ namespace AltLibrary.Common.Hooks
                 }
 
                 c.Emit(OpCodes.Ldloc, stloc);
-                c.EmitDelegate(rngDel.Invoke);
+                c.EmitDelegate(rngDel);
                 c.Emit(OpCodes.Stloc, stloc);
             }
 

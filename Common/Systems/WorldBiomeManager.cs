@@ -20,6 +20,8 @@ namespace AltLibrary.Common.Systems
         public static string WorldJungle { get; internal set; } = "";
         internal static string drunkEvil = "";
         internal static int drunkIndex = 0;
+        internal static int drunkGoodGen = -1;
+        internal static int drunkEvilGen = -1;
         public static int Copper { get; internal set; } = 0;
         public static int Iron { get; internal set; } = 0;
         public static int Silver { get; internal set; } = 0;
@@ -70,6 +72,8 @@ namespace AltLibrary.Common.Systems
             drunkCobaltCycle = null;
             drunkMythrilCycle = null;
             drunkAdamantiteCycle = null;
+            drunkGoodGen = 0;
+            drunkEvilGen = 0;
         }
 
         public override void OnWorldLoad()
@@ -82,6 +86,8 @@ namespace AltLibrary.Common.Systems
         {
             AltBiomeData = null;
             AltBiomePercentages = null;
+            drunkGoodGen = 0;
+            drunkEvilGen = 0;
         }
 
         internal static void AnalysisTiles(bool includeText = true)
@@ -215,6 +221,8 @@ namespace AltLibrary.Common.Systems
             tag.Add("AltLibrary:Adamantite", Adamantite);
             tag.Add("AltLibrary:DrunkIndex", drunkIndex);
             tag.Add("AltLibrary:HardmodeOreIndex", hmOreIndex);
+            tag.Add("AltLibrary:DrunkGoodGen", drunkGoodGen);
+            tag.Add("AltLibrary:DrunkEvilGen", drunkEvilGen);
 
             Dictionary<string, AltLibraryConfig.WorldDataValues> tempDict = AltLibraryConfig.Config.GetWorldData();
             AltLibraryConfig.WorldDataValues worldData;
@@ -247,6 +255,8 @@ namespace AltLibrary.Common.Systems
             Adamantite = tag.GetInt("AltLibrary:Adamantite");
             drunkIndex = tag.GetInt("AltLibrary:DrunkIndex");
             hmOreIndex = tag.GetInt("AltLibrary:HardmodeOreIndex");
+            drunkGoodGen = tag.GetInt("AltLibrary:DrunkGoodGen");
+            drunkEvilGen = tag.GetInt("AltLibrary:DrunkEvilGen");
 
             //reset every unload
             drunkCobaltCycle = null;

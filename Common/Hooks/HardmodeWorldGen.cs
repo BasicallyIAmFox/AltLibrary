@@ -1,10 +1,10 @@
 ﻿using AltLibrary.Common.AltBiomes;
 using AltLibrary.Common.Systems;
+using AltLibrary.Core.Baking;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -15,13 +15,8 @@ namespace AltLibrary.Common.Hooks
     [Autoload(Side = ModSide.Both)]
     internal static class HardmodeWorldGen
     {
-        private static string evilAlt;
-        private static string hallowAlt;
-
         public static void Init()
         {
-            evilAlt = "";
-            hallowAlt = "";
             IL.Terraria.WorldGen.smCallBack += GenPasses.ILSMCallBack;
             IL.Terraria.WorldGen.GERunner += WorldGen_GERunner;
             On.Terraria.WorldGen.GERunner += WorldGen_GERunner1;
@@ -30,8 +25,6 @@ namespace AltLibrary.Common.Hooks
 
         public static void Unload()
         {
-            evilAlt = null;
-            hallowAlt = null;
             IL.Terraria.WorldGen.smCallBack -= GenPasses.ILSMCallBack;
             IL.Terraria.WorldGen.GERunner -= WorldGen_GERunner;
             On.Terraria.WorldGen.GERunner -= WorldGen_GERunner1;
@@ -42,16 +35,16 @@ namespace AltLibrary.Common.Hooks
         {
             if (Main.drunkWorld && WorldBiomeGeneration.WofKilledTimes > 1)
             {
-                List<string> possibles = new() { "" };
-                AltLibrary.Biomes.FindAll(x => x.BiomeType == BiomeType.Hallow).ForEach(x => possibles.Add(x.FullName));
-                hallowAlt = Main.rand.Next(possibles);
+                List<int> possibles = new() { 0 };
+                AltLibrary.Biomes.FindAll(x => x.BiomeType == BiomeType.Hallow).ForEach(x => possibles.Add(x.Type));
+                WorldBiomeManager.drunkGoodGen = Main.rand.Next(possibles);
                 possibles = new()
                 {
-                    "Terraria/Corruption",
-                    "Terraria/Crimson"
+                    0,
+                    -1
                 };
-                AltLibrary.Biomes.FindAll(x => x.BiomeType == BiomeType.Evil).ForEach(x => possibles.Add(x.FullName));
-                evilAlt = Main.rand.Next(possibles);
+                AltLibrary.Biomes.FindAll(x => x.BiomeType == BiomeType.Evil).ForEach(x => possibles.Add(x.Type));
+                WorldBiomeManager.drunkEvilGen = Main.rand.Next(possibles);
 
                 int addX = WorldGen.genRand.Next(300, 400) * WorldBiomeGeneration.WofKilledTimes;
                 if (!good) addX *= -1;
@@ -87,87 +80,121 @@ namespace AltLibrary.Common.Hooks
             c.Emit(OpCodes.Ldloc, 5);
             c.EmitDelegate<Func<int, Tile, int>>((orig, tile) =>
             {
-                if (WorldBiomeManager.WorldHallow != "" && WorldBiomeGeneration.WofKilledTimes <= 1 &&
-                    Find<AltBiome>(WorldBiomeManager.WorldHallow).HardmodeWalls.Count > 0 &&
-                    ((Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeGrass.HasValue &&
-                        tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeGrass.Value) ||
-                    (Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeStone.HasValue &&
-                        tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeStone.Value) ||
-                    (Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeSand.HasValue &&
-                        tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeSand.Value) ||
-                    (Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeIce.HasValue &&
-                        tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeIce.Value) ||
-                    (Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeHardenedSand.HasValue &&
-                        tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeHardenedSand.Value) ||
-                    (Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeSandstone.HasValue &&
-                        tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeSandstone.Value))
-                    // Vine here!
-                    )
+                if (WorldBiomeGeneration.WofKilledTimes <= 1)
                 {
-                    orig = WorldGen.genRand.Next(Find<AltBiome>(WorldBiomeManager.WorldHallow).HardmodeWalls);
+                    if (WorldBiomeManager.WorldHallow != "" &&
+                        Find<AltBiome>(WorldBiomeManager.WorldHallow).HardmodeWalls.Count > 0 &&
+                        ((Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeGrass.HasValue &&
+                            tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeGrass.Value) ||
+                        (Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeStone.HasValue &&
+                            tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeStone.Value) ||
+                        (Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeSand.HasValue &&
+                            tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeSand.Value) ||
+                        (Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeIce.HasValue &&
+                            tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeIce.Value) ||
+                        (Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeHardenedSand.HasValue &&
+                            tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeHardenedSand.Value) ||
+                        (Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeSandstone.HasValue &&
+                            tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeSandstone.Value))
+                        // Vine here!
+                        )
+                    {
+                        orig = WorldGen.genRand.Next(Find<AltBiome>(WorldBiomeManager.WorldHallow).HardmodeWalls);
+                    }
+                    if (WorldBiomeManager.WorldEvil != "" &&
+                        Find<AltBiome>(WorldBiomeManager.WorldEvil).HardmodeWalls.Count > 0 &&
+                        ((Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeGrass.HasValue &&
+                            tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeGrass.Value) ||
+                        (Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeStone.HasValue &&
+                            tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeStone.Value) ||
+                        (Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeSand.HasValue &&
+                            tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeSand.Value) ||
+                        (Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeIce.HasValue &&
+                            tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeIce.Value) ||
+                        (Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeHardenedSand.HasValue &&
+                            tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeHardenedSand.Value) ||
+                        (Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeSandstone.HasValue &&
+                            tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeSandstone.Value))
+                        // Vine here!
+                        )
+                    {
+                        orig = WorldGen.genRand.Next(Find<AltBiome>(WorldBiomeManager.WorldEvil).HardmodeWalls);
+                    }
                 }
-                if (WorldBiomeManager.WorldEvil != "" && WorldBiomeGeneration.WofKilledTimes <= 1 &&
-                    Find<AltBiome>(WorldBiomeManager.WorldEvil).HardmodeWalls.Count > 0 &&
-                    ((Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeGrass.HasValue &&
-                        tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeGrass.Value) ||
-                    (Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeStone.HasValue &&
-                        tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeStone.Value) ||
-                    (Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeSand.HasValue &&
-                        tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeSand.Value) ||
-                    (Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeIce.HasValue &&
-                        tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeIce.Value) ||
-                    (Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeHardenedSand.HasValue &&
-                        tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeHardenedSand.Value) ||
-                    (Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeSandstone.HasValue &&
-                        tile.TileType == Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeSandstone.Value))
-                    // Vine here!
-                    )
+                else
                 {
-                    orig = WorldGen.genRand.Next(Find<AltBiome>(WorldBiomeManager.WorldEvil).HardmodeWalls);
-                }
-
-                if (hallowAlt != "" && WorldBiomeGeneration.WofKilledTimes > 1 &&
-                    Find<AltBiome>(hallowAlt).HardmodeWalls.Count > 0 &&
-                    ((Find<AltBiome>(hallowAlt).BiomeGrass.HasValue &&
-                        tile.TileType == Find<AltBiome>(hallowAlt).BiomeGrass.Value) ||
-                    (Find<AltBiome>(hallowAlt).BiomeStone.HasValue &&
-                        tile.TileType == Find<AltBiome>(hallowAlt).BiomeStone.Value) ||
-                    (Find<AltBiome>(hallowAlt).BiomeSand.HasValue &&
-                        tile.TileType == Find<AltBiome>(hallowAlt).BiomeSand.Value) ||
-                    (Find<AltBiome>(hallowAlt).BiomeIce.HasValue &&
-                        tile.TileType == Find<AltBiome>(hallowAlt).BiomeIce.Value) ||
-                    (Find<AltBiome>(hallowAlt).BiomeHardenedSand.HasValue &&
-                        tile.TileType == Find<AltBiome>(hallowAlt).BiomeHardenedSand.Value) ||
-                    (Find<AltBiome>(hallowAlt).BiomeSandstone.HasValue &&
-                        tile.TileType == Find<AltBiome>(hallowAlt).BiomeSandstone.Value))
-                    // Vine here!
-                    )
-                {
-                    orig = WorldGen.genRand.Next(Find<AltBiome>(WorldBiomeManager.WorldHallow).HardmodeWalls);
-                }
-                if (!evilAlt.StartsWith("Terraria/") && WorldBiomeGeneration.WofKilledTimes > 1 &&
-                    Find<AltBiome>(evilAlt).HardmodeWalls.Count > 0 &&
-                    ((Find<AltBiome>(evilAlt).BiomeGrass.HasValue &&
-                        tile.TileType == Find<AltBiome>(evilAlt).BiomeGrass.Value) ||
-                    (Find<AltBiome>(evilAlt).BiomeStone.HasValue &&
-                        tile.TileType == Find<AltBiome>(evilAlt).BiomeStone.Value) ||
-                    (Find<AltBiome>(evilAlt).BiomeSand.HasValue &&
-                        tile.TileType == Find<AltBiome>(evilAlt).BiomeSand.Value) ||
-                    (Find<AltBiome>(evilAlt).BiomeIce.HasValue &&
-                        tile.TileType == Find<AltBiome>(evilAlt).BiomeIce.Value) ||
-                    (Find<AltBiome>(evilAlt).BiomeHardenedSand.HasValue &&
-                        tile.TileType == Find<AltBiome>(evilAlt).BiomeHardenedSand.Value) ||
-                    (Find<AltBiome>(evilAlt).BiomeSandstone.HasValue &&
-                        tile.TileType == Find<AltBiome>(evilAlt).BiomeSandstone.Value))
-                    // Vine here!
-                    )
-                {
-                    orig = WorldGen.genRand.Next(Find<AltBiome>(evilAlt).HardmodeWalls);
+                    if (Main.drunkWorld)
+                    {
+                        if (Evil?.HardmodeWalls.Count > 0 &&
+                            (tile.TileType == Evil?.BiomeGrass.GetValueOrDefault() ||
+                            tile.TileType == Evil?.BiomeStone.GetValueOrDefault() ||
+                            tile.TileType == Evil?.BiomeSand.GetValueOrDefault() ||
+                            tile.TileType == Evil?.BiomeIce.GetValueOrDefault() ||
+                            tile.TileType == Evil?.BiomeHardenedSand.GetValueOrDefault() ||
+                            tile.TileType == Evil?.BiomeSandstone.GetValueOrDefault()))
+                        {
+                            orig = WorldGen.genRand.Next(Evil?.HardmodeWalls);
+                        }
+                        if (Good?.HardmodeWalls.Count > 0 &&
+                            (tile.TileType == Good?.BiomeGrass.GetValueOrDefault() ||
+                            tile.TileType == Good?.BiomeStone.GetValueOrDefault() ||
+                            tile.TileType == Good?.BiomeSand.GetValueOrDefault() ||
+                            tile.TileType == Good?.BiomeIce.GetValueOrDefault() ||
+                            tile.TileType == Good?.BiomeHardenedSand.GetValueOrDefault() ||
+                            tile.TileType == Good?.BiomeSandstone.GetValueOrDefault()))
+                        {
+                            orig = WorldGen.genRand.Next(Evil?.HardmodeWalls);
+                        }
+                    }
                 }
                 return orig;
             });
             c.Emit(OpCodes.Stloc, 7);
             c.Emit(OpCodes.Ldloc, 4);
+        }
+
+        private static int GetTileOnStateHallow(int tileID, int x, int y)
+        {
+            if (WorldBiomeManager.drunkGoodGen > 0)
+                return ALConvertInheritanceData.GetConvertedTile_Modded(tileID, Good, x, y);
+            return ALConvertInheritanceData.GetConvertedTile_Vanilla(tileID, 2, x, y);
+        }
+
+        private static int GetTileOnStateEvil(int tileID, int x, int y)
+        {
+            if (WorldBiomeManager.drunkEvilGen > 0)
+                return ALConvertInheritanceData.GetConvertedTile_Modded(tileID, Evil, x, y);
+            return ALConvertInheritanceData.GetConvertedTile_Vanilla(tileID, WorldBiomeManager.drunkEvilGen == 0 ? 1 : 4, x, y);
+        }
+
+        private static int GetWallOnStateHallow(int wallID, int x, int y)
+        {
+            if (WorldBiomeManager.drunkGoodGen > 0)
+                return ALConvertInheritanceData.GetConvertedWall_Modded(wallID, Good, x, y);
+            return ALConvertInheritanceData.GetConvertedWall_Vanilla(wallID, 2, x, y);
+        }
+
+        private static int GetWallOnStateEvil(int wallID, int x, int y)
+        {
+            if (WorldBiomeManager.drunkEvilGen > 0)
+                return ALConvertInheritanceData.GetConvertedWall_Modded(wallID, Evil, x, y);
+            return ALConvertInheritanceData.GetConvertedWall_Vanilla(wallID, WorldBiomeManager.drunkEvilGen == 0 ? 1 : 4, x, y);
+        }
+
+        private static AltBiome Good
+        {
+            get
+            {
+                return AltLibrary.Biomes.Find(x => x.Type == WorldBiomeManager.drunkGoodGen);
+            }
+        }
+
+        private static AltBiome Evil
+        {
+            get
+            {
+                return AltLibrary.Biomes.Find(x => x.Type == WorldBiomeManager.drunkEvilGen);
+            }
         }
 
         private static void WorldGen_GERunner(ILContext il)
@@ -223,6 +250,18 @@ namespace AltLibrary.Common.Hooks
                             }
                         }
                     }
+                    /*if (Main.drunkWorld && WorldBiomeGeneration.WofKilledTimes > 1)
+                    {
+                        if (GetTileOnStateEvil(tile.TileType, m, l) != -1)
+                        {
+                            tile.TileType = (ushort)GetTileOnStateEvil(tile.TileType, m, l);
+                            WorldGen.SquareTileFrame(m, l, true);
+                        }
+                        if (GetWallOnStateEvil(tile.WallType, m, l) != -1)
+                        {
+                            tile.WallType = (ushort)GetWallOnStateEvil(tile.WallType, m, l);
+                        }
+                    }*/
                 }
             });
 
@@ -256,333 +295,98 @@ namespace AltLibrary.Common.Hooks
                         }
                     }
                 }
+                /*if (Main.drunkWorld && WorldBiomeGeneration.WofKilledTimes > 1)
+                {
+                    if (GetTileOnStateHallow(tile.TileType, m, l) != -1)
+                    {
+                        tile.TileType = (ushort)GetTileOnStateHallow(tile.TileType, m, l);
+                        WorldGen.SquareTileFrame(m, l, true);
+                    }
+                    if (GetWallOnStateHallow(tile.WallType, m, l) != -1)
+                    {
+                        tile.WallType = (ushort)GetWallOnStateHallow(tile.WallType, m, l);
+                    }
+                }*/
             });
 
-            ALUtils.ReplaceIDs(il,
-                WallID.HallowedGrassUnsafe,
-                (orig) => Find<AltBiome>(WorldBiomeManager.WorldHallow).WallContext.wallsReplacement.TryGetValue(orig, out ushort value) ? value : WallID.None,
-                (orig) => WorldBiomeGeneration.WofKilledTimes <= 1 && WorldBiomeManager.WorldHallow != "" && Find<AltBiome>(WorldBiomeManager.WorldHallow).WallContext.wallsReplacement.ContainsKey(orig),
-                (orig) =>
+            void goodWall(int id)
+            {
+                ILCursor c = new(il);
+                while (c.TryGotoNext(i => i.MatchLdcI4(id) && i.Offset != 0))
                 {
-                    if (WorldBiomeGeneration.WofKilledTimes > 1 && hallowAlt != "" && Find<AltBiome>(hallowAlt).WallContext.wallsReplacement.ContainsKey(orig))
-                    {
-                        Find<AltBiome>(hallowAlt).WallContext.wallsReplacement.TryGetValue(orig, out ushort value);
-                        return value;
-                    }
-                    return orig;
-                });
-            ALUtils.ReplaceIDs(il,
-                WallID.HallowHardenedSand,
-                (orig) => Find<AltBiome>(WorldBiomeManager.WorldHallow).WallContext.wallsReplacement.TryGetValue(orig, out ushort value) ? value : WallID.None,
-                (orig) => WorldBiomeGeneration.WofKilledTimes <= 1 && WorldBiomeManager.WorldHallow != "" && Find<AltBiome>(WorldBiomeManager.WorldHallow).WallContext.wallsReplacement.ContainsKey(orig),
-                (orig) =>
+                    c.Index++;
+                    c.Emit(OpCodes.Ldloc, 15);
+                    c.Emit(OpCodes.Ldloc, 16);
+                    c.EmitDelegate(GetWallOnStateHallow);
+                }
+            }
+            void goodTile(int id)
+            {
+                ILCursor c = new(il);
+                while (c.TryGotoNext(i => i.MatchLdcI4(id) && i.Offset != 0))
                 {
-                    if (WorldBiomeGeneration.WofKilledTimes > 1 && hallowAlt != "" && Find<AltBiome>(hallowAlt).WallContext.wallsReplacement.ContainsKey(orig))
-                    {
-                        Find<AltBiome>(hallowAlt).WallContext.wallsReplacement.TryGetValue(orig, out ushort value);
-                        return value;
-                    }
-                    return orig;
-                });
-            ALUtils.ReplaceIDs(il,
-                WallID.HallowSandstone,
-                (orig) => Find<AltBiome>(WorldBiomeManager.WorldHallow).WallContext.wallsReplacement.TryGetValue(orig, out ushort value) ? value : WallID.None,
-                (orig) => WorldBiomeGeneration.WofKilledTimes <= 1 && WorldBiomeManager.WorldHallow != "" && Find<AltBiome>(WorldBiomeManager.WorldHallow).WallContext.wallsReplacement.ContainsKey(orig),
-                (orig) =>
+                    c.Index++;
+                    c.Emit(OpCodes.Ldloc, 15);
+                    c.Emit(OpCodes.Ldloc, 16);
+                    c.EmitDelegate(GetTileOnStateHallow);
+                }
+            }
+            void evilWall(int id)
+            {
+                ILCursor c = new(il);
+                while (c.TryGotoNext(i => i.MatchLdcI4(id) && i.Offset != 0))
                 {
-                    if (WorldBiomeGeneration.WofKilledTimes > 1 && hallowAlt != "" && Find<AltBiome>(hallowAlt).WallContext.wallsReplacement.ContainsKey(orig))
-                    {
-                        Find<AltBiome>(hallowAlt).WallContext.wallsReplacement.TryGetValue(orig, out ushort value);
-                        return value;
-                    }
-                    return orig;
-                });
-            ALUtils.ReplaceIDs(il,
-                WallID.PearlstoneBrickUnsafe,
-                (orig) => Find<AltBiome>(WorldBiomeManager.WorldHallow).WallContext.wallsReplacement.TryGetValue(orig, out ushort value) ? value : WallID.None,
-                (orig) => WorldBiomeGeneration.WofKilledTimes <= 1 && WorldBiomeManager.WorldHallow != "" && Find<AltBiome>(WorldBiomeManager.WorldHallow).WallContext.wallsReplacement.ContainsKey(orig),
-                (orig) =>
+                    c.Index++;
+                    c.Emit(OpCodes.Ldloc, 15);
+                    c.Emit(OpCodes.Ldloc, 16);
+                    c.EmitDelegate(GetWallOnStateEvil);
+                }
+            }
+            void evilTile(int id)
+            {
+                ILCursor c = new(il);
+                while (c.TryGotoNext(i => i.MatchLdcI4(id) && i.Offset != 0))
                 {
-                    if (WorldBiomeGeneration.WofKilledTimes > 1 && hallowAlt != "" && Find<AltBiome>(hallowAlt).WallContext.wallsReplacement.ContainsKey(orig))
-                    {
-                        Find<AltBiome>(hallowAlt).WallContext.wallsReplacement.TryGetValue(orig, out ushort value);
-                        return value;
-                    }
-                    return orig;
-                });
-            ALUtils.ReplaceIDs(il,
-                WallID.CorruptGrassUnsafe,
-                (orig) => Find<AltBiome>(WorldBiomeManager.WorldEvil).WallContext.wallsReplacement.TryGetValue(orig, out ushort value) ? value : WallID.None,
-                (orig) => WorldBiomeGeneration.WofKilledTimes <= 1 && WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).WallContext.wallsReplacement.ContainsKey(orig),
-                (orig) =>
-                {
-                    if (WorldBiomeGeneration.WofKilledTimes > 1 && !evilAlt.StartsWith("Terraria/") && Find<AltBiome>(evilAlt).WallContext.wallsReplacement.ContainsKey(orig))
-                    {
-                        Find<AltBiome>(evilAlt).WallContext.wallsReplacement.TryGetValue(orig, out ushort value);
-                        return value;
-                    }
-                    return orig;
-                });
-            ALUtils.ReplaceIDs(il,
-                WallID.CorruptHardenedSand,
-                (orig) => Find<AltBiome>(WorldBiomeManager.WorldEvil).WallContext.wallsReplacement.TryGetValue(orig, out ushort value) ? value : WallID.None,
-                (orig) => WorldBiomeGeneration.WofKilledTimes <= 1 && WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).WallContext.wallsReplacement.ContainsKey(orig),
-                (orig) =>
-                {
-                    if (WorldBiomeGeneration.WofKilledTimes > 1 && !evilAlt.StartsWith("Terraria/") && Find<AltBiome>(evilAlt).WallContext.wallsReplacement.ContainsKey(orig))
-                    {
-                        Find<AltBiome>(evilAlt).WallContext.wallsReplacement.TryGetValue(orig, out ushort value);
-                        return value;
-                    }
-                    return orig;
-                });
-            ALUtils.ReplaceIDs(il,
-                WallID.CorruptSandstone,
-                (orig) => Find<AltBiome>(WorldBiomeManager.WorldEvil).WallContext.wallsReplacement.TryGetValue(orig, out ushort value) ? value : WallID.None,
-                (orig) => WorldBiomeGeneration.WofKilledTimes <= 1 && WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).WallContext.wallsReplacement.ContainsKey(orig),
-                (orig) =>
-                {
-                    if (WorldBiomeGeneration.WofKilledTimes > 1 && !evilAlt.StartsWith("Terraria/") && Find<AltBiome>(evilAlt).WallContext.wallsReplacement.ContainsKey(orig))
-                    {
-                        Find<AltBiome>(evilAlt).WallContext.wallsReplacement.TryGetValue(orig, out ushort value);
-                        return value;
-                    }
-                    return orig;
-                });
-            ALUtils.ReplaceIDs(il,
-                WallID.CrimsonGrassUnsafe,
-                (orig) => Find<AltBiome>(WorldBiomeManager.WorldEvil).WallContext.wallsReplacement.TryGetValue(orig, out ushort value) ? value : WallID.None,
-                (orig) => WorldBiomeGeneration.WofKilledTimes <= 1 && WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).WallContext.wallsReplacement.ContainsKey(69),
-                (orig) =>
-                {
-                    if (WorldBiomeGeneration.WofKilledTimes > 1 && !evilAlt.StartsWith("Terraria/") && Find<AltBiome>(evilAlt).WallContext.wallsReplacement.ContainsKey(69))
-                    {
-                        Find<AltBiome>(evilAlt).WallContext.wallsReplacement.TryGetValue(69, out ushort value);
-                        return value;
-                    }
-                    return orig;
-                });
-            ALUtils.ReplaceIDs(il,
-                WallID.CrimsonHardenedSand,
-                (orig) => Find<AltBiome>(WorldBiomeManager.WorldEvil).WallContext.wallsReplacement.TryGetValue(orig, out ushort value) ? value : WallID.None,
-                (orig) => WorldBiomeGeneration.WofKilledTimes <= 1 && WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).WallContext.wallsReplacement.ContainsKey(217),
-                (orig) =>
-                {
-                    if (WorldBiomeGeneration.WofKilledTimes > 1 && !evilAlt.StartsWith("Terraria/") && Find<AltBiome>(evilAlt).WallContext.wallsReplacement.ContainsKey(217))
-                    {
-                        Find<AltBiome>(evilAlt).WallContext.wallsReplacement.TryGetValue(217, out ushort value);
-                        return value;
-                    }
-                    return orig;
-                });
-            ALUtils.ReplaceIDs(il,
-                WallID.CrimsonSandstone,
-                (orig) => Find<AltBiome>(WorldBiomeManager.WorldEvil).WallContext.wallsReplacement.TryGetValue(orig, out ushort value) ? value : WallID.None,
-                (orig) => WorldBiomeGeneration.WofKilledTimes <= 1 && WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).WallContext.wallsReplacement.ContainsKey(220),
-                (orig) =>
-                {
-                    if (WorldBiomeGeneration.WofKilledTimes > 1 && !evilAlt.StartsWith("Terraria/") && Find<AltBiome>(evilAlt).WallContext.wallsReplacement.ContainsKey(220))
-                    {
-                        Find<AltBiome>(evilAlt).WallContext.wallsReplacement.TryGetValue(220, out ushort value);
-                        return value;
-                    }
-                    return orig;
-                });
+                    c.Index++;
+                    c.Emit(OpCodes.Ldloc, 15);
+                    c.Emit(OpCodes.Ldloc, 16);
+                    c.EmitDelegate(GetTileOnStateEvil);
+                }
+            }
 
-            ALUtils.ReplaceIDs<int>(il,
-                TileID.Pearlstone,
-                (orig) => Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeStone ?? orig,
-                (orig) => WorldBiomeGeneration.WofKilledTimes <= 1 && WorldBiomeManager.WorldHallow != "" && Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeStone.HasValue,
-                (orig) =>
-                {
-                    return WorldBiomeGeneration.WofKilledTimes > 1 && hallowAlt != "" && Find<AltBiome>(hallowAlt).BiomeStone.HasValue
-                        ? Find<AltBiome>(hallowAlt).BiomeStone.Value
-                        : orig;
-                });
-            ALUtils.ReplaceIDs<int>(il,
-                TileID.HallowHardenedSand,
-                (orig) => Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeHardenedSand ?? orig,
-                (orig) => WorldBiomeGeneration.WofKilledTimes <= 1 && WorldBiomeManager.WorldHallow != "" && Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeHardenedSand.HasValue,
-                (orig) =>
-                {
-                    return WorldBiomeGeneration.WofKilledTimes > 1 && hallowAlt != "" && Find<AltBiome>(hallowAlt).BiomeHardenedSand.HasValue
-                        ? Find<AltBiome>(hallowAlt).BiomeHardenedSand.Value
-                        : orig;
-                });
-            ALUtils.ReplaceIDs<int>(il,
-                TileID.HallowedGrass,
-                (orig) => Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeGrass ?? orig,
-                (orig) => WorldBiomeGeneration.WofKilledTimes <= 1 && WorldBiomeManager.WorldHallow != "" && Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeGrass.HasValue,
-                (orig) =>
-                {
-                    return WorldBiomeGeneration.WofKilledTimes > 1 && hallowAlt != "" && Find<AltBiome>(hallowAlt).BiomeGrass.HasValue
-                        ? Find<AltBiome>(hallowAlt).BiomeGrass.Value
-                        : orig;
-                });
-            ALUtils.ReplaceIDs<int>(il,
-                TileID.Pearlsand,
-                (orig) => Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeSand ?? orig,
-                (orig) => WorldBiomeGeneration.WofKilledTimes <= 1 && WorldBiomeManager.WorldHallow != "" && Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeSand.HasValue,
-                (orig) =>
-                {
-                    return WorldBiomeGeneration.WofKilledTimes > 1 && hallowAlt != "" && Find<AltBiome>(hallowAlt).BiomeSand.HasValue
-                        ? Find<AltBiome>(hallowAlt).BiomeSand.Value
-                        : orig;
-                });
-            ALUtils.ReplaceIDs<int>(il,
-                TileID.HallowedIce,
-                (orig) => Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeIce ?? orig,
-                (orig) => WorldBiomeGeneration.WofKilledTimes <= 1 && WorldBiomeManager.WorldHallow != "" && Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeIce.HasValue,
-                (orig) =>
-                {
-                    return WorldBiomeGeneration.WofKilledTimes > 1 && hallowAlt != "" && Find<AltBiome>(hallowAlt).BiomeIce.HasValue
-                        ? Find<AltBiome>(hallowAlt).BiomeIce.Value
-                        : orig;
-                });
-            ALUtils.ReplaceIDs<int>(il,
-                TileID.HallowSandstone,
-                (orig) => Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeSandstone ?? orig,
-                (orig) => WorldBiomeGeneration.WofKilledTimes <= 1 && WorldBiomeManager.WorldHallow != "" && Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeSandstone.HasValue,
-                (orig) =>
-                {
-                    return WorldBiomeGeneration.WofKilledTimes > 1 && hallowAlt != "" && Find<AltBiome>(hallowAlt).BiomeSandstone.HasValue
-                        ? Find<AltBiome>(hallowAlt).BiomeSandstone.Value
-                        : orig;
-                });
+            goodWall(WallID.HallowedGrassUnsafe);
+            goodWall(WallID.HallowHardenedSand);
+            goodWall(WallID.HallowSandstone);
+            goodWall(WallID.PearlstoneBrickUnsafe);
 
-            ALUtils.ReplaceIDs<int>(il,
-                TileID.Ebonstone,
-                (orig) => Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeStone ?? orig,
-                (orig) => WorldBiomeGeneration.WofKilledTimes <= 1 && WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeStone.HasValue,
-                (orig) =>
-                {
-                    if (WorldBiomeGeneration.WofKilledTimes > 1 && evilAlt.EndsWith("Crimson")) return TileID.Crimstone;
-                    return WorldBiomeGeneration.WofKilledTimes > 1 && !evilAlt.StartsWith("Terraria/") && Find<AltBiome>(evilAlt).BiomeStone.HasValue
-                        ? Find<AltBiome>(evilAlt).BiomeStone.Value
-                        : orig;
-                });
-            ALUtils.ReplaceIDs<int>(il,
-                TileID.CorruptHardenedSand,
-                (orig) => Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeHardenedSand ?? orig,
-                (orig) => WorldBiomeGeneration.WofKilledTimes <= 1 && WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeHardenedSand.HasValue,
-                (orig) =>
-                {
-                    if (WorldBiomeGeneration.WofKilledTimes > 1 && evilAlt.EndsWith("Crimson")) return TileID.CrimsonHardenedSand;
-                    return WorldBiomeGeneration.WofKilledTimes > 1 && !evilAlt.StartsWith("Terraria/") && Find<AltBiome>(evilAlt).BiomeHardenedSand.HasValue
-                        ? Find<AltBiome>(evilAlt).BiomeHardenedSand.Value
-                        : orig;
-                });
-            ALUtils.ReplaceIDs<int>(il,
-                TileID.CorruptGrass,
-                (orig) => Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeGrass ?? orig,
-                (orig) => WorldBiomeGeneration.WofKilledTimes <= 1 && WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeGrass.HasValue,
-                (orig) =>
-                {
-                    if (WorldBiomeGeneration.WofKilledTimes > 1 && evilAlt.EndsWith("Crimson")) return TileID.CrimsonGrass;
-                    return WorldBiomeGeneration.WofKilledTimes > 1 && !evilAlt.StartsWith("Terraria/") && Find<AltBiome>(evilAlt).BiomeGrass.HasValue
-                        ? Find<AltBiome>(evilAlt).BiomeGrass.Value
-                        : orig;
-                });
-            ALUtils.ReplaceIDs<int>(il,
-                TileID.Ebonsand,
-                (orig) => Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeSand ?? orig,
-                (orig) => WorldBiomeGeneration.WofKilledTimes <= 1 && WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeSand.HasValue,
-                (orig) =>
-                {
-                    if (WorldBiomeGeneration.WofKilledTimes > 1 && evilAlt.EndsWith("Crimson")) return TileID.Crimsand;
-                    return WorldBiomeGeneration.WofKilledTimes > 1 && !evilAlt.StartsWith("Terraria/") && Find<AltBiome>(evilAlt).BiomeSand.HasValue
-                        ? Find<AltBiome>(evilAlt).BiomeSand.Value
-                        : orig;
-                });
-            ALUtils.ReplaceIDs<int>(il,
-                TileID.CorruptIce,
-                (orig) => Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeIce ?? orig,
-                (orig) => WorldBiomeGeneration.WofKilledTimes <= 1 && WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeIce.HasValue,
-                (orig) =>
-                {
-                    if (WorldBiomeGeneration.WofKilledTimes > 1 && evilAlt.EndsWith("Crimson")) return TileID.FleshIce;
-                    return WorldBiomeGeneration.WofKilledTimes > 1 && !evilAlt.StartsWith("Terraria/") && Find<AltBiome>(evilAlt).BiomeIce.HasValue
-                        ? Find<AltBiome>(evilAlt).BiomeIce.Value
-                        : orig;
-                });
-            ALUtils.ReplaceIDs<int>(il,
-                TileID.CorruptSandstone,
-                (orig) => Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeSandstone ?? orig,
-                (orig) => WorldBiomeGeneration.WofKilledTimes <= 1 && WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeSandstone.HasValue,
-                (orig) =>
-                {
-                    if (WorldBiomeGeneration.WofKilledTimes > 1 && evilAlt.EndsWith("Crimson")) return TileID.CrimsonSandstone;
-                    return WorldBiomeGeneration.WofKilledTimes > 1 && !evilAlt.StartsWith("Terraria/") && Find<AltBiome>(evilAlt).BiomeSandstone.HasValue
-                        ? Find<AltBiome>(evilAlt).BiomeSandstone.Value
-                        : orig;
-                });
+            evilWall(WallID.CorruptGrassUnsafe);
+            evilWall(WallID.CorruptHardenedSand);
+            evilWall(WallID.CorruptSandstone);
 
-            ALUtils.ReplaceIDs<int>(il,
-                TileID.Crimstone,
-                (orig) => Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeStone ?? orig,
-                (orig) => WorldBiomeGeneration.WofKilledTimes <= 1 && WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeStone.HasValue,
-                (orig) =>
-                {
-                    if (WorldBiomeGeneration.WofKilledTimes > 1 && evilAlt.EndsWith("Corruption")) return TileID.Ebonsand;
-                    return WorldBiomeGeneration.WofKilledTimes > 1 && !evilAlt.StartsWith("Terraria/") && Find<AltBiome>(evilAlt).BiomeStone.HasValue
-                        ? Find<AltBiome>(evilAlt).BiomeStone.Value
-                        : orig;
-                });
-            ALUtils.ReplaceIDs<int>(il,
-                TileID.CrimsonHardenedSand,
-                (orig) => Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeHardenedSand ?? orig,
-                (orig) => WorldBiomeGeneration.WofKilledTimes <= 1 && WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeHardenedSand.HasValue,
-                (orig) =>
-                {
-                    if (WorldBiomeGeneration.WofKilledTimes > 1 && evilAlt.EndsWith("Corruption")) return TileID.CorruptHardenedSand;
-                    return WorldBiomeGeneration.WofKilledTimes > 1 && !evilAlt.StartsWith("Terraria/") && Find<AltBiome>(evilAlt).BiomeHardenedSand.HasValue
-                        ? Find<AltBiome>(evilAlt).BiomeHardenedSand.Value
-                        : orig;
-                });
-            ALUtils.ReplaceIDs<int>(il,
-                TileID.CrimsonGrass,
-                (orig) => Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeGrass ?? orig,
-                (orig) => WorldBiomeGeneration.WofKilledTimes <= 1 && WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeGrass.HasValue,
-                (orig) =>
-                {
-                    if (WorldBiomeGeneration.WofKilledTimes > 1 && evilAlt.EndsWith("Corruption")) return TileID.CorruptGrass;
-                    return WorldBiomeGeneration.WofKilledTimes > 1 && !evilAlt.StartsWith("Terraria/") && Find<AltBiome>(evilAlt).BiomeGrass.HasValue
-                        ? Find<AltBiome>(evilAlt).BiomeGrass.Value
-                        : orig;
-                });
-            ALUtils.ReplaceIDs<int>(il,
-                TileID.Crimsand,
-                (orig) => Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeSand ?? orig,
-                (orig) => WorldBiomeGeneration.WofKilledTimes <= 1 && WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeSand.HasValue,
-                (orig) =>
-                {
-                    if (WorldBiomeGeneration.WofKilledTimes > 1 && evilAlt.EndsWith("Corruption")) return TileID.Ebonsand;
-                    return WorldBiomeGeneration.WofKilledTimes > 1 && !evilAlt.StartsWith("Terraria/") && Find<AltBiome>(evilAlt).BiomeSand.HasValue
-                        ? Find<AltBiome>(evilAlt).BiomeSand.Value
-                        : orig;
-                });
-            ALUtils.ReplaceIDs<int>(il,
-                TileID.FleshIce,
-                (orig) => Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeIce ?? orig,
-                (orig) => WorldBiomeGeneration.WofKilledTimes <= 1 && WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeIce.HasValue,
-                (orig) =>
-                {
-                    if (WorldBiomeGeneration.WofKilledTimes > 1 && evilAlt.EndsWith("Corruption")) return TileID.CorruptIce;
-                    return WorldBiomeGeneration.WofKilledTimes > 1 && !evilAlt.StartsWith("Terraria/") && Find<AltBiome>(evilAlt).BiomeIce.HasValue
-                        ? Find<AltBiome>(evilAlt).BiomeIce.Value
-                        : orig;
-                });
-            ALUtils.ReplaceIDs<int>(il,
-                TileID.CrimsonSandstone,
-                (orig) => Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeSandstone ?? orig,
-                (orig) => WorldBiomeGeneration.WofKilledTimes <= 1 && WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeSandstone.HasValue,
-                (orig) =>
-                {
-                    if (WorldBiomeGeneration.WofKilledTimes > 1 && evilAlt.EndsWith("Corruption")) return TileID.CorruptSandstone;
-                    return WorldBiomeGeneration.WofKilledTimes > 1 && !evilAlt.StartsWith("Terraria/") && Find<AltBiome>(evilAlt).BiomeSandstone.HasValue
-                        ? Find<AltBiome>(evilAlt).BiomeSandstone.Value
-                        : orig;
-                });
+            evilWall(WallID.CrimsonGrassUnsafe);
+            evilWall(WallID.CrimsonHardenedSand);
+            evilWall(WallID.CrimsonSandstone);
+
+            goodTile(TileID.Pearlstone);
+            goodTile(TileID.HallowHardenedSand);
+            goodTile(TileID.HallowedGrass);
+            goodTile(TileID.Pearlsand);
+            goodTile(TileID.HallowedIce);
+            goodTile(TileID.HallowSandstone);
+
+            evilTile(TileID.Ebonstone);
+            evilTile(TileID.CorruptHardenedSand);
+            evilTile(TileID.CorruptGrass);
+            evilTile(TileID.Ebonsand);
+            evilTile(TileID.CorruptIce);
+            evilTile(TileID.CorruptSandstone);
+
+            evilTile(TileID.Crimstone);
+            evilTile(TileID.CrimsonHardenedSand);
+            evilTile(TileID.CrimsonGrass);
+            evilTile(TileID.Crimsand);
+            evilTile(TileID.FleshIce);
+            evilTile(TileID.CrimsonSandstone);
         }
     }
 }

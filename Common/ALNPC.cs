@@ -12,7 +12,7 @@ namespace AltLibrary.Common
         {
             if (npc.type == NPCID.WallofFlesh)
             {
-                if (Main.drunkWorld && false)
+                if (Main.drunkWorld)
                 {
                     WorldBiomeGeneration.WofKilledTimes++;
                     if (WorldBiomeGeneration.WofKilledTimes > 1)

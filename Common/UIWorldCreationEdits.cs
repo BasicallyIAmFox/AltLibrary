@@ -1389,14 +1389,14 @@ namespace AltLibrary.Common
         #endregion
     }
 
-    public struct ALOreDrawingStruct
+    public readonly struct ALOreDrawingStruct
     {
-        public string UniqueID;
-        internal Func<bool> cond;
-        internal Func<Asset<Texture2D>, Asset<Texture2D>> func;
-        internal Func<Rectangle?> rect;
-        internal Func<string> onHoverName;
-        internal Func<string, string> onHoverMod;
+        public readonly string UniqueID;
+        internal readonly Func<bool> cond;
+        internal readonly Func<Asset<Texture2D>, Asset<Texture2D>> func;
+        internal readonly Func<Rectangle?> rect;
+        internal readonly Func<string> onHoverName;
+        internal readonly Func<string, string> onHoverMod;
 
         public ALOreDrawingStruct(string ID, bool isHardmode, Func<Asset<Texture2D>, Asset<Texture2D>> func, Func<Rectangle?> rect, Func<string> onHoverName, Func<string, string> onHoverMod)
         {
