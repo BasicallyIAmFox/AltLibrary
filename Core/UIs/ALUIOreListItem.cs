@@ -205,28 +205,27 @@ namespace AltLibrary.Core.UIs
             switch (ore.OreType)
             {
                 case OreType.Copper:
-                    UIWorldCreationEdits.Copper = ore.Type;
+                    if (!ore.OnClick()) UIWorldCreationEdits.Copper = ore.Type;
                     break;
                 case OreType.Iron:
-                    UIWorldCreationEdits.Iron = ore.Type;
+                    if (!ore.OnClick()) UIWorldCreationEdits.Iron = ore.Type;
                     break;
                 case OreType.Silver:
-                    UIWorldCreationEdits.Silver = ore.Type;
+                    if (!ore.OnClick()) UIWorldCreationEdits.Silver = ore.Type;
                     break;
                 case OreType.Gold:
-                    UIWorldCreationEdits.Gold = ore.Type;
+                    if (!ore.OnClick()) UIWorldCreationEdits.Gold = ore.Type;
                     break;
                 case OreType.Cobalt:
-                    UIWorldCreationEdits.Cobalt = ore.Type;
+                    if (!ore.OnClick()) UIWorldCreationEdits.Cobalt = ore.Type;
                     break;
                 case OreType.Mythril:
-                    UIWorldCreationEdits.Mythril = ore.Type;
+                    if (!ore.OnClick()) UIWorldCreationEdits.Mythril = ore.Type;
                     break;
                 case OreType.Adamantite:
-                    UIWorldCreationEdits.Adamantite = ore.Type;
+                    if (!ore.OnClick()) UIWorldCreationEdits.Adamantite = ore.Type;
                     break;
             }
-            ore.OnClick();
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)

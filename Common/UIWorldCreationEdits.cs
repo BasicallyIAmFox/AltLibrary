@@ -47,6 +47,7 @@ namespace AltLibrary.Common
         internal static int Adamantite;
         internal static bool isCrimson;
         internal static string seed;
+        internal static bool initializedLists;
         internal enum CurrentAltOption
         {
             Biome,
@@ -56,6 +57,7 @@ namespace AltLibrary.Common
 
         public static void Init()
         {
+            initializedLists = false;
             IL.Terraria.GameContent.UI.States.UIWorldCreation.MakeInfoMenu += ILMakeInfoMenu;
             On.Terraria.GameContent.UI.States.UIWorldCreation.AddWorldEvilOptions += OnAddWorldEvilOptions;
             On.Terraria.GameContent.UI.States.UIWorldCreation.SetDefaultOptions += UIWorldCreation_SetDefaultOptions;
@@ -96,6 +98,7 @@ namespace AltLibrary.Common
             Mythril = 0;
             Adamantite = 0;
             seed = null;
+            initializedLists = false;
         }
 
         #region Useful stuff
@@ -220,6 +223,11 @@ namespace AltLibrary.Common
 
         public static void UIWorldCreation_BuildPage(On.Terraria.GameContent.UI.States.UIWorldCreation.orig_BuildPage orig, UIWorldCreation self)
         {
+            if (!initializedLists)
+            {
+                ALWorldCreationLists.FillData();
+                initializedLists = true;
+            }
             chosenOption = (CurrentAltOption)(-1);
 
             RandomizeValues();
@@ -279,12 +287,10 @@ namespace AltLibrary.Common
                 uIElement3.Append(closeIcon);
 
                 List<AltOre> prehmList = MakeOreList();
-                foreach (AltOre ore in prehmList)
-                {
-                    ALUIOreListItem item = new(ore, false);
-                    _oreList.Add(item);
-                    _oreElements.Add(item);
-                }
+                List<ALUIOreListItem> items = new();
+                prehmList.ForEach(x => items.Add(new(x, false)));
+                _oreList.AddRange(items);
+                _oreElements.AddRange(items);
             }
             #endregion
 
@@ -341,12 +347,10 @@ namespace AltLibrary.Common
                 uIElement3.Append(closeIcon);
 
                 List<AltOre> hardmodeListing = MakeHardmodeOreList();
-                foreach (AltOre ore in hardmodeListing)
-                {
-                    ALUIOreListItem item = new(ore, false);
-                    _oreHmList.Add(item);
-                    _oreHmElements.Add(item);
-                }
+                List<ALUIOreListItem> items = new();
+                hardmodeListing.ForEach(x => items.Add(new(x, false)));
+                _oreHmList.AddRange(items);
+                _oreHmElements.AddRange(items);
             }
             #endregion
 
@@ -403,12 +407,10 @@ namespace AltLibrary.Common
                 uIElement3.Append(closeIcon);
 
                 List<AltBiome> list = MakeBiomeList();
-                foreach (AltBiome biome in list)
-                {
-                    ALUIBiomeListItem item = new(biome, false);
-                    _biomeList.Add(item);
-                    _biomeElements.Add(item);
-                }
+                List<ALUIBiomeListItem> items = new();
+                list.ForEach(x => items.Add(new(x, false)));
+                _biomeList.AddRange(items);
+                _biomeElements.AddRange(items);
             }
             #endregion
         }
@@ -674,7 +676,7 @@ namespace AltLibrary.Common
             {
                 #region Pre-HM Ores
 #region Copper
-                new(false, (value) =>
+                new("Terraria/Copper", false, (value) =>
             {
                 return Copper switch
                 {
@@ -707,7 +709,7 @@ namespace AltLibrary.Common
             }),
                 #endregion
 #region Iron
-                new(false,
+                new("Terraria/Iron", false,
                 (value) =>
                 {
                     return Iron switch
@@ -741,7 +743,7 @@ namespace AltLibrary.Common
                 }),
                 #endregion
 #region Silver
-                new(false,
+                new("Terraria/Silver", false,
                 (value) =>
                 {
                     return Silver switch
@@ -775,7 +777,7 @@ namespace AltLibrary.Common
                 }),
                 #endregion
 #region Gold
-                new(false,
+                new("Terraria/Gold", false,
                 (value) =>
                 {
                     return Gold switch
@@ -811,7 +813,7 @@ namespace AltLibrary.Common
                 #endregion
                 #region HM Ores
 #region Cobalt
-                new(true,
+                new("Terraria/Cobalt", true,
                 (value) =>
                 {
                     return Cobalt switch
@@ -845,7 +847,7 @@ namespace AltLibrary.Common
                 }),
                 #endregion
 #region Mythril
-                new(true,
+                new("Terraria/Mythril", true,
                 (value) =>
                 {
                     return Mythril switch
@@ -879,7 +881,7 @@ namespace AltLibrary.Common
                 }),
                 #endregion
 #region Adamantite
-                new(true,
+                new("Terraria/Adamantite", true,
                 (value) =>
                 {
                     return Adamantite switch
@@ -1389,14 +1391,26 @@ namespace AltLibrary.Common
 
     public struct ALOreDrawingStruct
     {
+        public string UniqueID;
         internal Func<bool> cond;
         internal Func<Asset<Texture2D>, Asset<Texture2D>> func;
         internal Func<Rectangle?> rect;
         internal Func<string> onHoverName;
         internal Func<string, string> onHoverMod;
 
-        public ALOreDrawingStruct(bool isHardmode, Func<Asset<Texture2D>, Asset<Texture2D>> func, Func<Rectangle?> rect, Func<string> onHoverName, Func<string, string> onHoverMod)
+        public ALOreDrawingStruct(string ID, bool isHardmode, Func<Asset<Texture2D>, Asset<Texture2D>> func, Func<Rectangle?> rect, Func<string> onHoverName, Func<string, string> onHoverMod)
         {
+            UniqueID = ID;
+            cond = isHardmode ? () => chosenOption == CurrentAltOption.HMOre || AltLibraryConfig.Config.OreIconsVisibleOutsideOreUI : () => chosenOption == CurrentAltOption.Ore || AltLibraryConfig.Config.OreIconsVisibleOutsideOreUI;
+            this.func = func;
+            this.rect = rect;
+            this.onHoverName = onHoverName;
+            this.onHoverMod = onHoverMod;
+        }
+
+        public ALOreDrawingStruct(AltOre ore, bool isHardmode, Func<Asset<Texture2D>, Asset<Texture2D>> func, Func<Rectangle?> rect, Func<string> onHoverName, Func<string, string> onHoverMod)
+        {
+            UniqueID = ore.FullName;
             cond = isHardmode ? () => chosenOption == CurrentAltOption.HMOre || AltLibraryConfig.Config.OreIconsVisibleOutsideOreUI : () => chosenOption == CurrentAltOption.Ore || AltLibraryConfig.Config.OreIconsVisibleOutsideOreUI;
             this.func = func;
             this.rect = rect;

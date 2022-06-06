@@ -90,9 +90,12 @@ namespace AltLibrary.Common.AltOres
 
         /// <summary>
         /// If you want custom action on click, then use this. Useful for "RandomX" options and custom tiers.
+        /// <br/>By default: false.
+        /// <br/>Set to true if you want to override default behavior.
         /// </summary>
-        public virtual void OnClick()
+        public virtual bool OnClick()
         {
+            return false;
         }
 
         public virtual void AddOreOnScreenIcon(List<ALOreDrawingStruct> list)

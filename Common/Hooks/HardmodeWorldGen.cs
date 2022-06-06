@@ -42,14 +42,15 @@ namespace AltLibrary.Common.Hooks
         {
             if (Main.drunkWorld && WorldBiomeGeneration.WofKilledTimes > 1)
             {
-                List<string> possibles = new();
+                List<string> possibles = new() { "" };
                 AltLibrary.Biomes.FindAll(x => x.BiomeType == BiomeType.Hallow).ForEach(x => possibles.Add(x.FullName));
-                possibles.Add("");
                 hallowAlt = Main.rand.Next(possibles);
-                possibles = new();
+                possibles = new()
+                {
+                    "Terraria/Corruption",
+                    "Terraria/Crimson"
+                };
                 AltLibrary.Biomes.FindAll(x => x.BiomeType == BiomeType.Evil).ForEach(x => possibles.Add(x.FullName));
-                possibles.Add("Terraria/Corruption");
-                possibles.Add("Terraria/Crimson");
                 evilAlt = Main.rand.Next(possibles);
 
                 int addX = WorldGen.genRand.Next(300, 400) * WorldBiomeGeneration.WofKilledTimes;

@@ -77,7 +77,6 @@ namespace AltLibrary
 
         public override void PostSetupContent()
         {
-            ALWorldCreationLists.FillData();
             ALTextureAssets.PostContentLoad();
             ALConvertInheritanceData.FillData();
         }
