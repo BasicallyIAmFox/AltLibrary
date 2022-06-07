@@ -41,6 +41,8 @@ namespace AltLibrary
         internal static Asset<Texture2D>[] PreviewSizes;
         internal static Asset<Texture2D>[,] PreviewSpecialSizes;
         internal static Asset<Texture2D>[] UIWorldSeedIcon;
+        internal static Asset<Texture2D>[] MoonSun;
+        internal static Asset<Texture2D>[] LordFleshy;
 
         internal static void Load()
         {
@@ -89,6 +91,19 @@ namespace AltLibrary
                 {
                     PreviewSpecialSizes[i, j] = ModContent.Request<Texture2D>($"AltLibrary/Assets/WorldPreviews/Preview_{i - 1}_{j}", AssetRequestMode.ImmediateLoad);
                 }
+            }
+            MoonSun = new Asset<Texture2D>[7];
+            MoonSun[0] = ModContent.Request<Texture2D>("AltLibrary/Assets/MoonSun", AssetRequestMode.ImmediateLoad);
+            MoonSun[1] = ModContent.Request<Texture2D>("AltLibrary/Assets/MoonSunglass", AssetRequestMode.ImmediateLoad);
+            MoonSun[2] = ModContent.Request<Texture2D>("AltLibrary/Assets/MoonEclipse", AssetRequestMode.ImmediateLoad);
+            MoonSun[3] = ModContent.Request<Texture2D>("AltLibrary/Assets/SunMoon", AssetRequestMode.ImmediateLoad);
+            MoonSun[4] = ModContent.Request<Texture2D>("AltLibrary/Assets/SunFrost", AssetRequestMode.ImmediateLoad);
+            MoonSun[5] = ModContent.Request<Texture2D>("AltLibrary/Assets/SunPump", AssetRequestMode.ImmediateLoad);
+            MoonSun[6] = ModContent.Request<Texture2D>("AltLibrary/Assets/SunSmile", AssetRequestMode.ImmediateLoad);
+            LordFleshy = new Asset<Texture2D>[31];
+            for (int i = 0; i < LordFleshy.Length; i++)
+            {
+                LordFleshy[i] = ModContent.Request<Texture2D>("AltLibrary/Assets/Fleshy/Fleshy_" + i.ToString());
             }
         }
 
@@ -176,6 +191,8 @@ namespace AltLibrary
             PreviewSizes = null;
             PreviewSpecialSizes = null;
             UIWorldSeedIcon = null;
+            MoonSun = null;
+            LordFleshy = null;
         }
     }
 }

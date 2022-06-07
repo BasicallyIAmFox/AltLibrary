@@ -39,6 +39,9 @@ namespace AltLibrary
         internal static int TimeHoveringOnIcon;
         internal static bool HallowBunnyUnlocked;
         internal static int ModIconVariation;
+        internal static int MoonSunWiseTimer;
+        internal static bool MoonSunViceVersa;
+        internal static bool LordMoonFleshy;
 
         /// <summary>
         ///     Gets or sets a value indicating whether the mouse should be checked in an interface or not.
@@ -56,9 +59,9 @@ namespace AltLibrary
         public override void Load()
         {
             ALReflection.Init();
+            ALTextureAssets.Load();
             ILHooks.OnInitialize();
             AnimatedModIcon.Init();
-            ALTextureAssets.Load();
             ALConvert.Load();
             GuideHelpText.Load();
             UIChanges.Apply();
@@ -66,7 +69,10 @@ namespace AltLibrary
             AnalystShopLoader.Load();
             ModIconVariation = Main.rand.Next(ALTextureAssets.AnimatedModIcon.Length);
             TimeHoveringOnIcon = 0;
+            MoonSunWiseTimer = 0;
+            MoonSunViceVersa = false;
             HallowBunnyUnlocked = false;
+            LordMoonFleshy = false;
             if (!Main.dedServ)
             {
                 pieChartState = new ALPieChartState();
@@ -265,7 +271,10 @@ namespace AltLibrary
             AltLibraryConfig.Config = null;
             TimeHoveringOnIcon = 0;
             HallowBunnyUnlocked = false;
+            MoonSunWiseTimer = 0;
+            MoonSunViceVersa = false;
             PreviewWorldIcons = null;
+            LordMoonFleshy = false;
             if (!Main.dedServ)
             {
                 Instance = null;
@@ -288,12 +297,12 @@ namespace AltLibrary
 
         public static int AltBiomeType<T>() where T : AltBiome => ModContent.GetInstance<T>()?.Type ?? 0;
 
-        internal struct CustomPreviews
+        internal readonly struct CustomPreviews
         {
-            internal string seed;
-            internal string pathSmall;
-            internal string pathMedium;
-            internal string pathLarge;
+            internal readonly string seed;
+            internal readonly string pathSmall;
+            internal readonly string pathMedium;
+            internal readonly string pathLarge;
 
             internal CustomPreviews(string seed, string pathSmall, string pathMedium, string pathLarge)
             {

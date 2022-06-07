@@ -149,10 +149,7 @@ namespace AltLibrary.Content.NPCs
             ;
         }
 
-        public override void AI()
-        {
-            NPC.Transform(0);
-        }
+        public override bool CanTownNPCSpawn(int numTownNPCs, int money) => false;
 
         public override void SetDefaults()
         {

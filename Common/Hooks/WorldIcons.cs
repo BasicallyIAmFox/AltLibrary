@@ -155,7 +155,7 @@ namespace AltLibrary.Common.Hooks
                 worldIcon.Width.Set(0, 1);
                 image.Append(worldIcon);
             }
-            if (data.HasCorruption && bl2 && tempDict[path2].worldEvil != "" && ModContent.RequestIfExists(ModContent.Find<AltBiome>(tempDict[path2].worldEvil).WorldIcon + "DrunkBase", out Asset<Texture2D> newAsset1))
+            if (data.HasCorruption && bl2 && tempDict[path2].worldEvil != "" && ModContent.TryFind(tempDict[path2].worldEvil, out AltBiome altBiome) && ModContent.RequestIfExists(altBiome?.WorldIcon + "DrunkBase", out Asset<Texture2D> newAsset1))
             {
                 UIImage worldIcon = new(newAsset1);
                 worldIcon.Height.Set(0, 1);

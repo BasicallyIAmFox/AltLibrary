@@ -9,7 +9,7 @@ namespace AltLibrary
 #pragma warning disable CS0649
     internal class AltLibraryConfig : ModConfig
     {
-        public override ConfigScope Mode => ConfigScope.ClientSide;
+        public override ConfigScope Mode => ConfigScope.ServerSide;
         public static AltLibraryConfig Config;
 
         public struct WorldDataValues
@@ -42,10 +42,17 @@ namespace AltLibrary
         [Tooltip("$Mods.AltLibrary.Config.OreIconsVisibleOutsideOreUI.Tooltip")]
         [DefaultValue(true)]
         public bool OreIconsVisibleOutsideOreUI;
+
+        [Header("$Mods.AltLibrary.Config.Randomization")]
+
         [Label("$Mods.AltLibrary.Config.SmashingAltarsSpreadsRandom.Label")]
         [Tooltip("$Mods.AltLibrary.Config.SmashingAltarsSpreadsRandom.Tooltip")]
         [DefaultValue(false)]
         public bool SmashingAltarsSpreadsRandom;
+        [Label("$Mods.AltLibrary.Config.HardmodeGenRandom.Label")]
+        [Tooltip("$Mods.AltLibrary.Config.HardmodeGenRandom.Tooltip")]
+        [DefaultValue(false)]
+        public bool HardmodeGenRandom;
 
 #pragma warning restore CS0649
 
