@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using Terraria;
-using Terraria.ModLoader;
 
 namespace AltLibrary.Core
 {

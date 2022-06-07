@@ -1074,7 +1074,7 @@ namespace AltLibrary.Common
                 orig(self, evt, listeningElement);
             }
         }
-        
+
         private static void CloseIcon_OnClick(UIMouseEvent evt, UIElement listeningElement)
         {
             chosenOption = (CurrentAltOption)(-1);

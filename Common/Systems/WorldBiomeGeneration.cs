@@ -1,5 +1,4 @@
 ﻿using AltLibrary.Common.AltBiomes;
-using AltLibrary.Common.Hooks;
 using AltLibrary.Core;
 using AltLibrary.Core.Generation;
 using System;

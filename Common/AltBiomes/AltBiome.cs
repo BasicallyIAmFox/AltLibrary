@@ -1,5 +1,4 @@
-﻿using AltLibrary.Core;
-using AltLibrary.Core.Baking;
+﻿using AltLibrary.Core.Baking;
 using AltLibrary.Core.Generation;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

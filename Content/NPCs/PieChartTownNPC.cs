@@ -281,9 +281,9 @@ namespace AltLibrary.Content.NPCs
     {
         public override void SetStaticDefaults()
         {
-            int analystType = ModContent.NPCType<PieChartTownNPC>(); 
+            int analystType = ModContent.NPCType<PieChartTownNPC>();
 
-            var otherNPC = NPCHappiness.Get(NPCID.Steampunker); 
+            var otherNPC = NPCHappiness.Get(NPCID.Steampunker);
             otherNPC.SetNPCAffection(analystType, AffectionLevel.Love);
 
             otherNPC = NPCHappiness.Get(NPCID.Dryad);

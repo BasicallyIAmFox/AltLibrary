@@ -35,16 +35,19 @@ namespace AltLibrary.Common.Hooks
         {
             if (Main.drunkWorld && WorldBiomeGeneration.WofKilledTimes > 1)
             {
-                List<int> possibles = new() { 0 };
-                AltLibrary.Biomes.FindAll(x => x.BiomeType == BiomeType.Hallow).ForEach(x => possibles.Add(x.Type));
-                WorldBiomeManager.drunkGoodGen = Main.rand.Next(possibles);
-                possibles = new()
+                if (good)
                 {
-                    0,
-                    -1
-                };
-                AltLibrary.Biomes.FindAll(x => x.BiomeType == BiomeType.Evil).ForEach(x => possibles.Add(x.Type));
-                WorldBiomeManager.drunkEvilGen = Main.rand.Next(possibles);
+                    List<int> possibles = new() { 0 };
+                    AltLibrary.Biomes.FindAll(x => x.BiomeType == BiomeType.Hallow).ForEach(x => possibles.Add(x.Type));
+                    WorldBiomeManager.drunkGoodGen = Main.rand.Next(possibles);
+                    possibles = new()
+                    {
+                        0,
+                        -1
+                    };
+                    AltLibrary.Biomes.FindAll(x => x.BiomeType == BiomeType.Evil).ForEach(x => possibles.Add(x.Type));
+                    WorldBiomeManager.drunkEvilGen = Main.rand.Next(possibles);
+                }
 
                 int addX = WorldGen.genRand.Next(300, 400) * WorldBiomeGeneration.WofKilledTimes;
                 if (!good) addX *= -1;
@@ -143,7 +146,7 @@ namespace AltLibrary.Common.Hooks
                             tile.TileType == Good?.BiomeHardenedSand.GetValueOrDefault() ||
                             tile.TileType == Good?.BiomeSandstone.GetValueOrDefault()))
                         {
-                            orig = WorldGen.genRand.Next(Evil?.HardmodeWalls);
+                            orig = WorldGen.genRand.Next(Good?.HardmodeWalls);
                         }
                     }
                 }
@@ -155,16 +158,30 @@ namespace AltLibrary.Common.Hooks
 
         private static int GetTileOnStateHallow(int tileID, int x, int y)
         {
+            int rv = ALConvertInheritanceData.GetConvertedTile_Vanilla(tileID, 2, x, y);
+            if (WorldBiomeManager.WorldHallow != "" && WorldBiomeGeneration.WofKilledTimes <= 1)
+                rv = ALConvertInheritanceData.GetConvertedTile_Modded(tileID, Find<AltBiome>(WorldBiomeManager.WorldHallow), x, y);
             if (WorldBiomeManager.drunkGoodGen > 0)
-                return ALConvertInheritanceData.GetConvertedTile_Modded(tileID, Good, x, y);
-            return ALConvertInheritanceData.GetConvertedTile_Vanilla(tileID, 2, x, y);
+                rv = ALConvertInheritanceData.GetConvertedTile_Modded(tileID, Good, x, y);
+            if (rv == -1)
+                return tileID;
+            else if (rv == -2)
+                return 0;
+            return rv;
         }
 
         private static int GetTileOnStateEvil(int tileID, int x, int y)
         {
+            int rv = ALConvertInheritanceData.GetConvertedTile_Vanilla(tileID, WorldBiomeGeneration.WofKilledTimes <= 1 ? (!WorldGen.crimson ? 1 : 4) : (WorldBiomeManager.drunkEvilGen == 0 ? 1 : 4), x, y);
+            if (WorldBiomeManager.WorldEvil != "" && WorldBiomeGeneration.WofKilledTimes <= 1)
+                rv = ALConvertInheritanceData.GetConvertedTile_Modded(tileID, Find<AltBiome>(WorldBiomeManager.WorldEvil), x, y);
             if (WorldBiomeManager.drunkEvilGen > 0)
-                return ALConvertInheritanceData.GetConvertedTile_Modded(tileID, Evil, x, y);
-            return ALConvertInheritanceData.GetConvertedTile_Vanilla(tileID, WorldBiomeManager.drunkEvilGen == 0 ? 1 : 4, x, y);
+                rv = ALConvertInheritanceData.GetConvertedTile_Modded(tileID, Evil, x, y);
+            if (rv == -1)
+                return tileID;
+            else if (rv == -2)
+                return 0;
+            return rv;
         }
 
         private static int GetWallOnStateHallow(int wallID, int x, int y)
@@ -178,24 +195,12 @@ namespace AltLibrary.Common.Hooks
         {
             if (WorldBiomeManager.drunkEvilGen > 0)
                 return ALConvertInheritanceData.GetConvertedWall_Modded(wallID, Evil, x, y);
-            return ALConvertInheritanceData.GetConvertedWall_Vanilla(wallID, WorldBiomeManager.drunkEvilGen == 0 ? 1 : 4, x, y);
+            return ALConvertInheritanceData.GetConvertedWall_Vanilla(wallID, WorldBiomeManager.drunkEvilGen == 0 ? (!WorldGen.crimson ? 1 : 4) : 4, x, y);
         }
 
-        private static AltBiome Good
-        {
-            get
-            {
-                return AltLibrary.Biomes.Find(x => x.Type == WorldBiomeManager.drunkGoodGen);
-            }
-        }
+        private static AltBiome Good => AltLibrary.Biomes.Find(x => x.Type == WorldBiomeManager.drunkGoodGen);
 
-        private static AltBiome Evil
-        {
-            get
-            {
-                return AltLibrary.Biomes.Find(x => x.Type == WorldBiomeManager.drunkEvilGen);
-            }
-        }
+        private static AltBiome Evil => AltLibrary.Biomes.Find(x => x.Type == WorldBiomeManager.drunkEvilGen);
 
         private static void WorldGen_GERunner(ILContext il)
         {
@@ -250,18 +255,20 @@ namespace AltLibrary.Common.Hooks
                             }
                         }
                     }
-                    /*if (Main.drunkWorld && WorldBiomeGeneration.WofKilledTimes > 1)
+                    if (Main.drunkWorld && WorldBiomeGeneration.WofKilledTimes > 1)
                     {
-                        if (GetTileOnStateEvil(tile.TileType, m, l) != -1)
+                        int type = tile.TileType;
+                        int wall = tile.WallType;
+                        if (WorldGen.InWorld(m, l) && type != -1 && GetTileOnStateEvil(type, m, l) != -1 && type != GetTileOnStateEvil(type, m, l))
                         {
-                            tile.TileType = (ushort)GetTileOnStateEvil(tile.TileType, m, l);
+                            tile.TileType = (ushort)GetTileOnStateEvil(type, m, l);
                             WorldGen.SquareTileFrame(m, l, true);
                         }
-                        if (GetWallOnStateEvil(tile.WallType, m, l) != -1)
+                        if (WorldGen.InWorld(m, l) && wall != -1 && GetWallOnStateEvil(wall, m, l) != -1 && wall != GetWallOnStateEvil(wall, m, l))
                         {
-                            tile.WallType = (ushort)GetWallOnStateEvil(tile.WallType, m, l);
+                            tile.WallType = (ushort)GetWallOnStateEvil(wall, m, l);
                         }
-                    }*/
+                    }
                 }
             });
 
@@ -295,18 +302,20 @@ namespace AltLibrary.Common.Hooks
                         }
                     }
                 }
-                /*if (Main.drunkWorld && WorldBiomeGeneration.WofKilledTimes > 1)
+                if (Main.drunkWorld && WorldBiomeGeneration.WofKilledTimes > 1)
                 {
-                    if (GetTileOnStateHallow(tile.TileType, m, l) != -1)
+                    int type = tile.TileType;
+                    int wall = tile.WallType;
+                    if (WorldGen.InWorld(m, l) && type != -1 && GetTileOnStateHallow(type, m, l) != -1 && type != GetTileOnStateHallow(type, m, l))
                     {
-                        tile.TileType = (ushort)GetTileOnStateHallow(tile.TileType, m, l);
+                        type = (ushort)GetTileOnStateHallow(type, m, l);
                         WorldGen.SquareTileFrame(m, l, true);
                     }
-                    if (GetWallOnStateHallow(tile.WallType, m, l) != -1)
+                    if (WorldGen.InWorld(m, l) && wall != -1 && GetWallOnStateHallow(wall, m, l) != -1 && wall != GetWallOnStateHallow(wall, m, l))
                     {
-                        tile.WallType = (ushort)GetWallOnStateHallow(tile.WallType, m, l);
+                        wall = (ushort)GetWallOnStateHallow(wall, m, l);
                     }
-                }*/
+                }
             });
 
             void goodWall(int id)
@@ -345,12 +354,26 @@ namespace AltLibrary.Common.Hooks
             void evilTile(int id)
             {
                 ILCursor c = new(il);
-                while (c.TryGotoNext(i => i.MatchLdcI4(id) && i.Offset != 0))
+                if (id != TileID.FleshIce)
                 {
-                    c.Index++;
-                    c.Emit(OpCodes.Ldloc, 15);
-                    c.Emit(OpCodes.Ldloc, 16);
-                    c.EmitDelegate(GetTileOnStateEvil);
+                    while (c.TryGotoNext(i => i.MatchLdcI4(id) && i.Offset != 0))
+                    {
+                        c.Index++;
+                        c.Emit(OpCodes.Ldloc, 15);
+                        c.Emit(OpCodes.Ldloc, 16);
+                        c.EmitDelegate(GetTileOnStateEvil);
+                    }
+                }
+                else
+                {
+                    while (c.TryGotoNext(i => !i.MatchCall<WorldGen>("get_genRand"),
+                        i => i.MatchLdcI4(id) && i.Offset != 0))
+                    {
+                        c.Index += 2;
+                        c.Emit(OpCodes.Ldloc, 15);
+                        c.Emit(OpCodes.Ldloc, 16);
+                        c.EmitDelegate(GetTileOnStateEvil);
+                    }
                 }
             }
 

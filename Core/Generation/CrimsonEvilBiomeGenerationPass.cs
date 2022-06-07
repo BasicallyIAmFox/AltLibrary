@@ -1,4 +1,3 @@
-using AltLibrary.Common.Hooks;
 using Terraria;
 using Terraria.ID;
 
