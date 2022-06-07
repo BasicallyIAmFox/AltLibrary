@@ -1,6 +1,7 @@
 ﻿using AltLibrary.Common.AltBiomes;
 using AltLibrary.Common.AltOres;
 using AltLibrary.Common.Systems;
+using AltLibrary.Core;
 using AltLibrary.Core.Baking;
 using AltLibrary.Core.UIs;
 using Microsoft.Xna.Framework;
@@ -38,6 +39,7 @@ namespace AltLibrary.Common
         internal static List<ALUIOreListItem> _oreElements = new();
         internal static UIList _oreHmList;
         internal static List<ALUIOreListItem> _oreHmElements = new();
+        internal static List<ALOreDrawingStruct> QuenedDrawing;
         internal static int Copper;
         internal static int Iron;
         internal static int Silver;
@@ -57,6 +59,7 @@ namespace AltLibrary.Common
 
         public static void Init()
         {
+            QuenedDrawing = new();
             initializedLists = false;
             IL.Terraria.GameContent.UI.States.UIWorldCreation.MakeInfoMenu += ILMakeInfoMenu;
             On.Terraria.GameContent.UI.States.UIWorldCreation.AddWorldEvilOptions += OnAddWorldEvilOptions;
@@ -99,6 +102,7 @@ namespace AltLibrary.Common
             Adamantite = 0;
             seed = null;
             initializedLists = false;
+            QuenedDrawing = null;
         }
 
         #region Useful stuff
@@ -168,6 +172,13 @@ namespace AltLibrary.Common
             return hardmodeListing;
         }
 
+        internal static List<ALOreDrawingStruct> MakeQuenedDrawingList()
+        {
+            QuenedDrawing.Clear();
+            QuenedDrawing.AddRange(ALWorldCreationLists.prehmOreData.Quenes);
+            return QuenedDrawing;
+        }
+
         internal static List<AltBiome> MakeBiomeList()
         {
             List<AltBiome> list = new();
@@ -229,6 +240,7 @@ namespace AltLibrary.Common
                 initializedLists = true;
             }
             chosenOption = (CurrentAltOption)(-1);
+            MakeQuenedDrawingList();
 
             RandomizeValues();
 
@@ -289,7 +301,12 @@ namespace AltLibrary.Common
                 List<AltOre> prehmList = MakeOreList();
                 List<ALUIOreListItem> items = new();
                 prehmList.ForEach(x => items.Add(new(x, false)));
-                _oreList.AddRange(items);
+                _oreList._items.AddRange(items);
+                foreach (UIElement item in items)
+                {
+                    ((UIElement)ALReflection.UIList__innerList.GetValue(_oreList)).Append(item);
+                }
+                ((UIElement)ALReflection.UIList__innerList.GetValue(_oreList)).Recalculate();
                 _oreElements.AddRange(items);
             }
             #endregion
@@ -349,7 +366,12 @@ namespace AltLibrary.Common
                 List<AltOre> hardmodeListing = MakeHardmodeOreList();
                 List<ALUIOreListItem> items = new();
                 hardmodeListing.ForEach(x => items.Add(new(x, false)));
-                _oreHmList.AddRange(items);
+                _oreHmList._items.AddRange(items);
+                foreach (UIElement item in items)
+                {
+                    ((UIElement)ALReflection.UIList__innerList.GetValue(_oreHmList)).Append(item);
+                }
+                ((UIElement)ALReflection.UIList__innerList.GetValue(_oreHmList)).Recalculate();
                 _oreHmElements.AddRange(items);
             }
             #endregion
@@ -409,7 +431,12 @@ namespace AltLibrary.Common
                 List<AltBiome> list = MakeBiomeList();
                 List<ALUIBiomeListItem> items = new();
                 list.ForEach(x => items.Add(new(x, false)));
-                _biomeList.AddRange(items);
+                _biomeList._items.AddRange(items);
+                foreach (UIElement item in items)
+                {
+                    ((UIElement)ALReflection.UIList__innerList.GetValue(_biomeList)).Append(item);
+                }
+                ((UIElement)ALReflection.UIList__innerList.GetValue(_biomeList)).Recalculate();
                 _biomeElements.AddRange(items);
             }
             #endregion
@@ -672,255 +699,7 @@ namespace AltLibrary.Common
                 }
             }
 
-            List<ALOreDrawingStruct> quene = new()
-            {
-                #region Pre-HM Ores
-#region Copper
-                new("Terraria/Copper", false, (value) =>
-            {
-                return Copper switch
-                {
-                    >= 0 => ModContent.Request<Texture2D>(AltLibrary.Ores[Copper - 1].Texture),
-                    _ => value
-                };
-            }, () =>
-            {
-                return Copper switch
-                {
-                    -1 => new(0, 0, 30, 30),
-                    -2 => new(30, 0, 30, 30),
-                    _ => null,
-                };
-            }, () =>
-            {
-                return Copper switch
-                {
-                    -1 => Language.GetTextValue("Mods.AltLibrary.AltOreName.Copper"),
-                    -2 => Language.GetTextValue("Mods.AltLibrary.AltOreName.Tin"),
-                    _ => AltLibrary.Ores[Copper - 1].Name
-                };
-            }, (mod) =>
-            {
-                return Copper switch
-                {
-                    >= 0 => AltLibrary.Ores[Copper - 1].Mod.Name,
-                    _ => mod
-                };
-            }),
-                #endregion
-#region Iron
-                new("Terraria/Iron", false,
-                (value) =>
-                {
-                    return Iron switch
-                    {
-                        >= 0 => ModContent.Request<Texture2D>(AltLibrary.Ores[Iron - 1].Texture),
-                        _ => value
-                    };
-                }, () =>
-                {
-                    return Iron switch
-                    {
-                        -3 => new(60, 0, 30, 30),
-                        -4 => new(90, 0, 30, 30),
-                        _ => null,
-                    };
-                }, () =>
-                {
-                    return Iron switch
-                    {
-                        -3 => Language.GetTextValue("Mods.AltLibrary.AltOreName.Iron"),
-                        -4 => Language.GetTextValue("Mods.AltLibrary.AltOreName.Lead"),
-                        _ => AltLibrary.Ores[Iron - 1].Name
-                    };
-                }, (mod) =>
-                {
-                    return Iron switch
-                    {
-                        >= 0 => AltLibrary.Ores[Iron - 1].Mod.Name,
-                        _ => mod
-                    };
-                }),
-                #endregion
-#region Silver
-                new("Terraria/Silver", false,
-                (value) =>
-                {
-                    return Silver switch
-                    {
-                        >= 0 => ModContent.Request<Texture2D>(AltLibrary.Ores[Silver - 1].Texture),
-                        _ => value
-                    };
-                }, () =>
-                {
-                    return Silver switch
-                    {
-                        -5 => new(120, 0, 30, 30),
-                        -6 => new(150, 0, 30, 30),
-                        _ => null,
-                    };
-                }, () =>
-                {
-                    return Silver switch
-                    {
-                        -5 => Language.GetTextValue("Mods.AltLibrary.AltOreName.Silver"),
-                        -6 => Language.GetTextValue("Mods.AltLibrary.AltOreName.Tungsten"),
-                        _ => AltLibrary.Ores[Silver - 1].Name
-                    };
-                }, (mod) =>
-                {
-                    return Silver switch
-                    {
-                        >= 0 => AltLibrary.Ores[Silver - 1].Mod.Name,
-                        _ => mod
-                    };
-                }),
-                #endregion
-#region Gold
-                new("Terraria/Gold", false,
-                (value) =>
-                {
-                    return Gold switch
-                    {
-                        >= 0 => ModContent.Request<Texture2D>(AltLibrary.Ores[Gold - 1].Texture),
-                        _ => value
-                    };
-                }, () =>
-                {
-                    return Gold switch
-                    {
-                        -7 => new(180, 0, 30, 30),
-                        -8 => new(210, 0, 30, 30),
-                        _ => null,
-                    };
-                }, () =>
-                {
-                    return Gold switch
-                    {
-                        -7 => Language.GetTextValue("Mods.AltLibrary.AltOreName.Gold"),
-                        -8 => Language.GetTextValue("Mods.AltLibrary.AltOreName.Platinum"),
-                        _ => AltLibrary.Ores[Gold - 1].Name
-                    };
-                }, (mod) =>
-                {
-                    return Gold switch
-                    {
-                        >= 0 => AltLibrary.Ores[Gold - 1].Mod.Name,
-                        _ => mod
-                    };
-                }),
-                #endregion
-                #endregion
-                #region HM Ores
-#region Cobalt
-                new("Terraria/Cobalt", true,
-                (value) =>
-                {
-                    return Cobalt switch
-                    {
-                        >= 0 => ModContent.Request<Texture2D>(AltLibrary.Ores[Cobalt - 1].Texture),
-                        _ => value
-                    };
-                }, () =>
-                {
-                    return Cobalt switch
-                    {
-                        -9 => new(0, 30, 30, 30),
-                        -10 => new(30, 30, 30, 30),
-                        _ => null,
-                    };
-                }, () =>
-                {
-                    return Cobalt switch
-                    {
-                        -9 => Language.GetTextValue("Mods.AltLibrary.AltOreName.Cobalt"),
-                        -10 => Language.GetTextValue("Mods.AltLibrary.AltOreName.Palladium"),
-                        _ => AltLibrary.Ores[Cobalt - 1].Name
-                    };
-                }, (mod) =>
-                {
-                    return Cobalt switch
-                    {
-                        >= 0 => AltLibrary.Ores[Cobalt - 1].Mod.Name,
-                        _ => mod
-                    };
-                }),
-                #endregion
-#region Mythril
-                new("Terraria/Mythril", true,
-                (value) =>
-                {
-                    return Mythril switch
-                    {
-                        >= 0 => ModContent.Request<Texture2D>(AltLibrary.Ores[Mythril - 1].Texture),
-                        _ => value
-                    };
-                }, () =>
-                {
-                    return Mythril switch
-                    {
-                        -11 => new(60, 30, 30, 30),
-                        -12 => new(90, 30, 30, 30),
-                        _ => null,
-                    };
-                }, () =>
-                {
-                    return Mythril switch
-                    {
-                        -11 => Language.GetTextValue("Mods.AltLibrary.AltOreName.Mythril"),
-                        -12 => Language.GetTextValue("Mods.AltLibrary.AltOreName.Orichalcum"),
-                        _ => AltLibrary.Ores[Mythril - 1].Name
-                    };
-                }, (mod) =>
-                {
-                    return Mythril switch
-                    {
-                        >= 0 => AltLibrary.Ores[Mythril - 1].Mod.Name,
-                        _ => mod
-                    };
-                }),
-                #endregion
-#region Adamantite
-                new("Terraria/Adamantite", true,
-                (value) =>
-                {
-                    return Adamantite switch
-                    {
-                        >= 0 => ModContent.Request<Texture2D>(AltLibrary.Ores[Adamantite - 1].Texture),
-                        _ => value
-                    };
-                }, () =>
-                {
-                    return Adamantite switch
-                    {
-                        -13 => new(120, 30, 30, 30),
-                        -14 => new(150, 30, 30, 30),
-                        _ => null,
-                    };
-                }, () =>
-                {
-                    return Adamantite switch
-                    {
-                        -13 => Language.GetTextValue("Mods.AltLibrary.AltOreName.Adamantite"),
-                        -14 => Language.GetTextValue("Mods.AltLibrary.AltOreName.Titanium"),
-                        _ => AltLibrary.Ores[Adamantite - 1].Name
-                    };
-                }, (mod) =>
-                {
-                    return Adamantite switch
-                    {
-                        >= 0 => AltLibrary.Ores[Adamantite - 1].Mod.Name,
-                        _ => mod
-                    };
-                })
-#endregion
-                #endregion
-            };
-            foreach (AltOre ore in AltLibrary.Ores)
-            {
-                ore.AddOreOnScreenIcon(quene);
-            }
-            foreach (ALOreDrawingStruct ore in quene)
+            foreach (ALOreDrawingStruct ore in QuenedDrawing)
             {
                 DrawOreIcon(ore.cond, ore.func, ore.rect, ore.onHoverName, ore.onHoverMod);
             }

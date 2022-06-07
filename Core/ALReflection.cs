@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Terraria;
+using Terraria.GameContent.UI.Elements;
 
 namespace AltLibrary.Core
 {
@@ -8,6 +9,7 @@ namespace AltLibrary.Core
     {
         private static FieldInfo WorldGen_grassSpread = null;
         internal static WorldGenScanTileColumnAndRemoveClumps WorldGen_ScanTileColumnAndRemoveClumps = null;
+        internal static FieldInfo UIList__innerList = null;
 
         internal static int WorldGen_GrassSpread
         {
@@ -20,12 +22,14 @@ namespace AltLibrary.Core
         {
             WorldGen_grassSpread = typeof(WorldGen).GetField("grassSpread", BindingFlags.NonPublic | BindingFlags.Static);
             WorldGen_ScanTileColumnAndRemoveClumps = typeof(WorldGen).GetMethod("ScanTileColumnAndRemoveClumps", BindingFlags.NonPublic | BindingFlags.Static, new Type[] { typeof(int) }).CreateDelegate<WorldGenScanTileColumnAndRemoveClumps>();
+            UIList__innerList = typeof(UIList).GetField("_innerList", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         }
 
         internal static void Unload()
         {
             WorldGen_grassSpread = null;
             WorldGen_ScanTileColumnAndRemoveClumps = null;
+            UIList__innerList = null;
         }
     }
 }

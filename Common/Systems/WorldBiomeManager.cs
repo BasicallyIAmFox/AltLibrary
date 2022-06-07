@@ -116,18 +116,21 @@ namespace AltLibrary.Common.Systems
             foreach (AltBiome biome in AltLibrary.Biomes)
             {
                 modTiles[biome.Type - 1] = new List<int>();
-                if (biome.BiomeGrass.HasValue) modTiles[biome.Type - 1].Add(biome.BiomeGrass.Value);
-                if (biome.BiomeStone.HasValue) modTiles[biome.Type - 1].Add(biome.BiomeStone.Value);
-                if (biome.BiomeSand.HasValue) modTiles[biome.Type - 1].Add(biome.BiomeSand.Value);
-                if (biome.BiomeIce.HasValue) modTiles[biome.Type - 1].Add(biome.BiomeIce.Value);
-                if (biome.BiomeSandstone.HasValue) modTiles[biome.Type - 1].Add(biome.BiomeSandstone.Value);
-                if (biome.BiomeHardenedSand.HasValue) modTiles[biome.Type - 1].Add(biome.BiomeHardenedSand.Value);
-                if (biome.SpecialConversion.Count > 0)
+                if (biome.BiomeType == BiomeType.Evil || biome.BiomeType == BiomeType.Hallow)
                 {
-                    foreach (KeyValuePair<int, int> pair in biome.SpecialConversion)
+                    if (biome.BiomeGrass.HasValue) modTiles[biome.Type - 1].Add(biome.BiomeGrass.Value);
+                    if (biome.BiomeStone.HasValue) modTiles[biome.Type - 1].Add(biome.BiomeStone.Value);
+                    if (biome.BiomeSand.HasValue) modTiles[biome.Type - 1].Add(biome.BiomeSand.Value);
+                    if (biome.BiomeIce.HasValue) modTiles[biome.Type - 1].Add(biome.BiomeIce.Value);
+                    if (biome.BiomeSandstone.HasValue) modTiles[biome.Type - 1].Add(biome.BiomeSandstone.Value);
+                    if (biome.BiomeHardenedSand.HasValue) modTiles[biome.Type - 1].Add(biome.BiomeHardenedSand.Value);
+                    if (biome.SpecialConversion.Count > 0)
                     {
-                        extraPureSolid.Add(pair.Key);
-                        modTiles[biome.Type - 1].Add(pair.Value);
+                        foreach (KeyValuePair<int, int> pair in biome.SpecialConversion)
+                        {
+                            extraPureSolid.Add(pair.Key);
+                            modTiles[biome.Type - 1].Add(pair.Value);
+                        }
                     }
                 }
             }
