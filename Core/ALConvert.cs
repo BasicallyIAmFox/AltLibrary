@@ -132,19 +132,6 @@ namespace AltLibrary.Core
         }
 
         /// <summary>
-        /// Makes throwing water converting effect.
-        /// </summary>
-        /// <typeparam name="TProj"></typeparam>
-        /// <typeparam name="TBiome"></typeparam>
-        public static void SimulateThrownWater<TProj, TBiome>() where TBiome : AltBiome where TProj : Projectile
-        {
-            Projectile projectile = ContentInstance<TProj>.Instance;
-            int i = (int)(projectile.position.X + projectile.width / 2) / 16;
-            int j = (int)(projectile.position.Y + projectile.height / 2) / 16;
-            Convert<TBiome>(i, j, 4);
-        }
-
-        /// <summary>
         /// Makes solution converting effect.
         /// </summary>
         /// <param name="projectile"></param>
