@@ -2,6 +2,7 @@ using AltLibrary.Common.AltBiomes;
 using AltLibrary.Common.AltOres;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using Terraria;
 using Terraria.ID;
@@ -31,6 +32,10 @@ namespace AltLibrary.Common.Systems
         public static int Adamantite { get; internal set; } = 0;
         internal static int hmOreIndex = 0;
 
+        public static bool IsCorruption => WorldEvil == "" && !WorldGen.crimson;
+        public static bool IsCrimson => WorldEvil == "" && WorldGen.crimson;
+        public static bool IsAnyModded => WorldEvil != "" && !WorldGen.crimson;
+
         //do not need to sync, world seed should be constant between players
         internal static AltOre[] drunkCobaltCycle;
         internal static AltOre[] drunkMythrilCycle;
@@ -38,32 +43,18 @@ namespace AltLibrary.Common.Systems
 
         internal static PieData[] AltBiomeData;
         internal static float[] AltBiomePercentages;
-        public static float PurityBiomePercentage
+        public static float PurityBiomePercentage => AltBiomePercentages == null ? 0f : AltBiomePercentages[0];
+        public static float CorruptionBiomePercentage => AltBiomePercentages == null ? 0f : AltBiomePercentages[1];
+        public static float CrimsonBiomePercentage => AltBiomePercentages == null ? 0f : AltBiomePercentages[2];
+        public static float HallowBiomePercentage => AltBiomePercentages == null ? 0f : AltBiomePercentages[3];
+        public static float[] GetBiomePercentages
         {
             get
             {
-                return AltBiomePercentages == null ? 0f : AltBiomePercentages[0];
-            }
-        }
-        public static float CorruptionBiomePercentage
-        {
-            get
-            {
-                return AltBiomePercentages == null ? 0f : AltBiomePercentages[1];
-            }
-        }
-        public static float CrimsonBiomePercentage
-        {
-            get
-            {
-                return AltBiomePercentages == null ? 0f : AltBiomePercentages[2];
-            }
-        }
-        public static float HallowBiomePercentage
-        {
-            get
-            {
-                return AltBiomePercentages == null ? 0f : AltBiomePercentages[3];
+                List<float> list = AltBiomePercentages?.ToList();
+                list?.RemoveRange(0, 4);
+                float[] array = list?.ToArray();
+                return list?.ToArray();
             }
         }
 

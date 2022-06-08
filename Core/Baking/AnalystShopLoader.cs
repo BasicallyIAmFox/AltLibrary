@@ -74,13 +74,29 @@ namespace AltLibrary.Core.Baking
         {
             this.itemid = itemid;
             float per = percentage;
-            bool positive = true;
+            bool positive = percentage < 0f;
             availability = () =>
             {
                 bool bl = WorldBiomeManager.AltBiomePercentages[biome.Type + 3] >= percentage;
                 if (!positive)
                 {
-                    bl = WorldBiomeManager.AltBiomePercentages[biome.Type + 3] <= percentage;
+                    bl = WorldBiomeManager.AltBiomePercentages[biome.Type + 3] <= -percentage;
+                }
+                return bl;
+            };
+        }
+
+        public AnalystItem(AltBiome biome, int itemid, float percentage)
+        {
+            this.itemid = itemid;
+            float per = percentage;
+            bool positive = percentage < 0f;
+            availability = () =>
+            {
+                bool bl = WorldBiomeManager.AltBiomePercentages[biome.Type + 3] >= percentage;
+                if (!positive)
+                {
+                    bl = WorldBiomeManager.AltBiomePercentages[biome.Type + 3] <= -percentage;
                 }
                 return bl;
             };
