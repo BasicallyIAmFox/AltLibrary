@@ -6,9 +6,13 @@ using AltLibrary.Common.Systems;
 using AltLibrary.Core;
 using AltLibrary.Core.Baking;
 using AltLibrary.Core.States;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -78,6 +82,13 @@ namespace AltLibrary
                 pieChartState = new ALPieChartState();
                 userInterface = new UserInterface();
                 userInterface.SetState(pieChartState);
+            }
+
+            if (Main.netMode != NetmodeID.Server)
+            {
+                Ref<Effect> screenRef = new(Assets.Request<Effect>("Assets/Effects/Misc/SinfulDye", AssetRequestMode.ImmediateLoad).Value);
+                GameShaders.Misc["AltLibrary:StarTracker"] = new MiscShaderData(screenRef, "DyePass")
+                    .UseColor(Color.LightGoldenrodYellow).UseSecondaryColor(Color.HotPink);
             }
         }
 
