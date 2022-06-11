@@ -36,7 +36,7 @@ namespace AltLibrary.Common
         {
             if (npc.type == NPCID.KingSlime && starTracker)
             {
-                StarTracker_PostDraw(spriteBatch);
+                StarTracker_PostDraw(npc, spriteBatch, screenPos, drawColor);
             }
         }
 

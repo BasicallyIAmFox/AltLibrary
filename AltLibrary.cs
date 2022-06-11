@@ -95,6 +95,7 @@ namespace AltLibrary
         public override void PostSetupContent()
         {
             ALTextureAssets.PostContentLoad();
+            MimicSummon.SetupContent();
             ALConvertInheritanceData.FillData();
         }
 

@@ -137,13 +137,15 @@ namespace AltLibrary.Common
                             npc.ai[3] = 0f;
                             npc.localAI[3] = 0f;
                             starTrackerAI[0] = Main.rand.Next(219, 224);
+                            if ((expert || ftw) && Main.rand.NextBool(4))
+                                starTrackerAI[0] = DustID.FireworkFountain_Pink;
                         }
                     }
                     break;
                 case 1f: // teleports above player with some firework on space where tp
                     {
                         npc.ai[3] += 0.33f;
-                        if (npc.ai[3] >= 30f)
+                        if (npc.ai[3] >= 20f)
                         {
                             Dust.NewDust(new(npc.ai[1], npc.ai[2]), 8, 8, (int)starTrackerAI[0]);
                         }
@@ -156,13 +158,13 @@ namespace AltLibrary.Common
                             switch (starTrackerAI[0])
                             {
                                 case DustID.FireworkFountain_Green:
-                                    localExtra = -5f;
+                                    localExtra = 5f;
                                     xOffset = 50f;
                                     yOffset -= 75f;
                                     break;
                                 case DustID.FireworkFountain_Blue:
-                                    localExtra = 5f;
-                                    xOffset = 50f;
+                                    localExtra = -5f;
+                                    xOffset = -50f;
                                     yOffset -= 75f;
                                     break;
                                 case DustID.FireworkFountain_Yellow:
@@ -417,11 +419,25 @@ namespace AltLibrary.Common
             shader.ALUseImage1("Assets/StarTrackerExtra");
             shader.Apply();
 
-            Vector2 slimePos = new(npc.Center.X, npc.Center.Y + 6f + npc.gfxOffY);
-            Main.EntitySpriteDraw(TextureAssets.Npc[npc.type].Value, slimePos - screenPos, npc.frame, npc.GetNPCColorTintedByBuffs(npc.color), npc.rotation, npc.frame.Size() / 2f, npc.scale, spriteEffects, 0);
+            Vector2 slimePos = new(npc.Center.X, npc.Center.Y + 8f + npc.gfxOffY);
+            Main.EntitySpriteDraw(TextureAssets.Npc[npc.type].Value, slimePos - screenPos, npc.frame, npc.GetNPCColorTintedByBuffs(drawColor), npc.rotation, npc.frame.Size() / 2f, npc.scale, spriteEffects, 0);
+
+            npc.alpha = 0;
+            return true;
+        }
+
+        private static void StarTracker_PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            npc.alpha = 255;
+
+            SpriteEffects spriteEffects = 0;
+            if (npc.spriteDirection == 1)
+            {
+                spriteEffects = SpriteEffects.FlipHorizontally;
+            }
 
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.Transform);
 
             Texture2D crown = TextureAssets.Extra[39].Value;
             Vector2 center = npc.Center;
@@ -447,20 +463,8 @@ namespace AltLibrary.Common
                     yOffset = 0f;
                     break;
             }
-            center.Y -= npc.gfxOffY - (70f - yOffset) * npc.scale;
-            Main.EntitySpriteDraw(crown, center - screenPos, null, npc.GetNPCColorTintedByBuffs(npc.color), 0f, crown.Size() / 2f, 10f, spriteEffects, 0);
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
-
-            shader.Apply();
-            return false;
-        }
-
-        private static void StarTracker_PostDraw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+            center.Y += npc.gfxOffY - (70f - yOffset) * npc.scale;
+            Main.EntitySpriteDraw(crown, center - screenPos, null, npc.GetNPCColorTintedByBuffs(drawColor), 0f, crown.Size() / 2f, 1f, spriteEffects, 0);
         }
     }
 }
