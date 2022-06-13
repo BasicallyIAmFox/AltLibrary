@@ -83,13 +83,6 @@ namespace AltLibrary
                 userInterface = new UserInterface();
                 userInterface.SetState(pieChartState);
             }
-
-            if (Main.netMode != NetmodeID.Server)
-            {
-                Ref<Effect> screenRef = new(Assets.Request<Effect>("Assets/Effects/Misc/SinfulDye", AssetRequestMode.ImmediateLoad).Value);
-                GameShaders.Misc["AltLibrary:StarTracker"] = new MiscShaderData(screenRef, "DyePass")
-                    .UseColor(Color.LightGoldenrodYellow).UseSecondaryColor(Color.HotPink);
-            }
         }
 
         public override void PostSetupContent()
