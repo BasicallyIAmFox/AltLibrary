@@ -8,6 +8,8 @@ namespace AltLibrary.Content.Tiles
 {
     internal class HallowBunnyCage : ModTile
     {
+        public override bool IsLoadingEnabled(Mod mod) => AltLibraryServerConfig.Config.SecretFeatures;
+        public override void Load() => AltLibrary.TilesToNowShowUp.Add(Type);
         public override string Texture => "AltLibrary/Assets/HallowBunnyCage";
 
         public override void SetStaticDefaults()

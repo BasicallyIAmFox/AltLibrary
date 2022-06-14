@@ -39,7 +39,7 @@ namespace AltLibrary.Common.Hooks
                 {
                     List<int> possibles = new() { 0 };
                     AltLibrary.Biomes.FindAll(x => x.BiomeType == BiomeType.Hallow).ForEach(x => possibles.Add(x.Type));
-                    if (AltLibraryConfig.Config.HardmodeGenRandom)
+                    if (AltLibraryServerConfig.Config.HardmodeGenRandom)
                         AltLibrary.Biomes.FindAll(x => x.BiomeType == BiomeType.Jungle).ForEach(x => possibles.Add(x.Type));
                     WorldBiomeManager.drunkGoodGen = Main.rand.Next(possibles);
                     possibles = new()
@@ -48,7 +48,7 @@ namespace AltLibrary.Common.Hooks
                         -1
                     };
                     AltLibrary.Biomes.FindAll(x => x.BiomeType == BiomeType.Evil).ForEach(x => possibles.Add(x.Type));
-                    if (AltLibraryConfig.Config.HardmodeGenRandom)
+                    if (AltLibraryServerConfig.Config.HardmodeGenRandom)
                         AltLibrary.Biomes.FindAll(x => x.BiomeType == BiomeType.Hell).ForEach(x => possibles.Add(x.Type));
                     WorldBiomeManager.drunkEvilGen = Main.rand.Next(possibles);
                 }

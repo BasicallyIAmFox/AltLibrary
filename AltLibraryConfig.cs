@@ -43,30 +43,16 @@ namespace AltLibrary
         [DefaultValue(true)]
         public bool OreIconsVisibleOutsideOreUI;
 
-        [Header("$Mods.AltLibrary.Config.Randomization")]
-
-        [Label("$Mods.AltLibrary.Config.SmashingAltarsSpreadsRandom.Label")]
-        [Tooltip("$Mods.AltLibrary.Config.SmashingAltarsSpreadsRandom.Tooltip")]
-        [DefaultValue(false)]
-        public bool SmashingAltarsSpreadsRandom;
-        [Label("$Mods.AltLibrary.Config.HardmodeGenRandom.Label")]
-        [Tooltip("$Mods.AltLibrary.Config.HardmodeGenRandom.Tooltip")]
-        [DefaultValue(false)]
-        public bool HardmodeGenRandom;
-
 #pragma warning restore CS0649
 
-        public override void OnLoaded()
-        {
-            Config = this;
-        }
+        public override void OnLoaded() => Config = this;
 
         [DefaultListValue(false)]
         [JsonProperty]
         private Dictionary<string, WorldDataValues> worldData = new();
 
-        public Dictionary<string, WorldDataValues> GetWorldData() { return worldData; }
-        public void SetWorldData(Dictionary<string, WorldDataValues> newDict) { worldData = newDict; }
+        public Dictionary<string, WorldDataValues> GetWorldData() => worldData;
+        public void SetWorldData(Dictionary<string, WorldDataValues> newDict) => worldData = newDict;
         public static void Save(ModConfig config)
         {
             Directory.CreateDirectory(ConfigManager.ModConfigPath);

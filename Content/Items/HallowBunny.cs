@@ -9,6 +9,8 @@ namespace AltLibrary.Content.Items
 {
     internal class HallowBunny : ModItem
     {
+        public override bool IsLoadingEnabled(Mod mod) => AltLibraryServerConfig.Config.SecretFeatures;
+        public override void Load() => AltLibrary.ItemsToNowShowUp.Add(Type);
         public override string Texture => "AltLibrary/Assets/HallowBunnyItem";
 
         public override void SetStaticDefaults()
@@ -39,6 +41,7 @@ namespace AltLibrary.Content.Items
 
         internal class CustomRarity : ModRarity
         {
+            public override bool IsLoadingEnabled(Mod mod) => AltLibraryServerConfig.Config.SecretFeatures;
             public override Color RarityColor
             {
                 get

@@ -11,6 +11,8 @@ namespace AltLibrary.Content.Items
 {
     internal class HallowBunnyCage : ModItem
     {
+        public override bool IsLoadingEnabled(Mod mod) => AltLibraryServerConfig.Config.SecretFeatures;
+        public override void Load() => AltLibrary.ItemsToNowShowUp.Add(Type);
         public override string Texture => "AltLibrary/Assets/HallowBunnyCageItem";
 
         public override void SetStaticDefaults()

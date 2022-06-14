@@ -107,7 +107,7 @@ namespace AltLibrary.Common.Hooks
             c.Index++;
             c.EmitDelegate<Func<int, int>>((orig) =>
             {
-                if (!AltLibraryConfig.Config.SmashingAltarsSpreadsRandom)
+                if (!AltLibraryServerConfig.Config.SmashingAltarsSpreadsRandom)
                 {
                     if (WorldBiomeManager.WorldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeStone.HasValue)
                     {
@@ -138,7 +138,7 @@ namespace AltLibrary.Common.Hooks
             c.Index++;
             c.EmitDelegate<Func<int, int>>((orig) =>
             {
-                if (!AltLibraryConfig.Config.SmashingAltarsSpreadsRandom)
+                if (!AltLibraryServerConfig.Config.SmashingAltarsSpreadsRandom)
                 {
                     if (WorldBiomeManager.WorldEvil != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeStone.HasValue)
                     {
@@ -169,7 +169,7 @@ namespace AltLibrary.Common.Hooks
             c.Index++;
             c.EmitDelegate<Func<int, int>>((orig) =>
             {
-                if (!AltLibraryConfig.Config.SmashingAltarsSpreadsRandom)
+                if (!AltLibraryServerConfig.Config.SmashingAltarsSpreadsRandom)
                 {
                     if (WorldBiomeManager.WorldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeStone.HasValue)
                     {

@@ -17,38 +17,38 @@ namespace AltLibrary.Common.Hooks
     [Autoload(Side = ModSide.Client)]
     internal class AnimatedModIcon
     {
-        private static MethodInfo Limits = null;
+        private static MethodInfo OnInit = null;
 
-        private static event ILContext.Manipulator ModifyLimits
+        private static event ILContext.Manipulator ModifyOnInit
         {
             add
             {
-                HookEndpointManager.Modify(Limits, value);
+                HookEndpointManager.Modify(OnInit, value);
             }
             remove
             {
-                HookEndpointManager.Unmodify(Limits, value);
+                HookEndpointManager.Unmodify(OnInit, value);
             }
         }
 
         internal static void Init()
         {
             var UIMods = typeof(Main).Assembly.GetType("Terraria.ModLoader.UI.UIModItem");
-            Limits = UIMods.GetMethod("OnInitialize", BindingFlags.Public | BindingFlags.Instance);
-            ModifyLimits += AnimatedModIcon_ModifyLimits;
+            OnInit = UIMods.GetMethod("OnInitialize", BindingFlags.Public | BindingFlags.Instance);
+            ModifyOnInit += AnimatedModIcon_ModifyOnInit;
             NoSecretItems.Load();
         }
 
         internal static void Unload()
         {
             var UIMods = typeof(Main).Assembly.GetType("Terraria.ModLoader.UI.UIModItem");
-            Limits = UIMods.GetMethod("OnInitialize", BindingFlags.Public | BindingFlags.Instance);
-            ModifyLimits -= AnimatedModIcon_ModifyLimits;
-            Limits = null;
+            OnInit = UIMods.GetMethod("OnInitialize", BindingFlags.Public | BindingFlags.Instance);
+            ModifyOnInit -= AnimatedModIcon_ModifyOnInit;
+            OnInit = null;
             NoSecretItems.Unload();
         }
 
-        private static void AnimatedModIcon_ModifyLimits(ILContext il)
+        private static void AnimatedModIcon_ModifyOnInit(ILContext il)
         {
             ILCursor c = new(il);
             FieldReference _mod = null;
@@ -146,7 +146,7 @@ namespace AltLibrary.Common.Hooks
             {
                 if (mod.Name == AltLibrary.Instance.Name)
                 {
-                    return itemCount - 2;
+                    return itemCount - AltLibrary.ItemsToNowShowUp.Count;
                 }
                 return itemCount;
             });
@@ -168,7 +168,7 @@ namespace AltLibrary.Common.Hooks
             {
                 if (mod.Name == AltLibrary.Instance.Name)
                 {
-                    return npcCount - 1;
+                    return npcCount - AltLibrary.NPCsToNowShowUp.Count;
                 }
                 return npcCount;
             });
@@ -190,7 +190,7 @@ namespace AltLibrary.Common.Hooks
             {
                 if (mod.Name == AltLibrary.Instance.Name)
                 {
-                    return tileCount - 1;
+                    return tileCount - AltLibrary.TilesToNowShowUp.Count;
                 }
                 return tileCount;
             });
@@ -208,7 +208,7 @@ namespace AltLibrary.Common.Hooks
 
             e.SetImage(ALTextureAssets.AnimatedModIcon[AltLibrary.ModIconVariation], new Rectangle(additionX, 0, 80, 80));
 
-            if (AltLibrary.TimeHoveringOnIcon >= time + 1 || AltLibrary.HallowBunnyUnlocked)
+            if (AltLibraryServerConfig.Config.SecretFeatures && (AltLibrary.TimeHoveringOnIcon >= time + 1 || AltLibrary.HallowBunnyUnlocked))
             {
                 e.SetFrame(new Rectangle(80 + additionX, 0, 80, 80));
                 AltLibrary.HallowBunnyUnlocked = true;
@@ -226,15 +226,18 @@ namespace AltLibrary.Common.Hooks
                 {
                     e.SetFrame(new Rectangle(additionX, 160, 80, 80));
                 }
-                if (++AltLibrary.TimeHoveringOnIcon == time)
+                if (AltLibraryServerConfig.Config.SecretFeatures)
                 {
-                    SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen);
-                    e.SetFrame(new Rectangle(80 + additionX, 0, 80, 80));
-                    AltLibrary.TimeHoveringOnIcon = time + 1;
-                }
-                if (AltLibrary.TimeHoveringOnIcon >= time || AltLibrary.HallowBunnyUnlocked)
-                {
-                    AltLibrary.HallowBunnyUnlocked = true;
+                    if (++AltLibrary.TimeHoveringOnIcon == time)
+                    {
+                        SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen);
+                        e.SetFrame(new Rectangle(80 + additionX, 0, 80, 80));
+                        AltLibrary.TimeHoveringOnIcon = time + 1;
+                    }
+                    if (AltLibrary.TimeHoveringOnIcon >= time || AltLibrary.HallowBunnyUnlocked)
+                    {
+                        AltLibrary.HallowBunnyUnlocked = true;
+                    }
                 }
                 return;
             }

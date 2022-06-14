@@ -199,8 +199,8 @@ namespace AltLibrary.Common
             list.Add(new VanillaBiome("CorruptBiome", BiomeType.Evil, -333, Color.MediumPurple, false));
             list.Add(new VanillaBiome("CrimsonBiome", BiomeType.Evil, -666, Color.IndianRed, true));
             list.AddRange(AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Evil && x.Selectable));
-            bool bl = AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist == true && AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow && x.Selectable).Any();
-            if (AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist == false)
+            bool bl = AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist && AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow && x.Selectable).Any();
+            if (!AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist)
             {
                 bl = true;
             }
@@ -209,8 +209,8 @@ namespace AltLibrary.Common
                 list.Add(new VanillaBiome("HallowBiome", BiomeType.Hallow, -3, Color.HotPink));
             }
             list.AddRange(AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow && x.Selectable));
-            bl = AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist == true && AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Jungle && x.Selectable).Any();
-            if (AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist == false)
+            bl = AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist && AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Jungle && x.Selectable).Any();
+            if (!AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist)
             {
                 bl = true;
             }
@@ -219,8 +219,8 @@ namespace AltLibrary.Common
                 list.Add(new VanillaBiome("JungleBiome", BiomeType.Jungle, -4, Color.SpringGreen));
             }
             list.AddRange(AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Jungle && x.Selectable));
-            bl = AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist == true && AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hell && x.Selectable).Any();
-            if (AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist == false)
+            bl = AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist && AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hell && x.Selectable).Any();
+            if (!AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist)
             {
                 bl = true;
             }

@@ -34,7 +34,7 @@ namespace AltLibrary.Common.Systems
 
         public static bool IsCorruption => WorldEvil == "" && !WorldGen.crimson;
         public static bool IsCrimson => WorldEvil == "" && WorldGen.crimson;
-        public static bool IsAnyModded => WorldEvil != "" && !WorldGen.crimson;
+        public static bool IsAnyModdedEvil => WorldEvil != "" && !WorldGen.crimson;
 
         //do not need to sync, world seed should be constant between players
         internal static AltOre[] drunkCobaltCycle;
@@ -53,7 +53,6 @@ namespace AltLibrary.Common.Systems
             {
                 List<float> list = AltBiomePercentages?.ToList();
                 list?.RemoveRange(0, 4);
-                float[] array = list?.ToArray();
                 return list?.ToArray();
             }
         }

@@ -1,20 +1,11 @@
-﻿using AltLibrary.Content.Items;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Mono.Cecil.Cil;
+﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour.HookGen;
-using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.GameContent.Events;
-using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Hooks
@@ -23,14 +14,14 @@ namespace AltLibrary.Common.Hooks
     {
         internal static void Load()
         {
-            Visuals.Load();
+            //Visuals.Load();
             HerosDetour.Load();
             CheatSheetChanges.Load();
         }
 
         internal static void Unload()
         {
-            Visuals.Unload();
+            //Visuals.Unload();
             HerosDetour.Unload();
             CheatSheetChanges.Unload();
         }
@@ -38,7 +29,7 @@ namespace AltLibrary.Common.Hooks
         [Autoload(Side = ModSide.Client)]
         internal static class Visuals
         {
-            internal static void Load()
+            /*internal static void Load()
             {
                 IL.Terraria.Main.DrawSunAndMoon += ReplaceAllSunAndMoons;
                 On.Terraria.Main.DrawSunAndMoon += Main_DrawSunAndMoon1;
@@ -302,6 +293,7 @@ namespace AltLibrary.Common.Hooks
                     c.EmitDelegate<Func<Asset<Texture2D>, Asset<Texture2D>>>((value) => AltLibrary.MoonSunViceVersa ? ALTextureAssets.MoonSun[3] : value);
                 }
             }
+            */
         }
 
         [JITWhenModsEnabled("HEROsMod")]
@@ -342,7 +334,7 @@ namespace AltLibrary.Common.Hooks
             private static Item[] HerosDetour_GetItems(orig_GetItems orig, object self)
             {
                 List<Item> items = orig(self).ToList();
-                items.RemoveAll(x => x.type == ModContent.ItemType<HallowBunny>() || x.type == ModContent.ItemType<HallowBunnyCage>());
+                items.RemoveAll(x => AltLibrary.ItemsToNowShowUp.Contains(x.type));
                 return items.ToArray();
             }
         }
@@ -372,7 +364,7 @@ namespace AltLibrary.Common.Hooks
                 if (!ModLoader.TryGetMod("CheatSheet", out mod))
                     return;
 
-                var p = mod.GetType().Assembly.GetType("CheatSheet.Menus.ItemView");
+                Type p = mod.GetType().Assembly.GetType("CheatSheet.Menus.ItemView");
                 if (p != null)
                 {
                     ItemViewSet = p.GetMethod("set_selectedCategory", BindingFlags.Public | BindingFlags.Instance);
@@ -458,14 +450,8 @@ namespace AltLibrary.Common.Hooks
                 c.Index += 2;
                 c.Emit(OpCodes.Ldloc, 2);
                 c.Emit(OpCodes.Ldfld, mod.GetType().Assembly.GetType("CheatSheet.Menus.Slot").GetField("item"));
-                c.Emit(OpCodes.Ldfld, typeof(Item).GetField(nameof(Item.type)));
-                c.EmitDelegate(() => ModContent.ItemType<HallowBunny>());
-                c.Emit(OpCodes.Beq_S, definition);
-                c.Emit(OpCodes.Ldloc, 2);
-                c.Emit(OpCodes.Ldfld, mod.GetType().Assembly.GetType("CheatSheet.Menus.Slot").GetField("item"));
-                c.Emit(OpCodes.Ldfld, typeof(Item).GetField(nameof(Item.type)));
-                c.EmitDelegate(() => ModContent.ItemType<HallowBunnyCage>());
-                c.Emit(OpCodes.Beq_S, definition);
+                c.EmitDelegate<Func<Item, bool>>((item) => AltLibrary.ItemsToNowShowUp.Contains(item.type));
+                c.Emit(OpCodes.Brtrue_S, definition);
             }
         }
     }

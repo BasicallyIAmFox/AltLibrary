@@ -63,6 +63,10 @@ Mods.AltLibrary: {
 			Label: "Generates random biomes on Hardmode generation in Drunk Worlds"
 			Tooltip: "When true, there will be a chance for hallow be replaced with random jungle alt and for evil to be replaced with random underworld alt"
 		}
+		SecretFeatures: {
+			Label: "Secret Features"
+			Tooltip: "When false, none secret features will show up nor loaded"
+		}
 	}
 	OreHelpTextBase: "Try combining a Hellforge with some {0} ore. I bet you could make some really powerful stuff with that!"
 	HallowBunnyCageTooltip: "'I swear you'll pay!'"

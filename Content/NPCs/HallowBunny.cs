@@ -11,6 +11,10 @@ namespace AltLibrary.Content.NPCs
     {
         public override string Texture => "AltLibrary/Assets/HallowBunny";
 
+        public override bool IsLoadingEnabled(Mod mod) => AltLibraryServerConfig.Config.SecretFeatures;
+
+        public override void Load() => AltLibrary.NPCsToNowShowUp.Add(Type);
+
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Hallow Bunny");
@@ -113,6 +117,8 @@ namespace AltLibrary.Content.NPCs
 
         private class HallowGlobal : GlobalNPC
         {
+            public override bool IsLoadingEnabled(Mod mod) => AltLibraryServerConfig.Config.SecretFeatures;
+
             public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == ModContent.NPCType<HallowBunny>();
 
             public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)

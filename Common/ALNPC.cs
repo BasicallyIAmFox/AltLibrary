@@ -1,6 +1,4 @@
 ﻿using AltLibrary.Common.Systems;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System.Threading;
 using Terraria;
 using Terraria.ID;
@@ -8,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace AltLibrary.Common
 {
-    internal partial class ALNPC : GlobalNPC
+    internal class ALNPC : GlobalNPC
     {
         public override void OnKill(NPC npc)
         {

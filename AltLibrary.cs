@@ -6,13 +6,9 @@ using AltLibrary.Common.Systems;
 using AltLibrary.Core;
 using AltLibrary.Core.Baking;
 using AltLibrary.Core.States;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -43,9 +39,10 @@ namespace AltLibrary
         internal static int TimeHoveringOnIcon;
         internal static bool HallowBunnyUnlocked;
         internal static int ModIconVariation;
-        internal static int MoonSunWiseTimer;
-        internal static bool MoonSunViceVersa;
-        internal static bool LordMoonFleshy;
+
+        internal static List<int> ItemsToNowShowUp = new();
+        internal static List<int> NPCsToNowShowUp = new();
+        internal static List<int> TilesToNowShowUp = new();
 
         /// <summary>
         ///     Gets or sets a value indicating whether the mouse should be checked in an interface or not.
@@ -73,10 +70,7 @@ namespace AltLibrary
             AnalystShopLoader.Load();
             ModIconVariation = Main.rand.Next(ALTextureAssets.AnimatedModIcon.Length);
             TimeHoveringOnIcon = 0;
-            MoonSunWiseTimer = 0;
-            MoonSunViceVersa = false;
             HallowBunnyUnlocked = false;
-            LordMoonFleshy = false;
             if (!Main.dedServ)
             {
                 pieChartState = new ALPieChartState();
@@ -276,10 +270,7 @@ namespace AltLibrary
             AltLibraryConfig.Config = null;
             TimeHoveringOnIcon = 0;
             HallowBunnyUnlocked = false;
-            MoonSunWiseTimer = 0;
-            MoonSunViceVersa = false;
             PreviewWorldIcons = null;
-            LordMoonFleshy = false;
             if (!Main.dedServ)
             {
                 Instance = null;
@@ -296,6 +287,9 @@ namespace AltLibrary
             HallowBunnyCageRecipeIndex = 0;
             pieChartState = null;
             userInterface = null;
+            ItemsToNowShowUp = null;
+            NPCsToNowShowUp = null;
+            TilesToNowShowUp = null;
         }
 
         public static AltBiome GetAltBiome(int type) => Biomes.Find(x => x.Type == type);

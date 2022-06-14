@@ -1,11 +1,8 @@
-﻿using AltLibrary.Common;
-using AltLibrary.Common.AltBiomes;
-using AltLibrary.Core;
+﻿using AltLibrary.Common.AltBiomes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,7 +11,6 @@ using System.Reflection;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
-using Terraria.Graphics.Shaders;
 using Terraria.IO;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -25,20 +21,6 @@ namespace AltLibrary
 {
     internal static class ALUtils
     {
-        internal static ALNPC Alt(this NPC npc) => npc.GetGlobalNPC<ALNPC>();
-
-        internal static MiscShaderData ALUseImage0(this MiscShaderData data, string path)
-        {
-            ALReflection.MiscShaderData__uImage0.SetValue(data, AltLibrary.Instance.Assets.Request<Texture2D>(path, AssetRequestMode.ImmediateLoad));
-            return data;
-        }
-
-        internal static MiscShaderData ALUseImage1(this MiscShaderData data, string path)
-        {
-            ALReflection.MiscShaderData__uImage1.SetValue(data, AltLibrary.Instance.Assets.Request<Texture2D>(path, AssetRequestMode.ImmediateLoad));
-            return data;
-        }
-
         internal static int AdvancedGetSizeOfCategory(string key, out LocalizedText[] texts)
         {
             int num = 0;
@@ -59,7 +41,7 @@ namespace AltLibrary
             return num;
         }
 
-        internal static void ReplaceIDs<T>(ILContext il, T id, Func<T, T> replace, Func<T, bool> check, Func<T, T> replaceCheck = null)
+        internal static void ReplaceIDs<T>(ILContext il, T id, Func<T, T> replace, Func<T, bool> check, Func<T, T> replaceCheck = null) where T : IConvertible
         {
             ILCursor c = new(il);
             switch (id)
