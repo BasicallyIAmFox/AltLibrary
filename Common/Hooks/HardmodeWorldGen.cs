@@ -12,7 +12,6 @@ using static Terraria.ModLoader.ModContent;
 
 namespace AltLibrary.Common.Hooks
 {
-    [Autoload(Side = ModSide.Both)]
     internal static class HardmodeWorldGen
     {
         public static void Init()

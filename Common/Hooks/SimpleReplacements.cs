@@ -7,7 +7,6 @@ using static Terraria.ModLoader.ModContent;
 
 namespace AltLibrary.Common.Hooks
 {
-    [Autoload(Side = ModSide.Both)]
     internal class SimpleReplacements
     {
         internal static void Load()

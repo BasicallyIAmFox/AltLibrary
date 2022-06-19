@@ -15,9 +15,10 @@ using Terraria.WorldBuilding;
 
 namespace AltLibrary.Common.Hooks
 {
-    [Autoload(Side = ModSide.Both)]
     internal static class EvenMoreWorldGen
     {
+        private static bool generatingJungle = false;
+
         public static void Init()
         {
             IL.Terraria.WorldGen.GenerateWorld += GenPasses.ILGenerateWorld;
@@ -26,6 +27,12 @@ namespace AltLibrary.Common.Hooks
             GenPasses.HookGenPassUnderworld += GenPasses_HookGenPassUnderworld;
             GenPasses.HookGenPassAltars += ILGenPassAltars;
             GenPasses.HookGenPassMicroBiomes += GenPasses_HookGenPassMicroBiomes;
+            IL.Terraria.GameContent.Biomes.JunglePass.ApplyPass += JunglePass_ApplyPass;
+            On.Terraria.GameContent.Biomes.JunglePass.ApplyPass += JunglePass_ApplyPass1;
+            IL.Terraria.GameContent.Biomes.JunglePass.GenerateHolesInMudWalls += JunglePass_ApplyPass;
+            IL.Terraria.GameContent.Biomes.JunglePass.GenerateFinishingTouches += JunglePass_ApplyPass;
+            IL.Terraria.WorldGen.TileRunner += JunglePass_ApplyPass;
+            generatingJungle = false;
         }
 
         public static void Unload()
@@ -36,6 +43,26 @@ namespace AltLibrary.Common.Hooks
             GenPasses.HookGenPassUnderworld -= GenPasses_HookGenPassUnderworld;
             GenPasses.HookGenPassAltars -= ILGenPassAltars;
             GenPasses.HookGenPassMicroBiomes -= GenPasses_HookGenPassMicroBiomes;
+            IL.Terraria.GameContent.Biomes.JunglePass.ApplyPass -= JunglePass_ApplyPass;
+            On.Terraria.GameContent.Biomes.JunglePass.ApplyPass -= JunglePass_ApplyPass1;
+            IL.Terraria.GameContent.Biomes.JunglePass.GenerateHolesInMudWalls -= JunglePass_ApplyPass;
+            IL.Terraria.GameContent.Biomes.JunglePass.GenerateFinishingTouches -= JunglePass_ApplyPass;
+            IL.Terraria.WorldGen.TileRunner -= JunglePass_ApplyPass;
+            generatingJungle = false;
+        }
+
+        private static void JunglePass_ApplyPass1(On.Terraria.GameContent.Biomes.JunglePass.orig_ApplyPass orig, Terraria.GameContent.Biomes.JunglePass self, GenerationProgress progress, Terraria.IO.GameConfiguration configuration)
+        {
+            generatingJungle = true;
+            orig(self, progress, configuration);
+            generatingJungle = false;
+        }
+
+        private static void JunglePass_ApplyPass(ILContext il)
+        {
+            ALUtils.ReplaceIDs(il, TileID.Mud,
+                (orig) => /*(ushort?)ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeMud ?? orig*/TileID.Adamantite,
+                (orig) => WorldBiomeManager.WorldJungle != "" && /*ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeMud.HasValue && */generatingJungle);
         }
 
         private static void GenPasses_HookGenPassUnderworld(ILContext il)
@@ -72,7 +99,7 @@ namespace AltLibrary.Common.Hooks
             }
 
             ILLabel label = c.DefineLabel();
-            c.EmitDelegate(() => WorldBiomeManager.WorldEvil == "");
+            c.EmitDelegate(() => WorldBiomeManager.WorldHell == "");
             c.Emit(OpCodes.Brfalse_S, label);
             c.Index++;
             c.MarkLabel(label);

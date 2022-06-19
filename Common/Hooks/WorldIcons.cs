@@ -17,7 +17,6 @@ using Terraria.UI;
 
 namespace AltLibrary.Common.Hooks
 {
-    [Autoload(Side = ModSide.Client)]
     internal static class WorldIcons
     {
         internal static int WarnUpdate = 0;

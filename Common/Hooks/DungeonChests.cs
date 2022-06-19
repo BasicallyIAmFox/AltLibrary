@@ -12,7 +12,6 @@ namespace AltLibrary.Common.Hooks
     /// TODO:
     /// make hell chest alts actually gen...
     /// </summary>
-    [Autoload(Side = ModSide.Both)]
     internal class DungeonChests
     {
         internal static int hellChestIndex;

@@ -7,7 +7,6 @@ using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Hooks
 {
-    [Autoload(Side = ModSide.Client)]
     internal class GuideHelpText
     {
         public static void Load()

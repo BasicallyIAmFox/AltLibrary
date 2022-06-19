@@ -26,7 +26,7 @@ namespace AltLibrary.Common.Hooks
             CheatSheetChanges.Unload();
         }
 
-        [Autoload(Side = ModSide.Client)]
+        [Autoload(false)]
         internal static class Visuals
         {
             /*internal static void Load()

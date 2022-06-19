@@ -9,7 +9,6 @@ using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Hooks
 {
-    [Autoload(Side = ModSide.Client)]
     internal static class UnderworldVisual
     {
         public static void Init()

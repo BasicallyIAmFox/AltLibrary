@@ -7,7 +7,6 @@ using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Hooks
 {
-    [Autoload(Side = ModSide.Both)]
     internal class DryadText
     {
         public static void Init()

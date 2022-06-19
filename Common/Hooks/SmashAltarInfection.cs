@@ -13,7 +13,6 @@ using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Hooks
 {
-    [Autoload(Side = ModSide.Both)]
     internal class SmashAltarInfection
     {
         public static void Init()

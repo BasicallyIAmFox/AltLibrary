@@ -9,7 +9,6 @@ using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Hooks
 {
-    [Autoload(Side = ModSide.Both)]
     internal class MimicSummon
     {
         private static Dictionary<string, Struct_31213> MimicPairs;

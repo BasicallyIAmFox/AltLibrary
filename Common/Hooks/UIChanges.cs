@@ -13,7 +13,6 @@ using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Hooks
 {
-    [Autoload(Side = ModSide.Client)]
     internal class UIChanges
     {
         public delegate void hook_SpriteFontInternalDraw(orig_SpriteFontInternalDraw orig, DynamicSpriteFont self,

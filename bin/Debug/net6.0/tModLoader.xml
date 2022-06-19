@@ -1452,6 +1452,15 @@
             <br/>Do not add your NPC to this if it would be excluded automatically (i.e. critter, town NPC, or no coin drops)
             </summary>
         </member>
+        <member name="F:Terraria.ID.NPCID.Sets.AllowDoorInteraction">
+            <summary>
+            Whether or not this NPC can still interact with doors if they use the Vanilla TownNPC aiStyle (AKA aiStyle == 7)
+            but are not actually marked as Town NPCs (AKA npc.townNPC == true).
+            </summary>
+            <remarks>
+            Note: This set DOES NOT DO ANYTHING if your NPC doesn't use the Vanilla TownNPC aiStyle (aiStyle == 7).
+            </remarks>
+        </member>
         <member name="F:Terraria.ID.ProjAIStyleID.Arrow">
             <summary>
             Behavior: Includes Bullets and Lasers<br/>
@@ -2767,10 +2776,16 @@
             </summary>
         </member>
         <member name="M:Terraria.ModLoader.BackgroundTextureLoader.GetBackgroundSlot(System.String)">
-            <summary> Returns the slot/ID of the background texture with the given name. Throws exceptions on failure. </summary>
+            <summary> Returns the slot/ID of the background texture with the given full path. The path must be prefixed with a mod name. Throws exceptions on failure. </summary>
+        </member>
+        <member name="M:Terraria.ModLoader.BackgroundTextureLoader.GetBackgroundSlot(Terraria.ModLoader.Mod,System.String)">
+            <summary> Returns the slot/ID of the background texture with the given mod and path. Throws exceptions on failure. </summary>
         </member>
         <member name="M:Terraria.ModLoader.BackgroundTextureLoader.TryGetBackgroundSlot(System.String,System.Int32@)">
-            <summary> Safely attempts to output the slot/ID of the background texture with the given name. </summary>
+            <summary> Safely attempts to output the slot/ID of the background texture with the given full path. The path must be prefixed with a mod name. </summary>
+        </member>
+        <member name="M:Terraria.ModLoader.BackgroundTextureLoader.TryGetBackgroundSlot(Terraria.ModLoader.Mod,System.String,System.Int32@)">
+            <summary> Safely attempts to output the slot/ID of the background texture with the given mod and path. </summary>
         </member>
         <member name="M:Terraria.ModLoader.BackgroundTextureLoader.AddBackgroundTexture(Terraria.ModLoader.Mod,System.String)">
             <summary>
@@ -12208,6 +12223,15 @@
             </summary>
             <param name="type">The buff type</param>
         </member>
+        <member name="M:Terraria.Player.OpenChest(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Handles boilerplate for gamepad and UI when opening or closing a container.
+            <br/>Sets <see cref="F:Terraria.Player.chestX"/>, and <see cref="F:Terraria.Player.chestY"/>, and <see cref="F:Terraria.Player.chest"/> to the given coordinates.
+            </summary>
+            <param name="x">The top-left X coordinate of the container.</param>
+            <param name="y">The top-left Y coordinate of the container.</param>
+            <param name="newChest">The container index in <see cref="F:Terraria.Main.chest"/> if opening, or -1 if closing.</param>
+        </member>
         <member name="M:Terraria.Player.GetAdjustedItemScale(Terraria.Item)">
             <summary>
             Used to determine what the overall scale of an item should be.<br></br>
@@ -12360,6 +12384,33 @@
             <summary>
             Gets the knockback modifier for this damage type on this player.
             This returns a reference, and as such, you can freely modify this method's return value with operators.
+            </summary>
+        </member>
+        <member name="P:Terraria.Player.ThrownVelocity">
+            <summary>
+            Multiplier to shot projectile velocity before throwing. Result will be capped to 16f.
+            <br/>Only applies to items counted as the <see cref="P:Terraria.ModLoader.DamageClass.Throwing"/> damage type
+            </summary>
+        </member>
+        <member name="P:Terraria.Player.ThrownCost33">
+            <summary>
+            If true, player has a 33% chance of not consuming the thrown item.
+            <br/>Only applies to consumable items and projectiles counted as the <see cref="P:Terraria.ModLoader.DamageClass.Throwing"/> damage type.
+            <br/>Projectiles spawned from a player who holds such item will set <see cref="F:Terraria.Projectile.noDropItem"/> to prevent duplication.
+            <br/>Stacks with <see cref="P:Terraria.Player.ThrownCost50"/> multiplicatively
+            </summary>
+        </member>
+        <member name="P:Terraria.Player.ThrownCost50">
+            <summary>
+            If true, player has a 50% chance of not consuming the thrown item.
+            <br/>Only applies to consumable items counted as the <see cref="P:Terraria.ModLoader.DamageClass.Throwing"/> damage type.
+            <br/>Projectiles spawned from a player who holds such item will set <see cref="F:Terraria.Projectile.noDropItem"/> to prevent duplication.
+            <br/>Stacks with <see cref="P:Terraria.Player.ThrownCost33"/> multiplicatively
+            </summary>
+        </member>
+        <member name="P:Terraria.Player.AnyThrownCostReduction">
+            <summary>
+            Returns true if either <see cref="P:Terraria.Player.ThrownCost33"/> or <see cref="P:Terraria.Player.ThrownCost50"/> are true
             </summary>
         </member>
         <member name="P:Terraria.Player.CurrentSceneEffect">

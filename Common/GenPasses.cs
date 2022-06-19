@@ -63,7 +63,7 @@ namespace AltLibrary.Common
             MicroBiomesInfo = GetGenPassInfo(il, "Micro Biomes");
 
             ILCursor c = new(il);
-            if (!c.TryGotoNext(i => i.MatchCallvirt(typeof(Console).GetMethod(nameof(Console.WriteLine)))))
+            if (!c.TryGotoNext(i => i.MatchCall(typeof(Console).GetMethod(nameof(Console.WriteLine), BindingFlags.Public | BindingFlags.Static, new Type[] { typeof(string), typeof(object[]) }))))
             {
                 AltLibrary.Instance.Logger.Info("11 $ 1");
                 return;
@@ -86,10 +86,7 @@ namespace AltLibrary.Common
             });
         }
 
-        internal static void ILSMCallBack(ILContext il)
-        {
-            HardmodeWallsInfo = GetGenPassInfo(il, "Hardmode Walls");
-        }
+        internal static void ILSMCallBack(ILContext il) => HardmodeWallsInfo = GetGenPassInfo(il, "Hardmode Walls");
 
         public static void Unload()
         {
