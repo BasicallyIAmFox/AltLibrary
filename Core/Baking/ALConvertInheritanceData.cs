@@ -1,4 +1,5 @@
 using AltLibrary.Common.AltBiomes;
+using AltLibrary.Common.Systems;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -182,8 +183,8 @@ namespace AltLibrary.Core.Baking
                         break;
                     default:
                         string worldJungle = WorldBiomeManager.WorldJungle;
-                        if(worldJungle != "")
-                            test = AltLibrary.Biomes.Find(x => x.FullName == worldJungle).GetAltBlock(i, x, y)
+                        if (worldJungle != "")
+                            test = AltLibrary.Biomes.Find(x => x.FullName == worldJungle).GetAltBlock(i, x, y);
                         else if (i == TileID.JungleGrass)
                             test = TileID.JungleGrass;
                         else if (!ForestConversion.TryGetValue(i, out test))
