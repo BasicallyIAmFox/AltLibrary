@@ -85,7 +85,7 @@ namespace AltLibrary.Common.Systems
                                 {
                                     if (Main.tile[i, j].HasTile && Main.tile[i, j].TileType == TileID.Mud)
                                     {
-                                        Main.tile[i, j].TileType = TileID.Adamantite;
+                                        Main.tile[i, j].TileType = tile;
                                     }
                                 }
                             }
