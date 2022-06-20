@@ -27,7 +27,6 @@ namespace AltLibrary.Common.Hooks
             GenPasses.HookGenPassUnderworld += GenPasses_HookGenPassUnderworld;
             GenPasses.HookGenPassAltars += ILGenPassAltars;
             GenPasses.HookGenPassMicroBiomes += GenPasses_HookGenPassMicroBiomes;
-            JungleAltGen.Load();
             IL.Terraria.GameContent.Biomes.MiningExplosivesBiome.Place += MiningExplosivesBiome_Place;
         }
 
@@ -39,7 +38,6 @@ namespace AltLibrary.Common.Hooks
             GenPasses.HookGenPassUnderworld -= GenPasses_HookGenPassUnderworld;
             GenPasses.HookGenPassAltars -= ILGenPassAltars;
             GenPasses.HookGenPassMicroBiomes -= GenPasses_HookGenPassMicroBiomes;
-            JungleAltGen.Unload();
             IL.Terraria.GameContent.Biomes.MiningExplosivesBiome.Place -= MiningExplosivesBiome_Place;
         }
 
