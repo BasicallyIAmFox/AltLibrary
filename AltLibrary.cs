@@ -248,7 +248,24 @@ namespace AltLibrary
                             {
                                 return WorldBiomeManager.AltBiomePercentages[biome.Type + 3];
                             }
-                            throw new ArgumentException("Second argument (type) is not string, AltBiome or invalid type!");
+                            throw new ArgumentException("Second argument (type) is not string or AltBiome!");
+                        }
+                    case "addinmimiclist":
+                        {
+                            if (args.Length == 4 && args[1] is string uniqueid)
+                            {
+                                if (args[2] is ValueTuple<int, int> mimicType)
+                                {
+                                    if (args[3] is Func<bool> condition)
+                                    {
+                                        MimicSummon.MimicPairs.TryAdd(uniqueid, new(mimicType.Item1, mimicType.Item2, condition));
+                                        return "Success";
+                                    }
+                                    throw new ArgumentException("Fourth argument (condition) is not Func<bool>!");
+                                }
+                                throw new ArgumentException("Third argument (mimicType) is not ValueTuple<int, int>!");
+                            }
+                            throw new ArgumentException("Second argument (uniqueid) is not string!");
                         }
                     default:
                         throw new ArgumentException("Invalid option!");

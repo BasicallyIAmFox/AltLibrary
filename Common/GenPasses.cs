@@ -74,7 +74,7 @@ namespace AltLibrary.Common
             {
                 Console.WriteLine("World alts: Evil - {0} {1}, Tropic - {2} {3}, Underworld - {4} {5}, Good - {6} {7}", new object[]
                 {
-                    WorldBiomeManager.IsCorruption ? (WorldBiomeManager.IsCrimson ? -666 : -333) : AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.WorldEvil).Type,
+                    WorldBiomeManager.WorldEvil == "" ? (WorldBiomeManager.IsCrimson ? -666 : -333) : AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.WorldEvil).Type,
                     !WorldBiomeManager.IsAnyModdedEvil ? "NONE" : WorldBiomeManager.WorldEvil,
                     WorldBiomeManager.WorldJungle == "" ? -1 : AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.WorldJungle).Type,
                     WorldBiomeManager.WorldJungle == "" ? "NONE" : WorldBiomeManager.WorldJungle,

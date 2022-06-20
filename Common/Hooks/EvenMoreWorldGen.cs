@@ -8,9 +8,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Terraria;
+using Terraria.GameContent.Biomes;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.Utilities;
 using Terraria.WorldBuilding;
 
 namespace AltLibrary.Common.Hooks
@@ -25,6 +27,8 @@ namespace AltLibrary.Common.Hooks
             GenPasses.HookGenPassUnderworld += GenPasses_HookGenPassUnderworld;
             GenPasses.HookGenPassAltars += ILGenPassAltars;
             GenPasses.HookGenPassMicroBiomes += GenPasses_HookGenPassMicroBiomes;
+            JungleAltGen.Load();
+            IL.Terraria.GameContent.Biomes.MiningExplosivesBiome.Place += MiningExplosivesBiome_Place;
         }
 
         public static void Unload()
@@ -35,6 +39,34 @@ namespace AltLibrary.Common.Hooks
             GenPasses.HookGenPassUnderworld -= GenPasses_HookGenPassUnderworld;
             GenPasses.HookGenPassAltars -= ILGenPassAltars;
             GenPasses.HookGenPassMicroBiomes -= GenPasses_HookGenPassMicroBiomes;
+            JungleAltGen.Unload();
+            IL.Terraria.GameContent.Biomes.MiningExplosivesBiome.Place -= MiningExplosivesBiome_Place;
+        }
+
+        private static void MiningExplosivesBiome_Place(ILContext il)
+        {
+            ILCursor c = new(il);
+
+            if (!c.TryGotoNext(i => i.MatchStloc(0)))
+            {
+                AltLibrary.Instance.Logger.Info("12 $ 1");
+                return;
+            }
+
+            c.Index++;
+            c.Emit(OpCodes.Ldloc, 0);
+            c.EmitDelegate<Func<ushort, ushort>>((type) =>
+            {
+                type = Utils.SelectRandom(WorldGen.genRand, new ushort[]
+                {
+                    (ushort)WorldBiomeManager.Gold,
+                    (ushort)WorldBiomeManager.Silver,
+                    (ushort)WorldBiomeManager.Iron,
+                    (ushort)WorldBiomeManager.Copper,
+                });
+                return type;
+            });
+            c.Emit(OpCodes.Stloc, 0);
         }
 
         private static void GenPasses_HookGenPassUnderworld(ILContext il)

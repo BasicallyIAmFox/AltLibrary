@@ -11,7 +11,7 @@ namespace AltLibrary.Common.Hooks
 {
     internal class MimicSummon
     {
-        private static Dictionary<string, Struct_31213> MimicPairs;
+        internal static Dictionary<string, Struct_31213> MimicPairs;
 
         public static void Init()
         {
@@ -45,7 +45,7 @@ namespace AltLibrary.Common.Hooks
             MimicPairs = null;
         }
 
-        private struct Struct_31213
+        internal struct Struct_31213
         {
             internal int field_74123;
             internal int field_30363;

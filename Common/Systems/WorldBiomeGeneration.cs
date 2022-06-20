@@ -63,7 +63,7 @@ namespace AltLibrary.Common.Systems
                     tasks.RemoveAt(hellforgeIndex);
                 }
             }
-            if (WorldBiomeManager.WorldJungle != "")
+            if (WorldBiomeManager.WorldJungle != "" && !WorldGen.notTheBees)
             {
                 int jungleIndex = tasks.FindIndex(i => i.Name.Equals("Wet Jungle"));
                 if (jungleIndex != -1)
@@ -172,7 +172,7 @@ namespace AltLibrary.Common.Systems
                     if (Main.tile[i, j].HasUnactuatedTile)
                     {
                         ALReflection.WorldGen_GrassSpread = 0;
-                        WorldGen.SpreadGrass(i, j, TileID.Mud, !WorldGen.notTheBees ? ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeGrass.GetValueOrDefault() : TileID.JungleGrass, repeat: true, 0);
+                        WorldGen.SpreadGrass(i, j, !WorldGen.notTheBees ? ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeMud.GetValueOrDefault() : TileID.Mud, !WorldGen.notTheBees ? ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeGrass.GetValueOrDefault() : TileID.JungleGrass, repeat: true, 0);
                     }
                     progress.Set(0.2f * ((i * Main.maxTilesY + j) / (float)(Main.maxTilesX * Main.maxTilesY)));
                 }
