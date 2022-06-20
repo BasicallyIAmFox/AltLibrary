@@ -41,6 +41,9 @@ namespace AltLibrary.Common.AltBiomes
             public void Unload()
             {
                 instances = null;
+                HolyTileCountOriginal = 0;
+                EvilTileCountOriginal = 0;
+                IL.Terraria.SceneMetrics.ExportTileCountsToMain -= SceneMetrics_GetModdedHallowEvil;
             }
         }
 
