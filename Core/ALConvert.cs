@@ -1,4 +1,4 @@
-﻿using AltLibrary.Common.AltBiomes;
+using AltLibrary.Common.AltBiomes;
 using AltLibrary.Core.Baking;
 using System;
 using Terraria;
@@ -64,11 +64,22 @@ namespace AltLibrary.Core
                         }
 
                         //Hardcoded. Cannot eradicate.
-                        int corruptGrass = 0;
-                        if (conversionType == 1)
-                            corruptGrass = TileID.CorruptGrass;
-                        else if (conversionType == 4)
-                            corruptGrass = TileID.CrimsonGrass;
+                        int corruptGrass;
+                        switch(conversionType)
+                        {
+                            case 1:
+                                corruptGrass = TileID.CorruptGrass;
+                                break;
+                            case 2:
+                                corruptGrass = TileID.HallowedGrass;
+                                break;
+                            case 4:
+                                corruptGrass = TileID.CrimsonGrass;
+                                break;
+                            default:
+                                corruptGrass = 0;
+                                break;
+                        }
                         if (corruptGrass != 0)
                             if (tile.TileType == 59 && (Main.tile[k - 1, l].TileType == corruptGrass || Main.tile[k + 1, l].TileType == corruptGrass || Main.tile[k, l - 1].TileType == corruptGrass || Main.tile[k, l + 1].TileType == corruptGrass))
                             {
