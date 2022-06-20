@@ -3,6 +3,8 @@ using AltLibrary.Common.Systems;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
 using Terraria.WorldBuilding;
 
 namespace AltLibrary.Core.Generation
@@ -25,7 +27,7 @@ namespace AltLibrary.Core.Generation
                 {
                     if (Main.tile[i, snowJungleIter].HasTile)
                     {
-                        if (Main.tile[i, snowJungleIter].TileType == 60)
+                        if (Main.tile[i, snowJungleIter].TileType == (WorldBiomeManager.WorldJungle == "" ? TileID.JungleGrass : ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeGrass.Value))
                         {
                             if (i < JungleBoundMinX)
                             {
@@ -85,7 +87,6 @@ namespace AltLibrary.Core.Generation
                     EvilBiomes.Add(AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.WorldEvil).GetEvilBiomeGenerationPass());
             }
 
-
             double numberPasses = Main.maxTilesX * 0.00045;
             numberPasses /= EvilBiomes.Count;
 
@@ -94,7 +95,7 @@ namespace AltLibrary.Core.Generation
 
             EvilBiomes.ForEach(i =>
             {
-                progress.Message = i?.ProgressMessage == null ? "No ProgressMessage! Report that to Mod Developer!" : i?.ProgressMessage;
+                progress.Message = (i?.ProgressMessage) ?? "No ProgressMessage! Report that to Mod Developer!";
 
                 int passesDone = 0;
                 while (passesDone < numberPasses)
