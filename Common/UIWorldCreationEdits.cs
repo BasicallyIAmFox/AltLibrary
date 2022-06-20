@@ -16,6 +16,7 @@ using System.Reflection;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
+using Terraria.ID;
 using Terraria.IO;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -34,11 +35,11 @@ namespace AltLibrary.Common
         internal static int AltJungleBiomeChosenType;
         internal static int AltHellBiomeChosenType;
         internal static UIList _biomeList;
-        internal static List<ALUIBiomeListItem> _biomeElements = new();
+        internal static List<ALUIBiomeListItem> _biomeElements;
         internal static UIList _oreList;
-        internal static List<ALUIOreListItem> _oreElements = new();
+        internal static List<ALUIOreListItem> _oreElements;
         internal static UIList _oreHmList;
-        internal static List<ALUIOreListItem> _oreHmElements = new();
+        internal static List<ALUIOreListItem> _oreHmElements;
         internal static List<ALOreDrawingStruct> QuenedDrawing;
         internal static int Copper;
         internal static int Iron;
@@ -59,6 +60,13 @@ namespace AltLibrary.Common
 
         public static void Init()
         {
+            if (Main.dedServ)
+                return;
+
+            _biomeElements = new();
+            _oreElements = new();
+            _oreHmElements = new();
+
             QuenedDrawing = new();
             initializedLists = false;
             IL.Terraria.GameContent.UI.States.UIWorldCreation.MakeInfoMenu += ILMakeInfoMenu;
@@ -73,6 +81,9 @@ namespace AltLibrary.Common
 
         public static void Unload()
         {
+            if (Main.netMode == NetmodeID.Server)
+                return;
+
             IL.Terraria.GameContent.UI.States.UIWorldCreation.MakeInfoMenu -= ILMakeInfoMenu;
             On.Terraria.GameContent.UI.States.UIWorldCreation.AddWorldEvilOptions -= OnAddWorldEvilOptions;
             On.Terraria.GameContent.UI.States.UIWorldCreation.SetDefaultOptions -= UIWorldCreation_SetDefaultOptions;

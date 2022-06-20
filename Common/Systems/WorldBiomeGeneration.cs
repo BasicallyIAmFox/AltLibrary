@@ -63,7 +63,7 @@ namespace AltLibrary.Common.Systems
                     tasks.RemoveAt(hellforgeIndex);
                 }
             }
-            if (WorldBiomeManager.WorldJungle != "" && !WorldGen.notTheBees)
+            if (!WorldGen.notTheBees && WorldBiomeManager.WorldJungle != "")
             {
                 int jungleIndex = tasks.FindIndex(i => i.Name.Equals("Wet Jungle"));
                 if (jungleIndex != -1)
@@ -74,6 +74,23 @@ namespace AltLibrary.Common.Systems
                 if (jungleIndex != -1)
                 {
                     tasks[jungleIndex] = new PassLegacy("Mud Caves To Grass", new WorldGenLegacyMethod(JunglesGrassTask));
+                    if (ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeMud.HasValue)
+                    {
+                        tasks.Insert(jungleIndex, new PassLegacy("AltLibrary: Jungle Mud", new WorldGenLegacyMethod(delegate (GenerationProgress progress, GameConfiguration configuration)
+                        {
+                            int tile = ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeMud.Value;
+                            for (int i = 0; i < Main.maxTilesX; i++)
+                            {
+                                for (int j = 0; j < Main.maxTilesY; j++)
+                                {
+                                    if (Main.tile[i, j].HasTile && Main.tile[i, j].TileType == TileID.Mud)
+                                    {
+                                        Main.tile[i, j].TileType = TileID.Adamantite;
+                                    }
+                                }
+                            }
+                        })));
+                    }
                 }
                 jungleIndex = tasks.FindIndex(i => i.Name.Equals("Jungle Temple"));
                 if (jungleIndex != -1)
@@ -164,7 +181,6 @@ namespace AltLibrary.Common.Systems
         private void JunglesGrassTask(GenerationProgress progress, GameConfiguration passConfig)
         {
             progress.Message = Lang.gen[77].Value;
-            typeof(WorldGen).GetMethod("NotTheBees", BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, Array.Empty<object>());
             for (int i = 0; i < Main.maxTilesX; i++)
             {
                 for (int j = 0; j < Main.maxTilesY; j++)
@@ -172,7 +188,7 @@ namespace AltLibrary.Common.Systems
                     if (Main.tile[i, j].HasUnactuatedTile)
                     {
                         ALReflection.WorldGen_GrassSpread = 0;
-                        WorldGen.SpreadGrass(i, j, !WorldGen.notTheBees ? ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeMud.GetValueOrDefault() : TileID.Mud, !WorldGen.notTheBees ? ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeGrass.GetValueOrDefault() : TileID.JungleGrass, repeat: true, 0);
+                        WorldGen.SpreadGrass(i, j, ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeMud ?? TileID.Mud, ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeGrass.GetValueOrDefault(), repeat: true, 0);
                     }
                     progress.Set(0.2f * ((i * Main.maxTilesY + j) / (float)(Main.maxTilesX * Main.maxTilesY)));
                 }

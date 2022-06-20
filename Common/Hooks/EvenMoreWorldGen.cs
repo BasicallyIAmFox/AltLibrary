@@ -57,10 +57,10 @@ namespace AltLibrary.Common.Hooks
             {
                 type = Utils.SelectRandom(WorldGen.genRand, new ushort[]
                 {
-                    (ushort)WorldBiomeManager.Gold,
-                    (ushort)WorldBiomeManager.Silver,
-                    (ushort)WorldBiomeManager.Iron,
-                    (ushort)WorldBiomeManager.Copper,
+                    (ushort)WorldGen.SavedOreTiers.Gold,
+                    (ushort)WorldGen.SavedOreTiers.Silver,
+                    (ushort)WorldGen.SavedOreTiers.Iron,
+                    (ushort)WorldGen.SavedOreTiers.Copper,
                 });
                 return type;
             });

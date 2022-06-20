@@ -9104,15 +9104,26 @@
             The tree will share a tile ID with the vanilla trees (5), so that the trees can freely convert between each other if the soil below is converted.
             </summary>
         </member>
+        <member name="P:Terraria.ModLoader.ModTree.CountsAsTreeType">
+            <summary>
+            Used mostly for vanilla tree shake loot tables
+            </summary>
+        </member>
         <member name="M:Terraria.ModLoader.ModTree.CreateDust">
             <summary>
             Return the type of dust created when this tree is destroyed. Returns 7 by default.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Terraria.ModLoader.ModTree.GrowthFXGore">
+        <member name="M:Terraria.ModLoader.ModTree.TreeLeaf">
             <summary>
-            Return the type of gore created to represent leaves when this tree grows on-screen. Returns -1 by default.
+            Return the type of gore created when the tree grow, being shook and falling leaves on windy days, returns -1 by default
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Terraria.ModLoader.ModTree.Shake(System.Int32,System.Int32,System.Boolean@)">
+            <summary>
+            Executed on tree shake, return false to skip vanilla tree shake drops
             </summary>
             <returns></returns>
         </member>
@@ -9161,15 +9172,26 @@
             The tree will share a tile ID with the vanilla palm trees (323), so that the trees can freely convert between each other if the sand below is converted.
             </summary>
         </member>
+        <member name="P:Terraria.ModLoader.ModPalmTree.CountsAsTreeType">
+            <summary>
+            Used mostly for vanilla tree shake loot tables
+            </summary>
+        </member>
         <member name="M:Terraria.ModLoader.ModPalmTree.CreateDust">
             <summary>
             Return the type of dust created when this palm tree is destroyed. Returns 215 by default.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Terraria.ModLoader.ModPalmTree.GrowthFXGore">
+        <member name="M:Terraria.ModLoader.ModPalmTree.TreeLeaf">
             <summary>
-            Return the type of gore created to represent leaves when this palm tree grows on-screen. Returns -1 by default.
+            Return the type of gore created when this palm tree grow, being shook and falling leaves on windy days, returns -1 by default
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Terraria.ModLoader.ModPalmTree.Shake(System.Int32,System.Int32,System.Boolean@)">
+            <summary>
+            Executed on tree shake, return false to skip vanilla tree shake drops
             </summary>
             <returns></returns>
         </member>
