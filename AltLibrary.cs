@@ -27,6 +27,8 @@ namespace AltLibrary
 
         internal static List<AltLiquidStyle> LiquidStyles = new();
 
+        internal static List<ALBiomeTileCountModifier> ALBiomeTileCountModifiers = new();
+
         internal static List<CustomPreviews> PreviewWorldIcons = new();
 
         // Spreading related lists.
