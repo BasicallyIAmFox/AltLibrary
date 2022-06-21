@@ -1,4 +1,4 @@
-﻿using Mono.Cecil.Cil;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
 using System.Collections.Generic;
@@ -17,6 +17,7 @@ namespace AltLibrary.Common.AltBiomes
         {
             HALLOW,
             EVIL,
+            SUNFLOWER,
         }
 
         static List<ALBiomeTileCountModifier> instances;
@@ -43,6 +44,7 @@ namespace AltLibrary.Common.AltBiomes
                 instances = null;
                 HolyTileCountOriginal = 0;
                 EvilTileCountOriginal = 0;
+                ModSunflowerCount = 0;
                 IL.Terraria.SceneMetrics.ExportTileCountsToMain -= SceneMetrics_GetModdedHallowEvil;
             }
         }
@@ -55,6 +57,8 @@ namespace AltLibrary.Common.AltBiomes
                 throw new Exception("[SceneMetrics_GetModdedHallowEvil] Failed to find i => i.MatchStloc(0)");
             c.Index++;
             c.Emit(OpCodes.Ldarg_0);
+            c.Emit(OpCodes.Ldarg_0);
+            c.Emit(OpCodes.Ldfld, typeof(SceneMetrics).GetField("_tileCounts", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance));
             c.EmitDelegate(GetOriginalTileCounts);
 
             c.Index++;
@@ -73,10 +77,25 @@ namespace AltLibrary.Common.AltBiomes
 
         static int HolyTileCountOriginal = 0;
         static int EvilTileCountOriginal = 0;
+        static int ModSunflowerCount = 0;
 
-        internal static void GetOriginalTileCounts(SceneMetrics metrics)
+        internal static void GetOriginalTileCounts(SceneMetrics metrics, int[] tileCounts)
         {
+            ModSunflowerCount = 0;
+            instances.ForEach(i =>
+            {
+                switch (i.TileType)
+                {
+                    case TileCountType.SUNFLOWER:
+                        int TileCount = i.GetTileCount(tileCounts);
+                        i.TileCount = TileCount;
+                        ModSunflowerCount += TileCount;
+                        break;
+                }
+            });
             HolyTileCountOriginal = metrics.HolyTileCount;
+            metrics.EvilTileCount = Math.Max(0, metrics.EvilTileCount - ModSunflowerCount);
+            metrics.BloodTileCount = Math.Max(0, metrics.BloodTileCount - ModSunflowerCount);
             EvilTileCountOriginal = metrics.EvilTileCount + metrics.BloodTileCount;
         }
         internal static void ExportTileCounts(SceneMetrics metrics, int[] tileCounts)
@@ -85,7 +104,11 @@ namespace AltLibrary.Common.AltBiomes
             int TotalEvilTiles = 0;
             instances.ForEach(i =>
             {
+                if (i.TileType == TileCountType.SUNFLOWER)
+                    return;
                 int TileCount = i.GetTileCount(tileCounts);
+                if (i.TileType == TileCountType.EVIL)
+                    Math.Max(0, TileCount - (tileCounts[27] + ModSunflowerCount));
                 i.TileCount = TileCount;
                 switch (i.TileType)
                 {
