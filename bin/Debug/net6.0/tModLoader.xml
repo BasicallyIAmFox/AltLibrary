@@ -2429,6 +2429,9 @@
             Used by: <see cref="F:Terraria.ID.ProjectileID.PrincessWeapon"/>
             </summary>
         </member>
+        <member name="F:Terraria.ID.TileID.Sets.CanBeSloped">
+            <summary> Allows non-solid tiles to be sloped (solid tiles can always be sloped, regardless of this set). </summary>
+        </member>
         <member name="F:Terraria.ID.TileID.Sets.IgnoredByNpcStepUp">
             <summary>
             Whether or not the tile will be ignored for automatic step up regarding town NPC collision.
@@ -5165,6 +5168,33 @@
             <param name="scale"></param>
             <param name="offset"></param>
         </member>
+        <member name="M:Terraria.ModLoader.GlobalNPC.NeedSaving(Terraria.NPC)">
+            <summary>
+            Allows you to make a npc be saved even if it's not a townNPC and NPCID.Sets.SavesAndLoads[npc.type] is false.
+            <br/><b>NOTE:</b> A town NPC will always be saved (except the Travelling Merchant that never will).
+            <br/><b>NOTE:</b> A NPC that needs saving will not despawn naturally.
+            </summary>
+            <param name="npc"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Terraria.ModLoader.GlobalNPC.SaveData(Terraria.NPC,Terraria.ModLoader.IO.TagCompound)">
+            <summary>
+            Allows you to save custom data for the given npc.
+            <br/>
+            <br/><b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization.
+            <br/><b>NOTE:</b> Try to only save data that isn't default values.
+            <br/><b>NOTE:</b> The npc may be saved even if NeedSaving returns false and npc is not a townNPC, if another mod returns true on NeedSaving.
+            </summary>
+            <param name="npc"></param>
+            <param name="tag">The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument</param>
+        </member>
+        <member name="M:Terraria.ModLoader.GlobalNPC.LoadData(Terraria.NPC,Terraria.ModLoader.IO.TagCompound)">
+            <summary>
+            Allows you to load custom data that you have saved for the given npc.
+            </summary>
+            <param name="npc"></param>
+            <param name="tag"></param>
+        </member>
         <member name="T:Terraria.ModLoader.GlobalProjectile">
             <summary>
             This class allows you to modify and use hooks for all projectiles, including vanilla projectiles. Create an instance of an overriding class then call Mod.AddGlobalProjectile to use this.
@@ -6465,13 +6495,6 @@
             <returns></returns>
             <exception cref="T:System.Exception">Cannot get packet for " + Name + " because it does not exist on the other side</exception>
         </member>
-        <member name="M:Terraria.ModLoader.Mod.CloneRecipe(Terraria.Recipe)">
-            <summary>
-            Creates a clone of the provided recipe except the source mod of the Recipe will be this Mod. The clone will have to registered after being tweaked.
-            </summary>
-            <param name="recipe"></param>
-            <returns></returns>
-        </member>
         <member name="M:Terraria.ModLoader.Mod.Load">
             <summary>
             Override this method to add most of your content to your mod. Here you will call other methods such as AddItem. This is guaranteed to be called after all content has been autoloaded.
@@ -6665,14 +6688,11 @@
         </member>
         <member name="P:Terraria.ModLoader.ModBiome.BestiaryIcon">
             <summary>
-            The path to the 30x30 texture that will appear for this biome in the bestiary.
+            The path to the 30x30 texture that will appear for this biome in the bestiary. Defaults to adding "_Icon" onto the usual namespace+classname derived texture path.
+            <br/> Vanilla icons use a drop shadow at 40 percent opacity and the texture will be offset 1 pixel left and up from centered in the bestiary filter grid.
             </summary>
         </member>
-        <member name="P:Terraria.ModLoader.ModBiome.BackgroundPath">
-            <summary>
-            The path to the background texture that will appear for this biome behind npcs in the bestiary.
-            </summary>
-        </member>
+        <!-- Badly formed XML comment ignored for member "P:Terraria.ModLoader.ModBiome.BackgroundPath" -->
         <member name="P:Terraria.ModLoader.ModBiome.BackgroundColor">
             <summary>
             The color of the bestary background.
@@ -7542,7 +7562,7 @@
         </member>
         <member name="M:Terraria.ModLoader.ModItem.OnResearched(System.Boolean)">
             <summary>
-            Allows you to create custom behaviour when an item is accepted by the Research function 
+            Allows you to create custom behaviour when an item is accepted by the Research function
             </summary>
             <param name="fullyResearched">True if the item was completely researched, and is ready to be duplicated, false if only partially researched.</param>
         </member>
@@ -7662,7 +7682,7 @@
         <member name="M:Terraria.ModLoader.ModItem.Shoot(Terraria.Player,Terraria.DataStructures.EntitySource_ItemUse_WithAmmo,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,System.Int32,System.Int32,System.Single)">
             <summary>
             Allows you to modify this item's shooting mechanism. Return false to prevent vanilla's shooting code from running. Returns true by default.<br/>
-            This method is called after the <see cref="M:Terraria.ModLoader.ModItem.ModifyShootStats(Terraria.Player,Microsoft.Xna.Framework.Vector2@,Microsoft.Xna.Framework.Vector2@,System.Int32@,System.Int32@,System.Single@)"/> hook has had a chance to adjust the spawn parameters. 
+            This method is called after the <see cref="M:Terraria.ModLoader.ModItem.ModifyShootStats(Terraria.Player,Microsoft.Xna.Framework.Vector2@,Microsoft.Xna.Framework.Vector2@,System.Int32@,System.Int32@,System.Single@)"/> hook has had a chance to adjust the spawn parameters.
             </summary>
             <param name="player"> The player using the item. </param>
             <param name="source"> The projectile source's information. </param>
@@ -8564,6 +8584,9 @@
         <member name="P:Terraria.ModLoader.ModNPC.SpawnModBiomes">
             <summary> The ModBiome Types associated with this NPC spawning, if applicable. Used in Bestiary </summary>
         </member>
+        <member name="P:Terraria.ModLoader.ModNPC.TownNPCStayingHomeless">
+            <summary> Setting this to true will make the NPC not appear in the housing menu nor make it find an house. </summary>
+        </member>
         <member name="M:Terraria.ModLoader.ModNPC.SetDefaults">
             <summary>
             Allows you to set all your NPC's properties, such as width, damage, aiStyle, lifeMax, etc.
@@ -9068,6 +9091,30 @@
             <param name="scale"></param>
             <param name="offset"></param>
         </member>
+        <member name="M:Terraria.ModLoader.ModNPC.NeedSaving">
+            <summary>
+            Makes this ModNPC save along the world even if it's not a townNPC. Defaults to false.
+            <br/><b>NOTE:</b> A town NPC will always be saved.
+            <br/><b>NOTE:</b> A NPC that needs saving will not despawn naturally.
+            </summary>
+        </member>
+        <member name="M:Terraria.ModLoader.ModNPC.SaveData(Terraria.ModLoader.IO.TagCompound)">
+            <summary>
+            Allows you to save custom data for the given item.
+            Allows you to save custom data for the given npc.
+            <br/>
+            <br/><b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization.
+            <br/><b>NOTE:</b> Try to only save data that isn't default values.
+            <br/><b>NOTE:</b> The npc may be saved even if NeedSaving returns false and this is not a townNPC, if another mod returns true on NeedSaving.
+            </summary>
+            <param name="tag">The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument</param>
+        </member>
+        <member name="M:Terraria.ModLoader.ModNPC.LoadData(Terraria.ModLoader.IO.TagCompound)">
+            <summary>
+            Allows you to load custom data that you have saved for this npc.
+            </summary>
+            <param name="tag">The tag.</param>
+        </member>
         <member name="T:Terraria.ModLoader.ModPacket">
              <summary>
              This class inherits from BinaryWriter. This means that you can use all of its writing functions to send information between client and server. This class also comes with a Send method that's used to actually send everything you've written between client and server.
@@ -9297,12 +9344,6 @@
             Allows you to sync any information that has changed between the server and client. Here, you should check the information you have copied in the clientClone parameter; if they differ between this player and the clientPlayer parameter, then you should send that information using NetMessage.SendData or ModPacket.Send.
             </summary>
             <param name="clientPlayer"></param>
-        </member>
-        <member name="M:Terraria.ModLoader.ModPlayer.GetMapBackgroundImage">
-            <summary>
-            Allows you to change the background that displays when viewing the map. Return null if you do not want to change the background. Returns null by default.
-            </summary>
-            <returns></returns>
         </member>
         <member name="M:Terraria.ModLoader.ModPlayer.UpdateBadLifeRegen">
             <summary>
@@ -10443,7 +10484,7 @@
             Weight will be used if multiple SceneEffect have the same SceneEffectPriority so as to attempt to distinguish them based on their needs.
             </summary>
         </member>
-        <member name="M:Terraria.ModLoader.ModSceneEffect.SpecialVisuals(Terraria.Player)">
+        <member name="M:Terraria.ModLoader.ModSceneEffect.SpecialVisuals(Terraria.Player,System.Boolean)">
             <summary>
             Allows you to create special visual effects in the area around the player. For example, the blood moon's red filter on the screen or the slime rain's falling slime in the background. You must create classes that override Terraria.Graphics.Shaders.ScreenShaderData or Terraria.Graphics.Effects.CustomSky, add them in your mod's Load hook, then call Player.ManageSpecialBiomeVisuals. See the ExampleMod if you do not have access to the source code.
             </summary>
@@ -10510,6 +10551,7 @@
         <member name="M:Terraria.ModLoader.ModSystem.OnWorldLoad">
             <summary>
             Called whenever a world is loaded. This can be used to initialize data structures, etc.
+            <br/>If you need to access your data during worldgen, initialize it in <see cref="M:Terraria.ModLoader.ModSystem.PreWorldGen"/> instead, unless you also save it on the world, then you need both.
             </summary>
         </member>
         <member name="M:Terraria.ModLoader.ModSystem.OnWorldUnload">
@@ -10745,6 +10787,7 @@
         <member name="M:Terraria.ModLoader.ModSystem.PreWorldGen">
             <summary>
             Allows a mod to run code before a world is generated.
+            <br/>If you use this to initialize data used during worldgen, which you save on the world, also initialize it in <see cref="M:Terraria.ModLoader.ModSystem.OnWorldLoad"/>.
             </summary>
         </member>
         <member name="M:Terraria.ModLoader.ModSystem.ModifyWorldGenTasks(System.Collections.Generic.List{Terraria.WorldBuilding.GenPass},System.Single@)">
@@ -11878,6 +11921,11 @@
             Set when tML sets up modded recipes. Used to detect misuse of CreateRecipe
             </summary>
         </member>
+        <member name="P:Terraria.ModLoader.RecipeLoader.CurrentMod">
+            <summary>
+            The mod currently adding recipes.
+            </summary>
+        </member>
         <member name="M:Terraria.ModLoader.RecipeLoader.OrderRecipes">
             <summary>
             Orders everything in the recipe according to their Ordering.
@@ -12572,6 +12620,12 @@
             On spawn, if this projectile was fired from a weapon, this value has the total critical strike chance of the weapon that made the projectile added to itself.
             </summary>
         </member>
+        <member name="P:Terraria.Projectile.ContinuouslyUpdateDamage">
+            <summary>
+            If set, Projectile.damage will be recalculated based on Projectile.originalDamage, Projectile.DamageType and the owning player, just like minions and sentries.
+            This has no effect if Projectile.minion or Projectile.sentry is set.
+            </summary>
+        </member>
         <member name="M:Terraria.Projectile.GetGlobalProjectile``1(System.Boolean)">
             <summary> Gets the instance of the specified GlobalProjectile type. This will throw exceptions on failure. </summary>
             <exception cref="T:System.Collections.Generic.KeyNotFoundException"/>
@@ -12734,11 +12788,11 @@
             Sorts the recipe after the one given as parameter. Both recipes must already be registered.
             </summary>
         </member>
-        <member name="M:Terraria.Recipe.Clone(Terraria.Recipe)">
+        <member name="M:Terraria.Recipe.Clone">
             <summary>
-            Returns a copy of the recipe passed in, including the same OnCraftHooks and ConsumeItemHooks. Called only on the result of Recipe.Create to ensure Mod and RecipeIndex set correctly
+            Returns a clone of this recipe except the source mod of the Recipe will the currently loading mod.
+            <br/> The clone will have to be registered after being tweaked.
             </summary>
-            <param name="recipe">The recipe to clone.</param>
         </member>
         <member name="M:Terraria.Recipe.Register">
             <summary>

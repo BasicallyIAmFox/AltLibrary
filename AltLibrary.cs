@@ -302,7 +302,7 @@ namespace AltLibrary
             jungleThorns = null;
             evilStoppingOres = null;
             ILHooks.Unload();
-            AltLibraryConfig.Config = null;
+            AltLibraryServerConfig.Config = null;
             HallowBunnyCageRecipeIndex = 0;
             pieChartState = null;
             userInterface = null;
