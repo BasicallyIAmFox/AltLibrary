@@ -20,8 +20,6 @@ namespace AltLibrary.Common.AltBiomes
             SUNFLOWER,
         }
 
-        static List<ALBiomeTileCountModifier> instances;
-
         public virtual TileCountType TileType => TileCountType.HALLOW;
 
         internal int TileCount;
@@ -34,21 +32,20 @@ namespace AltLibrary.Common.AltBiomes
         {
             public void Load(Mod mod)
             {
-                instances = new();
-
+                HolyTileCountOriginal = 0;
+                EvilTileCountOriginal = 0;
+                ModSunflowerCount = 0;
                 IL.Terraria.SceneMetrics.ExportTileCountsToMain += SceneMetrics_GetModdedHallowEvil;
             }
 
             public void Unload()
             {
-                instances = null;
                 HolyTileCountOriginal = 0;
                 EvilTileCountOriginal = 0;
                 ModSunflowerCount = 0;
                 IL.Terraria.SceneMetrics.ExportTileCountsToMain -= SceneMetrics_GetModdedHallowEvil;
             }
         }
-
 
         internal static void SceneMetrics_GetModdedHallowEvil(ILContext il)
         {
@@ -70,19 +67,20 @@ namespace AltLibrary.Common.AltBiomes
             c.Emit(OpCodes.Ldfld, typeof(SceneMetrics).GetField("_tileCounts", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance));
             c.EmitDelegate(ExportTileCounts);
         }
+
         protected sealed override void Register()
         {
-            instances.Add(this);
+            AltLibrary.ALBiomeTileCountModifiers.Add(this);
         }
 
-        static int HolyTileCountOriginal = 0;
-        static int EvilTileCountOriginal = 0;
-        static int ModSunflowerCount = 0;
+        internal static int HolyTileCountOriginal = 0;
+        internal static int EvilTileCountOriginal = 0;
+        internal static int ModSunflowerCount = 0;
 
         internal static void GetOriginalTileCounts(SceneMetrics metrics, int[] tileCounts)
         {
             ModSunflowerCount = 0;
-            instances.ForEach(i =>
+            AltLibrary.ALBiomeTileCountModifiers.ForEach(i =>
             {
                 switch (i.TileType)
                 {
@@ -102,7 +100,7 @@ namespace AltLibrary.Common.AltBiomes
         {
             int TotalHolyTiles = 0;
             int TotalEvilTiles = 0;
-            instances.ForEach(i =>
+            AltLibrary.ALBiomeTileCountModifiers.ForEach(i =>
             {
                 if (i.TileType == TileCountType.SUNFLOWER)
                     return;
@@ -128,7 +126,7 @@ namespace AltLibrary.Common.AltBiomes
             TotalHolyTiles += HolyTileCountOriginal;
             TotalEvilTiles += EvilTileCountOriginal;
 
-            instances.ForEach(i =>
+            AltLibrary.ALBiomeTileCountModifiers.ForEach(i =>
             {
                 switch (i.TileType)
                 {

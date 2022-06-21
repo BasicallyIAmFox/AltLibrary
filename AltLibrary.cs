@@ -309,6 +309,7 @@ namespace AltLibrary
             ItemsToNowShowUp = null;
             NPCsToNowShowUp = null;
             TilesToNowShowUp = null;
+            ALBiomeTileCountModifiers = null;
         }
 
         public static AltBiome GetAltBiome(int type) => Biomes.Find(x => x.Type == type);
