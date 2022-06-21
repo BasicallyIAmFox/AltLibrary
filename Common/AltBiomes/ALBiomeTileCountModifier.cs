@@ -81,6 +81,7 @@ namespace AltLibrary.Common.AltBiomes
 
         internal static void GetOriginalTileCounts(SceneMetrics metrics, int[] tileCounts)
         {
+            ModSunflowerCount = 0;
             instances.ForEach(i =>
             {
                 switch (i.TileType)
@@ -94,7 +95,7 @@ namespace AltLibrary.Common.AltBiomes
             });
             HolyTileCountOriginal = metrics.HolyTileCount;
             metrics.EvilTileCount = Math.Max(0, metrics.EvilTileCount - ModSunflowerCount);
-            metrics.BloodTileCount -= Math.Max(0, metrics.BloodTileCount - ModSunflowerCount);
+            metrics.BloodTileCount = Math.Max(0, metrics.BloodTileCount - ModSunflowerCount);
             EvilTileCountOriginal = metrics.EvilTileCount + metrics.BloodTileCount;
         }
         internal static void ExportTileCounts(SceneMetrics metrics, int[] tileCounts)
