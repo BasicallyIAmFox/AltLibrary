@@ -32,8 +32,7 @@
         }
 
         /// <summary>
-        ///     For Evil alts.
-        ///     Vanilla values: Demonite Ore, Crimtane Ore
+        /// For Evil alts.<br/>Vanilla values: Demonite Ore, Crimtane Ore
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -44,8 +43,7 @@
         }
 
         /// <summary>
-        ///     For Evil alts.
-        ///     Vanilla values: Demonite Bar, Crimtane Bar
+        /// For Evil alts.<br/>Vanilla values: Demonite Bar, Crimtane Bar
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -56,8 +54,7 @@
         }
 
         /// <summary>
-        ///     For Hallow alts.
-        ///     Vanilla values: Hallowed Bar
+        /// For Hallow alts.<br/>Vanilla values: Hallowed Bar
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -68,8 +65,7 @@
         }
 
         /// <summary>
-        ///     For Underworld alts.
-        ///     Vanilla values: Hellstone Bar
+        /// For Underworld alts.<br/>Vanilla values: Hellstone Bar
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -80,8 +76,7 @@
         }
 
         /// <summary>
-        ///     For Jungle alts.
-        ///     Vanilla values: Chlorophyte Bar
+        /// For Jungle alts.<br/>Vanilla values: Chlorophyte Bar
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -92,8 +87,7 @@
         }
 
         /// <summary>
-        ///     For Jungle alts.
-        ///     Vanilla values: Shroomite Bar
+        /// For Jungle alts.<br/>Vanilla values: Shroomite Bar
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -104,8 +98,7 @@
         }
 
         /// <summary>
-        ///     For Evil alts.
-        ///     Vanilla values: Light's Bane, Blood Butcherer
+        /// For Evil alts.<br/>Vanilla values: Light's Bane, Blood Butcherer
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -116,8 +109,7 @@
         }
 
         /// <summary>
-        ///     For Hallow alts.
-        ///     Vanilla values: Excalibur
+        /// For Hallow alts.<br/>Vanilla values: Excalibur
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -128,8 +120,7 @@
         }
 
         /// <summary>
-        ///     For Underworld alts.
-        ///     Vanilla values: Fiery Greatsword
+        /// For Underworld alts.<br/>Vanilla values: Fiery Greatsword
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -140,8 +131,7 @@
         }
 
         /// <summary>
-        ///     For Jungle alts.
-        ///     Vanilla values: Blade of Grass
+        /// For Jungle alts.<br/>Vanilla values: Blade of Grass
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -152,8 +142,7 @@
         }
 
         /// <summary>
-        ///     For Evil alts.
-        ///     Vanilla values: Night's Edge
+        /// For Evil alts.<br/>Vanilla values: Night's Edge
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -164,8 +153,7 @@
         }
 
         /// <summary>
-        ///     For Evil alts.
-        ///     Vanilla values: True Night's Edge
+        /// For Evil alts.<br/>Vanilla values: True Night's Edge
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -176,8 +164,7 @@
         }
 
         /// <summary>
-        ///     For Hallow alts.
-        ///     Vanilla values: True Excalibur
+        /// For Hallow alts.<br/>Vanilla values: True Excalibur
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -188,8 +175,7 @@
         }
 
         /// <summary>
-        ///     For Evil alts.
-        ///     Vanilla values: Rotten Chunk, Vertebrae
+        /// For Evil alts.<br/>Vanilla values: Rotten Chunk, Vertebrae
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -200,8 +186,7 @@
         }
 
         /// <summary>
-        ///     For Hallow alts.
-        ///     Vanilla values: Pixie Dust
+        /// For Hallow alts.<br/>Vanilla values: Pixie Dust
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -212,8 +197,7 @@
         }
 
         /// <summary>
-        ///     For Hallow alts.
-        ///     Vanilla values: Unicorn Horn
+        /// For Hallow alts.<br/>Vanilla values: Unicorn Horn
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -224,8 +208,7 @@
         }
 
         /// <summary>
-        ///     For Hallow alts.
-        ///     Vanilla values: Crystal Shards
+        /// For Hallow alts.<br/>Vanilla values: Crystal Shards
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -236,8 +219,7 @@
         }
 
         /// <summary>
-        ///     For Evil alts.
-        ///     Vanilla values: Cursed Flame, Ichor
+        /// For Evil alts.<br/>Vanilla values: Cursed Flame, Ichor
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -248,8 +230,7 @@
         }
 
         /// <summary>
-        ///     For Evil alts.
-        ///     Vanilla values: Shadow Scale, Tissue Sample
+        /// For Evil alts.<br/>Vanilla values: Shadow Scale, Tissue Sample
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -260,8 +241,7 @@
         }
 
         /// <summary>
-        ///     For Jungle alts.
-        ///     Vanilla values: Jungle Spores
+        /// For Jungle alts.<br/>Vanilla values: Jungle Spores
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -272,8 +252,7 @@
         }
 
         /// <summary>
-        ///     For Evil alts.
-        ///     Vanilla values: Deathweed
+        /// For Evil alts.<br/>Vanilla values: Deathweed
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -284,8 +263,7 @@
         }
 
         /// <summary>
-        ///     For Underworld alts.
-        ///     Vanilla values: Fireblossom
+        /// For Underworld alts.<br/>Vanilla values: Fireblossom
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -296,8 +274,7 @@
         }
 
         /// <summary>
-        ///     For Jungle alts.
-        ///     Vanilla values: Moonglow
+        /// For Jungle alts.<br/>Vanilla values: Moonglow
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -308,8 +285,7 @@
         }
 
         /// <summary>
-        ///     For Underworld alts.
-        ///     Vanilla values: Hellforge
+        /// For Underworld alts.<br/>Vanilla values: Hellforge
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>

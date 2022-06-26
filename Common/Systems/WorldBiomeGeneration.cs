@@ -329,7 +329,8 @@ namespace AltLibrary.Common.Systems
             tag.Add("AltLibrary:WofKilledTimes", WofKilledTimes);
             tag.Add("AltLibrary:WorldCrimson", WorldCrimson);
             tag.Add("AltLibrary:WorldCrimson2", WorldCrimson2);
-            tag.Add("AltLibrary:WorldCrimson3", WorldCrimson3?.FullName);
+            if (WorldCrimson3 != null)
+                tag.Add("AltLibrary:WorldCrimson3", WorldCrimson3?.FullName);
         }
 
         public override void LoadWorldData(TagCompound tag)
@@ -338,7 +339,8 @@ namespace AltLibrary.Common.Systems
             WorldCrimson = tag.GetInt("AltLibrary:WorldCrimson");
             WorldCrimson2 = tag.GetBool("AltLibrary:WorldCrimson2");
             string fullname = tag.GetString("AltLibrary:WorldCrimson3");
-            WorldCrimson3 = AltLibrary.Biomes.Find(x => x.FullName == fullname);
+            if (fullname != null)
+                WorldCrimson3 = AltLibrary.Biomes.Find(x => x.FullName == fullname);
         }
     }
 }

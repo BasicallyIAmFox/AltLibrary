@@ -76,8 +76,6 @@ namespace AltLibrary.Common.Systems
         {
             AltBiomeData = null;
             AltBiomePercentages = null;
-            drunkGoodGen = 0;
-            drunkEvilGen = 0;
         }
 
         internal static void AnalysisTiles(bool includeText = true)
@@ -273,6 +271,8 @@ namespace AltLibrary.Common.Systems
             writer.Write(Adamantite);
             writer.Write(drunkIndex);
             writer.Write(hmOreIndex);
+            writer.Write(drunkGoodGen);
+            writer.Write(drunkEvilGen);
         }
 
         public override void NetReceive(BinaryReader reader)
@@ -291,6 +291,8 @@ namespace AltLibrary.Common.Systems
             Adamantite = reader.ReadInt32();
             drunkIndex = reader.ReadInt32();
             hmOreIndex = reader.ReadInt32();
+            drunkGoodGen = reader.ReadInt32();
+            drunkEvilGen = reader.ReadInt32();
         }
     }
 }
