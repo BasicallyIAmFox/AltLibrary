@@ -17,7 +17,7 @@ namespace AltLibrary
         public static Dictionary<int, bool> HallowedOreList;
         public override void OnSpawn(Item item, IEntitySource source)
         {
-            if (WorldBiomeManager.WorldHallow == "")
+            if HallowedOreList.Count == 0 || (WorldBiomeManager.WorldHallow == "")
                 return;
             EntitySource_TileBreak tile = source as EntitySource_TileBreak;
             if (tile != null && HallowedOreList.ContainsKey(Main.tile[tile.TileCoords].TileType))
@@ -44,7 +44,7 @@ namespace AltLibrary
             }
             private static void OreRunner_ReplaceHallowedOre(On.Terraria.WorldGen.orig_OreRunner orig, int i, int j, double strength, int steps, ushort type)
             {
-                if (WorldBiomeManager.WorldHallow == "")
+                if HallowedOreList.Count == 0 || (WorldBiomeManager.WorldHallow == "")
                     return;
                 if (HallowedOreList.ContainsKey(type))
                 {
