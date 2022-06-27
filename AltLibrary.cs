@@ -86,6 +86,7 @@ namespace AltLibrary
             ALTextureAssets.PostContentLoad();
             MimicSummon.SetupContent();
             ALConvertInheritanceData.FillData();
+            ModSupport.ModSupport.HookAll();
         }
 
         public override object Call(params object[] args)
