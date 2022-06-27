@@ -44,8 +44,10 @@ namespace AltLibrary
             }
             private static void OreRunner_ReplaceHallowedOre(On.Terraria.WorldGen.orig_OreRunner orig, int i, int j, double strength, int steps, ushort type)
             {
-                if HallowedOreList.Count == 0 || (WorldBiomeManager.WorldHallow == "")
+                if (HallowedOreList.Count == 0 || (WorldBiomeManager.WorldHallow == ""){
+                    orig(i, j, strength, steps, type);
                     return;
+                }
                 if (HallowedOreList.ContainsKey(type))
                 {
                     AltBiome biome = AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.WorldHallow);
