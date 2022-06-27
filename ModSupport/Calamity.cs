@@ -9,7 +9,7 @@ namespace AltLibrary.ModSupport
 {
     internal abstract class ModSupport
     {
-        string ModName;
+        public virtual string ModName => "";
 
         void Hook()
         {
@@ -31,6 +31,7 @@ namespace AltLibrary.ModSupport
     }
     internal class CalamityModSupport : ModSupport
     {
+        public override string ModName => "CalamityMod";
         public override void OnHook(Mod Mod)
         {
             AltLibraryGlobalItem.HallowedOreList.Add(Mod.Find<ModTile>("HallowedOre").Type, true);
