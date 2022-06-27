@@ -33,7 +33,7 @@ namespace AltLibrary.ModSupport
     {
         public override void OnHook(Mod Mod)
         {
-            AltLibraryGlobalItem.HallowedOreList.Add(Mod.Find<ModTile>("HallowedOre").Name, true);
+            AltLibraryGlobalItem.HallowedOreList.Add(Mod.Find<ModTile>("HallowedOre").Type, true);
         }
     }
 }
