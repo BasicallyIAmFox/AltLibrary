@@ -23,7 +23,8 @@ namespace AltLibrary
             if (tile != null && HallowedOreList.ContainsKey(Main.tile[tile.TileCoords].TileType))
             {
                 AltBiome biome = AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.WorldHallow);
-                item.SetDefaults(biome.MechDropItemType.Value);
+                if (biome.BiomeOre != null)
+                    item.SetDefaults(biome.MechDropItemType.Value);
             }
         }
 
