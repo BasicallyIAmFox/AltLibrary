@@ -2703,6 +2703,18 @@
             <br>Can be called on any side, but only the server will actually sync it.</br>
             </summary>
         </member>
+        <member name="M:Terraria.Main.RunOnMainThread(System.Action)">
+            <summary>
+            Wait for an action to be performed on the main thread.
+            </summary>
+            <param name="action"></param>
+        </member>
+        <member name="M:Terraria.Main.RunOnMainThread``1(System.Func{``0})">
+            <summary>
+            Wait for an action to be performed on the main thread.
+            </summary>
+            <param name="func"></param>
+        </member>
         <member name="T:Terraria.ModLoader.AccessorySlotLoader">
             <summary>
             This serves as a central place to store equipment slots and their corresponding textures. You will use this to obtain the IDs for your equipment textures.
