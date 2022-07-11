@@ -67,7 +67,6 @@ namespace AltLibrary
             AnimatedModIcon.Init();
             ALConvert.Load();
             GuideHelpText.Load();
-            UIChanges.Apply();
             FishingCrateLoot.Load();
             AnalystShopLoader.Load();
             ModIconVariation = Main.rand.Next(ALTextureAssets.AnimatedModIcon.Length);
@@ -75,6 +74,7 @@ namespace AltLibrary
             HallowBunnyUnlocked = false;
             if (!Main.dedServ)
             {
+                UIChanges.Apply();
                 pieChartState = new ALPieChartState();
                 userInterface = new UserInterface();
                 userInterface.SetState(pieChartState);
