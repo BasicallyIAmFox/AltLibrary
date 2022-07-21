@@ -225,6 +225,9 @@ namespace AltLibrary.Core.UIs
                 case OreType.Adamantite:
                     if (!ore.OnClick()) UIWorldCreationEdits.Adamantite = ore.Type;
                     break;
+                case OreType.None:
+                    ore.OnClick();
+                    break;
             }
         }
 

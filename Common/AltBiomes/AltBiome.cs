@@ -1,4 +1,5 @@
-﻿using AltLibrary.Core.Baking;
+﻿using AltLibrary.Common.AltOres;
+using AltLibrary.Core.Baking;
 using AltLibrary.Core.Generation;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -410,6 +411,41 @@ namespace AltLibrary.Common.AltBiomes
                 throw new IndexOutOfRangeException(nameof(AltUnderworldBackgrounds) + " length isn't same as Underworld's! (" + TextureAssets.Underworld.Length + ")");
             }
             Type = AltLibrary.Biomes.Count;
+        }
+
+        /// <summary>
+        /// Override if you want custom selection
+        /// </summary>
+        /// <param name="list"></param>
+        public virtual void CustomSelection(List<AltBiome> list)
+        {
+            int index = list.FindLastIndex(x => x.BiomeType == BiomeType);
+            if (index != -1)
+            {
+                list.Insert(index + 1, this);
+            }
+        }
+
+        /// <summary>
+        /// Override if you want to have random value whenever creating new world. Should be used just for custom tiers.
+        /// </summary>
+        public virtual void OnInitialize()
+        {
+        }
+
+        /// <summary>
+        /// If you want custom action on click, then use this. Useful for "RandomX" options and custom tiers.
+        /// <br/>By default: false.
+        /// <br/>Set to true if you want to override default behavior.
+        /// </summary>
+        public virtual bool OnClick() => false;
+
+        public virtual void OnCreating()
+        {
+        }
+
+        public virtual void AddBiomeOnScreenIcon(List<ALDrawingStruct<AltBiome>> list)
+        {
         }
     }
 

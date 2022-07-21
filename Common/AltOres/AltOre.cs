@@ -67,13 +67,15 @@ namespace AltLibrary.Common.AltOres
             private set;
         }
 
+        public bool includeInHardmodeDrunken = false;
+
         /// <summary>
         /// Override if you want custom selection
         /// </summary>
         /// <param name="list"></param>
         public virtual void CustomSelection(List<AltOre> list)
         {
-            int index = list.FindLastIndex(x => x.OreType == AltLibrary.Ores.Find(x => x.FullName == FullName).OreType);
+            int index = list.FindLastIndex(x => x.OreType == OreType);
             if (index != -1)
             {
                 list.Insert(index + 1, this);
@@ -87,17 +89,18 @@ namespace AltLibrary.Common.AltOres
         {
         }
 
-        /// <summary>
-        /// If you want custom action on click, then use this. Useful for "RandomX" options and custom tiers.
-        /// <br/>By default: false.
-        /// <br/>Set to true if you want to override default behavior.
-        /// </summary>
-        public virtual bool OnClick()
-        {
-            return false;
-        }
+		/// <summary>
+		/// If you want custom action on click, then use this. Useful for "RandomX" options and custom tiers.
+		/// <br/>By default: false.
+		/// <br/>Set to true if you want to override default behavior.
+		/// </summary>
+		public virtual bool OnClick() => false;
 
-        public virtual void AddOreOnScreenIcon(List<ALOreDrawingStruct> list)
+		public virtual void OnCreating()
+		{
+		}
+
+        public virtual void AddOreOnScreenIcon(List<ALDrawingStruct<AltOre>> list)
         {
         }
 

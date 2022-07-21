@@ -8,16 +8,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Terraria;
-using Terraria.GameContent.Biomes;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.Utilities;
 using Terraria.WorldBuilding;
 
 namespace AltLibrary.Common.Hooks
 {
-    internal static class EvenMoreWorldGen
+	internal static class EvenMoreWorldGen
     {
         public static void Init()
         {

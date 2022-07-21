@@ -15,13 +15,12 @@ namespace AltLibrary.Common.AltBiomes
 
         public override EvilBiomeGenerationPass GetEvilBiomeGenerationPass()
         {
-            switch (SpecialValueForWorldUIDoNotTouchElseYouCanBreakStuff)
-            {
-                case -1:
-                    return corruptPass;
-            }
-            return crimsonPass;
-        }
+			return SpecialValueForWorldUIDoNotTouchElseYouCanBreakStuff switch
+			{
+				-1 => corruptPass,
+				_ => crimsonPass,
+			};
+		}
 
         internal static readonly EvilBiomeGenerationPass corruptPass = new CorruptionEvilBiomeGenerationPass();
         internal static readonly EvilBiomeGenerationPass crimsonPass = new CrimsonEvilBiomeGenerationPass();

@@ -85,7 +85,7 @@ namespace AltLibrary.Core.Baking
         internal static void BakeDrunken()
         {
             UnifiedRandom rngSeed = new(WorldGen._genRandSeed); //bake seed later
-            List<AltOre> hardmodeListing = ALWorldCreationLists.hmOreData.Ores;
+            List<AltOre> hardmodeListing = ALWorldCreationLists.prehmOreData.Types.FindAll(x => x.includeInHardmodeDrunken || x.OreType >= OreType.Cobalt & x.OreType != OreType.None);
 
             WorldBiomeManager.drunkCobaltCycle = hardmodeListing.Where(x => x.OreType == OreType.Cobalt && x.Selectable).ToArray();
             WorldBiomeManager.drunkMythrilCycle = hardmodeListing.Where(x => x.OreType == OreType.Mythril && x.Selectable).ToArray();

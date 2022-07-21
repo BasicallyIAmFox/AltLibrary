@@ -8,6 +8,7 @@
         Gold,
         Cobalt,
         Mythril,
-        Adamantite
+        Adamantite,
+        None
     }
 }

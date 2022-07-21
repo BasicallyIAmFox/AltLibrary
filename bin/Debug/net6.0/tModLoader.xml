@@ -586,6 +586,100 @@
             Causes debuffs to last twice as long on players in expert mode. Defaults to false.
             </summary>
         </member>
+        <member name="F:Terraria.ID.CursorOverrideID.DefaultCursor">
+            <summary>
+            Default cursor
+            </summary>
+        </member>
+        <member name="F:Terraria.ID.CursorOverrideID.SmartCursor">
+            <summary>
+            Smart cursor enabled
+            </summary>
+        </member>
+        <member name="F:Terraria.ID.CursorOverrideID.Magnifiers">
+            <summary>
+            Try to display items in chat messages
+            </summary>
+        </member>
+        <member name="F:Terraria.ID.CursorOverrideID.FavoriteStar">
+            <summary>
+            Try to mark as favorite
+            </summary>
+        </member>
+        <member name="F:Terraria.ID.CursorOverrideID.CameraLight">
+            <summary>
+            The first in-game camera point
+            <br>If <see cref="F:Terraria.Main.cursorOverride"/> is set to this, the color will be the same as the cursor color</br>
+            </summary>
+        </member>
+        <member name="F:Terraria.ID.CursorOverrideID.CameraDark">
+            <summary>
+            The second in-game camera point
+            <br>If <see cref="F:Terraria.Main.cursorOverride"/> is set to this, the color will be the same as the cursor color</br>
+            </summary>
+        </member>
+        <member name="F:Terraria.ID.CursorOverrideID.TrashCan">
+            <summary>
+            Quick trash
+            </summary>
+        </member>
+        <member name="F:Terraria.ID.CursorOverrideID.BackInventory">
+            <summary>
+            From guide slot, research slot, reforge slot, etc. to inventory
+            </summary>
+        </member>
+        <member name="F:Terraria.ID.CursorOverrideID.ChestToInventory">
+            <summary>
+            From chest to inventory
+            </summary>
+        </member>
+        <member name="F:Terraria.ID.CursorOverrideID.InventoryToChest">
+            <summary>
+            From inventory to chest
+            </summary>
+        </member>
+        <member name="F:Terraria.ID.CursorOverrideID.QuickSell">
+            <summary>
+            Quick sell items to NPC
+            </summary>
+        </member>
+        <member name="F:Terraria.ID.CursorOverrideID.DefaultCursorOutline">
+            <summary>
+            Default cursor outline
+            </summary>
+        </member>
+        <member name="F:Terraria.ID.CursorOverrideID.SmartCursorOutline">
+            <summary>
+            Smart cursor outline
+            </summary>
+        </member>
+        <member name="F:Terraria.ID.CursorOverrideID.GamepadSmartCursor">
+            <summary>
+            Smart cursor enabled if <see cref="P:Terraria.GameInput.PlayerInput.SettingsForUI.ShowGamepadCursor"/> is true
+            <br>When using the gamepad in smart cursor mode, the cursor that is relatively close to the player</br>
+            </summary>
+        </member>
+        <member name="F:Terraria.ID.CursorOverrideID.GamepadSmartCursorOutline">
+            <summary>
+            Smart cursor outline if <see cref="P:Terraria.GameInput.PlayerInput.SettingsForUI.ShowGamepadCursor"/> is true
+            </summary>
+        </member>
+        <member name="F:Terraria.ID.CursorOverrideID.GamepadDefaultCursor">
+            <summary>
+            Default cursor if <see cref="P:Terraria.GameInput.PlayerInput.SettingsForUI.ShowGamepadCursor"/> is true
+            </summary>
+        </member>
+        <member name="F:Terraria.ID.CursorOverrideID.GamepadDefaultCursorOutline">
+            <summary>
+            Default cursor outline if <see cref="P:Terraria.GameInput.PlayerInput.SettingsForUI.ShowGamepadCursor"/> is true
+            </summary>
+        </member>
+        <member name="F:Terraria.ID.CursorOverrideID.GamepadSmartCursorAlt">
+            <summary>
+            Actual cursor position indicator if smart cursor enabled and <see cref="P:Terraria.GameInput.PlayerInput.SettingsForUI.ShowGamepadCursor"/> is true
+            <br>When using the gamepad in smart cursor mode, the cursor that is relatively far away from the player</br>
+            </summary>
+        </member>
         <member name="F:Terraria.ID.DustID.Water">
             <summary>
             Use Dust.dustWater() if you want to calculate water dust based on water style
@@ -2468,6 +2562,20 @@
         <member name="F:Terraria.ID.TileID.Sets.IgnoredByGrowingSaplings">
             <summary> Whether or not saplings count this tile as empty when trying to grow. </summary>
         </member>
+        <member name="F:Terraria.ID.TileID.Sets.PreventsSandfall">
+            <summary>
+            Whether or not this tile will prevent sand/slush from falling beneath it.
+            </summary>
+            <remarks>
+            Note: This Set does not include the values within the Sets <seealso cref="F:Terraria.ID.TileID.Sets.BasicChest"/>, <seealso cref="F:Terraria.ID.TileID.Sets.BasicChestFake"/>,
+            and <seealso cref="F:Terraria.ID.TileID.Sets.BasicDresser"/>, but Tile IDs within those sets will also prevent sandfall.
+            </remarks>
+        </member>
+        <member name="F:Terraria.ID.TileID.Sets.CountsAsPylon">
+            <summary>
+            What tiles count as Pylons, which allow the player to teleport to any other valid Pylons on the map.
+            </summary>
+        </member>
         <member name="F:Terraria.Item.makeNPC">
             <summary>
             The numerical ID of the NPC that this item creates when used.<br></br>
@@ -3144,6 +3252,15 @@
             Responsible for sorting, dependency verification and organizing which mods to load
             </summary>
         </member>
+        <member name="M:Terraria.ModLoader.Core.ModOrganizer.FindWorkshopMods">
+            <summary>Mods in workshop folders, not in dev folder or modpacks</summary>
+        </member>
+        <member name="M:Terraria.ModLoader.Core.ModOrganizer.FindDevFolderMods">
+            <summary>Mods in dev folder, not in workshop or modpacks</summary>
+        </member>
+        <member name="M:Terraria.ModLoader.Core.ModOrganizer.FindMods(System.Boolean)">
+            <summary>Mods from any location, using the default internal priority logic</summary>
+        </member>
         <member name="M:Terraria.ModLoader.Core.ModOrganizer.DetectModChangesForInfoMessage">
             <summary>
             Returns changes based on last time <see cref="M:Terraria.ModLoader.Core.ModOrganizer.SaveLastLaunchedMods"/> was called. Can be null if no changes.
@@ -3301,6 +3418,17 @@
             Runs a simplified version of Player.UpdateEquips for the Modded Accessory Slots
             </summary>
         </member>
+        <member name="T:Terraria.ModLoader.Default.PylonShopNPC">
+            <summary>
+            This is a GlobalNPC native to tML that handles adding Pylon items to NPC's shops, to save on patch size within vanilla.
+            </summary>
+        </member>
+        <member name="T:Terraria.ModLoader.Default.TEModdedPylon">
+            <summary>
+            This is a TML provided Tile Entity that acts extremely similar to vanilla's pylon TEs by default. If you plan
+            to make a pylon tile in any capacity, you must extend this TE at least once.
+            </summary>
+        </member>
         <member name="T:Terraria.ModLoader.DrawableTooltipLine">
             <summary>
             This class serves as a way to store information about a line that will be drawn of tooltip for an item. You will create and manipulate objects of this class if you use the draw hooks for tooltips in ModItem and GlobalItem. For examples, see ExampleSword
@@ -3401,7 +3529,7 @@
             Provides a SynchronizationContext for running continuations on the Main thread in the Update loop, for platforms which don't initialized with one
             </summary>
         </member>
-        <member name="T:Terraria.ModLoader.Engine.GraphicsChangeTracker">
+        <member name="T:Terraria.ModLoader.Engine.FNALogging">
             <summary>
             Attempt to track spurious device resets, backbuffer flickers and resizes
             Also setup some FNA logging
@@ -5513,30 +5641,108 @@
             The location that the grappling hook pulls the player to. Defaults to the center of the hook projectile.
             </summary>
         </member>
-        <member name="T:Terraria.ModLoader.GlobalRecipe">
+        <member name="T:Terraria.ModLoader.GlobalPylon">
             <summary>
-            This class provides hooks that control all recipes in the game.
+            Global Type that exists for pylons that allows for modification of teleportation steps, map drawing, and
+            other functionality for any pylon that exists, whether it be vanilla or modded.
             </summary>
         </member>
-        <member name="M:Terraria.ModLoader.GlobalRecipe.RecipeAvailable(Terraria.Recipe)">
+        <member name="M:Terraria.ModLoader.GlobalPylon.PreDrawMapIcon(Terraria.Map.MapOverlayDrawContext@,System.String@,Terraria.GameContent.TeleportPylonInfo@,System.Boolean@,Microsoft.Xna.Framework.Color@,System.Single@,System.Single@)">
             <summary>
-            Whether or not the conditions are met for the given recipe to be available for the player to use. This hook can be used for conditions unrelated to items or tiles (for example, biome or time).
+            Called right before both modded and vanilla pylons draw their icons on the map. Returning false will prevent the passed in icon from being drawn on the map. Returns
+            true by default.
             </summary>
+            <remarks>
+            Note that if you change the value of the isNearPylon parameter, the change will cascade and all pylons following this will be affected by the change.
+            </remarks>
+            <param name="context"> The current map context on which you can draw. </param>
+            <param name="mouseOverText"> The text that will overlay on the mouse when the icon is being hovered over. </param>
+            <param name="pylonInfo"> The pylon that is currently needing its icon to be drawn. </param>
+            <param name="isNearPylon"> Whether or not the player is currently near a pylon. </param>
+            <param name="drawColor"> The draw color of the icon. This is bright white when the player is near a Pylon, but gray and translucent otherwise. </param>
+            <param name="deselectedScale"> The scale of the icon if it is NOT currently being hovered over. In vanilla, this is 1f, or 100%. </param>
+            <param name="selectedScale"> The scale of the icon if it IS currently being over. In vanilla, this is 2f, or 200%. </param>
         </member>
-        <member name="M:Terraria.ModLoader.GlobalRecipe.OnCraft(Terraria.Item,Terraria.Recipe)">
+        <member name="M:Terraria.ModLoader.GlobalPylon.PreCanPlacePylon(System.Int32,System.Int32,System.Int32,Terraria.GameContent.TeleportPylonType)">
             <summary>
-            Allows you to make anything happen when the player uses the given recipe. The item parameter is the item the player has just crafted.
+            Called right before both modded and vanilla pylons determine whether or not they can be placed. Returning false will prevent vanilla checks from taking place,
+            forcefully preventing the pylon from being placed. Returning null will enact vanilla behavior, and returning true will make the check forcefully succeed,
+            regardless of vanilla behavior. Returns null by default.
             </summary>
-            <param name="item">The item created.</param>
-            <param name="recipe">The recipe used to create the item.</param>
+            <param name="x"> The current X position of where the tile in question is asking it can be placed. </param>
+            <param name="y"> The current Y position of where the tile in question is asking it can be placed. </param>
+            <param name="tileType"> The actual type of tile currently asking if it can be placed. </param>
+            <param name="pylonType"> The type of pylon belonging to this tile. </param>
+            <remarks>
+            Note that in Multiplayer environments, this is called first on the client, and then is subsequently called &amp; double checked on the server.
+            <br>If the server disagrees with the client that the given pylon CANNOT be placed for any given reason, the server will reject the placement
+            and subsequently break the associated tile.</br>
+            </remarks>
         </member>
-        <member name="M:Terraria.ModLoader.GlobalRecipe.ConsumeItem(Terraria.Recipe,System.Int32,System.Int32@)">
+        <member name="M:Terraria.ModLoader.GlobalPylon.ValidTeleportCheck_PreNPCCount(Terraria.GameContent.TeleportPylonInfo,System.Int32@)">
             <summary>
-            Allows to edit the amount of item the player uses in a recipe.
+            Called before Step 1 of the ValidTeleportCheck process. This is the first vanilla check that is called when
+            the player attempts to teleport FROM or TO a Pylon. This method is called before both vanilla
+            and modded pylons check their NPC requirements, and returning false will prevent those checks from taking place,
+            forcefully failing the NPCCount step. Returning null will enact vanilla behavior, and returning true will make the
+            step succeed regardless. Returns null by default.
             </summary>
-            <param name="recipe">The recipe used for the craft.</param>
-            <param name="type">Type of the ingredient.</param>
-            <param name="amount">Modifiable amount of the item consumed.</param>
+            <remarks>
+            Note that you may also change the the default npc count value if for some reason you wish to change the default
+            amount of NPCs required to satisfy ALL pylons (if they adhere to what value it is).
+            </remarks>
+            <param name="pylonInfo"> The internal information pertaining to the current pylon being teleported to or from. </param>
+            <param name="defaultNecessaryNPCCount"> The default amount of NPCs nearby required to satisfy a VANILLA pylon. </param>
+        </member>
+        <member name="M:Terraria.ModLoader.GlobalPylon.ValidTeleportCheck_PreAnyDanger(Terraria.GameContent.TeleportPylonInfo)">
+            <summary>
+            Called before Step 2 of the ValidTeleportCheck process. This is the second vanilla check that is called when
+            the player attempts to teleport TO a Pylon. This method is called before both vanilla and
+            modded pylons check their Danger requirements, and returning false will prevent those checks from taking place,
+            forcefully failing the AnyDanger step. Returning null will enact vanilla behavior, and returning true will make the
+            step succeed regardless. Returns null by default.
+            </summary>
+            <remarks>
+            Note that it's important you put the right checks in the right ValidTeleportCheck step,
+            as whatever one returns false (if any) will determine the error message sent to the player.
+            </remarks>
+            <param name="pylonInfo"> The internal information pertaining to the current pylon being teleported TO. </param>
+        </member>
+        <member name="M:Terraria.ModLoader.GlobalPylon.ValidTeleportCheck_PreBiomeRequirements(Terraria.GameContent.TeleportPylonInfo,Terraria.SceneMetrics)">
+            <summary>
+            Called before Step 3 of the ValidTeleportCheck process. This is the fourth vanilla check that is called when
+            the player attempts to teleport FROM or TO a Pylon. This method is called before both vanilla and
+            modded pylons check their Biome requirements, and returning false will prevent those checks from taking place,
+            forcefully failing the BiomeRequirements step. Returning null will enact vanilla behavior, and returning true will make the
+            step succeed regardless. Returns null by default.
+            </summary>
+            <remarks>
+            Note that it's important you put the right checks in the right ValidTeleportCheck step,
+            as whatever one returns false (if any) will determine the error message sent to the player.
+            </remarks>
+            <param name="pylonInfo"> The internal information pertaining to the current pylon being teleported to or from. </param>
+            <param name="sceneData"> The scene metrics data AT THE LOCATION of the destination pylon, NOT the player. </param>
+        </member>
+        <member name="M:Terraria.ModLoader.GlobalPylon.PostValidTeleportCheck(Terraria.GameContent.TeleportPylonInfo,Terraria.GameContent.TeleportPylonInfo,System.Boolean@,System.Boolean@,System.String@)">
+            <summary>
+            Called after all checks have taken place for all vanilla and modded pylons when a teleportation request is sent (AKA when the player clicks
+            on a pylon on the map). You can (for example) use this to allow teleportation to go through even if one the normal requirements haven't been
+            met, or vice versa; to do this, change destinationPylonValid to true or false respectively (for the given example).
+            </summary>
+            <param name="destinationPylonInfo"> The pylon information for the DESTINATION pylon. </param>
+            <param name="nearbyPylonInfo">
+            The pylon information of the pylon the player in question is standing NEAR. This value is at its defaults if
+            validNearbyPylonFound is false, but otherwise, will give information on the nearby pylon.
+            </param>
+            <param name="destinationPylonValid">
+            Whether or not the normal requirements were satisfied for the DESTINATION pylon.
+            Set this to true if you want the teleportation request to succeed, false if not.
+            </param>
+            <param name="validNearbyPylonFound"> Whether or not a valid pylon near the player satisfied its normal requirements. </param>
+            <param name="errorKey">
+            The localization key that will be used to sent text to the player when destinationPylonValid is false.
+            Note that this parameter will already have a value if the method is called with destinationPylonValid being false.
+            </param>
         </member>
         <member name="T:Terraria.ModLoader.GlobalTile">
             <summary>
@@ -5925,6 +6131,20 @@
             <param name="x"></param>
             <param name="y"></param>
             <returns> False if x and y cannot be increased further (end of the world)  </returns>
+        </member>
+        <member name="T:Terraria.ModLoader.IPylonTileEntity">
+            <summary>
+            Allows Tile Entities that you want to be included in vanilla's pylon list to actually be added to the list
+            when said TE is extended by this interface. What this means, in short,
+            is that whenever all of the pylons are refreshed by vanilla, Tile Entities that extend this interface will get their own
+            <seealso cref="T:Terraria.GameContent.TeleportPylonInfo"/> instance and it will be included along-side all of vanilla's pylons and any
+            other modded pylons.
+            </summary>
+        </member>
+        <member name="F:Terraria.ModLoader.RecipeCreationContext.ConsumedItems">
+            <summary>
+            Cloned list of Items consumed when crafting.
+            </summary>
         </member>
         <member name="T:Terraria.ModLoader.ItemLoader">
             <summary>
@@ -7265,6 +7485,12 @@
         <member name="M:Terraria.ModLoader.ModContent.TileType``1">
             <summary>
             Get the id (type) of a ModTile by class. Assumes one instance per class.
+            </summary>
+        </member>
+        <member name="M:Terraria.ModLoader.ModContent.PylonType``1">
+            <summary>
+            Get the id (type) of a ModPylon by class. Assumes one instance per class.
+            If nothing is found, returns 0, or the "Forest Pylon" type.
             </summary>
         </member>
         <member name="M:Terraria.ModLoader.ModContent.TileEntityType``1">
@@ -9244,7 +9470,7 @@
         </member>
         <member name="M:Terraria.ModLoader.ModPalmTree.TreeLeaf">
             <summary>
-            Return the type of gore created when this palm tree grow, being shook and falling leaves on windy days, returns -1 by default
+            Return the type of gore created when the tree grow, being shook and falling leaves on windy days, returns -1 by default
             </summary>
             <returns></returns>
         </member>
@@ -9868,9 +10094,17 @@
             <param name="damage"></param>
             <param name="crit"></param>
         </member>
+        <member name="M:Terraria.ModLoader.ModPlayer.ModifyFishingAttempt(Terraria.DataStructures.FishingAttempt@)">
+            <summary>
+            Allows you to change information about the ongoing fishing attempt before cought items/NPCs are decided, after all vanilla information has been gathered.
+            <br/>Will not be called if various conditions for getting a catch aren't met, meaning you can't modify those.
+            <br/>Setting <see cref="F:Terraria.DataStructures.FishingAttempt.rolledItemDrop"/> or <see cref="F:Terraria.DataStructures.FishingAttempt.rolledEnemySpawn"/> is not allowed and will be reset, use <see cref="M:Terraria.ModLoader.ModPlayer.CatchFish(Terraria.DataStructures.FishingAttempt,System.Int32@,System.Int32@,Terraria.AdvancedPopupRequest@,Microsoft.Xna.Framework.Vector2@)"/> for that.
+            </summary>
+            <param name="attempt">The structure containing most data from the vanilla fishing attempt</param>
+        </member>
         <member name="M:Terraria.ModLoader.ModPlayer.CatchFish(Terraria.DataStructures.FishingAttempt,System.Int32@,System.Int32@,Terraria.AdvancedPopupRequest@,Microsoft.Xna.Framework.Vector2@)">
             <summary>
-            Allows you to change the item or enemy the player gets when sucessfully catching a "fish". The Fishing Attempt structure contains most information about the vanilla event, including the Item Rod and Bait used by the player, the liquid it is being fished on, and so on.
+            Allows you to change the item or enemy the player gets when sucessfully catching an item or NPC. The Fishing Attempt structure contains most information about the vanilla event, including the Item Rod and Bait used by the player, the liquid it is being fished on, and so on.
             The Sonar and Sonar position fields allow you to change the text, color, velocity and position of the catch's name (be it item or NPC) freely
             </summary>
             <param name="attempt">The structure containing most data from the vanilla fishing attempt</param>
@@ -9987,6 +10221,16 @@
             <param name="context">The Terraria.UI.ItemSlot.Context of the inventory.</param>
             <param name="slot">The index in the inventory of the clicked slot.</param>
             <returns>Whether or not to block the default code (sell, trash, move, etc) from running. Returns false by default.</returns>
+        </member>
+        <member name="M:Terraria.ModLoader.ModPlayer.HoverSlot(Terraria.Item[],System.Int32,System.Int32)">
+            <summary>
+            Called whenever the player hovers over an item slot. This can be used to override <see cref="F:Terraria.Main.cursorOverride"/>
+            <br>See <see cref="T:Terraria.ID.CursorOverrideID"/> for cursor override style IDs</br>
+            </summary>
+            <param name="inventory">The array of items the slot is part of.</param>
+            <param name="context">The Terraria.UI.ItemSlot.Context of the inventory.</param>
+            <param name="slot">The index in the inventory of the hover slot.</param>
+            <returns>Whether or not to block the default code that modifies <see cref="F:Terraria.Main.cursorOverride"/> from running. Returns false by default.</returns>
         </member>
         <member name="M:Terraria.ModLoader.ModPlayer.PostSellItem(Terraria.NPC,Terraria.Item[],Terraria.Item)">
             <summary>
@@ -10442,6 +10686,212 @@
             When used in conjunction with "Projectile.hide = true", allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles.
             </summary>
         </member>
+        <member name="T:Terraria.ModLoader.ModPylon">
+            <summary>
+            Extension to <seealso cref="T:Terraria.ModLoader.ModTile"/> that streamlines the process of creating a
+            modded Pylon. Has all of ModTile's hooks for customization, but additional hooks for
+            Pylon functionality.
+            </summary>
+            <remarks>
+            One of the key features of this class is the <b>ValidTeleportCheck</b> process. At first glance it can look a bit
+            messy, however here is a rough break-down of the call process to help you if you're lost:
+            <br></br>
+            1) Game queries if the specified player is near a Pylon (<seealso cref="M:Terraria.GameContent.TeleportPylonsSystem.IsPlayerNearAPylon(Terraria.Player)"/>)
+            <br></br>
+            2) Assuming Step 1 has passed, game queries if the DESTINATION PYLON (the pylon the player CLICKED on the map) has enough NPCs nearby (NPCCount step)
+            <br></br>
+            3) Assuming Step 2 has passed, game queries if there is ANY DANGER at ALL across the entire map, ignoring the lunar pillar event (AnyDanger step)
+            <br></br>
+            4) Assuming Step 3 has passed, game queries if the DESTINATION PYLON is in the Lihzahrd Temple before Plantera is defeated.
+            <br></br>
+            5) Assuming Step 4 has passed, game queries if the DESTINATION PYLON meets its biome specifications for whatever type of pylon it is (BiomeRequirements step)
+            <br></br>
+            6) Regardless of all the past checks, if the DESTINATION PYLON is a modded one, <seealso cref="M:Terraria.ModLoader.ModPylon.ValidTeleportCheck_DestinationPostCheck(Terraria.GameContent.TeleportPylonInfo,System.Boolean@,System.String@)"/> is called on it.
+            <br></br>
+            7) The game queries all pylons on the map and checks if any of them are in interaction distance with the player, and if so, checks Step 2 and 5 on them (NPCCount &amp; BiomeRequirements step)
+            <br></br>
+            8) Given that Step 7 finds a valid nearby pylon that satisfied the conditions, if that nearby pylon is a modded one, <seealso cref="M:Terraria.ModLoader.ModPylon.ValidTeleportCheck_NearbyPostCheck(Terraria.GameContent.TeleportPylonInfo,System.Boolean@,System.Boolean@,System.String@)"/> is called on it.
+            <br></br>
+            9) Any <seealso cref="T:Terraria.ModLoader.GlobalPylon"/> instances run <seealso cref="M:Terraria.ModLoader.GlobalPylon.PostValidTeleportCheck(Terraria.GameContent.TeleportPylonInfo,Terraria.GameContent.TeleportPylonInfo,System.Boolean@,System.Boolean@,System.String@)"/>.
+            </remarks>
+        </member>
+        <member name="P:Terraria.ModLoader.ModPylon.PylonType">
+            <summary>
+            What type of Pylon this ModPylon represents.
+            </summary>
+            <remarks>
+            The TeleportPylonType enum only has string names up until Count (9). The very first modded pylon to be added will
+            technically be accessible with the enum type of "Count" since that value isn't an actual "type" of pylon, and modded
+            pylons are assigned IDs starting with the Count value (9). All other modded pylons added after 9 (i.e 10+) will have no
+            enum name, and will only every be referred to by their number values.
+            </remarks>
+        </member>
+        <member name="M:Terraria.ModLoader.ModPylon.CanPlacePylon">
+            <summary>
+            Whether or not this Pylon can even be placed.
+            By default, it returns false if a Pylon of this type already exists in the world,
+            otherwise true. If you want to allow an infinite amount of these pylons to be placed,
+            simply always return true.
+            </summary>
+            <remarks>
+            Note that in Multiplayer environments, granted that any GlobalPylon instances do not return false in <seealso cref="M:Terraria.ModLoader.GlobalPylon.PreCanPlacePylon(System.Int32,System.Int32,System.Int32,Terraria.GameContent.TeleportPylonType)"/>,
+            this is called first on the client, and then is subsequently called &amp; double checked on the server.
+            <br>If the server disagrees with the client that the given pylon CANNOT be placed for any given reason, the server will reject the placement
+            and subsequently break the associated tile.</br>
+            </remarks>
+        </member>
+        <member name="M:Terraria.ModLoader.ModPylon.IsPylonForSale(System.Int32,Terraria.Player,System.Boolean)">
+            <summary>
+            Whether or not this Pylon should be sold by the specified NPC type and with the given player.
+            This should return the ITEM TYPE of the item that places this ModPylon, if one exists. If you don't
+            want anything to be put up for sale, return null.
+            <br>
+            Returns null by default.
+            </br>
+            </summary>
+            <param name="npcType"> The type of the NPC currently being spoken to to determine the shop of. </param>
+            <param name="player"> The current player asking said NPC type what they have for sale. </param>
+            <param name="isNPCHappyEnough">
+            Whether or not this NPC is "happy enough", by vanilla standards. You can ignore this if you don't care about happiness.
+            For reference, Vanilla defines "happy enough" as the player earning a 10% discount or more, or in code:
+            <code>Main.LocalPlayer.currentShoppingSettings.PriceAdjustment &lt;= 0.8999999761581421;</code> 
+            </param>
+        </member>
+        <member name="M:Terraria.ModLoader.ModPylon.ValidTeleportCheck_NPCCount(Terraria.GameContent.TeleportPylonInfo,System.Int32)">
+            <summary>
+            Step 1 of the ValidTeleportCheck process. This is the first vanilla check that is called when
+            checking both the destination pylon and any possible nearby pylons. This check should be where you check
+            how many NPCs are nearby, returning false if the Pylon does not satisfy the conditions.
+            By default, returns true if there are 2 or more (not-unhappy) NPCs nearby.
+            </summary>
+            <remarks>
+            Note that it's important you put the right checks in the right ValidTeleportCheck step,
+            as whatever one returns false (if any) will determine the error message sent to the player.
+            <br></br>
+            <b> If you're confused about the order of which the ValidTeleportCheck methods are called, check out the XML summary
+            on the ModPylon class.</b>
+            </remarks>
+            <param name="pylonInfo"> The internal information pertaining to the current pylon being teleported to or from. </param>
+            <param name="defaultNecessaryNPCCount"> The default amount of NPCs nearby required to satisfy a VANILLA pylon. </param>
+        </member>
+        <member name="M:Terraria.ModLoader.ModPylon.ValidTeleportCheck_AnyDanger(Terraria.GameContent.TeleportPylonInfo)">
+            <summary>
+            Step 2 of the ValidTeleportCheck process. This is the second vanilla check that is called when
+            checking the destination pylon. This check should be where you check
+            if there is any "Danger" nearby, such as bosses or if there is an event happening.
+            It is unlikely you will need to use this.
+            By default, returns true if there are not any events happening (Lunar Pillars do not count)
+            and there are no bosses currently alive.
+            </summary>
+            <remarks>
+            Note that it's important you put the right checks in the right ValidTeleportCheck step,
+            as whatever one returns false (if any) will determine the error message sent to the player.
+            <br></br>
+            <b> If you're confused about the order of which the ValidTeleportCheck methods are called, check out the XML summary
+            on the ModPylon class.</b>
+            </remarks>
+            <param name="pylonInfo"> The internal information pertaining to the current pylon being teleported TO. </param>
+        </member>
+        <member name="M:Terraria.ModLoader.ModPylon.ValidTeleportCheck_BiomeRequirements(Terraria.GameContent.TeleportPylonInfo,Terraria.SceneMetrics)">
+            <summary>
+            Step 3 of the ValidTeleportCheck process. This is the fourth vanilla check that is called when
+            checking both the destination pylon and any possible nearby pylons. This check should be where you check biome related
+            things, such as the simple check of whether or not the Pylon is in the proper biome.
+            By default, returns true.
+            </summary>
+            <remarks>
+            Note that it's important you put the right checks in the right ValidTeleportCheck step,
+            as whatever one returns false (if any) will determine the error message sent to the player.
+            <br></br>
+            <b> If you're confused about the order of which the ValidTeleportCheck methods are called, check out the XML summary
+            on the ModPylon class.</b>
+            </remarks>
+            <param name="pylonInfo"> The internal information pertaining to the current pylon being teleported to or from. </param>
+            <param name="sceneData"> The scene metrics data AT THE LOCATION of the destination pylon, NOT the player. </param>
+        </member>
+        <member name="M:Terraria.ModLoader.ModPylon.ValidTeleportCheck_DestinationPostCheck(Terraria.GameContent.TeleportPylonInfo,System.Boolean@,System.String@)">
+            <summary>
+            The 4th check of the ValidTeleportCheck process. This check is for modded Pylons only, called after
+            ALL other checks have completed pertaining the pylon clicked on the map (the destination pylon), but before
+            any nearby pylon information is calculated. This is where you an do custom checks that don't pertain to the past destination checks,
+            as well as customize the localization key to give custom messages to the player on teleportation failure. By default, does nothing.
+            <br></br>
+            <b> If you're confused about the order of which the ValidTeleportCheck methods are called, check out the XML summary
+            on the ModPylon class.</b>
+            </summary>
+            <param name="destinationPylonInfo"> The Pylon information for the Pylon that the player is attempt to teleport to. </param>
+            <param name="destinationPylonValid"> Whether or not after all of the checks, the destination Pylon is valid. </param>
+            <param name="errorKey"> The localization key for the message sent to the player if destinationPylonValid is false. </param>
+        </member>
+        <member name="M:Terraria.ModLoader.ModPylon.ValidTeleportCheck_NearbyPostCheck(Terraria.GameContent.TeleportPylonInfo,System.Boolean@,System.Boolean@,System.String@)">
+            <summary>
+            The 5th and final check of the ValidTeleportCheck process. This check is for modded Pylons only, called after
+            ALL other checks have completed for the destination pylon and all normal checks have taken place for the nearby
+            pylon, if applicable. This is where you can do custom checks that don't pertain to the past nearby pylon checks,
+            as well as customize the localization key to give custom messages to the player on teleportation failure. By default, does nothing.
+            <br></br>
+            <b> If you're confused about the order of which the ValidTeleportCheck methods are called, check out the XML summary
+            on the ModPylon class.</b>
+            </summary>
+            <param name="nearbyPylonInfo">
+            The pylon information of the pylon the player in question is standing NEAR. This always has a value.
+            </param>
+            <param name="destinationPylonValid"> Whether or not after all of the checks, the destination Pylon is valid. </param>
+            <param name="anyNearbyValidPylon"> Whether or not after all of the checks, there is a Pylon nearby to the player that is valid. </param>
+            <param name="errorKey"> The localization key for the message sent to the player if destinationPylonValid is false. </param>
+        </member>
+        <member name="M:Terraria.ModLoader.ModPylon.DrawMapIcon(Terraria.Map.MapOverlayDrawContext@,System.String@,Terraria.GameContent.TeleportPylonInfo,System.Boolean,Microsoft.Xna.Framework.Color,System.Single,System.Single)">
+            <summary>
+            Called when the map is visible, in order to draw the passed in Pylon on the map.
+            In order to draw on the map, you must use <seealso cref="T:Terraria.Map.MapOverlayDrawContext"/>'s Draw Method. By default, doesn't draw anything.
+            </summary>
+            <param name="context"> The current map context on which you can draw. </param>
+            <param name="mouseOverText"> The text that will overlay on the mouse when the icon is being hovered over. </param>
+            <param name="pylonInfo"> The pylon that is currently needing its icon to be drawn. </param>
+            <param name="isNearPylon"> Whether or not the player is currently near a pylon. </param>
+            <param name="drawColor"> The draw color of the icon. This is bright white when the player is near a Pylon, but gray and translucent otherwise. </param>
+            <param name="deselectedScale"> The scale of the icon if it is NOT currently being hovered over. In vanilla, this is 1f, or 100%. </param>
+            <param name="selectedScale"> The scale of the icon if it IS currently being over. In vanilla, this is 2f, or 200%. </param>
+        </member>
+        <member name="M:Terraria.ModLoader.ModPylon.DefaultDrawPylonCrystal(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Int32,System.Int32,ReLogic.Content.Asset{Microsoft.Xna.Framework.Graphics.Texture2D},Microsoft.Xna.Framework.Color,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Draws the passed in pylon crystal texture the exact way that vanilla draws it. This MUST be called in SpecialDraw in order
+            to function properly.
+            </summary>
+            <param name="spriteBatch"> The sprite batch that will draw the crystal. </param>
+            <param name="i"> The X tile coordinate to start drawing from. </param>
+            <param name="j"> The Y tile coordinate to star drawing from. </param>
+            <param name="crystalTexture"> The texture of the crystal that will actually be drawn. </param>
+            <param name="crystalDrawColor"> The color to draw the crystal as. </param>
+            <param name="frameHeight"> The height of a singular frame of the crystal. 64 for a normal pylon crystal in vanilla.</param>
+            <param name="crystalHorizontalFrameCount">The total frames wide the crystal texture has. </param>
+            <param name="crystalVerticalFrameCount"> The total frames high the crystal texture has. </param>
+        </member>
+        <member name="M:Terraria.ModLoader.ModPylon.DefaultDrawMapIcon(Terraria.Map.MapOverlayDrawContext@,ReLogic.Content.Asset{Microsoft.Xna.Framework.Graphics.Texture2D},Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Color,System.Single,System.Single)">
+            <summary>
+            Draws the passed in map icon texture for pylons the exact way that vanilla would draw it. Note that this method
+            assumes that the texture is NOT framed, i.e there is only a single sprite that is not animated.
+            Returns whether or not the player is currently hovering over the icon.
+            </summary>
+            <param name="context"> The draw context that will allow for drawing on thj</param>
+            <param name="mapIcon"> The icon that is to be drawn on the map. </param>
+            <param name="drawCenter"> The position in TILE coordinates for where the CENTER of the map icon should be. </param>
+            <param name="drawColor"> The color to draw the icon as. </param>
+            <param name="deselectedScale"> The scale to draw the map icon when it is not selected (not being hovered over). </param>
+            <param name="selectedScale"> The scale to draw the map icon when it IS selected (being hovered over). </param>
+        </member>
+        <member name="M:Terraria.ModLoader.ModPylon.DefaultMapClickHandle(System.Boolean,Terraria.GameContent.TeleportPylonInfo,System.String,System.String@)">
+            <summary>
+            Handles mouse clicking on the map icon the exact way that vanilla handles it. In normal circumstances, this should be called
+            directly after DefaultDrawMapIcon.
+            </summary>
+            <param name="mouseIsHovering"> Whether or not the map icon is currently being hovered over. </param>
+            <param name="pylonInfo"> The information pertaining to the current pylon being drawn. </param>
+            <param name="hoveringTextKey">
+            The localization key that will be used to display text on the mouse, granted the mouse is currently hovering over the map icon.
+            </param>
+            <param name="mouseOverText"> The reference to the string value that actually changes the mouse text value. </param>
+        </member>
         <member name="P:Terraria.ModLoader.ModRarity.RarityColor">
             <summary>
             Your ModRarity's color.
@@ -10519,6 +10969,12 @@
         <member name="T:Terraria.ModLoader.ModSystem">
             <summary>
             ModSystem is an abstract class that your classes can derive from. It contains general-use hooks, and, unlike Mod, can have unlimited amounts of types deriving from it.
+            </summary>
+        </member>
+        <member name="M:Terraria.ModLoader.ModSystem.SetupContent">
+            <summary>
+            Unlike other ModTypes, SetupContent is unsealed for you to do whatever you need. By default it just calls SetStaticDefaults.
+            This is the place to finish initializing your mod's content. For content from other mods, and lookup tables, consider PostSetupContent
             </summary>
         </member>
         <member name="M:Terraria.ModLoader.ModSystem.OnModLoad">
@@ -11923,9 +12379,19 @@
             <param name="type">The type of the projectile</param>
             <returns>The ModProjectile instance in the projectiles array, null if not found.</returns>
         </member>
+        <member name="M:Terraria.ModLoader.PylonLoader.GetModPylon(Terraria.GameContent.TeleportPylonType)">
+            <summary>
+            Returns the ModPylon associated with the passed in type. Returns null on failure.
+            </summary>
+        </member>
         <member name="T:Terraria.ModLoader.RecipeLoader">
             <summary>
             This is where all Recipe and GlobalRecipe hooks are gathered and called.
+            </summary>
+        </member>
+        <member name="F:Terraria.ModLoader.RecipeLoader.ConsumedItems">
+            <summary>
+            Cloned list of Items consumed when crafting.  Cleared after the OnCreate and OnCraft hooks.
             </summary>
         </member>
         <member name="F:Terraria.ModLoader.RecipeLoader.setupRecipes">
@@ -11950,12 +12416,18 @@
             <param name="recipe">The recipe to check.</param>
             <returns>Whether or not the conditions are met for this recipe.</returns>
         </member>
-        <member name="M:Terraria.ModLoader.RecipeLoader.OnCraft(Terraria.Item,Terraria.Recipe)">
+        <member name="M:Terraria.ModLoader.RecipeLoader.OnCraft(Terraria.Item,Terraria.Recipe,System.Collections.Generic.List{Terraria.Item})">
             <summary>
-            Allows you to make anything happen when a player uses this recipe.
+            recipe.OnCraftHooks followed by Calls ItemLoader.OnCreate with a RecipeCreationContext
             </summary>
             <param name="item">The item crafted.</param>
             <param name="recipe">The recipe used to craft the item.</param>
+            <param name="consumedItems">Materials used to craft the item.</param>
+        </member>
+        <member name="M:Terraria.ModLoader.RecipeLoader.OnCraft(Terraria.Item,Terraria.Recipe)">
+            <summary>
+            Helper version of OnCraft, used in combination with Recipe.Create and the internal ConsumedItems list
+            </summary>
         </member>
         <member name="M:Terraria.ModLoader.RecipeLoader.ConsumeItem(Terraria.Recipe,System.Int32,System.Int32@)">
             <summary>

@@ -21,7 +21,6 @@ C:\Users\palma\Documents\My Games\Terraria\tModLoader\ModSources\AltLibrary\bin\
 C:\Users\palma\Documents\My Games\Terraria\tModLoader\ModSources\AltLibrary\bin\Debug\net6.0\NVorbis.dll
 C:\Users\palma\Documents\My Games\Terraria\tModLoader\ModSources\AltLibrary\bin\Debug\net6.0\RailSDK.Net.dll
 C:\Users\palma\Documents\My Games\Terraria\tModLoader\ModSources\AltLibrary\bin\Debug\net6.0\ReLogic.dll
-C:\Users\palma\Documents\My Games\Terraria\tModLoader\ModSources\AltLibrary\bin\Debug\net6.0\SixLabors.ImageSharp.dll
 C:\Users\palma\Documents\My Games\Terraria\tModLoader\ModSources\AltLibrary\bin\Debug\net6.0\Steamworks.NET.dll
 C:\Users\palma\Documents\My Games\Terraria\tModLoader\ModSources\AltLibrary\bin\Debug\net6.0\SteelSeriesEngineWrapper.dll
 C:\Users\palma\Documents\My Games\Terraria\tModLoader\ModSources\AltLibrary\bin\Debug\net6.0\System.CodeDom.dll
@@ -50,7 +49,6 @@ C:\Users\palma\Documents\My Games\Terraria\tModLoader\ModSources\AltLibrary\bin\
 C:\Users\palma\Documents\My Games\Terraria\tModLoader\ModSources\AltLibrary\bin\Debug\net6.0\MonoMod.Utils.xml
 C:\Users\palma\Documents\My Games\Terraria\tModLoader\ModSources\AltLibrary\bin\Debug\net6.0\ReLogic.pdb
 C:\Users\palma\Documents\My Games\Terraria\tModLoader\ModSources\AltLibrary\bin\Debug\net6.0\ReLogic.xml
-C:\Users\palma\Documents\My Games\Terraria\tModLoader\ModSources\AltLibrary\bin\Debug\net6.0\SixLabors.ImageSharp.xml
 C:\Users\palma\Documents\My Games\Terraria\tModLoader\ModSources\AltLibrary\bin\Debug\net6.0\System.CodeDom.xml
 C:\Users\palma\Documents\My Games\Terraria\tModLoader\ModSources\AltLibrary\bin\Debug\net6.0\System.Configuration.ConfigurationManager.xml
 C:\Users\palma\Documents\My Games\Terraria\tModLoader\ModSources\AltLibrary\bin\Debug\net6.0\System.Diagnostics.PerformanceCounter.xml

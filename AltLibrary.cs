@@ -1,3 +1,4 @@
+using AltLibrary.Common;
 using AltLibrary.Common.AltBiomes;
 using AltLibrary.Common.AltLiquidStyles;
 using AltLibrary.Common.AltOres;
@@ -58,6 +59,9 @@ namespace AltLibrary
         {
             Instance = this;
         }
+
+        public static void AddInFinishList(AltOre ore) => UIWorldCreationEdits.AddInFinishedCreation.Add(ore);
+        public static void AddInFinishList(AltBiome ore) => UIWorldCreationEdits.AddInFinishedCreation2.Add(ore);
 
         public override void Load()
         {

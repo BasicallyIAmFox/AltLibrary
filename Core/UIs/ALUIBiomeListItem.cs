@@ -186,21 +186,23 @@ namespace AltLibrary.Core.UIs
                 UIWorldCreationEdits.AltEvilBiomeChosenType = biome.Type > 0 ? biome.Type - 1 : biome.Type;
                 UIWorldCreationEdits.isCrimson = false;
             }
-            if (biome.BiomeType == BiomeType.Hallow)
+            else if (biome.BiomeType == BiomeType.Hallow)
             {
                 if (biome.SpecialValueForWorldUIDoNotTouchElseYouCanBreakStuff < 0) biome.Type = -3;
                 UIWorldCreationEdits.AltHallowBiomeChosenType = biome.Type > 0 ? biome.Type - 1 : biome.Type;
             }
-            if (biome.BiomeType == BiomeType.Hell)
+            else if (biome.BiomeType == BiomeType.Hell)
             {
                 if (biome.SpecialValueForWorldUIDoNotTouchElseYouCanBreakStuff < 0) biome.Type = -5;
                 UIWorldCreationEdits.AltHellBiomeChosenType = biome.Type > 0 ? biome.Type - 1 : biome.Type;
             }
-            if (biome.BiomeType == BiomeType.Jungle)
+            else if (biome.BiomeType == BiomeType.Jungle)
             {
                 if (biome.SpecialValueForWorldUIDoNotTouchElseYouCanBreakStuff < 0) biome.Type = -4;
                 UIWorldCreationEdits.AltJungleBiomeChosenType = biome.Type > 0 ? biome.Type - 1 : biome.Type;
             }
+            else
+                biome.OnClick();
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)

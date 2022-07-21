@@ -21,13 +21,14 @@ using Terraria.IO;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
-using static AltLibrary.Common.UIWorldCreationEdits;
 
 namespace AltLibrary.Common
 {
     [Autoload(Side = ModSide.Client)]
     internal class UIWorldCreationEdits
     {
+        internal static List<AltOre> AddInFinishedCreation;
+        internal static List<AltBiome> AddInFinishedCreation2;
         internal static ALGroupOptionButton<CurrentAltOption>[] chosingOption;
         internal static CurrentAltOption chosenOption;
         internal static int AltEvilBiomeChosenType;
@@ -38,9 +39,8 @@ namespace AltLibrary.Common
         internal static List<ALUIBiomeListItem> _biomeElements;
         internal static UIList _oreList;
         internal static List<ALUIOreListItem> _oreElements;
-        internal static UIList _oreHmList;
-        internal static List<ALUIOreListItem> _oreHmElements;
-        internal static List<ALOreDrawingStruct> QuenedDrawing;
+        internal static List<ALDrawingStruct<AltBiome>> QuenedDrawing2;
+        internal static List<ALDrawingStruct<AltOre>> QuenedDrawing;
         internal static int Copper;
         internal static int Iron;
         internal static int Silver;
@@ -54,8 +54,7 @@ namespace AltLibrary.Common
         internal enum CurrentAltOption
         {
             Biome,
-            Ore,
-            HMOre
+            Ore
         }
 
         public static void Init()
@@ -65,9 +64,11 @@ namespace AltLibrary.Common
 
             _biomeElements = new();
             _oreElements = new();
-            _oreHmElements = new();
+            AddInFinishedCreation = new();
+            AddInFinishedCreation2 = new();
 
             QuenedDrawing = new();
+            QuenedDrawing2 = new();
             initializedLists = false;
             IL.Terraria.GameContent.UI.States.UIWorldCreation.MakeInfoMenu += ILMakeInfoMenu;
             On.Terraria.GameContent.UI.States.UIWorldCreation.AddWorldEvilOptions += OnAddWorldEvilOptions;
@@ -102,8 +103,6 @@ namespace AltLibrary.Common
             _biomeElements = null;
             _oreList = null;
             _oreElements = null;
-            _oreHmList = null;
-            _oreHmElements = null;
             Copper = 0;
             Iron = 0;
             Silver = 0;
@@ -114,6 +113,9 @@ namespace AltLibrary.Common
             seed = null;
             initializedLists = false;
             QuenedDrawing = null;
+            QuenedDrawing2 = null;
+            AddInFinishedCreation = null;
+            AddInFinishedCreation2 = null;
         }
 
         #region Useful stuff
@@ -154,6 +156,10 @@ namespace AltLibrary.Common
             AltLibrary.Ores.Where(x => x.OreType == OreType.Adamantite && x.Selectable).ToList().ForEach(x => ores.Add(x.Type));
             Adamantite = Main.rand.Next(ores);
 
+            foreach (AltBiome ore in AltLibrary.Biomes)
+            {
+                ore.OnInitialize();
+            }
             foreach (AltOre ore in AltLibrary.Ores)
             {
                 ore.OnInitialize();
@@ -168,26 +174,25 @@ namespace AltLibrary.Common
             prehmList.Add(new RandomOptionOre("RandomIron"));
             prehmList.Add(new RandomOptionOre("RandomSilver"));
             prehmList.Add(new RandomOptionOre("RandomGold"));
-            prehmList.AddRange(ALWorldCreationLists.prehmOreData.Ores);
+            prehmList.Add(new RandomOptionOre("RandomCobalt"));
+            prehmList.Add(new RandomOptionOre("RandomMythril"));
+            prehmList.Add(new RandomOptionOre("RandomAdamantite"));
+            prehmList.AddRange(ALWorldCreationLists.prehmOreData.Types);
             return prehmList;
         }
 
-        internal static List<AltOre> MakeHardmodeOreList()
-        {
-            List<AltOre> hardmodeListing = new();
-            hardmodeListing.Clear();
-            hardmodeListing.Add(new RandomOptionOre("RandomCobalt"));
-            hardmodeListing.Add(new RandomOptionOre("RandomMythril"));
-            hardmodeListing.Add(new RandomOptionOre("RandomAdamantite"));
-            hardmodeListing.AddRange(ALWorldCreationLists.hmOreData.Ores);
-            return hardmodeListing;
-        }
-
-        internal static List<ALOreDrawingStruct> MakeQuenedDrawingList()
+        internal static List<ALDrawingStruct<AltOre>> MakeQuenedDrawingList()
         {
             QuenedDrawing.Clear();
             QuenedDrawing.AddRange(ALWorldCreationLists.prehmOreData.Quenes);
             return QuenedDrawing;
+        }
+
+        internal static List<ALDrawingStruct<AltBiome>> MakeQuenedDrawingList2()
+        {
+            QuenedDrawing2.Clear();
+            QuenedDrawing2.AddRange(ALWorldCreationLists.biomeData.Quenes);
+            return QuenedDrawing2;
         }
 
         internal static List<AltBiome> MakeBiomeList()
@@ -207,9 +212,12 @@ namespace AltLibrary.Common
             {
                 list.Add(new RandomOptionBiome("RandomUnderworldBiome"));
             }
-            list.Add(new VanillaBiome("CorruptBiome", BiomeType.Evil, -333, Color.MediumPurple, false));
-            list.Add(new VanillaBiome("CrimsonBiome", BiomeType.Evil, -666, Color.IndianRed, true));
-            list.AddRange(AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Evil && x.Selectable));
+
+            List<AltBiome> b = new();
+            b.Clear();
+            b.Add(new VanillaBiome("CorruptBiome", BiomeType.Evil, -333, Color.MediumPurple, false));
+            b.Add(new VanillaBiome("CrimsonBiome", BiomeType.Evil, -666, Color.IndianRed, true));
+            b.AddRange(AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Evil && x.Selectable));
             bool bl = AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist && AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow && x.Selectable).Any();
             if (!AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist)
             {
@@ -217,9 +225,9 @@ namespace AltLibrary.Common
             }
             if (bl)
             {
-                list.Add(new VanillaBiome("HallowBiome", BiomeType.Hallow, -3, Color.HotPink));
+                b.Add(new VanillaBiome("HallowBiome", BiomeType.Hallow, -3, Color.HotPink));
             }
-            list.AddRange(AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow && x.Selectable));
+            b.AddRange(AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow && x.Selectable));
             bl = AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist && AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Jungle && x.Selectable).Any();
             if (!AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist)
             {
@@ -227,9 +235,9 @@ namespace AltLibrary.Common
             }
             if (bl)
             {
-                list.Add(new VanillaBiome("JungleBiome", BiomeType.Jungle, -4, Color.SpringGreen));
+                b.Add(new VanillaBiome("JungleBiome", BiomeType.Jungle, -4, Color.SpringGreen));
             }
-            list.AddRange(AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Jungle && x.Selectable));
+            b.AddRange(AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Jungle && x.Selectable));
             bl = AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist && AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hell && x.Selectable).Any();
             if (!AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist)
             {
@@ -237,9 +245,20 @@ namespace AltLibrary.Common
             }
             if (bl)
             {
-                list.Add(new VanillaBiome("UnderworldBiome", BiomeType.Hell, -5, Color.OrangeRed));
+                b.Add(new VanillaBiome("UnderworldBiome", BiomeType.Hell, -5, Color.OrangeRed));
             }
-            list.AddRange(AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hell && x.Selectable));
+            b.AddRange(AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hell && x.Selectable));
+
+            foreach (AltBiome ore in AltLibrary.Biomes)
+            {
+                if (ore.BiomeType == BiomeType.None)
+                {
+                    ore.CustomSelection(b);
+                }
+            }
+
+            list.AddRange(b);
+
             return list;
         }
 
@@ -252,6 +271,7 @@ namespace AltLibrary.Common
             }
             chosenOption = (CurrentAltOption)(-1);
             MakeQuenedDrawingList();
+            MakeQuenedDrawingList2();
 
             RandomizeValues();
 
@@ -319,71 +339,6 @@ namespace AltLibrary.Common
                 }
                 ((UIElement)ALReflection.UIList__innerList.GetValue(_oreList)).Recalculate();
                 _oreElements.AddRange(items);
-            }
-            #endregion
-
-            _oreHmElements.Clear();
-            _oreHmList = null;
-
-            #region Hardmore Ores
-            {
-                UIElement uIElement3 = new()
-                {
-                    Left = StyleDimension.FromPixels(Main.screenWidth - (Main.screenWidth - 100f))
-                };
-                uIElement3.Width.Set(0f, 0.8f);
-                uIElement3.MaxWidth.Set(450, 0f);
-                uIElement3.MinWidth.Set(350, 0f);
-                uIElement3.Top.Set(150f, 0f);
-                uIElement3.Height.Set(-150f, 1f);
-                uIElement3.HAlign = 1f;
-                uIElement3.OnUpdate += UIElement3_OnUpdate1;
-                self.Append(uIElement3);
-                UIPanel uIPanel = new();
-                uIPanel.Width.Set(0f, 1f);
-                uIPanel.Height.Set(-110f, 1f);
-                uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
-                uIPanel.PaddingTop = 0f;
-                uIPanel.OnUpdate += UIPanel_OnUpdate1;
-                uIElement3.Append(uIPanel);
-                _oreHmList = new UIList();
-                _oreHmList.Width.Set(25f, 1f);
-                _oreHmList.Height.Set(-50f, 1f);
-                _oreHmList.Top.Set(25f, 0f);
-                _oreHmList.ListPadding = 5f;
-                _oreHmList.HAlign = 1f;
-                _oreHmList.OnUpdate += MoreHmList_OnUpdate;
-                uIPanel.Append(_oreHmList);
-
-                UIScrollbar uIScrollbar = new();
-                uIScrollbar.SetView(100f, 100f);
-                uIScrollbar.Left = StyleDimension.FromPixels(Main.screenWidth - (Main.screenWidth - 75f));
-                uIScrollbar.Height.Set(-250f, 1f);
-                uIScrollbar.Top.Set(150f, 0f);
-                uIScrollbar.HAlign = 1f;
-                uIScrollbar.OnUpdate += UIScrollbar_OnUpdate1;
-                self.Append(uIScrollbar);
-                _oreHmList.SetScrollbar(uIScrollbar);
-
-                UIImageButton closeIcon = new(ALTextureAssets.ButtonClose);
-                closeIcon.Width.Set(22, 0f);
-                closeIcon.Height.Set(22, 0f);
-                closeIcon.Top.Set(5, 0);
-                closeIcon.Left.Set(5, 0);
-                closeIcon.SetVisibility(1f, 1f);
-                closeIcon.OnClick += CloseIcon_OnClick;
-                uIElement3.Append(closeIcon);
-
-                List<AltOre> hardmodeListing = MakeHardmodeOreList();
-                List<ALUIOreListItem> items = new();
-                hardmodeListing.ForEach(x => items.Add(new(x, false)));
-                _oreHmList._items.AddRange(items);
-                foreach (UIElement item in items)
-                {
-                    ((UIElement)ALReflection.UIList__innerList.GetValue(_oreHmList)).Append(item);
-                }
-                ((UIElement)ALReflection.UIList__innerList.GetValue(_oreHmList)).Recalculate();
-                _oreHmElements.AddRange(items);
             }
             #endregion
 
@@ -511,6 +466,10 @@ namespace AltLibrary.Common
                 WorldBiomeManager.Cobalt = Cobalt;
                 WorldBiomeManager.Mythril = Mythril;
                 WorldBiomeManager.Adamantite = Adamantite;
+                foreach (AltBiome o in AddInFinishedCreation2)
+                    o.OnCreating();
+                foreach (AltOre o in AddInFinishedCreation)
+                    o.OnCreating();
 
                 AltLibrary.Instance.Logger.Info($"On creating world - Hallow: {AltHallowBiomeChosenType} Corrupt: {AltEvilBiomeChosenType} Jungle: {AltJungleBiomeChosenType} Underworld: {AltHellBiomeChosenType}");
             });
@@ -524,195 +483,58 @@ namespace AltLibrary.Common
             Rectangle mouseRectangle = Utils.CenteredRectangle(Main.MouseScreen, Vector2.One * 2f);
             int x = 0;
 
-            void DrawBiomeIcon(Func<bool> cond, Func<Asset<Texture2D>, Asset<Texture2D>> func, Func<Rectangle?> rect, Func<string> onHoverName, Func<string, string> onHoverMod)
+            static void DrawBiomeIcon(SpriteBatch spriteBatch, Vector2 position, Rectangle mouseRectangle, ref int x, Color color, Func<bool> cond, Func<Asset<Texture2D>, Asset<Texture2D>> func, Func<Rectangle?> rect, Func<string> onHoverName, Func<string, string> onHoverMod)
             {
-                if (cond.Invoke())
+                if (cond())
                 {
-                    Asset<Texture2D> asset = func.Invoke(ALTextureAssets.BestiaryIcons);
+                    Asset<Texture2D> asset = func(ALTextureAssets.BestiaryIcons);
                     Rectangle? rectangle = null;
-                    if (rect.Invoke() != null) rectangle = rect.Invoke();
+                    if (rect() != null) rectangle = rect();
                     ValueTuple<Asset<Texture2D>, Rectangle?> valueTuple = new(asset, rectangle);
                     spriteBatch.Draw(ALTextureAssets.Button.Value, new Vector2(position.X + 96f, position.Y + 26f * x), color * 0.8f);
                     spriteBatch.Draw(valueTuple.Item1.Value, new Vector2(position.X + 99f, position.Y + 26f * x + 3f), valueTuple.Item2, color, 0f, new Vector2(0f, 0f), 0.5f, SpriteEffects.None, 0f);
                     Vector2 vector2 = new(position.X + 96f, position.Y + 26f * x);
                     if (mouseRectangle.Intersects(Utils.CenteredRectangle(vector2 + new Vector2(7.5f, 7.5f), Utils.Size(new Rectangle(0, 0, 30, 30)))))
                     {
-                        string line1 = onHoverName.Invoke();
-                        string line2 = Language.GetTextValue("Mods.AltLibrary.AddedBy") + " " + onHoverMod.Invoke("Terraria");
-                        string line = line1 + '\n' + line2;
+                        string line1 = onHoverName();
+                        string line2 = $"{Language.GetTextValue("Mods.AltLibrary.AddedBy")} {onHoverMod("Terraria")}";
+                        string line = $"{line1}\n{line2}";
                         Main.instance.MouseText(line);
                     }
                     x++;
                 }
             }
 
-            #region Hallow
-            DrawBiomeIcon(() =>
+            static void DrawOreIcon(SpriteBatch spriteBatch, Vector2 position, ref int x, Rectangle mouseRectangle, Color color, Func<bool> cond, Func<Asset<Texture2D>, Asset<Texture2D>> func, Func<Rectangle?> rect, Func<string> onHoverName, Func<string, string> onHoverMod)
             {
-                bool isAlt = AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist == true;
-                if (isAlt) isAlt &= AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow && x.Selectable).Any();
-                if (AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist == false)
+                if (cond())
                 {
-                    isAlt = true;
-                }
-                return (chosenOption == CurrentAltOption.Biome || AltLibraryConfig.Config.BiomeIconsVisibleOutsideBiomeUI) && isAlt;
-            }, (value) =>
-            {
-                return AltHallowBiomeChosenType >= 0
-                    ? ModContent.Request<Texture2D>(AltLibrary.Biomes[AltHallowBiomeChosenType].IconSmall
-                                                    ?? "AltLibrary/Assets/Menu/ButtonHallow", AssetRequestMode.ImmediateLoad)
-                    : value;
-            }, () =>
-            {
-                return AltHallowBiomeChosenType switch
-                {
-                    < 0 => new(30, 30, 30, 30),
-                    _ => null
-                };
-            }, () =>
-            {
-                return AltHallowBiomeChosenType < 0
-                    ? Language.GetTextValue("Mods.AltLibrary.AltBiomeName.HallowBiome")
-                    : AltLibrary.Biomes[AltHallowBiomeChosenType].Name;
-            }, (mod) =>
-            {
-                return AltHallowBiomeChosenType switch
-                {
-                    >= 0 => AltLibrary.Biomes[AltHallowBiomeChosenType].Mod.Name,
-                    _ => mod
-                };
-            });
-            #endregion
-            #region Evil
-            DrawBiomeIcon(() => chosenOption == CurrentAltOption.Biome || AltLibraryConfig.Config.BiomeIconsVisibleOutsideBiomeUI,
-                (value) =>
-            {
-                return AltEvilBiomeChosenType >= 0
-                    ? ModContent.Request<Texture2D>(AltLibrary.Biomes[AltEvilBiomeChosenType].IconSmall
-                                                    ?? "AltLibrary/Assets/Menu/ButtonCorrupt", AssetRequestMode.ImmediateLoad)
-                    : value;
-            }, () =>
-            {
-                return AltEvilBiomeChosenType switch
-                {
-                    > -666 and <= -333 => new(210, 0, 30, 30),
-                    <= -666 => new(360, 0, 30, 30),
-                    _ => null
-                };
-            }, () =>
-            {
-                if (AltEvilBiomeChosenType == -333) return Language.GetTextValue("Mods.AltLibrary.AltBiomeName.CorruptBiome");
-                if (AltEvilBiomeChosenType == -666) return Language.GetTextValue("Mods.AltLibrary.AltBiomeName.CrimsonBiome");
-                return AltLibrary.Biomes[AltEvilBiomeChosenType].Name;
-            }, (mod) =>
-            {
-                return AltEvilBiomeChosenType switch
-                {
-                    >= 0 => AltLibrary.Biomes[AltEvilBiomeChosenType].Mod.Name,
-                    _ => mod
-                };
-            });
-            #endregion
-            #region Underworld
-            DrawBiomeIcon(() =>
-            {
-                bool isAlt = AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist == true;
-                if (isAlt) isAlt &= AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hell && x.Selectable).Any();
-                if (AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist == false)
-                {
-                    isAlt = true;
-                }
-                return (chosenOption == CurrentAltOption.Biome || AltLibraryConfig.Config.BiomeIconsVisibleOutsideBiomeUI) && isAlt;
-            }, (value) =>
-            {
-                return AltHellBiomeChosenType >= 0
-                    ? ModContent.Request<Texture2D>(AltLibrary.Biomes[AltHellBiomeChosenType].IconSmall
-                                                    ?? "AltLibrary/Assets/Menu/ButtonHell", AssetRequestMode.ImmediateLoad)
-                    : value;
-            }, () =>
-            {
-                return AltHellBiomeChosenType switch
-                {
-                    < 0 => new(30, 60, 30, 30),
-                    _ => null
-                };
-            }, () =>
-            {
-                return AltHellBiomeChosenType < 0
-                    ? Language.GetTextValue("Mods.AltLibrary.AltBiomeName.UnderworldBiome")
-                    : AltLibrary.Biomes[AltHellBiomeChosenType].Name;
-            }, (mod) =>
-            {
-                return AltHellBiomeChosenType switch
-                {
-                    >= 0 => AltLibrary.Biomes[AltHellBiomeChosenType].Mod.Name,
-                    _ => mod
-                };
-            });
-            #endregion
-            #region Jungle
-            DrawBiomeIcon(() =>
-            {
-                bool isAlt = AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist == true;
-                if (isAlt) isAlt &= AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Jungle && x.Selectable).Any();
-                if (AltLibraryConfig.Config.VanillaShowUpIfOnlyAltVarExist == false)
-                {
-                    isAlt = true;
-                }
-                return (chosenOption == CurrentAltOption.Biome || AltLibraryConfig.Config.BiomeIconsVisibleOutsideBiomeUI) && isAlt;
-            }, (value) =>
-            {
-                return AltJungleBiomeChosenType >= 0
-                    ? ModContent.Request<Texture2D>(AltLibrary.Biomes[AltJungleBiomeChosenType].IconSmall
-                                                    ?? "AltLibrary/Assets/Menu/ButtonJungle", AssetRequestMode.ImmediateLoad)
-                    : value;
-            }, () =>
-            {
-                return AltJungleBiomeChosenType switch
-                {
-                    < 0 => new(180, 30, 30, 30),
-                    _ => null
-                };
-            }, () =>
-            {
-                return AltJungleBiomeChosenType < 0
-                    ? Language.GetTextValue("Mods.AltLibrary.AltBiomeName.JungleBiome")
-                    : AltLibrary.Biomes[AltJungleBiomeChosenType].Name;
-            }, (mod) =>
-            {
-                return AltJungleBiomeChosenType switch
-                {
-                    >= 0 => AltLibrary.Biomes[AltJungleBiomeChosenType].Mod.Name,
-                    _ => mod
-                };
-            });
-            #endregion
-
-            void DrawOreIcon(Func<bool> cond, Func<Asset<Texture2D>, Asset<Texture2D>> func, Func<Rectangle?> rect, Func<string> onHoverName, Func<string, string> onHoverMod)
-            {
-                if (cond.Invoke())
-                {
-                    Asset<Texture2D> asset = func.Invoke(ALTextureAssets.OreIcons);
+                    Asset<Texture2D> asset = func(ALTextureAssets.OreIcons);
                     Rectangle? rectangle = null;
-                    if (rect.Invoke() != null) rectangle = rect.Invoke();
+                    if (rect() != null) rectangle = rect();
                     ValueTuple<Asset<Texture2D>, Rectangle?> valueTuple = new(asset, rectangle);
                     spriteBatch.Draw(ALTextureAssets.Button.Value, new Vector2(position.X + 96f, position.Y + 26f * x), color * 0.8f);
                     spriteBatch.Draw(valueTuple.Item1.Value, new Vector2(position.X + 99f, position.Y + 26f * x + 3f), valueTuple.Item2, color, 0f, new Vector2(1f, 1f), 0.5f, SpriteEffects.None, 0f);
                     Vector2 vector2 = new(position.X + 96f, position.Y + 26f * x);
                     if (mouseRectangle.Intersects(Utils.CenteredRectangle(vector2 + new Vector2(7.5f, 7.5f), Utils.Size(new Rectangle(0, 0, 30, 30)))))
                     {
-                        string line1 = onHoverName.Invoke();
-                        string line2 = Language.GetTextValue("Mods.AltLibrary.AddedBy") + " " + onHoverMod.Invoke("Terraria");
-                        string line = line1 + '\n' + line2;
+                        string line1 = onHoverName();
+                        string line2 = $"{Language.GetTextValue("Mods.AltLibrary.AddedBy")} {onHoverMod("Terraria")}";
+                        string line = $"{line1}\n{line2}";
                         Main.instance.MouseText(line);
                     }
                     x++;
                 }
             }
 
-            foreach (ALOreDrawingStruct ore in QuenedDrawing)
+            foreach (ALDrawingStruct<AltBiome> ore in QuenedDrawing2)
             {
-                DrawOreIcon(ore.cond, ore.func, ore.rect, ore.onHoverName, ore.onHoverMod);
+                DrawBiomeIcon(spriteBatch, position, mouseRectangle, ref x, color, ore.cond, ore.func, ore.rect, ore.onHoverName, ore.onHoverMod);
+            }
+
+            foreach (ALDrawingStruct<AltOre> ore in QuenedDrawing)
+            {
+                DrawOreIcon(spriteBatch, position, ref x, mouseRectangle, color, ore.cond, ore.func, ore.rect, ore.onHoverName, ore.onHoverMod);
             }
         }
         #endregion
@@ -883,35 +705,30 @@ namespace AltLibrary.Common
             string tagGroup, float usableWidthPercent)
         {
             orig(self, container, accumualtedHeight, clickEvent, tagGroup, usableWidthPercent);
-            CurrentAltOption[] array11 = new CurrentAltOption[3]
+            CurrentAltOption[] array11 = new CurrentAltOption[2]
             {
                 CurrentAltOption.Biome,
                 CurrentAltOption.Ore,
-                CurrentAltOption.HMOre
             };
-            LocalizedText[] array10 = new LocalizedText[3]
+            LocalizedText[] array10 = new LocalizedText[2]
             {
                 Language.GetText("Mods.AltLibrary.ChooseBiome"),
-                Language.GetText("Mods.AltLibrary.ChooseOre"),
-                Language.GetText("Mods.AltLibrary.ChooseHardmodeOre")
+                Language.GetText("Mods.AltLibrary.ChooseOre")
             };
-            Color[] array8 = new Color[3]
+            Color[] array8 = new Color[2]
             {
                 new Color(130, 183, 108),
-                new Color(143, 183, 183),
-                new Color(192, 183, 203)
+                new Color(143, 183, 183)
             };
-            string[] array7 = new string[3]
+            string[] array7 = new string[2]
             {
-                "Terraria/Images/UI/Bestiary/Icon_Tags_Shadow",
                 "Terraria/Images/UI/Bestiary/Icon_Tags_Shadow",
                 "Terraria/Images/UI/Bestiary/Icon_Tags_Shadow"
             };
-            Rectangle[] array9 = new Rectangle[3]
+            Rectangle[] array9 = new Rectangle[2]
             {
                 new Rectangle(0, 0, 30, 30),
-                new Rectangle(60, 0, 30, 30),
-                new Rectangle(60, 30, 30, 30)
+                new Rectangle(60, 0, 30, 30)
             };
             UIElement[] tempArray = container.Children.ToArray();
             for (int i = tempArray.Length - 1; i > tempArray.Length - 4; i--)
@@ -923,7 +740,7 @@ namespace AltLibrary.Common
             {
                 ALGroupOptionButton<CurrentAltOption> groupOptionButton = new(array11[i], array10[i], null, array8[i], array7[i], array9[i], 1f, 1f, 16f)
                 {
-                    Width = StyleDimension.FromPixelsAndPercent(-4 * (array6.Length - 3), 1f / array6.Length * usableWidthPercent),
+                    Width = StyleDimension.FromPixelsAndPercent(4 * (array6.Length - 3), 1f / array6.Length * usableWidthPercent),
                     Left = StyleDimension.FromPercent(1f - usableWidthPercent),
                     HAlign = (float)i / (array6.Length - 1)
                 };
@@ -961,78 +778,6 @@ namespace AltLibrary.Common
         #endregion
 
         #region useless shit that need to be refactored somehow
-        private static void UIScrollbar_OnUpdate1(UIElement affectedElement)
-        {
-            UIScrollbar scrollbar = affectedElement as UIScrollbar;
-            if (chosenOption == CurrentAltOption.HMOre)
-            {
-                scrollbar.Left = StyleDimension.FromPixels(-25f);
-                scrollbar.Height.Set(-250f, 1f);
-                scrollbar.Top.Set(150f, 0f);
-            }
-            else
-            {
-                scrollbar.Left = StyleDimension.FromPixels(75000000f);
-                scrollbar.Height.Set(-250f, 1f);
-                scrollbar.Top.Set(150000f, 0f);
-            }
-        }
-
-        private static void MoreHmList_OnUpdate(UIElement affectedElement)
-        {
-            UIList element = affectedElement as UIList;
-            if (chosenOption == CurrentAltOption.HMOre)
-            {
-                element.Width.Set(25f, 1f);
-                element.Height.Set(-50f, 1f);
-                element.Top.Set(25f, 0f);
-            }
-            else
-            {
-                element.Width.Set(250000f, 1f);
-                element.Height.Set(-500000f, 1f);
-                element.Top.Set(25000000f, 0f);
-            }
-        }
-
-        private static void UIPanel_OnUpdate1(UIElement affectedElement)
-        {
-            UIPanel element = affectedElement as UIPanel;
-            if (chosenOption == CurrentAltOption.HMOre)
-            {
-                element.Width.Set(0f, 1f);
-                element.Height.Set(-110f, 1f);
-            }
-            else
-            {
-                element.Width.Set(0f, 1f);
-                element.Height.Set(-110000000f, 1f);
-            }
-        }
-
-        private static void UIElement3_OnUpdate1(UIElement affectedElement)
-        {
-            UIElement element = affectedElement;
-            if (chosenOption == CurrentAltOption.HMOre)
-            {
-                element.Left = StyleDimension.FromPixels(-50f);
-                element.Width.Set(0f, 0.8f);
-                element.MaxWidth.Set(450, 0f);
-                element.MinWidth.Set(350, 0f);
-                element.Top.Set(150f, 0f);
-                element.Height.Set(-150f, 1f);
-            }
-            else
-            {
-                element.Left = StyleDimension.FromPixels(1000000f);
-                element.Width.Set(0f, 0.8f);
-                element.MaxWidth.Set(4500000, 0f);
-                element.MinWidth.Set(3500000, 0f);
-                element.Top.Set(150000000f, 0f);
-                element.Height.Set(-150000000f, 1f);
-            }
-        }
-
         private static void M2oreList_OnUpdate(UIElement affectedElement)
         {
             UIList element = affectedElement as UIList;
@@ -1179,7 +924,7 @@ namespace AltLibrary.Common
         #endregion
     }
 
-    public readonly struct ALOreDrawingStruct
+    public readonly struct ALDrawingStruct<T> where T : ModType
     {
         public readonly string UniqueID;
         internal readonly Func<bool> cond;
@@ -1188,24 +933,38 @@ namespace AltLibrary.Common
         internal readonly Func<string> onHoverName;
         internal readonly Func<string, string> onHoverMod;
 
-        public ALOreDrawingStruct(string ID, bool isHardmode, Func<Asset<Texture2D>, Asset<Texture2D>> func, Func<Rectangle?> rect, Func<string> onHoverName, Func<string, string> onHoverMod)
+        private readonly Func<bool> WhichOne
+		{
+            get
+			{
+                if (ContentInstance<T>.Instance is AltOre)
+                    return () => AltLibraryConfig.Config.OreIconsVisibleOutsideOreUI;
+                return () => AltLibraryConfig.Config.BiomeIconsVisibleOutsideBiomeUI;
+			}
+		}
+
+        public ALDrawingStruct(string ID, Func<Asset<Texture2D>, Asset<Texture2D>> func, Func<Rectangle?> rect, Func<string> onHoverName, Func<string, string> onHoverMod, Func<bool> cond = null)
         {
             UniqueID = ID;
-            cond = isHardmode ? () => chosenOption == CurrentAltOption.HMOre || AltLibraryConfig.Config.OreIconsVisibleOutsideOreUI : () => chosenOption == CurrentAltOption.Ore || AltLibraryConfig.Config.OreIconsVisibleOutsideOreUI;
+            this.cond = cond;
             this.func = func;
             this.rect = rect;
             this.onHoverName = onHoverName;
             this.onHoverMod = onHoverMod;
+
+            this.cond ??= WhichOne;
         }
 
-        public ALOreDrawingStruct(AltOre ore, bool isHardmode, Func<Asset<Texture2D>, Asset<Texture2D>> func, Func<Rectangle?> rect, Func<string> onHoverName, Func<string, string> onHoverMod)
+        public ALDrawingStruct(ModType type, Func<Asset<Texture2D>, Asset<Texture2D>> func, Func<Rectangle?> rect, Func<string> onHoverName, Func<string, string> onHoverMod, Func<bool> cond = null)
         {
-            UniqueID = ore.FullName;
-            cond = isHardmode ? () => chosenOption == CurrentAltOption.HMOre || AltLibraryConfig.Config.OreIconsVisibleOutsideOreUI : () => chosenOption == CurrentAltOption.Ore || AltLibraryConfig.Config.OreIconsVisibleOutsideOreUI;
+            UniqueID = type.FullName;
+            this.cond = cond;
             this.func = func;
             this.rect = rect;
             this.onHoverName = onHoverName;
             this.onHoverMod = onHoverMod;
+
+            this.cond ??= WhichOne;
         }
     }
 }

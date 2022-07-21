@@ -5,6 +5,7 @@
         Evil,
         Hallow,
         Hell,
-        Jungle
+        Jungle,
+        None,
     }
 }
