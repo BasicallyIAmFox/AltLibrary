@@ -1,13 +1,16 @@
-﻿using AltLibrary.Common.AltBiomes;
+﻿#if TML_2022_06
+using AltLibrary.Common.AltBiomes;
 using AltLibrary.Common.Systems;
 using Terraria;
 using Terraria.ID;
+#endif
 using Terraria.ModLoader;
 
 namespace AltLibrary.Common
 {
     internal class BossBags : GlobalItem
     {
+#if TML_2022_06
         public override bool PreOpenVanillaBag(string context, Player player, int arg)
         {
             if (WorldBiomeManager.WorldHallow != "")
@@ -72,5 +75,7 @@ namespace AltLibrary.Common
                 }
             }
         }
+#else
+#endif
     }
 }
