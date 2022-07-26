@@ -15,45 +15,47 @@ namespace AltLibrary.Common.Hooks
 {
     internal class UIChanges
     {
-        public delegate void hook_SpriteFontInternalDraw(orig_SpriteFontInternalDraw orig, DynamicSpriteFont self,
-                                                         string text, SpriteBatch spriteBatch, Vector2 startPosition,
-                                                         Color color, float rotation, Vector2 origin, ref Vector2 scale,
-                                                         SpriteEffects spriteEffects, float depth);
+        //public delegate void hook_SpriteFontInternalDraw(orig_SpriteFontInternalDraw orig, DynamicSpriteFont self,
+        //                                                 string text, SpriteBatch spriteBatch, Vector2 startPosition,
+        //                                                 Color color, float rotation, Vector2 origin, ref Vector2 scale,
+        //                                                 SpriteEffects spriteEffects, float depth);
 
-        public delegate void orig_SpriteFontInternalDraw(DynamicSpriteFont self, string text, SpriteBatch spriteBatch,
-                                                         Vector2 startPosition, Color color, float rotation, Vector2 origin,
-                                                         ref Vector2 scale, SpriteEffects spriteEffects, float depth);
+        //public delegate void orig_SpriteFontInternalDraw(DynamicSpriteFont self, string text, SpriteBatch spriteBatch,
+        //                                                 Vector2 startPosition, Color color, float rotation, Vector2 origin,
+        //                                                 ref Vector2 scale, SpriteEffects spriteEffects, float depth);
 
-        public static event hook_SpriteFontInternalDraw Hook_OnSpriteFontInternalDraw
-        {
-            add => HookEndpointManager.Add<hook_SpriteFontInternalDraw>(
-                typeof(DynamicSpriteFont).GetMethod("InternalDraw", BindingFlags.NonPublic | BindingFlags.Instance), value);
-            remove => HookEndpointManager.Remove<hook_SpriteFontInternalDraw>(
-                typeof(DynamicSpriteFont).GetMethod("InternalDraw", BindingFlags.NonPublic | BindingFlags.Instance), value);
-        }
+        //public static event hook_SpriteFontInternalDraw Hook_OnSpriteFontInternalDraw
+        //{
+        //    add => HookEndpointManager.Add<hook_SpriteFontInternalDraw>(
+        //        typeof(DynamicSpriteFont).GetMethod("InternalDraw", BindingFlags.NonPublic | BindingFlags.Instance), value);
+        //    remove => HookEndpointManager.Remove<hook_SpriteFontInternalDraw>(
+        //        typeof(DynamicSpriteFont).GetMethod("InternalDraw", BindingFlags.NonPublic | BindingFlags.Instance), value);
+        //}
 
         internal static void Apply()
         {
             // IL.Terraria.UI.UIElement.Draw += ILUIElementDraw;
             // Hook_OnSpriteFontInternalDraw += OnSpriteFontInternalDraw;
-            Main.DrawInterface += OnMainDrawInterface;
-            IL.Terraria.UI.UserInterface.Update += ILUserInterfaceUpdate;
-            Main.DrawInventory += OnMainDrawInventory;
-            IL.Terraria.UI.UIElement.Recalculate += ILUIElementRecalculate;
-            IL.Terraria.UI.UIElement.GetClippingRectangle += ILUIElementGetClippingRectangle;
-            UIElement.Remove += OnUIElementRemove;
+
+            //Main.DrawInterface += OnMainDrawInterface;
+            //IL.Terraria.UI.UserInterface.Update += ILUserInterfaceUpdate;
+            //Main.DrawInventory += OnMainDrawInventory;
+            //IL.Terraria.UI.UIElement.Recalculate += ILUIElementRecalculate;
+            //IL.Terraria.UI.UIElement.GetClippingRectangle += ILUIElementGetClippingRectangle;
+            //UIElement.Remove += OnUIElementRemove;
         }
 
         internal static void Unapply()
         {
             // IL.Terraria.UI.UIElement.Draw -= ILUIElementDraw;
             // Hook_OnSpriteFontInternalDraw -= OnSpriteFontInternalDraw;
-            Main.DrawInterface -= OnMainDrawInterface;
-            IL.Terraria.UI.UserInterface.Update -= ILUserInterfaceUpdate;
-            Main.DrawInventory -= OnMainDrawInventory;
-            IL.Terraria.UI.UIElement.Recalculate -= ILUIElementRecalculate;
-            IL.Terraria.UI.UIElement.GetClippingRectangle -= ILUIElementGetClippingRectangle;
-            UIElement.Remove -= OnUIElementRemove;
+
+            //Main.DrawInterface -= OnMainDrawInterface;
+            //IL.Terraria.UI.UserInterface.Update -= ILUserInterfaceUpdate;
+            //Main.DrawInventory -= OnMainDrawInventory;
+            //IL.Terraria.UI.UIElement.Recalculate -= ILUIElementRecalculate;
+            //IL.Terraria.UI.UIElement.GetClippingRectangle -= ILUIElementGetClippingRectangle;
+            //UIElement.Remove -= OnUIElementRemove;
         }
 
         // private static readonly float characterUIStaminaYOffset = 30f;
@@ -208,37 +210,37 @@ namespace AltLibrary.Common.Hooks
         //     });
         // }
 
-        private static void OnMainDrawInterface(Main.orig_DrawInterface orig, Terraria.Main self, GameTime gameTime)
-        {
-            AltLibrary.Instance.CheckPointer = true;
-            orig(self, gameTime);
-        }
+        //private static void OnMainDrawInterface(Main.orig_DrawInterface orig, Terraria.Main self, GameTime gameTime)
+        //{
+        //    AltLibrary.Instance.CheckPointer = true;
+        //    orig(self, gameTime);
+        //}
 
-        private static void ILUserInterfaceUpdate(ILContext il)
-        {
-            var c = new ILCursor(il);
+        //private static void ILUserInterfaceUpdate(ILContext il)
+        //{
+        //    var c = new ILCursor(il);
 
-            if (!c.TryGotoNext(i => i.MatchStloc(5)))
-            {
-                return;
-            }
+        //    if (!c.TryGotoNext(i => i.MatchStloc(5)))
+        //    {
+        //        return;
+        //    }
 
-            c.EmitDelegate<Func<Terraria.UI.UIElement, Terraria.UI.UIElement>>(uiElement =>
-            {
-                if (Terraria.Main.gameMenu || uiElement is Terraria.UI.UIState)
-                {
-                    return uiElement;
-                }
+        //    c.EmitDelegate<Func<Terraria.UI.UIElement, Terraria.UI.UIElement>>(uiElement =>
+        //    {
+        //        if (Terraria.Main.gameMenu || uiElement is Terraria.UI.UIState)
+        //        {
+        //            return uiElement;
+        //        }
 
-                if (AltLibrary.Instance.CheckPointer && uiElement != null)
-                {
-                    AltLibrary.Instance.CheckPointer = false;
-                    return uiElement;
-                }
+        //        if (AltLibrary.Instance.CheckPointer && uiElement != null)
+        //        {
+        //            AltLibrary.Instance.CheckPointer = false;
+        //            return uiElement;
+        //        }
 
-                return null;
-            });
-        }
+        //        return null;
+        //    });
+        //}
 
         // Reverses the order that children are checked in order to best reflect the order in which they are drawn
         // private static void ILUIElementGetElementAt(ILContext il)
@@ -256,88 +258,88 @@ namespace AltLibrary.Common.Hooks
         // }
 
         // Some trickery that changes default behaviour of Recalculate to only recalculate self when element is ExxoUIElement
-        private static void ILUIElementRecalculate(ILContext il)
-        {
-            var c = new ILCursor(il);
-            c.GotoNext(i => i.MatchCallvirt(typeof(Terraria.UI.UIElement).GetMethod(
-                nameof(Terraria.UI.UIElement.RecalculateChildren),
-                BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly, null, Type.EmptyTypes, null)));
-            c.Index--;
+        //private static void ILUIElementRecalculate(ILContext il)
+        //{
+        //    var c = new ILCursor(il);
+        //    c.GotoNext(i => i.MatchCallvirt(typeof(Terraria.UI.UIElement).GetMethod(
+        //        nameof(Terraria.UI.UIElement.RecalculateChildren),
+        //        BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly, null, Type.EmptyTypes, null)));
+        //    c.Index--;
 
-            ILLabel label = c.DefineLabel();
+        //    ILLabel label = c.DefineLabel();
 
-            c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate<Func<Terraria.UI.UIElement, bool>>(element => element is ALUIElement);
-            c.Emit(OpCodes.Brtrue, label)
-                .GotoNext(i => i.MatchRet())
-                .MarkLabel(label);
-        }
+        //    c.Emit(OpCodes.Ldarg_0);
+        //    c.EmitDelegate<Func<Terraria.UI.UIElement, bool>>(element => element is ALUIElement);
+        //    c.Emit(OpCodes.Brtrue, label)
+        //        .GotoNext(i => i.MatchRet())
+        //        .MarkLabel(label);
+        //}
 
         // Fixes vanilla's decision to clamp the clipping rectangle from 0 to the screen width which doesnt respect the position of the element... smh
-        private static void ILUIElementGetClippingRectangle(ILContext il)
-        {
-            var c = new ILCursor(il);
-            if (!c.TryGotoNext(i => i.MatchLdarg(1)))
-            {
-                return;
-            }
+        //private static void ILUIElementGetClippingRectangle(ILContext il)
+        //{
+        //    var c = new ILCursor(il);
+        //    if (!c.TryGotoNext(i => i.MatchLdarg(1)))
+        //    {
+        //        return;
+        //    }
 
-            ALUtils.RemoveUntilInstruction(c, i => i.MatchRet());
+        //    ALUtils.RemoveUntilInstruction(c, i => i.MatchRet());
 
-            c.Emit(OpCodes.Ldloc, 2);
-        }
+        //    c.Emit(OpCodes.Ldloc, 2);
+        //}
 
         // ExxoUIElements use a better removal system that removes children after updating, this allows children to remove themselves during update
-        private static void OnUIElementRemove(UIElement.orig_Remove orig, Terraria.UI.UIElement self)
-        {
-            if (self.Parent is ALUIElement exxoParent)
-            {
-                exxoParent.ElementsForRemoval.Enqueue(self);
-            }
-            else
-            {
-                orig(self);
-            }
-        }
+        //private static void OnUIElementRemove(UIElement.orig_Remove orig, Terraria.UI.UIElement self)
+        //{
+        //    if (self.Parent is ALUIElement exxoParent)
+        //    {
+        //        exxoParent.ElementsForRemoval.Enqueue(self);
+        //    }
+        //    else
+        //    {
+        //        orig(self);
+        //    }
+        //}
 
-        private static void OnMainDrawInventory(Main.orig_DrawInventory orig, Terraria.Main self)
-        {
-            Vector2 oldMouseScreen = Terraria.Main.MouseScreen;
-            if (!AltLibrary.Instance.CheckPointer)
-            {
-                Terraria.Main.mouseX = -100;
-                Terraria.Main.mouseY = -100;
-            }
+        //private static void OnMainDrawInventory(Main.orig_DrawInventory orig, Terraria.Main self)
+        //{
+        //    Vector2 oldMouseScreen = Terraria.Main.MouseScreen;
+        //    if (!AltLibrary.Instance.CheckPointer)
+        //    {
+        //        Terraria.Main.mouseX = -100;
+        //        Terraria.Main.mouseY = -100;
+        //    }
 
-            orig(self);
-            if (!AltLibrary.Instance.CheckPointer)
-            {
-                Terraria.Main.mouseX = (int)oldMouseScreen.X;
-                Terraria.Main.mouseY = (int)oldMouseScreen.Y;
-            }
-        }
+        //    orig(self);
+        //    if (!AltLibrary.Instance.CheckPointer)
+        //    {
+        //        Terraria.Main.mouseX = (int)oldMouseScreen.X;
+        //        Terraria.Main.mouseY = (int)oldMouseScreen.Y;
+        //    }
+        //}
 
-        // Increased clarity of text by drawing on the nearest integer coordinate rather than on a floating point
-        private static void OnSpriteFontInternalDraw(orig_SpriteFontInternalDraw orig, DynamicSpriteFont self, string text,
-                                                     SpriteBatch spriteBatch, Vector2 startPosition, Color color,
-                                                     float rotation, Vector2 origin, ref Vector2 scale,
-                                                     SpriteEffects spriteEffects, float depth) =>
-            orig(self, text, spriteBatch, startPosition.ToNearestPixel(), color, rotation, origin, ref scale, spriteEffects,
-                depth);
+        //// Increased clarity of text by drawing on the nearest integer coordinate rather than on a floating point
+        //private static void OnSpriteFontInternalDraw(orig_SpriteFontInternalDraw orig, DynamicSpriteFont self, string text,
+        //                                             SpriteBatch spriteBatch, Vector2 startPosition, Color color,
+        //                                             float rotation, Vector2 origin, ref Vector2 scale,
+        //                                             SpriteEffects spriteEffects, float depth) =>
+        //    orig(self, text, spriteBatch, startPosition.ToNearestPixel(), color, rotation, origin, ref scale, spriteEffects,
+        //        depth);
 
-        // Makes ExxoUIElements able to assume that no matter what they will be SamplerState PointClamp by default unless they implement other SamplerStates manually
-        private static void ILUIElementDraw(ILContext il)
-        {
-            var c = new ILCursor(il);
-            if (!c.TryGotoNext(i => i.MatchLdsfld(typeof(SamplerState), nameof(SamplerState.AnisotropicClamp))))
-            {
-                return;
-            }
+        //// Makes ExxoUIElements able to assume that no matter what they will be SamplerState PointClamp by default unless they implement other SamplerStates manually
+        //private static void ILUIElementDraw(ILContext il)
+        //{
+        //    var c = new ILCursor(il);
+        //    if (!c.TryGotoNext(i => i.MatchLdsfld(typeof(SamplerState), nameof(SamplerState.AnisotropicClamp))))
+        //    {
+        //        return;
+        //    }
 
-            c.Index++;
-            c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate<Func<SamplerState, Terraria.UI.UIElement, SamplerState>>((origState, element) =>
-                element is ALUIElement ? SamplerState.PointClamp : origState);
-        }
+        //    c.Index++;
+        //    c.Emit(OpCodes.Ldarg_0);
+        //    c.EmitDelegate<Func<SamplerState, Terraria.UI.UIElement, SamplerState>>((origState, element) =>
+        //        element is ALUIElement ? SamplerState.PointClamp : origState);
+        //}
     }
 }

@@ -14,6 +14,8 @@ namespace AltLibrary.Common.Hooks
             IL.Terraria.NPC.AttemptToConvertNPCToEvil += NPC_AttemptToConvertNPCToEvil;
             IL.Terraria.NPC.CreateBrickBoxForWallOfFlesh += NPC_CreateBrickBoxForWallOfFlesh;
             IL.Terraria.WorldGen.nearbyChlorophyte += WorldGen_nearbyChlorophyte;
+            IL.Terraria.WorldGen.GrowUndergroundTree += WorldGen_GrowUndergroundTree;
+            IL.Terraria.GameContent.Biomes.Desert.DesertDescription.RowHasInvalidTiles += DesertDescription_RowHasInvalidTiles;
             IL.Terraria.WorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort += WorldGen_AddBuriedChest_int_int_int_bool_int_bool_ushort;
         }
 
@@ -22,6 +24,8 @@ namespace AltLibrary.Common.Hooks
             IL.Terraria.NPC.AttemptToConvertNPCToEvil -= NPC_AttemptToConvertNPCToEvil;
             IL.Terraria.NPC.CreateBrickBoxForWallOfFlesh -= NPC_CreateBrickBoxForWallOfFlesh;
             IL.Terraria.WorldGen.nearbyChlorophyte -= WorldGen_nearbyChlorophyte;
+            IL.Terraria.WorldGen.GrowUndergroundTree -= WorldGen_GrowUndergroundTree;
+            IL.Terraria.GameContent.Biomes.Desert.DesertDescription.RowHasInvalidTiles -= DesertDescription_RowHasInvalidTiles;
             IL.Terraria.WorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort -= WorldGen_AddBuriedChest_int_int_int_bool_int_bool_ushort;
         }
 
@@ -67,6 +71,21 @@ namespace AltLibrary.Common.Hooks
                 ItemID.ShadowKey,
                 (orig) => Find<AltBiome>(WorldBiomeManager.WorldHell).ShadowKeyAlt ?? orig,
                 (orig) => WorldBiomeManager.WorldHell != "" && Find<AltBiome>(WorldBiomeManager.WorldHell).ShadowKeyAlt.HasValue);
+        }
+        private static void WorldGen_GrowUndergroundTree(ILContext il)
+        {
+            ALUtils.ReplaceIDs<int>(il, TileID.JungleGrass,
+                (orig) => Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeGrass ?? orig,
+                (orig) => WorldBiomeManager.WorldJungle != "" && Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeGrass.HasValue);
+        }
+        private static void DesertDescription_RowHasInvalidTiles(ILContext il)
+        {
+            ALUtils.ReplaceIDs<int>(il, TileID.JungleGrass,
+                (orig) => Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeGrass ?? orig,
+                (orig) => WorldBiomeManager.WorldJungle != "" && Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeGrass.HasValue);
+            ALUtils.ReplaceIDs<int>(il, TileID.Mud,
+                (orig) => Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeMud ?? orig,
+                (orig) => WorldBiomeManager.WorldJungle != "" && Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeMud.HasValue);
         }
     }
 }

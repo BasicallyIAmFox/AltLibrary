@@ -12,6 +12,7 @@ using Terraria.GameContent;
 using Terraria.GameContent.Generation;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.WorldBuilding;
 
 namespace AltLibrary.Common.AltBiomes
 {
@@ -59,6 +60,12 @@ namespace AltLibrary.Common.AltBiomes
         /// Set this to something so your evil biome can generate
         /// </summary>
         public EvilBiomeGenerationPass EvilBiomeGenerationPass = null;
+
+        /// <summary>
+        /// For Jungle alts. Set this to something to replace Beehives.
+        /// </summary>
+        public virtual GenPass GetHiveGenerationPass() { return HiveGenerationPass; }
+        public GenPass HiveGenerationPass = null;
 
         #region Dungeon Loot
         /// <summary>
@@ -145,6 +152,26 @@ namespace AltLibrary.Common.AltBiomes
         /// Leave as is if your Spreading biome does not have thorn bushes.
         /// </summary>
         public int? BiomeThornBush = null;
+        /// <summary>
+        /// For Jungle alts. The wall that replaces mud walls.
+        /// </summary>
+        public int? BiomeMudWall = null;
+        /// <summary>
+        /// For Jungle alts. The wall that replaces flower walls in the underground jungle.
+        /// </summary>
+        public int? BiomeGrassWall = null;
+        /// <summary>
+        /// For Jungle alts. The shortgrass that grows on the grass tile.
+        /// </summary>
+        public int? BiomeJunglePlants = null;
+        /// <summary>
+        /// For Jungle alts - the large 3x2 plants that grow in the jungle.
+        /// </summary>
+        public int? BiomeJungleBushes = null;
+        /// <summary>
+        /// For Jungle alts. Used in the shrine-like structure in the underground.
+        /// </summary>
+        public int? BiomeShrineChestType = null;
 
         /// <summary>
         /// For Evil and Hallow alts. The list of tiles that can spread this biome. 
