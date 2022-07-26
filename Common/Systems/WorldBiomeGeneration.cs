@@ -100,37 +100,63 @@ namespace AltLibrary.Common.Systems
                 jungleIndex = tasks.FindIndex(i => i.Name.Equals("Hives"));
                 if (jungleIndex != -1)
                 {
-                    tasks.RemoveAt(jungleIndex);
+                    if (ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).HiveGenerationPass != null)
+                    {
+                        tasks[jungleIndex] = new PassLegacy("AltLibrary: Hives", new WorldGenLegacyMethod(delegate (GenerationProgress progress, GameConfiguration configuration)
+                        {
+                            ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).HiveGenerationPass.Apply(progress, configuration);
+                        }));
+                    }
                 }
                 jungleIndex = tasks.FindIndex(i => i.Name.Equals("Jungle Chests"));
                 if (jungleIndex != -1)
                 {
-                    tasks.RemoveAt(jungleIndex);
+                    if (!ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeShrineChestType.HasValue)
+                        tasks.RemoveAt(jungleIndex);
                 }
                 jungleIndex = tasks.FindIndex(i => i.Name.Equals("Jungle Chests Placement"));
                 if (jungleIndex != -1)
                 {
-                    tasks.RemoveAt(jungleIndex);
+                    if (ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeShrineChestType.HasValue)
+                        tasks[jungleIndex] = new PassLegacy("AltLibrary: Jungle Chests Placement", new WorldGenLegacyMethod(JungleChestPlacementTask));
+                    else
+                        tasks.RemoveAt(jungleIndex);
                 }
                 jungleIndex = tasks.FindIndex(i => i.Name.Equals("Temple"));
                 if (jungleIndex != -1)
                 {
                     tasks.RemoveAt(jungleIndex);
                 }
-                jungleIndex = tasks.FindIndex(i => i.Name.Equals("Jungle Trees"));
+                jungleIndex = tasks.FindIndex(i => i.Name.Equals("Glowing Mushrooms and Jungle Plants"));
                 if (jungleIndex != -1)
                 {
-                    tasks.RemoveAt(jungleIndex);
+                    tasks[jungleIndex] = new PassLegacy("AltLibrary: Glowing Mushrooms and Jungle Plants", new WorldGenLegacyMethod(GlowingMushroomsandJunglePlantsTask));
                 }
                 jungleIndex = tasks.FindIndex(i => i.Name.Equals("Jungle Plants"));
                 if (jungleIndex != -1)
                 {
-                    tasks.RemoveAt(jungleIndex);
+                    tasks[jungleIndex] = new PassLegacy("AltLibrary: Jungle Plants", new WorldGenLegacyMethod(JungleBushesTask));
                 }
-                jungleIndex = tasks.FindIndex(i => i.Name.Equals("Mud Walls In Jungle"));
+                jungleIndex = tasks.FindIndex(i => i.Name.Equals("Muds Walls In Jungle"));
                 if (jungleIndex != -1)
                 {
-                    tasks.RemoveAt(jungleIndex);
+                    if (ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeMudWall.HasValue)
+                    {
+                        tasks.Insert(jungleIndex, new PassLegacy("AltLibrary: Jungle Mud Walls", new WorldGenLegacyMethod(delegate (GenerationProgress progress, GameConfiguration configuration)
+                        {
+                            int wall = ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeMudWall.Value;
+                            for (int i = 0; i < Main.maxTilesX; i++)
+                            {
+                                for (int j = 0; j < Main.maxTilesY; j++)
+                                {
+                                    if (Main.tile[i, j].WallType == WallID.MudUnsafe)
+                                    {
+                                        Main.tile[i, j].WallType = (ushort)wall;
+                                    }
+                                }
+                            }
+                        })));
+                    }
                 }
                 jungleIndex = tasks.FindIndex(i => i.Name.Equals("Lihzahrd Altars"));
                 if (jungleIndex != -1)
@@ -143,6 +169,41 @@ namespace AltLibrary.Common.Systems
         private void EvilTaskGen(GenerationProgress progress, GameConfiguration configuration)
         {
             EvilBiomeGenerationPassHandler.GenerateAllCorruption(DungeonSide, DungeonLocation, progress);
+        }
+        private void JungleChestPlacementTask(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = Lang.gen[32].Value;
+            for (int num442 = 0; num442 < ALReflection.WorldGen_numJChests; num442++)
+            {
+                float value7 = num442 / ALReflection.WorldGen_numJChests;
+                int style = ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeShrineChestType.HasValue ? 0 : 10;
+                int chestType = ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeShrineChestType ?? 0;
+                progress.Set(value7);
+                int nextJungleChestItem = WorldGen.GetNextJungleChestItem();
+                if (!WorldGen.AddBuriedChest(ALReflection.WorldGen_JChestX[num442] + WorldGen.genRand.Next(2), ALReflection.WorldGen_JChestY[num442], nextJungleChestItem, false, style, false, (ushort)chestType))
+                {
+                    for (int num443 = ALReflection.WorldGen_JChestX[num442] - 1; num443 <= ALReflection.WorldGen_JChestX[num442] + 1; num443++)
+                    {
+                        for (int num444 = ALReflection.WorldGen_JChestY[num442]; num444 <= ALReflection.WorldGen_JChestY[num442] + 2; num444++)
+                        {
+                            WorldGen.KillTile(num443, num444);
+                        }
+                    }
+                    for (int num445 = ALReflection.WorldGen_JChestX[num442] - 1; num445 <= ALReflection.WorldGen_JChestX[num442] + 1; num445++)
+                    {
+                        for (int num446 = ALReflection.WorldGen_JChestY[num442]; num446 <= ALReflection.WorldGen_JChestY[num442] + 3; num446++)
+                        {
+                            if (num446 < Main.maxTilesY)
+                            {
+                                Tile t = Main.tile[num445, num446];
+                                t.Slope = SlopeType.Solid;
+                                t.IsHalfBlock = false;
+                            }
+                        }
+                    }
+                    WorldGen.AddBuriedChest(ALReflection.WorldGen_JChestX[num442], ALReflection.WorldGen_JChestY[num442], nextJungleChestItem, false, style, false, (ushort)chestType);
+                }
+            }
         }
 
         private void JunglesWetTask(GenerationProgress progress, GameConfiguration configuration)
@@ -177,7 +238,66 @@ namespace AltLibrary.Common.Systems
                 }
             }
         }
-
+        private void JungleBushesTask(GenerationProgress progress, GameConfiguration passConfig)
+        {
+            progress.Set(1f);
+            int bush = ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeJungleBushes ?? TileID.PlantDetritus;
+            for (int num204 = 0; num204 < Main.maxTilesX * 100; num204++)
+            {
+                int num205 = WorldGen.genRand.Next(40, Main.maxTilesX / 2 - 40);
+                if (DungeonSide < 0)
+                {
+                    num205 += Main.maxTilesX / 2;
+                }
+                int num206;
+                for (num206 = WorldGen.genRand.Next(Main.maxTilesY - 300); !Main.tile[num205, num206].HasTile && num206 < Main.maxTilesY - 300; num206++)
+                {
+                }
+                if (Main.tile[num205, num206].HasTile && Main.tile[num205, num206].TileType == (ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeJungleGrass ?? TileID.JungleGrass))
+                {
+                    num206--;
+                    WorldGen.PlaceJunglePlant(num205, num206, (ushort)bush, WorldGen.genRand.Next(8), 0);
+                    if (Main.tile[num205, num206].TileType != bush)
+                    {
+                        WorldGen.PlaceJunglePlant(num205, num206, (ushort)bush, WorldGen.genRand.Next(12), 1);
+                    }
+                }
+            }
+        }
+        private void GlowingMushroomsandJunglePlantsTask(GenerationProgress progress, GameConfiguration passConfig)
+        {
+            progress.Set(1f);
+            int grass = ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeJunglePlants ?? TileID.JunglePlants;
+            for (int num207 = 0; num207 < Main.maxTilesX; num207++)
+            {
+                for (int num208 = 0; num208 < Main.maxTilesY; num208++)
+                {
+                    if (Main.tile[num207, num208].HasTile)
+                    {
+                        if (num208 >= (int)Main.worldSurface && Main.tile[num207, num208].TileType == TileID.MushroomGrass && !Main.tile[num207, num208 - 1].HasTile)
+                        {
+                            WorldGen.GrowTree(num207, num208);
+                            if (!Main.tile[num207, num208 - 1].HasTile)
+                            {
+                                WorldGen.GrowTree(num207, num208);
+                                if (!Main.tile[num207, num208 - 1].HasTile)
+                                {
+                                    WorldGen.GrowShroom(num207, num208);
+                                    if (!Main.tile[num207, num208 - 1].HasTile)
+                                    {
+                                        WorldGen.PlaceTile(num207, num208 - 1, TileID.MushroomPlants, mute: true);
+                                    }
+                                }
+                            }
+                        }
+                        if (Main.tile[num207, num208].TileType == (ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeGrass ?? TileID.JungleGrass) && !Main.tile[num207, num208 - 1].HasTile)
+                        {
+                            WorldGen.PlaceTile(num207, num208 - 1, grass, mute: true, style: grass == TileID.JunglePlants ? 0 : WorldGen.genRand.Next(8));
+                        }
+                    }
+                }
+            }
+        }
         private void JunglesGrassTask(GenerationProgress progress, GameConfiguration passConfig)
         {
             progress.Message = Lang.gen[77].Value;

@@ -230,10 +230,7 @@ namespace AltLibrary.Core.Baking
             };
                 foreach (AltOre ore in AltLibrary.Ores)
                 {
-                    if (ore.OreType == OreType.None)
-                    {
-                        ore.CustomSelection(preOrder);
-                    }
+                    ore.CustomSelection(preOrder);
                 }
                 Types = preOrder;
 

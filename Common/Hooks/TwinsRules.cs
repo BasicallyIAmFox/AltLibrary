@@ -42,12 +42,12 @@ namespace AltLibrary.Common.Hooks
         private static LeadingConditionRule LeadingConditionRule(LeadingConditionRule leadCond)
         {
             leadCond.ChainedRules.RemoveAt(1);
-            leadCond.OnSuccess(ItemDropRule.ByCondition(new HallowedBarDropCondition(), ItemID.HallowedBar, 1, 15, 30));
+            leadCond.OnSuccess(ItemDropRule.ByCondition(new HallowDropCondition(), ItemID.HallowedBar, 1, 15, 30));
             foreach (var biome in from AltBiome biome in AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow)
                                   where biome.MechDropItemType != null && biome.MechDropItemType.HasValue
                                   select biome)
             {
-                leadCond.OnSuccess(ItemDropRule.ByCondition(new HallowedBarAltDropCondition(biome), biome.MechDropItemType.Value, 1, 15, 30));
+                leadCond.OnSuccess(ItemDropRule.ByCondition(new HallowAltDropCondition(biome), biome.MechDropItemType.Value, 1, 15, 30));
             }
             return leadCond;
         }

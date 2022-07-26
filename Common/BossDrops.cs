@@ -90,12 +90,12 @@ namespace AltLibrary.Common
                             }
                         }
                         var expertCondition = new LeadingConditionRule(new Conditions.NotExpert());
-                        var hallowBarCondition = new LeadingConditionRule(new HallowedBarDropCondition());
+                        var hallowBarCondition = new LeadingConditionRule(new HallowDropCondition());
                         expertCondition.OnSuccess(hallowBarCondition);
                         hallowBarCondition.OnSuccess(ItemDropRule.Common(ItemID.Pwnhammer));
                         foreach (AltBiome biome in HallowList)
                         {
-                            var biomeDropRule = new LeadingConditionRule(new HallowedBarAltDropCondition(biome));
+                            var biomeDropRule = new LeadingConditionRule(new HallowAltDropCondition(biome));
                             biomeDropRule.OnSuccess(ItemDropRule.Common(biome.HammerType));
                             expertCondition.OnSuccess(biomeDropRule);
                         }
@@ -114,13 +114,13 @@ namespace AltLibrary.Common
                             }
                         }
                         var expertCondition = new LeadingConditionRule(new Conditions.NotExpert());
-                        var hallowBarCondition = new LeadingConditionRule(new HallowedBarDropCondition());
+                        var hallowBarCondition = new LeadingConditionRule(new HallowDropCondition());
                         expertCondition.OnSuccess(hallowBarCondition);
                         hallowBarCondition.OnSuccess(ItemDropRule.Common(ItemID.HallowedBar, 1, 15, 30));
 
                         foreach (AltBiome biome in HallowList)
                         {
-                            var biomeDropRule = new LeadingConditionRule(new HallowedBarAltDropCondition(biome));
+                            var biomeDropRule = new LeadingConditionRule(new HallowAltDropCondition(biome));
                             if (biome.MechDropItemType != null) biomeDropRule.OnSuccess(ItemDropRule.Common((int)biome.MechDropItemType, 1, 15, 30));
                             expertCondition.OnSuccess(biomeDropRule);
                         }
