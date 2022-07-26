@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "hB6RTiRx8WxuUaN7nqpPNZ07NcSXW/T5jwL9hcue9U75OE27Y+eFFMAbX05lNIzkMYByTh1j4N1nKt366tucqQ==",
+  "dgSpecHash": "Vn7X7eFHBZe+5g7i9ahIi48lJPV5eBkqOSbzvDDtDsXGUgVbXu5XPuE4lZoyEo10DrI5Krr0KQ4YKWPYvc/2Tg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\palma\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\AltLibrary\\AltLibrary.csproj",
+  "projectFilePath": "C:\\Users\\jabaw\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\AltLibrary\\AltLibrary.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\palma\\.nuget\\packages\\tmodloader.codeassist\\0.1.5\\tmodloader.codeassist.0.1.5.nupkg.sha512"
+    "C:\\Users\\jabaw\\.nuget\\packages\\tmodloader.codeassist\\0.1.5\\tmodloader.codeassist.0.1.5.nupkg.sha512"
   ],
   "logs": []
 }
