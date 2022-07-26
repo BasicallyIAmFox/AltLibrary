@@ -4,7 +4,7 @@ using Terraria.Localization;
 
 namespace AltLibrary.Common.Condition
 {
-    internal class HallowedBarDropCondition : IItemDropRuleCondition
+    internal class HallowDropCondition : IItemDropRuleCondition
     {
         public bool CanDrop(DropAttemptInfo info)
         {

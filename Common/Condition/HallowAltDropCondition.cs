@@ -5,10 +5,10 @@ using Terraria.Localization;
 
 namespace AltLibrary.Common.Condition
 {
-    internal class HallowedBarAltDropCondition : IItemDropRuleCondition
+    internal class HallowAltDropCondition : IItemDropRuleCondition
     {
         public AltBiome BiomeType;
-        public HallowedBarAltDropCondition(AltBiome biomeType)
+        public HallowAltDropCondition(AltBiome biomeType)
         {
             BiomeType = biomeType;
         }
