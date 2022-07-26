@@ -1,6 +1,5 @@
 using AltLibrary.Common;
 using AltLibrary.Common.AltBiomes;
-using AltLibrary.Common.AltLiquidStyles;
 using AltLibrary.Common.AltOres;
 using AltLibrary.Common.Hooks;
 using AltLibrary.Common.Systems;
@@ -25,8 +24,6 @@ namespace AltLibrary
         internal static List<AltBiome> Biomes = new();
 
         internal static List<AltOre> Ores = new();
-
-        internal static List<AltLiquidStyle> LiquidStyles = new();
 
         internal static List<ALBiomeTileCountModifier> ALBiomeTileCountModifiers = new();
 
@@ -305,7 +302,6 @@ namespace AltLibrary
             }
             Biomes = null;
             Ores = null;
-            LiquidStyles = null;
             planteraBulbs = null;
             jungleGrass = null;
             jungleThorns = null;

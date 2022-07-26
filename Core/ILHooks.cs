@@ -1,5 +1,4 @@
 ﻿using AltLibrary.Common;
-using AltLibrary.Common.AltLiquidStyles.Hooks;
 using AltLibrary.Common.Hooks;
 using AltLibrary.Common.Systems;
 using AltLibrary.Content.NPCs;
@@ -34,7 +33,6 @@ namespace AltLibrary.Core
             DryadText.Init();
             JungleHuts.Init(); // TODO: redo?
             TenthAnniversaryFix.Init();
-            LiquidILHooks.Init();
             DrunkCrimsonFix.Load();
         }
 
@@ -57,7 +55,6 @@ namespace AltLibrary.Core
             DryadText.Unload();
             JungleHuts.Unload();
             TenthAnniversaryFix.Unload();
-            LiquidILHooks.Unload();
             GenPasses.Unload();
             DrunkCrimsonFix.Unload();
         }
