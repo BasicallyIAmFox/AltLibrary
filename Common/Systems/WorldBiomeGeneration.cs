@@ -176,7 +176,7 @@ namespace AltLibrary.Common.Systems
             for (int num442 = 0; num442 < ALReflection.WorldGen_numJChests; num442++)
             {
                 float value7 = num442 / ALReflection.WorldGen_numJChests;
-                int style = ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeShrineChestType ?? 10;
+                int style = ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeShrineChestType.HasValue ? 0 : 10;
                 int chestType = ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeShrineChestType ?? 0;
                 progress.Set(value7);
                 int nextJungleChestItem = WorldGen.GetNextJungleChestItem();
