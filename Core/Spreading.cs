@@ -26,9 +26,9 @@ namespace AltLibrary.Core
                     if (biome.SpreadingTiles.Contains(type))
                     {
                         isSpreadingTile = true;
+                        biomeToSpread = biome;
+                        break;
                     }
-                    biomeToSpread = biome;
-                    break;
                 }
                 if (biome.BiomeType == BiomeType.Jungle)
                 {
