@@ -15,31 +15,19 @@ namespace AltLibrary.Common.Hooks
 
         public static void Init()
         {
-            MimicPairs = new()
-            {
-                ["Corruption"] = new(ItemID.NightKey, NPCID.BigMimicCorruption, () => WorldBiomeManager.IsCorruption),
-                ["Crimson"] = new(ItemID.NightKey, NPCID.BigMimicCrimson, () => WorldBiomeManager.IsCrimson),
-                ["Hallow"] = new(ItemID.LightKey, NPCID.BigMimicHallow, () => !AltLibrary.Biomes.Any(x => x.MimicKeyType == ItemID.LightKey) || WorldBiomeManager.WorldHallow == ""),
-            };
-
             On.Terraria.NPC.BigMimicSummonCheck += NPC_BigMimicSummonCheck;
         }
 
         public static void SetupContent()
         {
-            foreach (AltBiome biome in AltLibrary.Biomes)
-            {
-                if (biome.BiomeType <= BiomeType.Hallow && biome.MimicKeyType.HasValue && biome.MimicType.HasValue)
-                {
-                    bool isEvil = biome.BiomeType == BiomeType.Evil;
-                    MimicPairs.TryAdd($"{biome.Mod.Name}/{biome.Name}:{biome.MimicKeyType.Value}", new(biome.MimicKeyType.Value, biome.MimicType.Value, () => Cond(biome, isEvil)));
-                }
-            }
         }
 
-        private static bool Cond(AltBiome biome, bool isEvil) => isEvil ? !WorldGen.crimson && WorldBiomeManager.WorldEvil == biome.FullName : (!AltLibrary.Biomes.Any(x => x.MimicKeyType == ItemID.LightKey) || WorldBiomeManager.WorldHallow == biome.FullName);
+		private static bool Cond(AltBiome biome, bool isEvil)
+		{
+			return isEvil ? !WorldGen.crimson && WorldBiomeManager.WorldEvil == biome.FullName : (!AltLibrary.Biomes.Any(x => x.MimicKeyType == ItemID.LightKey) || WorldBiomeManager.WorldHallow == biome.FullName);
+		}
 
-        public static void Unload()
+		public static void Unload()
         {
             On.Terraria.NPC.BigMimicSummonCheck -= NPC_BigMimicSummonCheck;
             MimicPairs = null;
@@ -68,6 +56,24 @@ namespace AltLibrary.Common.Hooks
 
         private static bool NPC_BigMimicSummonCheck(On.Terraria.NPC.orig_BigMimicSummonCheck orig, int x, int y, Player user)
         {
+            if (MimicPairs == null)
+            {
+                MimicPairs = new()
+                {
+                    ["Corruption"] = new(ItemID.NightKey, NPCID.BigMimicCorruption, () => WorldBiomeManager.IsCorruption),
+                    ["Crimson"] = new(ItemID.NightKey, NPCID.BigMimicCrimson, () => WorldBiomeManager.IsCrimson),
+                    ["Hallow"] = new(ItemID.LightKey, NPCID.BigMimicHallow, () => !AltLibrary.Biomes.Any(x => x.MimicKeyType == ItemID.LightKey) || WorldBiomeManager.WorldHallow == ""),
+                };
+                foreach (AltBiome biome in AltLibrary.Biomes)
+                {
+                    if (biome.BiomeType <= BiomeType.Hallow && biome.MimicKeyType.HasValue && biome.MimicType.HasValue)
+                    {
+                        bool isEvil = biome.BiomeType == BiomeType.Evil;
+                        MimicPairs.TryAdd($"{biome.FullName}", new(biome.MimicKeyType.Value, biome.MimicType.Value, () => Cond(biome, isEvil)));
+                    }
+                }
+            }
+
             if (Main.netMode == NetmodeID.MultiplayerClient || !Main.hardMode)
                 return false;
 
@@ -78,12 +84,14 @@ namespace AltLibrary.Common.Hooks
             List<AltBiome> EvilHallow = new();
             AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow || x.BiomeType == BiomeType.Evil)
                 .ToList().ForEach(x => EvilHallow.Add(x));
-            ValueTuple<int, int>[] keys = new (int, int)[EvilHallow.Count + 2];
-            keys[0].Item2 = NPCID.BigMimicHallow;
-            keys[1].Item2 = MimicPairs["Crimson"].condition.Invoke() ? NPCID.BigMimicCrimson : NPCID.BigMimicCorruption;
-            foreach (AltBiome biome in EvilHallow)
+			Dictionary<string, (int, int)> keys = new()
+			{
+				{ "Terraria/Hallow", (NPCID.BigMimicHallow, 0) },
+				{ "Terraria/Evil", (MimicPairs["Crimson"].condition() ? NPCID.BigMimicCrimson : NPCID.BigMimicCorruption, 0) }
+			};
+			foreach (AltBiome biome in EvilHallow)
             {
-                keys[biome.Type + 1].Item2 = biome.MimicType.GetValueOrDefault();
+                keys.TryAdd(biome.FullName, (biome.MimicType.GetValueOrDefault(), 0));
             }
 
             int emptiness = 0;
@@ -95,25 +103,31 @@ namespace AltLibrary.Common.Hooks
                 if (TileID.Sets.BasicChest[chestTile] && (chestTile != 21 || chestFrame < 5 || chestFrame > 6) && Main.chest[chestIndex].item[i] != null && Main.chest[chestIndex].item[i].type > ItemID.None)
                 {
                     foreach (var pair in from KeyValuePair<string, Struct_31213> pair in MimicPairs
-                                         where pair.Value.condition.Invoke() && pair.Key != "Corruption" && pair.Key != "Crimson" && pair.Key != "Hallow"
+                                         where pair.Value.condition() && pair.Key != "Corruption" && pair.Key != "Crimson" && pair.Key != "Hallow"
                                             && Main.chest[chestIndex].item[i].type == pair.Value.field_74123
                                          select pair)
                     {
-                        keys[AltLibrary.Biomes.FindIndex(x => x.FullName == pair.Key) + 2].Item1 += Main.chest[chestIndex].item[i].stack;
+                        (int, int) p = keys[pair.Key];
+                        p.Item2 += Main.chest[chestIndex].item[i].stack;
+                        keys[pair.Key] = p;
                         leading = Main.chest[chestIndex].item[i].type;
                     }
 
                     if (Main.chest[chestIndex].item[i].type == ItemID.LightKey)
                     {
-                        keys[0].Item1 += Main.chest[chestIndex].item[i].stack;
+                        (int, int) p = keys["Terraria/Hallow"];
+                        p.Item2 += Main.chest[chestIndex].item[i].stack;
+                        keys["Terraria/Hallow"] = p;
                         leading = Main.chest[chestIndex].item[i].type;
                     }
                     else if (Main.chest[chestIndex].item[i].type == ItemID.NightKey)
                     {
-                        keys[1].Item1 += Main.chest[chestIndex].item[i].stack;
+                        (int, int) p = keys["Terraria/Evil"];
+                        p.Item2 += Main.chest[chestIndex].item[i].stack;
+                        keys["Terraria/Evil"] = p;
                         leading = Main.chest[chestIndex].item[i].type;
                     }
-                    else
+                    else if (leading == 0)
                     {
                         emptiness++;
                     }
@@ -122,13 +136,15 @@ namespace AltLibrary.Common.Hooks
 
             int total = 0;
             string index = null;
-            for (int i = 0; i < keys.Length; i++)
-                total += keys[i].Item1;
+            foreach (KeyValuePair<string, (int, int)> p in keys)
+			{
+                total += keys[p.Key].Item2;
+			}
             if (total == 1)
             {
                 foreach (KeyValuePair<string, Struct_31213> pair in MimicPairs)
                 {
-                    if (pair.Value.condition() && pair.Value.field_74123 == leading)
+                    if (pair.Value.field_74123 == leading)
                     {
                         index = pair.Key;
                     }

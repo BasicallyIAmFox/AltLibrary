@@ -23,7 +23,9 @@ namespace AltLibrary.Content.NPCs
     {
         internal static int CurrentPage = 0;
 
-        public override void Load()
+		public override bool IsLoadingEnabled(Mod mod) => false;
+
+		public override void Load()
         {
             CurrentPage = 0;
             IL.Terraria.Main.GUIChatDrawInner += Main_GUIChatDrawInner;
