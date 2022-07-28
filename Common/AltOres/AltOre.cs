@@ -31,6 +31,7 @@ namespace AltLibrary.Common.AltOres
 
         public int? Candle = null;
         public int? Watch = null;
+        public bool IncludeInExtractinator = false;
 
         public int Type { get; internal set; }
 

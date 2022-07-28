@@ -71,6 +71,7 @@ namespace AltLibrary
 #if TML_2022_06
             FishingCrateLoot.Load();
 #endif
+            ExtractinatorOres.Load();
             AnalystShopLoader.Load();
             ModIconVariation = Main.rand.Next(ALTextureAssets.AnimatedModIcon.Length);
             TimeHoveringOnIcon = 0;
@@ -290,6 +291,7 @@ namespace AltLibrary
 #if TML_2022_06
             FishingCrateLoot.Unload();
 #endif
+            ExtractinatorOres.Unload();
             ALReflection.Unload();
             AnalystShopLoader.Unload();
             AltLibraryConfig.Config = null;
