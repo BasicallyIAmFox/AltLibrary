@@ -18,7 +18,6 @@ using Terraria.Utilities;
 namespace AltLibrary.Common.Hooks
 {
 #if TML_2022_07
-	
 	internal class FishingCrateLoot : GlobalItem
 	{
 		public override void ModifyItemLoot(Item item, ItemLoot itemLoot)

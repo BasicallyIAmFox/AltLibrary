@@ -201,10 +201,10 @@ namespace AltLibrary.Common.Hooks
                 AltLibrary.Instance.Logger.Info("f $ 3");
                 return;
             }
-#if TML_2022_07
-            if (!c.TryGotoNext(i => i.MatchStsfld(out copper)))
-#else
+#if TML_2022_06
             if (!c.TryGotoNext(i => i.MatchStfld(out copper)))
+#else
+            if (!c.TryGotoNext(i => i.MatchStsfld(out copper)))
 #endif
             {
                 AltLibrary.Instance.Logger.Info("f $ 4");
@@ -215,10 +215,10 @@ namespace AltLibrary.Common.Hooks
                 AltLibrary.Instance.Logger.Info("f $ 5");
                 return;
             }
-#if TML_2022_07
-            if (!c.TryGotoNext(i => i.MatchStsfld(out iron)))
-#else
+#if TML_2022_06
             if (!c.TryGotoNext(i => i.MatchStfld(out iron)))
+#else
+            if (!c.TryGotoNext(i => i.MatchStsfld(out iron)))
 #endif
             {
                 AltLibrary.Instance.Logger.Info("f $ 6");
@@ -229,10 +229,10 @@ namespace AltLibrary.Common.Hooks
                 AltLibrary.Instance.Logger.Info("f $ 7");
                 return;
             }
-#if TML_2022_07
-            if (!c.TryGotoNext(i => i.MatchStsfld(out silver)))
-#else
+#if TML_2022_06
             if (!c.TryGotoNext(i => i.MatchStfld(out silver)))
+#else
+            if (!c.TryGotoNext(i => i.MatchStsfld(out silver)))
 #endif
             {
                 AltLibrary.Instance.Logger.Info("f $ 8");
@@ -243,10 +243,10 @@ namespace AltLibrary.Common.Hooks
                 AltLibrary.Instance.Logger.Info("f $ 9");
                 return;
             }
-#if TML_2022_07
-            if (!c.TryGotoNext(i => i.MatchStsfld(out gold)))
-#else
+#if TML_2022_06
             if (!c.TryGotoNext(i => i.MatchStfld(out gold)))
+#else
+            if (!c.TryGotoNext(i => i.MatchStsfld(out gold)))
 #endif
             {
                 AltLibrary.Instance.Logger.Info("f $ 10");
