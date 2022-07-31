@@ -10,6 +10,8 @@ namespace AltLibrary.Content.Items
 {
 	public class SoulofSpite : ModItem
     {
+        public override bool IsLoadingEnabled(Mod mod) => AltLibrary._steamId == 76561198831015363;
+
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Soul of Spite");
@@ -39,7 +41,9 @@ namespace AltLibrary.Content.Items
 	}
     public class SoulofSpiteDrop : GlobalNPC
     {
-		public override void ModifyGlobalLoot(GlobalLoot globalLoot)
+        public override bool IsLoadingEnabled(Mod mod) => AltLibrary._steamId == 76561198831015363;
+
+        public override void ModifyGlobalLoot(GlobalLoot globalLoot)
         {
             globalLoot.RemoveWhere(
                 rule => rule is ItemDropWithConditionRule drop

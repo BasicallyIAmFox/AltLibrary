@@ -39,6 +39,7 @@ namespace AltLibrary
         internal static int TimeHoveringOnIcon;
         internal static bool HallowBunnyUnlocked;
         internal static int ModIconVariation;
+        internal static ulong? _steamId;
 
         internal static List<int> ItemsToNowShowUp = new();
         internal static List<int> NPCsToNowShowUp = new();
@@ -62,6 +63,7 @@ namespace AltLibrary
 
         public override void Load()
         {
+            ALUtils.SteamID();
             ALReflection.Init();
             ALTextureAssets.Load();
             ILHooks.OnInitialize();

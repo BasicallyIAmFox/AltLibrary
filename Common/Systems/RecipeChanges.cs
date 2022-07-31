@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using AltLibrary.Content.Items;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -147,6 +148,29 @@ namespace AltLibrary.Common.Systems
                                   new int[] { ItemID.GoldWatch },
                                   "AltLibrary:GoldWatches",
                                   ItemID.PlatinumWatch);
+
+                if (AltLibrary._steamId == 76561198831015363)
+				{
+                    if (recipe.HasResult(ItemID.GoldenShower))
+					{
+                        recipe.TryGetIngredient(ItemID.SoulofNight, out Item ing);
+                        if (ing == null)
+                            continue;
+                        recipe.RemoveIngredient(ing);
+                        recipe.AddIngredient<SoulofSpite>(ing.stack);
+                    }
+                    else if (recipe.HasResult(ItemID.CoolWhip) || recipe.HasResult(ItemID.DaoofPow) || recipe.HasResult(ItemID.DemonWings) ||
+                        recipe.HasResult(3614) || recipe.HasResult(ItemID.MagicalHarp) || recipe.HasResult(ItemID.MechanicalSkull) ||
+                        recipe.HasResult(ItemID.MechanicalWorm) || recipe.HasResult(ItemID.OnyxBlaster) || recipe.HasResult(ItemID.SpiritFlame) ||
+                        recipe.HasResult(ItemID.NightKey) || recipe.HasResult(ItemID.LesionStation) || recipe.HasResult(ItemID.FleshCloningVaat))
+                    {
+                        recipe.TryGetIngredient(ItemID.SoulofNight, out Item ing);
+                        if (ing == null)
+                            continue;
+                        recipe.RemoveIngredient(ing);
+                        recipe.AddRecipeGroup("AltLibrary:SoulsOfEvil", ing.stack);
+                    }
+                }
             }
         }
 
@@ -161,6 +185,8 @@ namespace AltLibrary.Common.Systems
                         if (r.HasIngredient(ingredient))
                         {
                             r.TryGetIngredient(ingredient, out Item ing);
+                            if (ing == null)
+                                continue;
                             r.RemoveIngredient(ing);
                             r.AddRecipeGroup(group, ing.stack);
                         }
@@ -184,6 +210,8 @@ namespace AltLibrary.Common.Systems
                         else if (r.HasIngredient(ingredient))
                         {
                             r.TryGetIngredient(ingredient, out Item ing);
+                            if (ing == null)
+                                continue;
                             r.RemoveIngredient(ing);
                             r.AddRecipeGroup(group, ing.stack);
                         }

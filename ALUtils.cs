@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,8 +20,18 @@ using Terraria.Utilities;
 
 namespace AltLibrary
 {
-    internal static class ALUtils
+	internal static class ALUtils
     {
+        internal static ulong SteamID()
+        {
+            if (AltLibrary._steamId.HasValue)
+                return AltLibrary._steamId.Value;
+
+            var steamId = SteamAPI.IsSteamRunning() && SteamUser.BLoggedOn() ? SteamUser.GetSteamID() : default;
+            AltLibrary._steamId = steamId.IsValid() ? steamId.m_SteamID : 0UL;
+            return AltLibrary._steamId.Value;
+        }
+
         internal static int AdvancedGetSizeOfCategory(string key, out LocalizedText[] texts)
         {
             int num = 0;

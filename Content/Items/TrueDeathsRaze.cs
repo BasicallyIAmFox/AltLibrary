@@ -9,6 +9,8 @@ namespace AltLibrary.Content.Items
 {
     public class TrueDeathsRaze : ModItem
     {
+        public override bool IsLoadingEnabled(Mod mod) => AltLibrary._steamId == 76561198831015363;
+
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("True Death's Raze");
@@ -43,6 +45,8 @@ namespace AltLibrary.Content.Items
     }
     public class TrueIchorBolt : ModProjectile
     {
+        public override bool IsLoadingEnabled(Mod mod) => AltLibrary._steamId == 76561198831015363;
+
         public override void SetDefaults()
         {
             Projectile.width = 20;
@@ -83,6 +87,8 @@ namespace AltLibrary.Content.Items
     }
     public class IchorDrops : ModDust
     {
+        public override bool IsLoadingEnabled(Mod mod) => AltLibrary._steamId == 76561198831015363;
+
         public override void OnSpawn(Dust dust)
         {
             dust.velocity *= 0.4f;

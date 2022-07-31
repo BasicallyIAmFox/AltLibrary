@@ -1,4 +1,5 @@
 ﻿using AltLibrary.Common.AltBiomes;
+using AltLibrary.Content.Items;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -46,6 +47,7 @@ namespace AltLibrary.Common.Systems
         internal static RecipeGroup CopperWatches;
         internal static RecipeGroup SilverWatches;
         internal static RecipeGroup GoldWatches;
+        internal static RecipeGroup SoulsOfEvil;
 
         public override void Unload()
         {
@@ -86,6 +88,7 @@ namespace AltLibrary.Common.Systems
             GoldWatches = null;
             GoldOres = null;
             IronOres = null;
+            SoulsOfEvil = null;
         }
 
         public override void AddRecipeGroups()
@@ -423,6 +426,13 @@ namespace AltLibrary.Common.Systems
             AltLibrary.Ores.FindAll(x => x.OreType == OreType.Gold && x.Watch.HasValue).ForEach(x => array.Add(x.Watch.Value));
             GoldWatches = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.GoldWatches")}", array.ToArray());
             RecipeGroup.RegisterGroup("AltLibrary:GoldWatches", GoldWatches);
+
+            if (AltLibrary._steamId != 76561198831015363)
+                return;
+
+            array = new List<int>() { ItemID.SoulofNight, ModContent.ItemType<SoulofSpite>() };
+            SoulsOfEvil = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} Soul of Evil", array.ToArray());
+            RecipeGroup.RegisterGroup("AltLibrary:SoulsOfEvil", SoulsOfEvil);
         }
     }
 }
