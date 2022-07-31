@@ -28,6 +28,7 @@ namespace AltLibrary.Core
 			DungeonChests.Init();
 			SmashAltarInfection.Init();
 			MowingGrassTile.Init();
+			AltOreInsideBodies.Load();
 			MimicSummon.Init();
 			SimpleReplacements.Load();
 			DryadText.Init();
@@ -50,6 +51,7 @@ namespace AltLibrary.Core
 			DungeonChests.Unload();
 			SmashAltarInfection.Unload();
 			MowingGrassTile.Unload();
+			AltOreInsideBodies.Unload();
 			MimicSummon.Unload();
 			SimpleReplacements.Unload();
 			DryadText.Unload();

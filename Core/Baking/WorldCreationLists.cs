@@ -1,6 +1,7 @@
 ﻿using AltLibrary.Common;
 using AltLibrary.Common.AltBiomes;
 using AltLibrary.Common.AltOres;
+using AltLibrary.Common.Hooks;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System.Collections.Generic;
@@ -23,12 +24,29 @@ namespace AltLibrary.Core.Baking
 			{
 				prehmOreData = new();
 				biomeData = new();
+
+				List<int> ores = new()
+				{
+					ItemID.CopperOre, ItemID.TinOre,
+					ItemID.IronOre, ItemID.LeadOre,
+					ItemID.SilverOre, ItemID.TungstenOre,
+					ItemID.GoldOre, ItemID.PlatinumOre
+				};
+
+				for (int i = 0; i < prehmOreData.Types.FindIndex(x => x.ore == ItemID.CobaltOre); i++)
+				{
+					ores.Add(prehmOreData.Types[i].ore);
+				}
+
+				AltOreInsideBodies.ores = ores;
 			}
 
 			public void Unload()
 			{
 				prehmOreData = null;
-				biomeData = new();
+				biomeData = null;
+
+				AltOreInsideBodies.ores = null;
 			}
 		}
 
