@@ -125,9 +125,9 @@ namespace AltLibrary.Core.Baking
 			CrimsonConversion.TryAdd(TileID.Grass, TileID.CrimsonGrass);
 			CrimsonConversion.TryAdd(TileID.IceBlock, TileID.FleshIce);
 			CrimsonConversion.TryAdd(TileID.Sand, TileID.Crimsand);
-			CrimsonConversion.TryAdd(TileID.HardenedSand, TileID.CorruptHardenedSand);
-			CrimsonConversion.TryAdd(TileID.Sandstone, TileID.CorruptSandstone);
-			CrimsonConversion.TryAdd(TileID.CorruptThorns, TileID.CrimsonThorns);
+			CrimsonConversion.TryAdd(TileID.HardenedSand, TileID.CrimsonHardenedSand);
+			CrimsonConversion.TryAdd(TileID.Sandstone, TileID.CrimsonSandstone);
+			CrimsonConversion.TryAdd(TileID.CrimsonThorns, TileID.CrimsonThorns);
 
 			BreakIfConversionFail.TryAdd(TileID.CrimsonThorns, new(true, true, true, true));
 
