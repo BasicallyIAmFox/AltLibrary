@@ -1,11 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿using AltLibrary.Common.AltOres;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.GameInput;
-using Terraria.ModLoader;
 using Terraria.ID;
-using AltLibrary.Common.AltOres;
-using System.Linq;
+using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Hooks
 {
