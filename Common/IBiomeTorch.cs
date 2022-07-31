@@ -129,7 +129,7 @@ namespace AltLibrary.Common
 				// and replace all further behavior with our own
 				c.GotoNext(MoveType.Before,
 					i => i.MatchLdarg(0),
-					i => i.MatchCall<Player>(nameof(Player.UsingBiomeTorches)),
+					i => i.MatchCall<Player>("get_UsingBiomeTorches"),
 					i => i.MatchBrfalse(out _));
 
 				c.Emit(OpCodes.Ldarg, 0);
