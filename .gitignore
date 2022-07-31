@@ -348,3 +348,11 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+Content/Items/DeathsRaze.cs
+Content/Items/DeathsRaze.png
+Content/Items/IchorDrops.png
+Content/Items/SoulofSpite.cs
+Content/Items/SoulofSpite.png
+Content/Items/TrueDeathsRaze.cs
+Content/Items/TrueDeathsRaze.png
+Content/Items/TrueIchorBolt.png
