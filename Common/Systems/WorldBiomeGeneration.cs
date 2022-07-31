@@ -171,25 +171,25 @@ namespace AltLibrary.Common.Systems
 		private void JungleChestPlacementTask(GenerationProgress progress, GameConfiguration configuration)
 		{
 			progress.Message = Lang.gen[32].Value;
-			for (int num442 = 0; num442 < ALReflection.WorldGen_numJChests; num442++)
+			for (int num442 = 0; num442 < WorldGen.numJChests; num442++)
 			{
-				float value7 = num442 / ALReflection.WorldGen_numJChests;
+				float value7 = num442 / WorldGen.numJChests;
 				int style = ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeShrineChestType.HasValue ? 0 : 10;
 				int chestType = ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeShrineChestType ?? 0;
 				progress.Set(value7);
 				int nextJungleChestItem = WorldGen.GetNextJungleChestItem();
-				if (!WorldGen.AddBuriedChest(ALReflection.WorldGen_JChestX[num442] + WorldGen.genRand.Next(2), ALReflection.WorldGen_JChestY[num442], nextJungleChestItem, false, style, false, (ushort)chestType))
+				if (!WorldGen.AddBuriedChest(WorldGen.JChestX[num442] + WorldGen.genRand.Next(2), WorldGen.JChestY[num442], nextJungleChestItem, false, style, false, (ushort)chestType))
 				{
-					for (int num443 = ALReflection.WorldGen_JChestX[num442] - 1; num443 <= ALReflection.WorldGen_JChestX[num442] + 1; num443++)
+					for (int num443 = WorldGen.JChestX[num442] - 1; num443 <= WorldGen.JChestX[num442] + 1; num443++)
 					{
-						for (int num444 = ALReflection.WorldGen_JChestY[num442]; num444 <= ALReflection.WorldGen_JChestY[num442] + 2; num444++)
+						for (int num444 = WorldGen.JChestY[num442]; num444 <= WorldGen.JChestY[num442] + 2; num444++)
 						{
 							WorldGen.KillTile(num443, num444);
 						}
 					}
-					for (int num445 = ALReflection.WorldGen_JChestX[num442] - 1; num445 <= ALReflection.WorldGen_JChestX[num442] + 1; num445++)
+					for (int num445 = WorldGen.JChestX[num442] - 1; num445 <= WorldGen.JChestX[num442] + 1; num445++)
 					{
-						for (int num446 = ALReflection.WorldGen_JChestY[num442]; num446 <= ALReflection.WorldGen_JChestY[num442] + 3; num446++)
+						for (int num446 = WorldGen.JChestY[num442]; num446 <= WorldGen.JChestY[num442] + 3; num446++)
 						{
 							if (num446 < Main.maxTilesY)
 							{
@@ -199,7 +199,7 @@ namespace AltLibrary.Common.Systems
 							}
 						}
 					}
-					WorldGen.AddBuriedChest(ALReflection.WorldGen_JChestX[num442], ALReflection.WorldGen_JChestY[num442], nextJungleChestItem, false, style, false, (ushort)chestType);
+					WorldGen.AddBuriedChest(WorldGen.JChestX[num442], WorldGen.JChestY[num442], nextJungleChestItem, false, style, false, (ushort)chestType);
 				}
 			}
 		}
@@ -305,7 +305,7 @@ namespace AltLibrary.Common.Systems
 				{
 					if (Main.tile[i, j].HasUnactuatedTile)
 					{
-						ALReflection.WorldGen_GrassSpread = 0;
+						WorldGen.grassSpread = 0;
 						WorldGen.SpreadGrass(i, j, ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeMud ?? TileID.Mud, ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeGrass.GetValueOrDefault(), repeat: true, 0);
 					}
 					progress.Set(0.2f * ((i * Main.maxTilesY + j) / (float)(Main.maxTilesX * Main.maxTilesY)));
