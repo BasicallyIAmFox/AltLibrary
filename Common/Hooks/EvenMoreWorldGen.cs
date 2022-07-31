@@ -79,7 +79,7 @@ namespace AltLibrary.Common.Hooks
 			c.Emit(OpCodes.Ldarg, 1);
 			c.EmitDelegate<Action<GenerationProgress>>((progress) =>
 			{
-				if (WorldBiomeManager.WorldHell != "")
+				if (WorldBiomeManager.WorldHell != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).GenPassName != null)
 				{
 					progress.Message = ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).GenPassName.GetTranslation(Language.ActiveCulture);
 				}
@@ -201,11 +201,7 @@ namespace AltLibrary.Common.Hooks
 				AltLibrary.Instance.Logger.Info("f $ 3");
 				return;
 			}
-#if TML_2022_06
-            if (!c.TryGotoNext(i => i.MatchStfld(out copper)))
-#else
 			if (!c.TryGotoNext(i => i.MatchStsfld(out copper)))
-#endif
 			{
 				AltLibrary.Instance.Logger.Info("f $ 4");
 				return;
@@ -215,11 +211,7 @@ namespace AltLibrary.Common.Hooks
 				AltLibrary.Instance.Logger.Info("f $ 5");
 				return;
 			}
-#if TML_2022_06
-            if (!c.TryGotoNext(i => i.MatchStfld(out iron)))
-#else
 			if (!c.TryGotoNext(i => i.MatchStsfld(out iron)))
-#endif
 			{
 				AltLibrary.Instance.Logger.Info("f $ 6");
 				return;
@@ -229,11 +221,7 @@ namespace AltLibrary.Common.Hooks
 				AltLibrary.Instance.Logger.Info("f $ 7");
 				return;
 			}
-#if TML_2022_06
-            if (!c.TryGotoNext(i => i.MatchStfld(out silver)))
-#else
 			if (!c.TryGotoNext(i => i.MatchStsfld(out silver)))
-#endif
 			{
 				AltLibrary.Instance.Logger.Info("f $ 8");
 				return;
@@ -243,11 +231,7 @@ namespace AltLibrary.Common.Hooks
 				AltLibrary.Instance.Logger.Info("f $ 9");
 				return;
 			}
-#if TML_2022_06
-            if (!c.TryGotoNext(i => i.MatchStfld(out gold)))
-#else
 			if (!c.TryGotoNext(i => i.MatchStsfld(out gold)))
-#endif
 			{
 				AltLibrary.Instance.Logger.Info("f $ 10");
 				return;
