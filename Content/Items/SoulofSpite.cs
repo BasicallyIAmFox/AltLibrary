@@ -10,6 +10,8 @@ namespace AltLibrary.Content.Items
 {
 	public class SoulofSpite : ModItem
     {
+		public override bool IsLoadingEnabled(Mod mod) => false;
+
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Soul of Spite");
@@ -39,6 +41,8 @@ namespace AltLibrary.Content.Items
 	}
     public class SoulofSpiteDrop : GlobalNPC
     {
+		public override bool IsLoadingEnabled(Mod mod) => false;
+
 		public override void ModifyGlobalLoot(GlobalLoot globalLoot)
         {
             globalLoot.RemoveWhere(
