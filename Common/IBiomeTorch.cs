@@ -107,8 +107,7 @@ namespace AltLibrary.Common
 
 				c.Emit(OpCodes.Ldarg, 0);
 				c.Emit(OpCodes.Ldarg, 1);
-				c.Emit(OpCodes.Ldloc, 7);
-				c.EmitDelegate<Func<Player, Item, int, int>>((Player, item, heldType) => BiomeTorchPlacing(Player, item).Item2);
+				c.EmitDelegate<Func<Player, Item, int>>((Player, item) => BiomeTorchPlacing(Player, item).Item2);
 				c.Emit(OpCodes.Stloc, 7);
 			}
 			catch (Exception e)
