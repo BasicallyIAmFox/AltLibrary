@@ -35,6 +35,7 @@ namespace AltLibrary.Core
 			JungleHuts.Init(); // TODO: redo?
 			TenthAnniversaryFix.Init();
 			DrunkCrimsonFix.Load();
+			BiomeTorchIL.Init();
 		}
 
 		public static void Unload()
@@ -59,6 +60,7 @@ namespace AltLibrary.Core
 			TenthAnniversaryFix.Unload();
 			GenPasses.Unload();
 			DrunkCrimsonFix.Unload();
+			BiomeTorchIL.Uninit();
 		}
 
 		private static void Main_GUIChatDrawInner(On.Terraria.Main.orig_GUIChatDrawInner orig, Main self)
