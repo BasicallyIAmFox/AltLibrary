@@ -66,7 +66,7 @@ namespace AltLibrary.Core
 		private static void Main_GUIChatDrawInner(On.Terraria.Main.orig_GUIChatDrawInner orig, Main self)
 		{
 			orig(self);
-			if (Main.npc[Main.LocalPlayer.talkNPC].type == ModContent.NPCType<PieChartTownNPC>())
+			if (Main.LocalPlayer.talkNPC != -1 && Main.npc[Main.LocalPlayer.talkNPC].type == ModContent.NPCType<PieChartTownNPC>())
 			{
 				if (AnalystShopLoader.MaxShopCount() >= 1)
 				{
