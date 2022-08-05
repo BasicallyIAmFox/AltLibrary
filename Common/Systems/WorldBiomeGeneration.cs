@@ -93,7 +93,13 @@ namespace AltLibrary.Common.Systems
 				jungleIndex = tasks.FindIndex(i => i.Name.Equals("Jungle Temple"));
 				if (jungleIndex != -1)
 				{
-					tasks.RemoveAt(jungleIndex);
+					if (ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).TempleGenPass != null)
+					{
+						tasks[jungleIndex] = new PassLegacy("AltLibrary: Temple", new WorldGenLegacyMethod(delegate (GenerationProgress progress, GameConfiguration configuration)
+						{
+							ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).TempleGenPass.Apply(progress, configuration);
+						}));
+					}
 				}
 				jungleIndex = tasks.FindIndex(i => i.Name.Equals("Hives"));
 				if (jungleIndex != -1)
@@ -123,7 +129,7 @@ namespace AltLibrary.Common.Systems
 				jungleIndex = tasks.FindIndex(i => i.Name.Equals("Temple"));
 				if (jungleIndex != -1)
 				{
-					tasks.RemoveAt(jungleIndex);
+					tasks[jungleIndex] = new PassLegacy("AltLibrary: Re-solidify Lihzahrd Brick", new WorldGenLegacyMethod(LihzahrdBrickReSolidTask));
 				}
 				jungleIndex = tasks.FindIndex(i => i.Name.Equals("Glowing Mushrooms and Jungle Plants"));
 				if (jungleIndex != -1)
@@ -167,6 +173,10 @@ namespace AltLibrary.Common.Systems
 		private void EvilTaskGen(GenerationProgress progress, GameConfiguration configuration)
 		{
 			EvilBiomeGenerationPassHandler.GenerateAllCorruption(DungeonSide, DungeonLocation, progress);
+		}
+		private void LihzahrdBrickReSolidTask(GenerationProgress progress, GameConfiguration configuration)
+		{
+			Main.tileSolid[TileID.LihzahrdBrick] = true;
 		}
 		private void JungleChestPlacementTask(GenerationProgress progress, GameConfiguration configuration)
 		{
