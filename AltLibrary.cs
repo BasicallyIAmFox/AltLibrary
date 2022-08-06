@@ -111,11 +111,11 @@ namespace AltLibrary
 
 				torchList.Add(new()
 				{
-					Priority = (item as IBiomeTorch).Priority,
+					Priority = (item.ModItem as IBiomeTorch).Priority,
 					item = item.type,
 					tile = (ushort)item.createTile,
 					style = item.placeStyle,
-					check = (item as IBiomeTorch).InWhatBiome
+					check = (item.ModItem as IBiomeTorch).InWhatBiome
 				});
 			}
 			torchList.Sort((x, y) => x.Priority.CompareTo(y.Priority));

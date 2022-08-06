@@ -29,7 +29,7 @@ namespace AltLibrary.Common
 		Desert,
 
 		High,
-		VeryHight,
+		VeryHigh,
 	}
 
 	public struct BiomeTorchTile
@@ -67,7 +67,7 @@ namespace AltLibrary.Common
 			int item = selected.type;
 			int style = selected.placeStyle;
 
-			if (!player.UsingBiomeTorches || selected.placeStyle != 8)
+			if (!player.UsingBiomeTorches)
 				goto result;
 
 			foreach (BiomeTorchTile t in AltLibrary.BiomeTorchModItems)
