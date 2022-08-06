@@ -6,7 +6,7 @@ namespace AltLibrary.Content.Items
 {
 	public class DeathsRaze : ModItem
 	{
-		public override bool IsLoadingEnabled(Mod mod) => AltLibrary._steamId == 76561198831015363;
+		//public override bool IsLoadingEnabled(Mod mod) => AltLibrary._steamId == 76561198831015363;
 
 		public override void SetStaticDefaults()
 		{
@@ -29,7 +29,7 @@ namespace AltLibrary.Content.Items
 			Item.UseSound = SoundID.Item1;
 		}
 
-		public override void AddRecipes()
+		/*public override void AddRecipes()
 		{
 			CreateRecipe()
 				.AddIngredient(ItemID.BloodButcherer)
@@ -38,6 +38,6 @@ namespace AltLibrary.Content.Items
 				.AddIngredient(ItemID.FieryGreatsword)
 				.AddTile(TileID.DemonAltar)
 				.Register();
-		}
+		}*/
 	}
 }

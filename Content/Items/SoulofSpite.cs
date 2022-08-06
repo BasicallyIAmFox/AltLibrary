@@ -10,7 +10,7 @@ namespace AltLibrary.Content.Items
 {
 	public class SoulofSpite : ModItem
 	{
-		public override bool IsLoadingEnabled(Mod mod) => AltLibrary._steamId == 76561198831015363;
+		//public override bool IsLoadingEnabled(Mod mod) => AltLibrary._steamId == 76561198831015363;
 
 		public override void SetStaticDefaults()
 		{
@@ -37,6 +37,28 @@ namespace AltLibrary.Content.Items
 			Item.value = 1000;
 			Item.rare = ItemRarityID.Orange;
 			Item.maxStack = 999;
+		}
+
+		public override void Load()
+		{
+			On.Terraria.Item.SetDefaults_int_bool += Item_SetDefaults_int_bool;
+		}
+
+		private void Item_SetDefaults_int_bool(On.Terraria.Item.orig_SetDefaults_int_bool orig, Item self, int Type, bool noMatCheck)
+		{
+			orig(self, Type, noMatCheck);
+			if (self.type == this.Type || self.type == ModContent.ItemType<DeathsRaze>() || self.type == ModContent.ItemType<TrueDeathsRaze>())
+			{
+				int type = ItemID.SoulofNight;
+				if (self.type == ModContent.ItemType<DeathsRaze>())
+					type = ItemID.NightsEdge;
+				else if (self.type == ModContent.ItemType<TrueDeathsRaze>())
+					type = ItemID.TrueNightsEdge;
+
+				self.TurnToAir();
+				self.netID = self.type = type;
+				self.CloneDefaults(type);
+			}
 		}
 	}
 	public class SoulofSpiteDrop : GlobalNPC

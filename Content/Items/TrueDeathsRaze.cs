@@ -9,11 +9,11 @@ namespace AltLibrary.Content.Items
 {
 	public class TrueDeathsRaze : ModItem
 	{
-		public override bool IsLoadingEnabled(Mod mod) => AltLibrary._steamId == 76561198831015363;
+		//public override bool IsLoadingEnabled(Mod mod) => AltLibrary._steamId == 76561198831015363;
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("True Death's Raze");
+			DisplayName.SetDefault("True Night's Edge");
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
@@ -34,19 +34,17 @@ namespace AltLibrary.Content.Items
 			Item.shootSpeed = 10f;
 		}
 
-		public override void AddRecipes()
+		/*public override void AddRecipes()
 		{
 			CreateRecipe()
 				.AddIngredient(ModContent.ItemType<DeathsRaze>())
 				.AddIngredient(ItemID.BrokenHeroSword)
 				.AddTile(TileID.MythrilAnvil)
 				.Register();
-		}
+		}*/
 	}
 	public class TrueIchorBolt : ModProjectile
 	{
-		public override bool IsLoadingEnabled(Mod mod) => AltLibrary._steamId == 76561198831015363;
-
 		public override void SetDefaults()
 		{
 			Projectile.width = 20;
@@ -87,8 +85,6 @@ namespace AltLibrary.Content.Items
 	}
 	public class IchorDrops : ModDust
 	{
-		public override bool IsLoadingEnabled(Mod mod) => AltLibrary._steamId == 76561198831015363;
-
 		public override void OnSpawn(Dust dust)
 		{
 			dust.velocity *= 0.4f;
