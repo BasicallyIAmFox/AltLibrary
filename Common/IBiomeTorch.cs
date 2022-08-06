@@ -1,14 +1,49 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace AltLibrary.Common
 {
 	public interface IBiomeTorch // interface for ModItem
 	{
 		bool InWhatBiome(Player player);
+
+		BiomeTorchPriority Priority { get; }
+	}
+
+	public enum BiomeTorchPriority : int
+	{
+		Low,
+
+		Dungeon,
+		Demon,
+		Hallowed,
+		Corrupt,
+		Crimson,
+		Ice,
+		Jungle,
+		Desert,
+
+		High,
+		VeryHight,
+	}
+
+	public struct BiomeTorchTile
+	{
+		public BiomeTorchPriority Priority = BiomeTorchPriority.High;
+
+		public ushort tile = TileID.Torches;
+		public int item = ItemID.Torch;
+		public int style = 0;
+		public Func<Player, bool> check = (p) => true;
+
+		public BiomeTorchTile()
+		{
+		}
 	}
 
 	internal static class BiomeTorchIL
@@ -35,60 +70,14 @@ namespace AltLibrary.Common
 			if (!player.UsingBiomeTorches || selected.placeStyle != 8)
 				goto result;
 
-			if (player.ZoneDungeon)
+			foreach (BiomeTorchTile t in AltLibrary.BiomeTorchModItems)
 			{
-				tile = TileID.Torches;
-				item = ItemID.BoneTorch;
-				style = 13;
-			}
-			else if (player.position.Y > Main.UnderworldLayer * 16)
-			{
-				tile = TileID.Torches;
-				item = ItemID.DemonTorch;
-				style = 7;
-			}
-			else if (player.ZoneHallow)
-			{
-				tile = TileID.Torches;
-				item = ItemID.HallowedTorch;
-				style = 20;
-			}
-			else if (player.ZoneCorrupt)
-			{
-				tile = TileID.Torches;
-				item = ItemID.CorruptTorch;
-				style = 18;
-			}
-			else if (player.ZoneCrimson)
-			{
-				tile = TileID.Torches;
-				item = ItemID.CrimsonTorch;
-				style = 19;
-			}
-			else if (player.ZoneSnow)
-			{
-				tile = TileID.Torches;
-				item = ItemID.IceTorch;
-				style = 9;
-			}
-			else if (player.ZoneJungle)
-			{
-				tile = TileID.Torches;
-				item = ItemID.JungleTorch;
-				style = 21;
-			}
-			else if ((player.ZoneDesert && player.position.Y < Main.worldSurface * 16.0) || player.ZoneUndergroundDesert)
-			{
-				tile = TileID.Torches;
-				item = ItemID.DesertTorch;
-				style = 16;
-			}
-
-			if (selected.ModItem is not null && selected.ModItem is IBiomeTorch torch && torch.InWhatBiome(player))
-			{
-				tile = selected.createTile;
-				item = selected.type;
-				style = selected.placeStyle;
+				if (t.check(player))
+				{
+					tile = t.tile;
+					item = t.item;
+					style = t.style;
+				}
 			}
 
 			result:
