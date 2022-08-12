@@ -119,7 +119,7 @@ namespace AltLibrary.Core
 						var target = Main.tile[targX, targY];
 						if (WorldGen.InWorld(targX, targY, 2) && !target.IsActuated && (target.TileType == TileID.Mud || target.TileType == biomeToSpread.BiomeGrass))
 						{
-							target.TileType = type;
+							target.TileType = (ushort)type;
 							WorldGen.SquareTileFrame(targX, targY);
 							if (Main.netMode == NetmodeID.Server)
 							{
