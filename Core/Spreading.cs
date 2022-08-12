@@ -89,7 +89,7 @@ namespace AltLibrary.Core
 								Main.tile[targetX, targetY - 1].TileType != TileID.Trees && Main.tile[targetX, targetY - 1].TileType != TileID.LifeFruit
 								&& !AltLibrary.planteraBulbs.Contains(Main.tile[targetX, targetY - 1].TileType))
 							{
-								target.TileType = 211;
+								target.TileType = (ushort)biomeToSpread.BiomeOre;
 								WorldGen.SquareTileFrame(targetX, targetY);
 								if (Main.netMode == NetmodeID.Server) NetMessage.SendTileSquare(-1, targetX, targetY);
 							}
@@ -119,7 +119,7 @@ namespace AltLibrary.Core
 						var target = Main.tile[targX, targY];
 						if (WorldGen.InWorld(targX, targY, 2) && !target.IsActuated && (target.TileType == TileID.Mud || target.TileType == biomeToSpread.BiomeGrass))
 						{
-							target.TileType = 211;
+							target.TileType = (ushort)type;
 							WorldGen.SquareTileFrame(targX, targY);
 							if (Main.netMode == NetmodeID.Server)
 							{
