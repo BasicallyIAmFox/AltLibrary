@@ -8,6 +8,7 @@ using Terraria.ModLoader;
 
 namespace AltLibrary.Common
 {
+	[Obsolete]
 	public interface IBiomeTorch // interface for ModItem
 	{
 		bool InWhatBiome(Player player);
@@ -15,6 +16,7 @@ namespace AltLibrary.Common
 		BiomeTorchPriority Priority { get; }
 	}
 
+	[Obsolete]
 	public enum BiomeTorchPriority : int
 	{
 		Low,
@@ -32,6 +34,7 @@ namespace AltLibrary.Common
 		VeryHigh,
 	}
 
+	[Obsolete]
 	public struct BiomeTorchTile
 	{
 		public BiomeTorchPriority Priority = BiomeTorchPriority.High;
@@ -50,14 +53,14 @@ namespace AltLibrary.Common
 	{
 		internal static void Init()
 		{
-			IL.Terraria.Player.PlaceThing_Tiles_PlaceIt += Player_PlaceThing_Tiles_PlaceIt;
-			IL.Terraria.Player.ItemCheck_EmitHeldItemLight += Player_ItemCheck_EmitHeldItemLight;
+			//IL.Terraria.Player.PlaceThing_Tiles_PlaceIt += Player_PlaceThing_Tiles_PlaceIt;
+			//IL.Terraria.Player.ItemCheck_EmitHeldItemLight += Player_ItemCheck_EmitHeldItemLight;
 		}
 
 		internal static void Uninit()
 		{
-			IL.Terraria.Player.PlaceThing_Tiles_PlaceIt -= Player_PlaceThing_Tiles_PlaceIt;
-			IL.Terraria.Player.ItemCheck_EmitHeldItemLight -= Player_ItemCheck_EmitHeldItemLight;
+			//IL.Terraria.Player.PlaceThing_Tiles_PlaceIt -= Player_PlaceThing_Tiles_PlaceIt;
+			//IL.Terraria.Player.ItemCheck_EmitHeldItemLight -= Player_ItemCheck_EmitHeldItemLight;
 		}
 
 		// tile id, item id, style

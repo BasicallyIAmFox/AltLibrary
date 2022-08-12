@@ -36,6 +36,7 @@ namespace AltLibrary.Core
 			TenthAnniversaryFix.Init();
 			DrunkCrimsonFix.Load();
 			BiomeTorchIL.Init();
+			BackgroundsAlternating.Inject();
 		}
 
 		public static void Unload()
@@ -61,6 +62,7 @@ namespace AltLibrary.Core
 			GenPasses.Unload();
 			DrunkCrimsonFix.Unload();
 			BiomeTorchIL.Uninit();
+			BackgroundsAlternating.Uninit();
 		}
 
 		private static void Main_GUIChatDrawInner(On.Terraria.Main.orig_GUIChatDrawInner orig, Main self)

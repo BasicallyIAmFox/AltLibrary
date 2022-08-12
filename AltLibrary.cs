@@ -120,6 +120,8 @@ namespace AltLibrary
 			}
 			torchList.Sort((x, y) => x.Priority.CompareTo(y.Priority));
 			BiomeTorchModItems = torchList;
+
+			BackgroundsAlternating.Init();
 		}
 
 		public override object Call(params object[] args)
@@ -344,6 +346,7 @@ namespace AltLibrary
 			NPCsToNowShowUp = null;
 			TilesToNowShowUp = null;
 			ALBiomeTileCountModifiers = null;
+			ReflectionDictionary.Unload();
 		}
 
 		public static AltBiome GetAltBiome(int type) => Biomes.Find(x => x.Type == type);

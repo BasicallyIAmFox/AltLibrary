@@ -172,7 +172,7 @@ namespace AltLibrary.Common.Systems
 
 		private void EvilTaskGen(GenerationProgress progress, GameConfiguration configuration)
 		{
-			EvilBiomeGenerationPassHandler.GenerateAllCorruption(DungeonSide, DungeonLocation, progress);
+			EvilBiomeGenerationPassHandler.GenerateAllCorruption(WorldGen.dungeonSide, WorldGen.dungeonLocation, progress);
 		}
 		private void LihzahrdBrickReSolidTask(GenerationProgress progress, GameConfiguration configuration)
 		{
@@ -253,7 +253,7 @@ namespace AltLibrary.Common.Systems
 			for (int num204 = 0; num204 < Main.maxTilesX * 100; num204++)
 			{
 				int num205 = WorldGen.genRand.Next(40, Main.maxTilesX / 2 - 40);
-				if (DungeonSide < 0)
+				if (WorldGen.dungeonSide < 0)
 				{
 					num205 += Main.maxTilesX / 2;
 				}
