@@ -16,161 +16,138 @@ namespace AltLibrary.Common.Systems
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.IronskinPotion },
 								  new int[] { ItemID.IronOre },
-								  "AltLibrary:IronOres",
+								  "IronOres",
 								  ItemID.LeadOre);
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.SpelunkerPotion },
 								  new int[] { ItemID.GoldOre },
-								  "AltLibrary:GoldOres",
+								  "GoldOres",
 								  ItemID.PlatinumOre);
 
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.DeerThing },
 								  new int[] { ItemID.DemoniteOre },
-								  "AltLibrary:EvilOres",
+								  "EvilOres",
 								  ItemID.CrimtaneOre);
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.Magiluminescence },
 								  new int[] { ItemID.DemoniteBar },
-								  "AltLibrary:EvilBars",
+								  "EvilBars",
 								  ItemID.CrimtaneBar);
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.OpticStaff, ItemID.PumpkinMoonMedallion },
 								  new int[] { ItemID.HallowedBar },
-								  "AltLibrary:HallowBars");
+								  "HallowBars");
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.DrillContainmentUnit },
 								  new int[] { ItemID.HellstoneBar },
-								  "AltLibrary:HellBars");
+								  "HellBars");
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.DrillContainmentUnit, ItemID.VenomStaff, ItemID.TrueExcalibur },
 								  new int[] { ItemID.ChlorophyteBar },
-								  "AltLibrary:JungleBars");
+								  "JungleBars");
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.DrillContainmentUnit, ItemID.MiniNukeI, ItemID.MiniNukeII },
 								  new int[] { ItemID.ShroomiteBar },
-								  "AltLibrary:MushroomBars");
+								  "MushroomBars");
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.PeaceCandle, ItemID.Throne, ItemID.FlinxFurCoat, ItemID.FlinxStaff },
 								  new int[] { ItemID.GoldBar },
-								  "AltLibrary:GoldBars",
+								  "GoldBars",
 								  ItemID.PlatinumBar);
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.FrostBreastplate, ItemID.FrostLeggings, ItemID.FrostHelmet, ItemID.AncientBattleArmorHat, ItemID.AncientBattleArmorPants, ItemID.AncientBattleArmorShirt },
 								  new int[] { ItemID.AdamantiteBar },
-								  "AltLibrary:AdamantiteBars",
+								  "AdamantiteBars",
 								  ItemID.TitaniumBar);
 
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.NightsEdge },
 								  new int[] { ItemID.LightsBane },
-								  "AltLibrary:EvilSwords",
+								  "EvilSwords",
 								  ItemID.BloodButcherer);
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.NightsEdge },
 								  new int[] { ItemID.BladeofGrass },
-								  "AltLibrary:JungleSwords");
+								  "JungleSwords");
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.NightsEdge },
 								  new int[] { ItemID.FieryGreatsword },
-								  "AltLibrary:HellSwords");
+								  "HellSwords");
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.TerraBlade },
 								  new int[] { ItemID.TrueNightsEdge },
-								  "AltLibrary:TrueComboSwords");
+								  "TrueComboSwords");
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.TerraBlade },
 								  new int[] { ItemID.TrueExcalibur },
-								  "AltLibrary:TrueHallowSwords");
+								  "TrueHallowSwords");
 
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.MonsterLasagna, ItemID.CoffinMinecart, ItemID.MechanicalWorm, ItemID.BattlePotion },
 								  new int[] { ItemID.RottenChunk },
-								  "AltLibrary:RottenChunks",
+								  "RottenChunks",
 								  ItemID.Vertebrae);
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.MeteorStaff, ItemID.GreaterHealingPotion },
 								  new int[] { ItemID.PixieDust },
-								  "AltLibrary:PixieDusts");
+								  "PixieDusts");
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.SuperManaPotion },
 								  new int[] { ItemID.UnicornHorn },
-								  "AltLibrary:UnicornHorns");
+								  "UnicornHorns");
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.SuperManaPotion, ItemID.GreaterHealingPotion, ItemID.BluePhasesaber, ItemID.GreenPhasesaber, ItemID.PurplePhasesaber, ItemID.RedPhasesaber, ItemID.WhitePhasesaber, ItemID.YellowPhasesaber, ItemID.OrangePhasesaber },
 								  new int[] { ItemID.CrystalShard },
-								  "AltLibrary:CrystalShards");
+								  "CrystalShards");
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.VoidLens, ItemID.VoidVault, ItemID.ObsidianHelm, ItemID.ObsidianShirt, ItemID.ObsidianPants },
 								  new int[] { ItemID.ShadowScale },
-								  "AltLibrary:ShadowScales",
+								  "ShadowScales",
 								  ItemID.TissueSample);
 
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.VoidLens, ItemID.VoidVault },
 								  new int[] { ItemID.JungleSpores },
-								  "AltLibrary:JungleSpores");
+								  "JungleSpores");
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.GarlandHat, ItemID.GenderChangePotion, ItemID.BattlePotion, ItemID.GravitationPotion, ItemID.MagicPowerPotion, ItemID.StinkPotion, ItemID.TitanPotion },
 								  new int[] { ItemID.Deathweed },
-								  "AltLibrary:Deathweed");
+								  "Deathweed");
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.GarlandHat, ItemID.GenderChangePotion, ItemID.GravitationPotion, ItemID.TeleportationPotion },
 								  new int[] { ItemID.Fireblossom },
-								  "AltLibrary:Fireblossom");
+								  "Fireblossom");
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.GarlandHat, ItemID.GenderChangePotion, ItemID.BuilderPotion, ItemID.CratePotion, ItemID.LifeforcePotion, ItemID.SpelunkerPotion },
 								  new int[] { ItemID.JungleSpores },
-								  "AltLibrary:JungleSpores");
+								  "JungleSpores");
 
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.AdamantiteForge, ItemID.TitaniumForge },
 								  new int[] { ItemID.Hellforge },
-								  "AltLibrary:Hellforges");
+								  "Hellforges");
 
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.WaterCandle },
 								  new int[] { ItemID.Candle },
-								  "AltLibrary:GoldCandles",
+								  "GoldCandles",
 								  ItemID.PlatinumCandle);
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.Timer5Second },
 								  new int[] { ItemID.CopperWatch },
-								  "AltLibrary:CopperWatches",
+								  "CopperWatches",
 								  ItemID.TinWatch);
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.Timer3Second },
 								  new int[] { ItemID.SilverWatch },
-								  "AltLibrary:SilverWatches",
+								  "SilverWatches",
 								  ItemID.TungstenWatch);
 				ReplaceRecipe(ref recipe,
 								  new int[] { ItemID.Timer1Second },
 								  new int[] { ItemID.GoldWatch },
-								  "AltLibrary:GoldWatches",
+								  "GoldWatches",
 								  ItemID.PlatinumWatch);
-
-				if (AltLibrary._steamId == 76561198831015363)
-				{
-					if (recipe.HasResult(ItemID.GoldenShower))
-					{
-						recipe.TryGetIngredient(ItemID.SoulofNight, out Item ing);
-						if (ing == null)
-							continue;
-						recipe.RemoveIngredient(ing);
-						recipe.AddIngredient<SoulofSpite>(ing.stack);
-					}
-					else if (recipe.HasResult(ItemID.CoolWhip) || recipe.HasResult(ItemID.DaoofPow) || recipe.HasResult(ItemID.DemonWings) ||
-						recipe.HasResult(3614) || recipe.HasResult(ItemID.MagicalHarp) || recipe.HasResult(ItemID.MechanicalSkull) ||
-						recipe.HasResult(ItemID.MechanicalWorm) || recipe.HasResult(ItemID.OnyxBlaster) || recipe.HasResult(ItemID.SpiritFlame) ||
-						recipe.HasResult(ItemID.NightKey) || recipe.HasResult(ItemID.LesionStation) || recipe.HasResult(ItemID.FleshCloningVaat))
-					{
-						recipe.TryGetIngredient(ItemID.SoulofNight, out Item ing);
-						if (ing == null)
-							continue;
-						recipe.RemoveIngredient(ing);
-						recipe.AddRecipeGroup("AltLibrary:SoulsOfEvil", ing.stack);
-					}
-				}
 			}
 		}
 

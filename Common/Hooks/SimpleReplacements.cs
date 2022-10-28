@@ -1,6 +1,8 @@
 ﻿using AltLibrary.Common.AltBiomes;
 using AltLibrary.Common.Systems;
 using MonoMod.Cil;
+using System.Linq;
+using Terraria;
 using Terraria.ID;
 using static Terraria.ModLoader.ModContent;
 
@@ -12,7 +14,7 @@ namespace AltLibrary.Common.Hooks
 		{
 			IL.Terraria.NPC.AttemptToConvertNPCToEvil += NPC_AttemptToConvertNPCToEvil;
 			IL.Terraria.NPC.CreateBrickBoxForWallOfFlesh += NPC_CreateBrickBoxForWallOfFlesh;
-			IL.Terraria.WorldGen.nearbyChlorophyte += WorldGen_nearbyChlorophyte;
+			On.Terraria.WorldGen.nearbyChlorophyte += GoodDetourChloro;
 			IL.Terraria.WorldGen.GrowUndergroundTree += WorldGen_GrowUndergroundTree;
 			IL.Terraria.GameContent.Biomes.Desert.DesertDescription.RowHasInvalidTiles += DesertDescription_RowHasInvalidTiles;
 			IL.Terraria.WorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort += WorldGen_AddBuriedChest_int_int_int_bool_int_bool_ushort;
@@ -22,10 +24,45 @@ namespace AltLibrary.Common.Hooks
 		{
 			IL.Terraria.NPC.AttemptToConvertNPCToEvil -= NPC_AttemptToConvertNPCToEvil;
 			IL.Terraria.NPC.CreateBrickBoxForWallOfFlesh -= NPC_CreateBrickBoxForWallOfFlesh;
-			IL.Terraria.WorldGen.nearbyChlorophyte -= WorldGen_nearbyChlorophyte;
+			On.Terraria.WorldGen.nearbyChlorophyte -= GoodDetourChloro;
 			IL.Terraria.WorldGen.GrowUndergroundTree -= WorldGen_GrowUndergroundTree;
 			IL.Terraria.GameContent.Biomes.Desert.DesertDescription.RowHasInvalidTiles -= DesertDescription_RowHasInvalidTiles;
 			IL.Terraria.WorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort -= WorldGen_AddBuriedChest_int_int_int_bool_int_bool_ushort;
+		}
+
+		private static bool GoodDetourChloro(On.Terraria.WorldGen.orig_nearbyChlorophyte orig, int i, int j)
+		{
+			bool ch = orig(i, j);
+			foreach (var b in AltLibrary.Biomes.Where(g => g.BiomeType == BiomeType.Jungle))
+			{
+				float num = 0f;
+				int num2 = 5;
+				if (i <= num2 + 5 || i >= Main.maxTilesX - num2 - 5)
+				{
+					continue;
+				}
+				if (j <= num2 + 5 || j >= Main.maxTilesY - num2 - 5)
+				{
+					continue;
+				}
+				for (int k = i - num2; k <= i + num2; k++)
+				{
+					for (int l = j - num2; l <= j + num2; l++)
+					{
+						if (Main.tile[k, l].HasTile && (Main.tile[k, l].TileType == (b.BiomeOre ?? 211) || Main.tile[k, l].TileType == (b.BiomeOreBrick ?? 346)))
+						{
+							num += 1f;
+							if (num >= 4f)
+							{
+								ch |= true;
+								continue;
+							}
+						}
+					}
+				}
+				ch |= num > 0f && WorldGen.genRand.Next(5) < num;
+			}
+			return ch;
 		}
 
 		private static void NPC_AttemptToConvertNPCToEvil(ILContext il)
@@ -50,18 +87,6 @@ namespace AltLibrary.Common.Hooks
 				TileID.DemoniteBrick,
 				(orig) => (ushort)(Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeOreBrick ?? orig),
 				(orig) => WorldBiomeManager.WorldEvil != "" && Find<AltBiome>(WorldBiomeManager.WorldEvil).BiomeOreBrick.HasValue);
-		}
-
-		private static void WorldGen_nearbyChlorophyte(ILContext il)
-		{
-			ALUtils.ReplaceIDs<int>(il,
-				TileID.Chlorophyte,
-				(orig) => Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeOre ?? orig,
-				(orig) => WorldBiomeManager.WorldJungle != "" && Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeOre.HasValue);
-			ALUtils.ReplaceIDs<int>(il,
-				TileID.ChlorophyteBrick,
-				(orig) => Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeOreBrick ?? orig,
-				(orig) => WorldBiomeManager.WorldJungle != "" && Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeOreBrick.HasValue);
 		}
 
 		private static void WorldGen_AddBuriedChest_int_int_int_bool_int_bool_ushort(ILContext il)

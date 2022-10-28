@@ -107,7 +107,7 @@ namespace AltLibrary.Common.Systems
 				}
 			});
 			EvilOres = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.EvilOres")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:EvilOres", EvilOres);
+			RecipeGroup.RegisterGroup("EvilOres", EvilOres);
 
 			array = new List<int>() { ItemID.DemoniteBar, ItemID.CrimtaneBar };
 			Evil.ForEach(x =>
@@ -118,7 +118,7 @@ namespace AltLibrary.Common.Systems
 				}
 			});
 			EvilBars = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.EvilBars")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:EvilBars", EvilBars);
+			RecipeGroup.RegisterGroup("EvilBars", EvilBars);
 
 			array = new List<int>() { ItemID.HallowedBar };
 			Light.ForEach(x =>
@@ -129,7 +129,7 @@ namespace AltLibrary.Common.Systems
 				}
 			});
 			HallowBars = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.HallowBars")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:HallowBars", HallowBars);
+			RecipeGroup.RegisterGroup("HallowBars", HallowBars);
 
 			array = new List<int>() { ItemID.HellstoneBar };
 			Hell.ForEach(x =>
@@ -140,7 +140,7 @@ namespace AltLibrary.Common.Systems
 				}
 			});
 			HellBars = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.HellBars")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:HellBars", HellBars);
+			RecipeGroup.RegisterGroup("HellBars", HellBars);
 
 			array = new List<int>() { ItemID.ChlorophyteBar };
 			Tropic.ForEach(x =>
@@ -151,7 +151,7 @@ namespace AltLibrary.Common.Systems
 				}
 			});
 			JungleBars = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.JungleBars")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:JungleBars", JungleBars);
+			RecipeGroup.RegisterGroup("JungleBars", JungleBars);
 
 			array = new List<int>() { ItemID.ShroomiteBar };
 			Tropic.ForEach(x =>
@@ -162,7 +162,7 @@ namespace AltLibrary.Common.Systems
 				}
 			});
 			MushroomBars = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.MushroomBars")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:MushroomBars", MushroomBars);
+			RecipeGroup.RegisterGroup("MushroomBars", MushroomBars);
 
 			array = new List<int>() { ItemID.LightsBane, ItemID.BloodButcherer };
 			Evil.ForEach(x =>
@@ -173,7 +173,7 @@ namespace AltLibrary.Common.Systems
 				}
 			});
 			EvilSwords = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.EvilSwords")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:EvilSwords", EvilSwords);
+			RecipeGroup.RegisterGroup("EvilSwords", EvilSwords);
 
 			array = new List<int>() { ItemID.Excalibur };
 			Light.ForEach(x =>
@@ -184,7 +184,7 @@ namespace AltLibrary.Common.Systems
 				}
 			});
 			HallowSwords = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.HallowSwords")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:HallowSwords", HallowSwords);
+			RecipeGroup.RegisterGroup("HallowSwords", HallowSwords);
 
 			array = new List<int>() { ItemID.FieryGreatsword };
 			Hell.ForEach(x =>
@@ -195,7 +195,7 @@ namespace AltLibrary.Common.Systems
 				}
 			});
 			HellSwords = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.HellSwords")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:HellSwords", HellSwords);
+			RecipeGroup.RegisterGroup("HellSwords", HellSwords);
 
 			array = new List<int>() { ItemID.BladeofGrass };
 			Tropic.ForEach(x =>
@@ -206,7 +206,7 @@ namespace AltLibrary.Common.Systems
 				}
 			});
 			JungleSwords = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.JungleSwords")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:JungleSwords", JungleSwords);
+			RecipeGroup.RegisterGroup("JungleSwords", JungleSwords);
 
 			array = new List<int>() { ItemID.NightsEdge };
 			Evil.ForEach(x =>
@@ -217,7 +217,7 @@ namespace AltLibrary.Common.Systems
 				}
 			});
 			ComboSwords = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.ComboSwords")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:ComboSwords", ComboSwords);
+			RecipeGroup.RegisterGroup("ComboSwords", ComboSwords);
 
 			array = new List<int>() { ItemID.TrueNightsEdge };
 			Evil.ForEach(x =>
@@ -228,7 +228,7 @@ namespace AltLibrary.Common.Systems
 				}
 			});
 			TrueComboSwords = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.TrueComboSwords")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:TrueComboSwords", TrueComboSwords);
+			RecipeGroup.RegisterGroup("TrueComboSwords", TrueComboSwords);
 
 			array = new List<int>() { ItemID.TrueExcalibur };
 			Light.ForEach(x =>
@@ -239,7 +239,7 @@ namespace AltLibrary.Common.Systems
 				}
 			});
 			TrueHallowSwords = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.TrueHallowSwords")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:TrueHallowSwords", TrueHallowSwords);
+			RecipeGroup.RegisterGroup("TrueHallowSwords", TrueHallowSwords);
 
 			array = new List<int>() { ItemID.RottenChunk, ItemID.Vertebrae };
 			Evil.ForEach(x =>
@@ -250,7 +250,7 @@ namespace AltLibrary.Common.Systems
 				}
 			});
 			RottenChunks = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.RottenChunks")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:RottenChunks", RottenChunks);
+			RecipeGroup.RegisterGroup("RottenChunks", RottenChunks);
 
 			array = new List<int>() { ItemID.PixieDust };
 			Light.ForEach(x =>
@@ -261,7 +261,7 @@ namespace AltLibrary.Common.Systems
 				}
 			});
 			PixieDusts = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.PixieDusts")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:PixieDusts", PixieDusts);
+			RecipeGroup.RegisterGroup("PixieDusts", PixieDusts);
 
 			array = new List<int>() { ItemID.UnicornHorn };
 			Light.ForEach(x =>
@@ -272,7 +272,7 @@ namespace AltLibrary.Common.Systems
 				}
 			});
 			UnicornHorns = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.UnicornHorns")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:UnicornHorns", UnicornHorns);
+			RecipeGroup.RegisterGroup("UnicornHorns", UnicornHorns);
 
 			array = new List<int>() { ItemID.CrystalShard };
 			Light.ForEach(x =>
@@ -283,7 +283,7 @@ namespace AltLibrary.Common.Systems
 				}
 			});
 			CrystalShards = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.CrystalShards")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:CrystalShards", CrystalShards);
+			RecipeGroup.RegisterGroup("CrystalShards", CrystalShards);
 
 			array = new List<int>() { ItemID.CursedFlame, ItemID.Ichor };
 			Evil.ForEach(x =>
@@ -294,7 +294,7 @@ namespace AltLibrary.Common.Systems
 				}
 			});
 			CursedFlames = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.CursedFlames")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:CursedFlames", CursedFlames);
+			RecipeGroup.RegisterGroup("CursedFlames", CursedFlames);
 
 			array = new List<int>() { ItemID.ShadowScale, ItemID.TissueSample };
 			Evil.ForEach(x =>
@@ -305,7 +305,7 @@ namespace AltLibrary.Common.Systems
 				}
 			});
 			ShadowScales = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.ShadowScales")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:ShadowScales", ShadowScales);
+			RecipeGroup.RegisterGroup("ShadowScales", ShadowScales);
 
 			array = new List<int>() { ItemID.JungleSpores };
 			Tropic.ForEach(x =>
@@ -316,7 +316,7 @@ namespace AltLibrary.Common.Systems
 				}
 			});
 			JungleSpores = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.JungleSpores")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:JungleSpores", JungleSpores);
+			RecipeGroup.RegisterGroup("JungleSpores", JungleSpores);
 
 			array = new List<int>() { ItemID.Deathweed };
 			Evil.ForEach(x =>
@@ -327,7 +327,7 @@ namespace AltLibrary.Common.Systems
 				}
 			});
 			Deathweed = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.Deathweed")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:Deathweed", Deathweed);
+			RecipeGroup.RegisterGroup("Deathweed", Deathweed);
 
 			array = new List<int>() { ItemID.Fireblossom };
 			Hell.ForEach(x =>
@@ -338,7 +338,7 @@ namespace AltLibrary.Common.Systems
 				}
 			});
 			Fireblossom = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.Fireblossom")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:Fireblossom", Fireblossom);
+			RecipeGroup.RegisterGroup("Fireblossom", Fireblossom);
 
 			array = new List<int>() { ItemID.Moonglow };
 			Tropic.ForEach(x =>
@@ -349,7 +349,7 @@ namespace AltLibrary.Common.Systems
 				}
 			});
 			Moonglow = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.Moonglow")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:Moonglow", Moonglow);
+			RecipeGroup.RegisterGroup("Moonglow", Moonglow);
 
 			array = new List<int>() { ItemID.Hellforge };
 			Hell.ForEach(x =>
@@ -360,79 +360,72 @@ namespace AltLibrary.Common.Systems
 				}
 			});
 			Hellforges = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.Hellforges")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:Hellforges", Hellforges);
+			RecipeGroup.RegisterGroup("Hellforges", Hellforges);
 
 			array = new List<int>() { ItemID.CopperBar, ItemID.TinBar };
 			AltLibrary.Ores.FindAll(x => x.OreType == OreType.Copper).ForEach(x => array.Add(x.bar));
 			CopperBars = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.CopperBars")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:CopperBars", CopperBars);
+			RecipeGroup.RegisterGroup("CopperBars", CopperBars);
 
 			array = new List<int>() { ItemID.IronOre, ItemID.LeadOre };
 			AltLibrary.Ores.FindAll(x => x.OreType == OreType.Iron).ForEach(x => array.Add(x.ore));
 			IronOres = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.IronOres")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:IronOres", IronOres);
+			RecipeGroup.RegisterGroup("IronOres", IronOres);
 
 			array = new List<int>() { ItemID.IronBar, ItemID.LeadBar };
 			AltLibrary.Ores.FindAll(x => x.OreType == OreType.Iron).ForEach(x => array.Add(x.bar));
 			IronBars = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.IronBars")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:IronBars", IronBars);
+			RecipeGroup.RegisterGroup("IronBars", IronBars);
 
 			array = new List<int>() { ItemID.SilverBar, ItemID.TungstenBar };
 			AltLibrary.Ores.FindAll(x => x.OreType == OreType.Silver).ForEach(x => array.Add(x.bar));
 			SilverBars = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.SilverBars")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:SilverBars", SilverBars);
+			RecipeGroup.RegisterGroup("SilverBars", SilverBars);
 
 			array = new List<int>() { ItemID.GoldOre, ItemID.PlatinumOre };
 			AltLibrary.Ores.FindAll(x => x.OreType == OreType.Gold).ForEach(x => array.Add(x.ore));
 			GoldOres = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.GoldOres")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:GoldOres", GoldOres);
+			RecipeGroup.RegisterGroup("GoldOres", GoldOres);
 
 			array = new List<int>() { ItemID.GoldBar, ItemID.PlatinumBar };
 			AltLibrary.Ores.FindAll(x => x.OreType == OreType.Gold).ForEach(x => array.Add(x.bar));
 			GoldBars = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.GoldBars")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:GoldBars", GoldBars);
+			RecipeGroup.RegisterGroup("GoldBars", GoldBars);
 
 			array = new List<int>() { ItemID.CobaltBar, ItemID.PalladiumBar };
 			AltLibrary.Ores.FindAll(x => x.OreType == OreType.Cobalt).ForEach(x => array.Add(x.bar));
 			CobaltBars = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.CobaltBars")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:CobaltBars", CobaltBars);
+			RecipeGroup.RegisterGroup("CobaltBars", CobaltBars);
 
 			array = new List<int>() { ItemID.MythrilBar, ItemID.OrichalcumBar };
 			AltLibrary.Ores.FindAll(x => x.OreType == OreType.Mythril).ForEach(x => array.Add(x.bar));
 			MythrilBars = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.MythrilBars")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:MythrilBars", MythrilBars);
+			RecipeGroup.RegisterGroup("MythrilBars", MythrilBars);
 
 			array = new List<int>() { ItemID.AdamantiteBar, ItemID.TitaniumBar };
 			AltLibrary.Ores.FindAll(x => x.OreType == OreType.Adamantite).ForEach(x => array.Add(x.bar));
 			AdamantiteBars = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.AdamantiteBars")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:AdamantiteBars", AdamantiteBars);
+			RecipeGroup.RegisterGroup("AdamantiteBars", AdamantiteBars);
 
 			array = new List<int>() { ItemID.Candle, ItemID.PlatinumCandle };
 			AltLibrary.Ores.FindAll(x => x.OreType == OreType.Gold && x.Candle.HasValue).ForEach(x => array.Add(x.Candle.Value));
 			GoldCandles = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.GoldCandles")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:GoldCandles", GoldCandles);
+			RecipeGroup.RegisterGroup("GoldCandles", GoldCandles);
 
 			array = new List<int>() { ItemID.CopperWatch, ItemID.TinWatch };
 			AltLibrary.Ores.FindAll(x => x.OreType == OreType.Copper && x.Watch.HasValue).ForEach(x => array.Add(x.Watch.Value));
 			CopperWatches = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.CopperWatches")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:CopperWatches", CopperWatches);
+			RecipeGroup.RegisterGroup("CopperWatches", CopperWatches);
 
 			array = new List<int>() { ItemID.SilverWatch, ItemID.TungstenWatch };
 			AltLibrary.Ores.FindAll(x => x.OreType == OreType.Silver && x.Watch.HasValue).ForEach(x => array.Add(x.Watch.Value));
 			SilverWatches = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.SilverWatches")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:SilverWatches", SilverWatches);
+			RecipeGroup.RegisterGroup("SilverWatches", SilverWatches);
 
 			array = new List<int>() { ItemID.GoldWatch, ItemID.PlatinumWatch };
 			AltLibrary.Ores.FindAll(x => x.OreType == OreType.Gold && x.Watch.HasValue).ForEach(x => array.Add(x.Watch.Value));
 			GoldWatches = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Language.GetTextValue("Mods.AltLibrary.RecipeGroups.GoldWatches")}", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:GoldWatches", GoldWatches);
-
-			if (AltLibrary._steamId != 76561198831015363)
-				return;
-
-			array = new List<int>() { ItemID.SoulofNight, ModContent.ItemType<SoulofSpite>() };
-			SoulsOfEvil = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} Soul of Evil", array.ToArray());
-			RecipeGroup.RegisterGroup("AltLibrary:SoulsOfEvil", SoulsOfEvil);
+			RecipeGroup.RegisterGroup("GoldWatches", GoldWatches);
 		}
 	}
 }
