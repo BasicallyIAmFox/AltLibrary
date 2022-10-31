@@ -56,11 +56,9 @@ namespace AltLibrary.Common.Systems
 				int hellforgeIndex = tasks.FindIndex(i => i.Name.Equals("Hellforge"));
 				if (hellforgeIndex != -1)
 				{
-					tasks.RemoveAt(hellforgeIndex);
-
 					var gen = biome.GetHellforgeGenerationPass();
 					if (gen != null)
-						tasks.Add(new PassLegacy("Hellforge", gen.Apply));
+						tasks[hellforgeIndex] = new PassLegacy("Hellforge", gen.Apply);
 				}
 			}
 			if (!WorldGen.notTheBees && WorldBiomeManager.WorldJungle != "")
