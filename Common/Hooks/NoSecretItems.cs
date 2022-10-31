@@ -15,15 +15,15 @@ namespace AltLibrary.Common.Hooks
 		internal static void Load()
 		{
 			//Visuals.Load();
-			HerosDetour.Load();
-			CheatSheetChanges.Load();
+			//HerosDetour.Load();
+			//CheatSheetChanges.Load();
 		}
 
 		internal static void Unload()
 		{
 			//Visuals.Unload();
-			HerosDetour.Unload();
-			CheatSheetChanges.Unload();
+			//HerosDetour.Unload();
+			//CheatSheetChanges.Unload();
 		}
 
 		[Autoload(false)]

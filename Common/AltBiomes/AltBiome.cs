@@ -72,6 +72,8 @@ namespace AltLibrary.Common.AltBiomes
 		public virtual GenPass GetTempleGenerationPass() { return TempleGenPass; }
 		public GenPass TempleGenPass = null;
 
+		public virtual GenPass GetHellforgeGenerationPass() { return null; }
+
 		#region Dungeon Loot
 		/// <summary>
 		/// For Underworld alts. If your biome uses a different kind of locked chest than a Shadow Chest, set this field to your equivalent to a Shadow Key so that it may appear in the Dungeon

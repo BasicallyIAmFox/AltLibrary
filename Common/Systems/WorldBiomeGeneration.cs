@@ -46,19 +46,21 @@ namespace AltLibrary.Common.Systems
 			}
 			if (WorldBiomeManager.WorldHell != "")
 			{
+				AltBiome biome = AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.WorldHell);
 				int underworldIndex = tasks.FindIndex(i => i.Name.Equals("Underworld"));
-				if (underworldIndex != -1)
+				if (underworldIndex != -1 && biome.WorldGenPassLegacy != null)
 				{
-					AltBiome biome = AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.WorldHell);
-					if (biome.WorldGenPassLegacy != null)
-					{
-						tasks.Insert(underworldIndex + 1, biome.WorldGenPassLegacy);
-					}
+					tasks.Insert(underworldIndex + 1, biome.WorldGenPassLegacy);
 				}
+
 				int hellforgeIndex = tasks.FindIndex(i => i.Name.Equals("Hellforge"));
 				if (hellforgeIndex != -1)
 				{
 					tasks.RemoveAt(hellforgeIndex);
+
+					var gen = biome.GetHellforgeGenerationPass();
+					if (gen != null)
+						tasks.Add(new PassLegacy("Hellforge", gen.Apply));
 				}
 			}
 			if (!WorldGen.notTheBees && WorldBiomeManager.WorldJungle != "")
