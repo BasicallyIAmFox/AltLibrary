@@ -58,7 +58,7 @@ namespace AltLibrary.Common.Systems
 				{
 					var gen = biome.GetHellforgeGenerationPass();
 					if (gen != null)
-						tasks[hellforgeIndex] = new PassLegacy("Hellforge", gen.Apply);
+						tasks[hellforgeIndex] = new PassLegacy("Hellforge", gen);
 				}
 			}
 			if (!WorldGen.notTheBees && WorldBiomeManager.WorldJungle != "")
@@ -97,7 +97,7 @@ namespace AltLibrary.Common.Systems
 					{
 						tasks[jungleIndex] = new PassLegacy("AltLibrary: Temple", new WorldGenLegacyMethod(delegate (GenerationProgress progress, GameConfiguration configuration)
 						{
-							ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).TempleGenPass.Apply(progress, configuration);
+							ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).TempleGenPass(progress, configuration);
 						}));
 					}
 				}
@@ -108,7 +108,7 @@ namespace AltLibrary.Common.Systems
 					{
 						tasks[jungleIndex] = new PassLegacy("AltLibrary: Hives", new WorldGenLegacyMethod(delegate (GenerationProgress progress, GameConfiguration configuration)
 						{
-							ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).HiveGenerationPass.Apply(progress, configuration);
+							ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).HiveGenerationPass(progress, configuration);
 						}));
 					}
 				}

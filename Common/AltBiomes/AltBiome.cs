@@ -63,16 +63,16 @@ namespace AltLibrary.Common.AltBiomes
 		/// <summary>
 		/// For Jungle alts. Set this to something to replace Beehives.
 		/// </summary>
-		public virtual GenPass GetHiveGenerationPass() { return HiveGenerationPass; }
-		public GenPass HiveGenerationPass = null;
+		public virtual WorldGenLegacyMethod GetHiveGenerationPass() { return HiveGenerationPass; }
+		public WorldGenLegacyMethod HiveGenerationPass = null;
 
 		/// <summary>
 		/// For Jungle alts. Set this to something to replace the Lihzahrd Temple.
 		/// </summary>
-		public virtual GenPass GetTempleGenerationPass() { return TempleGenPass; }
-		public GenPass TempleGenPass = null;
+		public virtual WorldGenLegacyMethod GetTempleGenerationPass() { return TempleGenPass; }
+		public WorldGenLegacyMethod TempleGenPass = null;
 
-		public virtual GenPass GetHellforgeGenerationPass() { return null; }
+		public virtual WorldGenLegacyMethod GetHellforgeGenerationPass() { return null; }
 
 		#region Dungeon Loot
 		/// <summary>
