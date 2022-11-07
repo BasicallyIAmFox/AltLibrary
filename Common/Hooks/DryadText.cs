@@ -20,11 +20,12 @@ namespace AltLibrary.Common.Hooks
 			IL.Terraria.WorldGen.AddUpAlignmentCounts -= WorldGen_AddUpAlignmentCounts;
 		}
 
-		private static string Lang_GetDryadWorldStatusDialog(On.Terraria.Lang.orig_GetDryadWorldStatusDialog orig)
+		private static string Lang_GetDryadWorldStatusDialog(On.Terraria.Lang.orig_GetDryadWorldStatusDialog orig, out bool worldIsEntirelyPure)
 		{
 			string text2;
 			int tGood = WorldGen.tGood;
 			int tEvil = WorldGen.tEvil + WorldGen.tBlood;
+			worldIsEntirelyPure = false;
 			if (tGood > 0 && tEvil > 0)
 			{
 				text2 = Language.GetTextValue("Mods.AltLibrary.DryadSpecialText.WorldStatusGoodEvil", Main.worldName, tGood, tEvil);
@@ -37,6 +38,7 @@ namespace AltLibrary.Common.Hooks
 			{
 				if (tGood <= 0)
 				{
+					worldIsEntirelyPure = true;
 					return Language.GetTextValue("DryadSpecialText.WorldStatusPure", Main.worldName);
 				}
 				text2 = Language.GetTextValue("Mods.AltLibrary.DryadSpecialText.WorldStatusGood", Main.worldName, tGood);

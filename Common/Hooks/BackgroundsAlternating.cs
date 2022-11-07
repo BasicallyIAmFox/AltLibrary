@@ -64,21 +64,36 @@ namespace AltLibrary.Common
 				remove => HookEndpointManager.Unmodify(SBSL_DCB, value);
 			}
 
+			private static dynamic[] Fields;
 			internal static void Inject()
 			{
+				return;
+
 				On.Terraria.GameContent.BackgroundChangeFlashInfo.UpdateCache += FlashUpdateCache;
 				On.Terraria.WorldGen.RandomizeBackgroundBasedOnPlayer += FlashRandomizeOnPlayer;
 
 				On.Terraria.Main.DrawSurfaceBG_BackMountainsStep1 += GetMagicNums;
 
-				var UIMods = ReflectionDictionary.GetClass("Terraria.ModLoader.SurfaceBackgroundStylesLoader");
+				Fields = new dynamic[]
+				{
+					typeof(Main).GetField("bgLoops", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic),
+					typeof(Main).GetField("ColorOfSurfaceBackgroundsModified", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static),
+					typeof(Main).GetField("bgWidthScaled", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static),
+					typeof(Main).GetField("scAdj", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance),
+					typeof(Main).GetField("bgScale", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static),
+					typeof(Main).Assembly.GetType("Terraria.ModLoader." + nameof(SurfaceBackgroundStylesLoader)),
+					typeof(BackgroundChangeFlashInfo).GetField("_flashPower", BindingFlags.Instance | BindingFlags.NonPublic),
+					typeof(BackgroundChangeFlashInfo).GetField("_variations", BindingFlags.Instance | BindingFlags.NonPublic),
+				};
+
+				var UIMods = typeof(SurfaceBackgroundStylesLoader);
 				SBSL_DCB = UIMods.GetMethod(nameof(SurfaceBackgroundStylesLoader.DrawCloseBackground));
 				SBSL_DMT = UIMods.GetMethod(nameof(SurfaceBackgroundStylesLoader.DrawMiddleTexture));
 				SBSL_DFT = UIMods.GetMethod(nameof(SurfaceBackgroundStylesLoader.DrawFarTexture));
 
-				ModifySBSL_DCB += MSBSL_DCB;
-				ModifySBSL_DMT += MSBSL_DMT;
-				ModifySBSL_DFT += MSBSL_DFT;
+				//ModifySBSL_DCB += MSBSL_DCB;
+				//ModifySBSL_DMT += MSBSL_DMT;
+				//ModifySBSL_DFT += MSBSL_DFT;
 			}
 
 			internal static void Init()
@@ -121,14 +136,7 @@ namespace AltLibrary.Common
 
 			public static void Uninit()
 			{
-				ReflectionDictionary.GetField("Terraria.GameContent.BackgroundChangeFlashInfo", "_flashPower").Value.SetValue(WorldGen.BackgroundsCache, _oldFlashPower);
-				ReflectionDictionary.GetField("Terraria.GameContent.BackgroundChangeFlashInfo", "_variations").Value.SetValue(WorldGen.BackgroundsCache, _oldVariations);
-				
-				_oldFlashPower = null;
-				_oldVariations = null;
-
-				_cacheIndexes = null;
-				_cacheIndexByName = null;
+				return;
 
 				On.Terraria.GameContent.BackgroundChangeFlashInfo.UpdateCache -= FlashUpdateCache;
 				On.Terraria.WorldGen.RandomizeBackgroundBasedOnPlayer -= FlashRandomizeOnPlayer;
@@ -136,15 +144,23 @@ namespace AltLibrary.Common
 				On.Terraria.Main.DrawSurfaceBG_BackMountainsStep1 -= GetMagicNums;
 
 				if (SBSL_DCB != null)
-					ModifySBSL_DCB -= MSBSL_DCB;
+					//ModifySBSL_DCB -= MSBSL_DCB;
 				if (SBSL_DMT != null)
-					ModifySBSL_DMT -= MSBSL_DMT;
+					//ModifySBSL_DMT -= MSBSL_DMT;
 				if (SBSL_DFT != null)
-					ModifySBSL_DFT -= MSBSL_DFT;
+					//ModifySBSL_DFT -= MSBSL_DFT;
+
+				ReflectionDictionary.GetField("Terraria.GameContent.BackgroundChangeFlashInfo", "_flashPower").Value.SetValue(WorldGen.BackgroundsCache, _oldFlashPower);
+				ReflectionDictionary.GetField("Terraria.GameContent.BackgroundChangeFlashInfo", "_variations").Value.SetValue(WorldGen.BackgroundsCache, _oldVariations);
 
 				SBSL_DCB = null;
 				SBSL_DMT = null;
 				SBSL_DFT = null;
+				_oldFlashPower = null;
+				_oldVariations = null;
+				_cacheIndexes = null;
+				_cacheIndexByName = null;
+				Fields = null;
 			}
 
 			private static void MSBSL_DCB(ILContext il)
@@ -269,7 +285,7 @@ namespace AltLibrary.Common
 				ILCursor c = new(il);
 				try
 				{
-					c.GotoNext(i => i.MatchLdloc(3), i => i.MatchLdcR4(0));
+					c.GotoNext(i => i.MatchLdloc(5), i => i.MatchLdcR4(0));
 
 					c.Emit(OpCodes.Ldloc, 1);
 					c.EmitDelegate<Action<ModSurfaceBackgroundStyle>>((style) =>
@@ -281,18 +297,17 @@ namespace AltLibrary.Common
 						float alpha = Main.bgAlphaFarBackLayer[slot];
 						if (alpha > 0f)
 						{
-							for (int i = 0; i < (int)ReflectionDictionary.GetField("Terraria.Main", "bgLoops").Value.GetValue(Main.instance); i++)
+							for (int i = 0; i < (int)Fields[0].GetValue(Main.instance); i++)
 							{
 								_cacheIndexes[style.FullName].Item4();
 
-								Color ColorOfSurfaceBackgroundsModified = (Color)ReflectionDictionary.GetField("Terraria.Main", "ColorOfSurfaceBackgroundsModified").Value.GetValue(null);
-								float scAdj = (float)ReflectionDictionary.GetField("Terraria.Main", "scAdj").Value.GetValue(Main.instance);
-								int bgWidthScaled = (int)ReflectionDictionary.GetField("Terraria.Main", "bgWidthScaled").Value.GetValue(null);
+								Color ColorOfSurfaceBackgroundsModified = (Color)Fields[1].GetValue(null);
+								float scAdj = (float)Fields[3].GetValue(Main.instance);
+								int bgWidthScaled = (int)Fields[2].GetValue(null);
+								int bgTopY = !Main.gameMenu ? (int)(_backgroundTopMagicNumberCache * 1300.0 + 1005.0 + (int)scAdj + _pushBGTopHackCache + 40) : 75 + _pushBGTopHackCache;
 
-								float bgParallax = 0.1f;
-								int bgTopY = !Main.gameMenu ? (int)(_backgroundTopMagicNumberCache * 1300 + 1005 + (int)scAdj + _pushBGTopHackCache + 40) : 75 + _pushBGTopHackCache;
-								float bgScale = (float)ReflectionDictionary.GetField("Terraria.Main", "bgScale").Value.GetValue(null);
-								int bgStartX = (int)(0 - Math.IEEERemainder(Main.screenPosition.X * bgParallax, bgWidthScaled) - (bgWidthScaled / 2));
+								float bgScale = (float)Fields[4].GetValue(null);
+								int bgStartX = (int)(0.0 - Math.IEEERemainder((double)Main.screenPosition.X * 0.1f, bgWidthScaled) - (bgWidthScaled / 2));
 
 								Texture2D texture = (style as IAlternatingSurfaceBackground).GetUltraFarTexture(_cacheIndexes[style.FullName].Item2(), ColorOfSurfaceBackgroundsModified, scAdj, bgWidthScaled, ref bgTopY, ref bgScale, ref bgStartX).Value;
 								if (texture is null)
@@ -322,7 +337,7 @@ namespace AltLibrary.Common
 
 					c.GotoNext(MoveType.After,
 						i => i.MatchLdsfld<Main>(nameof(Main.backgroundWidth)),
-						i => i.MatchLdloc(4),
+						i => i.MatchLdloc(6),
 						i => i.MatchLdelemI4());
 
 					c.Emit(OpCodes.Ldloc, 1);
@@ -338,7 +353,7 @@ namespace AltLibrary.Common
 
 					c.GotoNext(MoveType.After,
 						i => i.MatchLdsfld<Main>(nameof(Main.backgroundHeight)),
-						i => i.MatchLdloc(4),
+						i => i.MatchLdloc(6),
 						i => i.MatchLdelemI4());
 
 					c.Emit(OpCodes.Ldloc, 1);

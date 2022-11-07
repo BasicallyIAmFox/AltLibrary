@@ -561,8 +561,10 @@ namespace AltLibrary.Common
 
 			if (!c.TryGotoNext(i => i.MatchLdarg(0),
 				i => i.MatchLdfld<UIWorldCreationPreview>("_size"),
-				i => i.MatchStloc(3),
-				i => i.MatchLdloc(3),
+				i => i.MatchStloc(6),
+				i => i.MatchLdloc(6),
+				i => i.MatchStloc(5),
+				i => i.MatchLdloc(5),
 				i => i.MatchSwitch(out _),
 				i => i.MatchBr(out _)))
 			{
@@ -576,8 +578,10 @@ namespace AltLibrary.Common
 
 			if (!c.TryGotoNext(i => i.MatchLdarg(0),
 				i => i.MatchLdfld<UIWorldCreationPreview>("_difficulty"),
-				i => i.MatchStloc(3),
-				i => i.MatchLdloc(3),
+				i => i.MatchStloc(10),
+				i => i.MatchLdloc(10),
+				i => i.MatchStloc(9),
+				i => i.MatchLdloc(9),
 				i => i.MatchSwitch(out _),
 				i => i.MatchBr(out _)))
 			{

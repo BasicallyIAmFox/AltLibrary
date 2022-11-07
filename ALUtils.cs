@@ -1,4 +1,5 @@
 ﻿using AltLibrary.Common.AltBiomes;
+using AltLibrary.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil.Cil;
@@ -91,7 +92,7 @@ namespace AltLibrary
 
 		public static bool IsWorldValid(UIWorldListItem self)
 		{
-			GetWorldData(self, out Dictionary<string, AltLibraryConfig.WorldDataValues> tempDict, out string path2);
+			GetWorldData((WorldFileData)typeof(UIWorldListItem).GetField("_data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self), out Dictionary<string, AltLibraryConfig.WorldDataValues> tempDict, out string path2);
 			bool valid = true;
 			if (tempDict.ContainsKey(path2))
 			{
@@ -119,9 +120,8 @@ namespace AltLibrary
 			return valid;
 		}
 
-		public static void GetWorldData(UIWorldListItem self, out Dictionary<string, AltLibraryConfig.WorldDataValues> tempDict, out string path2)
+		public static void GetWorldData(WorldFileData _data, out Dictionary<string, AltLibraryConfig.WorldDataValues> tempDict, out string path2)
 		{
-			WorldFileData _data = (WorldFileData)typeof(UIWorldListItem).GetField("_data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self);
 			path2 = Path.ChangeExtension(_data.Path, ".twld");
 			tempDict = AltLibraryConfig.Config.GetWorldData();
 			if (!tempDict.ContainsKey(path2))
@@ -229,5 +229,29 @@ namespace AltLibrary
 		}
 
 		internal static Vector2 ToNearestPixel(this Vector2 vector) => new((int)vector.X, (int)vector.Y);
+
+		internal static FieldInfo[] cacheBatch =
+		{
+			typeof(SpriteBatch).GetField("sortMode", BindingFlags.NonPublic | BindingFlags.Instance),
+			typeof(SpriteBatch).GetField("blendState", BindingFlags.NonPublic | BindingFlags.Instance),
+			typeof(SpriteBatch).GetField("samplerState", BindingFlags.NonPublic | BindingFlags.Instance),
+			typeof(SpriteBatch).GetField("depthStencilState", BindingFlags.NonPublic | BindingFlags.Instance),
+			typeof(SpriteBatch).GetField("rasterizerState", BindingFlags.NonPublic | BindingFlags.Instance),
+			typeof(SpriteBatch).GetField("customEffect", BindingFlags.NonPublic | BindingFlags.Instance),
+			typeof(SpriteBatch).GetField("transformMatrix", BindingFlags.NonPublic | BindingFlags.Instance),
+		};
+
+		internal static void GetParameters(this SpriteBatch spriteBatch, out SpriteSortMode sortMode, out BlendState blendState, out SamplerState samplerState, out DepthStencilState depthStencilState, out RasterizerState rasterizerState, out Effect effect, out Matrix transformationMatrix)
+		{
+			sortMode = (SpriteSortMode)cacheBatch[0].GetValue(spriteBatch);
+			blendState = (BlendState)cacheBatch[1].GetValue(spriteBatch);
+			samplerState = (SamplerState)cacheBatch[2].GetValue(spriteBatch);
+			depthStencilState = (DepthStencilState)cacheBatch[3].GetValue(spriteBatch);
+			rasterizerState = (RasterizerState)cacheBatch[4].GetValue(spriteBatch);
+			effect = (Effect)cacheBatch[5].GetValue(spriteBatch);
+			transformationMatrix = (Matrix)cacheBatch[6].GetValue(spriteBatch);
+		}
+
+		internal static bool IsNotEmptyAndNull(this string str) => str != null && str != string.Empty;
 	}
 }

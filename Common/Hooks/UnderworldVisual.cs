@@ -24,43 +24,41 @@ namespace AltLibrary.Common.Hooks
 		private static void Main_DrawUnderworldBackgroudLayer(ILContext il)
 		{
 			var c = new ILCursor(il);
-			if (!c.TryGotoNext(i => i.MatchStloc(2)))
-			{
-				AltLibrary.Instance.Logger.Info("r $ 1");
-				return;
-			}
 
-			c.Index++;
-			c.Emit(OpCodes.Ldloc, 0);
-			c.Emit(OpCodes.Ldloc, 2);
-			c.EmitDelegate<Func<int, Texture2D, Texture2D>>((index, orig) =>
+			try
 			{
-				if (WorldBiomeManager.WorldHell != "")
+				c.GotoNext(MoveType.After, i => i.MatchStloc(2));
+
+				c.Emit(OpCodes.Ldloc, 0);
+				c.Emit(OpCodes.Ldloc, 2);
+				c.EmitDelegate<Func<int, Texture2D, Texture2D>>((index, orig) =>
 				{
-					return ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).AltUnderworldBackgrounds[index].Value;
-				}
-				return orig;
-			});
-			c.Emit(OpCodes.Stloc, 2);
+					if (WorldBiomeManager.WorldHell != "")
+					{
+						return ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).AltUnderworldBackgrounds[index].Value;
+					}
+					return orig;
+				});
+				c.Emit(OpCodes.Stloc, 2);
 
-			if (!c.TryGotoNext(i => i.MatchLdcI4(11),
-				i => i.MatchLdcI4(3),
-				i => i.MatchLdcI4(7),
-				i => i.MatchNewobj<Color>()))
-			{
-				AltLibrary.Instance.Logger.Info("r $ 2");
-				return;
-			}
+				c.GotoNext(MoveType.After,
+					i => i.MatchLdcI4(11),
+					i => i.MatchLdcI4(3),
+					i => i.MatchLdcI4(7),
+					i => i.MatchNewobj<Color>());
 
-			c.Index += 4;
-			c.EmitDelegate<Func<Color, Color>>((orig) =>
-			{
-				if (WorldBiomeManager.WorldHell != "")
+				c.EmitDelegate<Func<Color, Color>>((orig) =>
 				{
-					return ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).AltUnderworldColor;
-				}
-				return orig;
-			});
+					if (WorldBiomeManager.WorldHell != "")
+					{
+						return ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).AltUnderworldColor;
+					}
+					return orig;
+				});
+			}
+			catch
+			{
+			}
 		}
 	}
 }

@@ -43,26 +43,27 @@ namespace AltLibrary.Common.Hooks
 		{
 			ILCursor c = new(il);
 
-			if (!c.TryGotoNext(i => i.MatchStloc(0)))
+			try
 			{
-				AltLibrary.Instance.Logger.Info("12 $ 1");
-				return;
-			}
+				c.GotoNext(MoveType.After, i => i.MatchStloc(0));
 
-			c.Index++;
-			c.Emit(OpCodes.Ldloc, 0);
-			c.EmitDelegate<Func<ushort, ushort>>((type) =>
-			{
-				type = Utils.SelectRandom(WorldGen.genRand, new ushort[]
+				c.Emit(OpCodes.Ldloc, 0);
+				c.EmitDelegate<Func<ushort, ushort>>((type) =>
 				{
-					(ushort)WorldGen.SavedOreTiers.Gold,
-					(ushort)WorldGen.SavedOreTiers.Silver,
-					(ushort)WorldGen.SavedOreTiers.Iron,
-					(ushort)WorldGen.SavedOreTiers.Copper,
+					type = Utils.SelectRandom(WorldGen.genRand, new ushort[]
+					{
+						(ushort)WorldGen.SavedOreTiers.Gold,
+						(ushort)WorldGen.SavedOreTiers.Silver,
+						(ushort)WorldGen.SavedOreTiers.Iron,
+						(ushort)WorldGen.SavedOreTiers.Copper,
+					});
+					return type;
 				});
-				return type;
-			});
-			c.Emit(OpCodes.Stloc, 0);
+				c.Emit(OpCodes.Stloc, 0);
+			}
+			catch
+			{
+			}
 		}
 
 		private static void GenPasses_HookGenPassUnderworld(ILContext il)
@@ -236,53 +237,11 @@ namespace AltLibrary.Common.Hooks
 				AltLibrary.Instance.Logger.Info("f $ 10");
 				return;
 			}
-			if (!c.TryGotoNext(i => i.MatchStsfld(typeof(WorldGen).GetField(nameof(WorldGen.crimson), BindingFlags.Public | BindingFlags.Static))))
-			{
-				AltLibrary.Instance.Logger.Info("f $ 11");
-				return;
-			}
-			if (!c.TryGotoNext(i => i.MatchRet()))
-			{
-				AltLibrary.Instance.Logger.Info("f $ 12");
-				return;
-			}
-			if (!c.TryGotoPrev(i => i.MatchBneUn(out _)))
-			{
-				AltLibrary.Instance.Logger.Info("f $ 13");
-				return;
-			}
-			if (!c.TryGotoPrev(i => i.MatchLdcI4(-1)))
-			{
-				AltLibrary.Instance.Logger.Info("f $ 14");
-				return;
-			}
-
-			c.EmitDelegate<Func<int, int>>(dungeonSide =>
-			{
-				WorldBiomeGeneration.DungeonSide = dungeonSide;
-				return dungeonSide;
-			});
 
 			replaceValues(() => WorldBiomeManager.Copper, (-1, TileID.Copper), (-2, TileID.Tin), copper);
 			replaceValues(() => WorldBiomeManager.Iron, (-3, TileID.Iron), (-4, TileID.Lead), iron);
 			replaceValues(() => WorldBiomeManager.Silver, (-5, TileID.Silver), (-6, TileID.Tungsten), silver);
 			replaceValues(() => WorldBiomeManager.Gold, (-7, TileID.Gold), (-8, TileID.Platinum), gold);
-
-			for (int i = 0; i < 2; i++)
-			{
-				if (!c.TryGotoNext(i => i.MatchRet()))
-				{
-					AltLibrary.Instance.Logger.Info("f $ 15 " + i);
-					return;
-				}
-				c.Index--;
-				c.EmitDelegate<Func<int, int>>(dungeonLocation =>
-				{
-					WorldBiomeGeneration.DungeonLocation = dungeonLocation;
-					return dungeonLocation;
-				});
-				c.Index += 2;
-			}
 
 			void replaceValues(Func<int> type, ValueTuple<int, int> value1, ValueTuple<int, int> value2, FieldReference field)
 			{

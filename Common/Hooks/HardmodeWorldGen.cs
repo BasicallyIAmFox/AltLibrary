@@ -29,7 +29,7 @@ namespace AltLibrary.Common.Hooks
 			GenPasses.HookGenPassHardmodeWalls -= GenPasses_HookGenPassHardmodeWalls;
 		}
 
-		private static void WorldGen_GERunner1(On.Terraria.WorldGen.orig_GERunner orig, int i, int j, float speedX, float speedY, bool good)
+		private static void WorldGen_GERunner1(On.Terraria.WorldGen.orig_GERunner orig, int i, int j, double speedX, double speedY, bool good)
 		{
 			if (Main.drunkWorld && WorldBiomeGeneration.WofKilledTimes > 1)
 			{
@@ -218,7 +218,7 @@ namespace AltLibrary.Common.Hooks
 				AltLibrary.Instance.Logger.Info("i $ 2");
 				return;
 			}
-			if (!c.TryGotoPrev(i => i.MatchLdarg(out good)))
+			if (!c.TryGotoNext(i => i.MatchLdarg(out good), i => i.MatchStloc(27)))
 			{
 				AltLibrary.Instance.Logger.Info("i $ 3");
 				return;
@@ -231,8 +231,8 @@ namespace AltLibrary.Common.Hooks
 
 			c.Index++;
 			c.Emit(OpCodes.Ldarg, good);
-			c.Emit(OpCodes.Ldloc, 15);
-			c.Emit(OpCodes.Ldloc, 16);
+			c.Emit(OpCodes.Ldloc, 24);
+			c.Emit(OpCodes.Ldloc, 25);
 			c.EmitDelegate<Action<bool, int, int>>((good, m, l) =>
 			{
 				if (!good)
@@ -281,8 +281,8 @@ namespace AltLibrary.Common.Hooks
 			}
 
 			c.Index++;
-			c.Emit(OpCodes.Ldloc, 15);
-			c.Emit(OpCodes.Ldloc, 16);
+			c.Emit(OpCodes.Ldloc, 24);
+			c.Emit(OpCodes.Ldloc, 25);
 			c.EmitDelegate<Action<int, int>>((m, l) =>
 			{
 				Tile tile = Main.tile[m, l];
@@ -326,8 +326,8 @@ namespace AltLibrary.Common.Hooks
 				while (c.TryGotoNext(i => i.MatchLdcI4(id) && i.Offset != 0))
 				{
 					c.Index++;
-					c.Emit(OpCodes.Ldloc, 15);
-					c.Emit(OpCodes.Ldloc, 16);
+					c.Emit(OpCodes.Ldloc, 24);
+					c.Emit(OpCodes.Ldloc, 25);
 					c.EmitDelegate(GetWallOnStateHallow);
 				}
 			}
@@ -337,8 +337,8 @@ namespace AltLibrary.Common.Hooks
 				while (c.TryGotoNext(i => i.MatchLdcI4(id) && i.Offset != 0))
 				{
 					c.Index++;
-					c.Emit(OpCodes.Ldloc, 15);
-					c.Emit(OpCodes.Ldloc, 16);
+					c.Emit(OpCodes.Ldloc, 24);
+					c.Emit(OpCodes.Ldloc, 25);
 					c.EmitDelegate(GetTileOnStateHallow);
 				}
 			}
@@ -348,8 +348,8 @@ namespace AltLibrary.Common.Hooks
 				while (c.TryGotoNext(i => i.MatchLdcI4(id) && i.Offset != 0))
 				{
 					c.Index++;
-					c.Emit(OpCodes.Ldloc, 15);
-					c.Emit(OpCodes.Ldloc, 16);
+					c.Emit(OpCodes.Ldloc, 24);
+					c.Emit(OpCodes.Ldloc, 25);
 					c.EmitDelegate(GetWallOnStateEvil);
 				}
 			}
@@ -361,8 +361,8 @@ namespace AltLibrary.Common.Hooks
 					while (c.TryGotoNext(i => i.MatchLdcI4(id) && i.Offset != 0))
 					{
 						c.Index++;
-						c.Emit(OpCodes.Ldloc, 15);
-						c.Emit(OpCodes.Ldloc, 16);
+						c.Emit(OpCodes.Ldloc, 24);
+						c.Emit(OpCodes.Ldloc, 25);
 						c.EmitDelegate(GetTileOnStateEvil);
 					}
 				}
@@ -372,8 +372,8 @@ namespace AltLibrary.Common.Hooks
 						i => i.MatchLdcI4(id) && i.Offset != 0))
 					{
 						c.Index += 2;
-						c.Emit(OpCodes.Ldloc, 15);
-						c.Emit(OpCodes.Ldloc, 16);
+						c.Emit(OpCodes.Ldloc, 24);
+						c.Emit(OpCodes.Ldloc, 25);
 						c.EmitDelegate(GetTileOnStateEvil);
 					}
 				}

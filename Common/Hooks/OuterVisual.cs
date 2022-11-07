@@ -29,40 +29,76 @@ namespace AltLibrary.Common.Hooks
 		private static void UIGenProgressBar_DrawSelf(ILContext il)
 		{
 			ILCursor c = new(il);
-			if (!c.TryGotoNext(i => i.MatchLdcI4(-8131073)))
-			{
-				AltLibrary.Instance.Logger.Info("m $ 1");
-				return;
-			}
-			if (!c.TryGotoNext(i => i.MatchCall(out _)))
-			{
-				AltLibrary.Instance.Logger.Info("m $ 2");
-				return;
-			}
-			c.Index++;
-			c.Emit(OpCodes.Ldloc, 5);
-			c.EmitDelegate<Func<Color, Color>>((color) =>
-			{
-				int worldGenStep = 0;
-				if (WorldGen.crimson) worldGenStep = 1;
-				if (WorldBiomeManager.WorldEvil != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).Type + 2;
 
-				if (WorldGen.drunkWorldGen && Main.rand.NextBool(2)) worldGenStep = Main.rand.Next(AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Evil).ToList().Count + 2);
-
-				Color expected = new(95, 242, 86);
-				if (worldGenStep == 1) expected = new Color(255, 237, 131);
-				foreach (AltBiome biome in AltLibrary.Biomes)
+			try
+			{
+				for (int i = 0; i < 2; i++)
 				{
-					if (worldGenStep == biome.Type + 2 && biome.BiomeType == BiomeType.Evil)
-					{
-						expected = biome.OuterColor;
-					}
+					c.GotoNext(MoveType.After, i => i.MatchStloc(1));
+
+					c.Emit(OpCodes.Ldloc, 1);
+					c.EmitDelegate<Func<bool, bool>>((flag) => false);
+					c.Emit(OpCodes.Stloc, 1);
 				}
 
-				Color result = expected;
-				return result;
-			});
-			c.Emit(OpCodes.Stloc, 5);
+				c.GotoNext(MoveType.After, i => i.MatchLdcI4(-8131073));
+
+				c.EmitDelegate<Func<int, int>>((color) =>
+				{
+					int worldGenStep = 0;
+					if (WorldGen.crimson) worldGenStep = 1;
+					if (WorldBiomeManager.WorldEvil != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).Type + 2;
+
+					if (WorldGen.drunkWorldGen && Main.rand.NextBool(2)) worldGenStep = Main.rand.Next(AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Evil).ToList().Count + 2);
+
+					Color expected = new(95, 242, 86);
+					if (worldGenStep == 1) expected = new Color(255, 237, 131);
+					foreach (AltBiome biome in AltLibrary.Biomes)
+					{
+						if (worldGenStep == biome.Type + 2 && biome.BiomeType == BiomeType.Evil)
+						{
+							expected = biome.OuterColor;
+						}
+					}
+
+					Color result = expected;
+					return (int)result.PackedValue;
+				});
+
+				c.GotoNext(MoveType.After,
+					i => i.MatchLdfld(typeof(UIGenProgressBar).GetField("_texOuterCorrupt", BindingFlags.Instance | BindingFlags.NonPublic)));
+
+				c.Emit(OpCodes.Ldarg, 0);
+				c.Emit(OpCodes.Ldfld, typeof(UIGenProgressBar).GetField("_texOuterCrimson", BindingFlags.Instance | BindingFlags.NonPublic));
+				c.EmitDelegate<Func<Asset<Texture2D>, Asset<Texture2D>, Asset<Texture2D>>>((outer, crimson) =>
+				{
+					Asset<Texture2D> asset = ALTextureAssets.OuterTexture;
+
+					int worldGenStep = 0;
+					if (WorldGen.crimson) worldGenStep = 1;
+					if (WorldBiomeManager.WorldEvil != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.WorldEvil).Type + 2;
+
+					if (worldGenStep >= 2) asset = ALTextureAssets.BiomeOuter[worldGenStep - 2];
+					return worldGenStep <= 1 ? (worldGenStep == 0 ? outer : crimson) : asset;
+				});
+
+				c.GotoNext(MoveType.After, i => i.MatchLdfld(typeof(UIGenProgressBar).GetField("_texOuterLower", BindingFlags.Instance | BindingFlags.NonPublic)));
+
+				c.EmitDelegate<Func<Asset<Texture2D>, Asset<Texture2D>>>((outer) =>
+				{
+					Asset<Texture2D> asset = ALTextureAssets.OuterLowerTexture;
+
+					int worldGenStep = 0;
+					if (WorldBiomeManager.WorldHell != "") worldGenStep = ModContent.Find<AltBiome>(WorldBiomeManager.WorldHell).Type + 1;
+
+					if (worldGenStep >= 1) asset = ALTextureAssets.BiomeLower[worldGenStep - 1];
+					return worldGenStep == 0 ? outer : asset;
+				});
+			}
+			catch
+			{
+			}
+			/*
 			if (!c.TryGotoNext(i => i.MatchLdfld<UIGenProgressBar>("_texOuterCorrupt")))
 			{
 				AltLibrary.Instance.Logger.Info("m $ 3");
@@ -134,7 +170,7 @@ namespace AltLibrary.Common.Hooks
 						asset = ALTextureAssets.BiomeOuter[biome.Type - 1];
 					}
 				}
-				spriteBatch.Draw(asset.Value, r.TopLeft(), Color.White);
+				//spriteBatch.Draw(asset.Value, r.TopLeft(), Color.White);
 			});
 			if (!c.TryGotoNext(i => i.MatchLdfld<UIGenProgressBar>("_texOuterLower")))
 			{
@@ -181,8 +217,8 @@ namespace AltLibrary.Common.Hooks
 						asset = ALTextureAssets.BiomeLower[biome.Type - 1];
 					}
 				}
-				spriteBatch.Draw(asset.Value, r.TopLeft() + new Vector2(44f, 60f), Color.White);
-			});
+				//spriteBatch.Draw(asset.Value, r.TopLeft() + new Vector2(44f, 60f), Color.White);
+			});*/
 		}
 	}
 }

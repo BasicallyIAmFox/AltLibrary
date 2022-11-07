@@ -11,7 +11,7 @@ namespace AltLibrary.Core.Generation
 
 		public override void GenerateEvil(int num33, int num34, int num35)
 		{
-			bool worldCrimson = WorldGen.crimson;
+			/*bool worldCrimson = WorldGen.crimson;
 			WorldGen.crimson = false;
 
 			int num38 = 0;
@@ -163,7 +163,7 @@ namespace AltLibrary.Core.Generation
 					}
 				}
 			}
-			WorldGen.crimson = worldCrimson;
+			WorldGen.crimson = worldCrimson;*/
 		}
 
 		public override void PostGenerateEvil()

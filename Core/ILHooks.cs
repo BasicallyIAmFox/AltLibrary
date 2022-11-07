@@ -35,7 +35,6 @@ namespace AltLibrary.Core
 			JungleHuts.Init(); // TODO: redo?
 			TenthAnniversaryFix.Init();
 			DrunkCrimsonFix.Load();
-			BiomeTorchIL.Init();
 			BackgroundsAlternating.Inject();
 		}
 
@@ -61,7 +60,6 @@ namespace AltLibrary.Core
 			TenthAnniversaryFix.Unload();
 			GenPasses.Unload();
 			DrunkCrimsonFix.Unload();
-			BiomeTorchIL.Uninit();
 			BackgroundsAlternating.Uninit();
 		}
 

@@ -21,18 +21,9 @@ namespace AltLibrary.Common.Hooks
 		private static void Player_MowGrassTile(ILContext il)
 		{
 			ILCursor c = new(il);
-			if (!c.TryGotoNext(i => i.MatchLdcI4(492)))
-			{
-				AltLibrary.Instance.Logger.Info("l $ 1");
-				return;
-			}
-			if (!c.TryGotoNext(i => i.MatchLdloc(2)))
-			{
-				AltLibrary.Instance.Logger.Info("l $ 2");
-				return;
-			}
+			c.GotoNext(i => i.MatchLdcI4(492));
+			c.GotoNext(MoveType.After, i => i.MatchLdloc(2));
 
-			c.Index++;
 			c.Emit(OpCodes.Ldloc, 1);
 			c.EmitDelegate<Func<int, Tile, int>>((mowedTileType, tile) =>
 			{

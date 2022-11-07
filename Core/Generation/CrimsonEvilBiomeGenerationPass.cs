@@ -9,7 +9,7 @@ namespace AltLibrary.Core.Generation
 		public override int DrunkRNGMapCenterGive => 100;
 		public override void GenerateEvil(int num15, int num16, int num17)
 		{
-			WorldGen.CrimStart(num15, (int)WorldGen.worldSurfaceLow - 10);
+			/*WorldGen.CrimStart(num15, (int)WorldGen.worldSurfaceLow - 10);
 			for (int j = num16; j < num17; j++)
 			{
 				int num20 = (int)WorldGen.worldSurfaceLow;
@@ -56,7 +56,7 @@ namespace AltLibrary.Core.Generation
 						if (Main.tile[i2, num23].TileType == 0 && num23 < Main.worldSurface - 1.0 && !flag4)
 						{
 							WorldGen.grassSpread = 0;
-							WorldGen.SpreadGrass(i2, num23, 0, 199, true, 0);
+							WorldGen.SpreadGrass(i2, num23, 0, 199, true);
 						}
 						flag4 = true;
 						if (Main.tile[i2, num23].WallType == 216)
@@ -143,7 +143,7 @@ namespace AltLibrary.Core.Generation
 						flag5 = true;
 					}
 				}
-			}
+			}*/
 		}
 
 		public override void PostGenerateEvil()

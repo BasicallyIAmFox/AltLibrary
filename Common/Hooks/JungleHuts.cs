@@ -1,4 +1,5 @@
 ﻿using AltLibrary.Common.Systems;
+using AltLibrary.Core;
 using Microsoft.Xna.Framework;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
@@ -24,26 +25,25 @@ namespace AltLibrary.Common.Hooks
 		private static void HouseUtils_CreateBuilder(ILContext il)
 		{
 			ILCursor c = new(il);
-			if (!c.TryGotoNext(i => i.MatchNewobj(typeof(JungleHouseBuilder).GetConstructor(BindingFlags.Public | BindingFlags.Instance, new Type[] { typeof(IEnumerable<Rectangle>) }))))
+
+			try
 			{
-				AltLibrary.Instance.Logger.Info("j $ 1");
-				return;
+				c.GotoNext(i => i.MatchNewobj(typeof(JungleHouseBuilder).GetConstructor(BindingFlags.Public | BindingFlags.Instance, new Type[] { typeof(IEnumerable<Rectangle>) })));
+				c.GotoNext(i => i.MatchLdloc(0));
+
+				var label = il.DefineLabel();
+
+				c.EmitDelegate(() => WorldBiomeManager.WorldJungle == "");
+				c.Emit(OpCodes.Brfalse_S, label);
+
+				c.EmitDelegate(() => HouseBuilder.Invalid);
+				c.Emit(OpCodes.Ret);
+
+				c.MarkLabel(label);
 			}
-			if (!c.TryGotoPrev(i => i.MatchLdloc(0)))
+			catch
 			{
-				AltLibrary.Instance.Logger.Info("j $ 2");
-				return;
 			}
-
-			var label = il.DefineLabel();
-
-			c.EmitDelegate(() => WorldBiomeManager.WorldJungle == "");
-			c.Emit(OpCodes.Brfalse_S, label);
-
-			c.EmitDelegate(() => HouseBuilder.Invalid);
-			c.Emit(OpCodes.Ret);
-
-			c.MarkLabel(label);
 		}
 	}
 }

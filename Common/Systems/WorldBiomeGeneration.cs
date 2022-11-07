@@ -15,8 +15,8 @@ namespace AltLibrary.Common.Systems
 {
 	public class WorldBiomeGeneration : ModSystem
 	{
-		public static int DungeonSide { get; internal set; } = 0;
-		public static int DungeonLocation { get; internal set; } = 0;
+		public static int DungeonSide { get => GenVars.dungeonSide; }
+		public static int DungeonLocation { get => GenVars.dungeonLocation; }
 		public static int WofKilledTimes { get; internal set; } = 0;
 
 		public static int WorldCrimson { get; internal set; }
@@ -25,14 +25,12 @@ namespace AltLibrary.Common.Systems
 
 		public override void Unload()
 		{
-			DungeonSide = 0;
-			DungeonLocation = 0;
 			WorldCrimson = 0;
 			WorldCrimson2 = false;
 			WorldCrimson3 = null;
 		}
-
-		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
+		/*
+		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
 		{
 			int resetIndex = tasks.FindIndex(genpass => genpass.Name == "Reset");
 			if (resetIndex != -1)
@@ -450,7 +448,7 @@ namespace AltLibrary.Common.Systems
 				WorldCrimson2 = worldCrimson2;
 				WorldCrimson3 = worldCrimson3;
 			}
-		}
+		}*/
 
 		public override void SaveWorldData(TagCompound tag)
 		{

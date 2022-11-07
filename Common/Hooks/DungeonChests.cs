@@ -3,6 +3,7 @@ using AltLibrary.Common.Systems;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
+using System.Reflection;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -61,15 +62,15 @@ namespace AltLibrary.Common.Hooks
 				AltLibrary.Instance.Logger.Info("b $ 3");
 				return;
 			}
-			if (!c.TryGotoPrev(i => i.MatchLdloc(98)))
+			if (!c.TryGotoPrev(i => i.MatchLdloc(218)))
 			{
 				AltLibrary.Instance.Logger.Info("b $ 4");
 				return;
 			}
 
 			c.Index++;
-			c.Emit(OpCodes.Ldloc, 93);
-			c.Emit(OpCodes.Ldc_I4, hellChestIndex);
+			c.Emit(OpCodes.Ldloc, 213);
+			c.Emit(OpCodes.Ldsfld, typeof(DungeonChests).GetField("hellChestIndex", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public));
 			c.EmitDelegate<Func<int, int, int, int>>((contain, chests, hellChestIndex) =>
 			{
 				if (chests == 0 && WorldBiomeManager.WorldJungle != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeChestItem.HasValue)
@@ -91,15 +92,15 @@ namespace AltLibrary.Common.Hooks
 				return contain;
 			});
 
-			if (!c.TryGotoNext(i => i.MatchLdloc(99)))
+			if (!c.TryGotoNext(i => i.MatchLdloc(219)))
 			{
 				AltLibrary.Instance.Logger.Info("b $ 5");
 				return;
 			}
 
 			c.Index++;
-			c.Emit(OpCodes.Ldloc, 93);
-			c.Emit(OpCodes.Ldc_I4, hellChestIndex);
+			c.Emit(OpCodes.Ldloc, 213);
+			c.Emit(OpCodes.Ldsfld, typeof(DungeonChests).GetField("hellChestIndex", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public));
 			c.EmitDelegate<Func<int, int, int, int>>((style, chests, hellChestIndex) =>
 			{
 				if (chests == 0 && WorldBiomeManager.WorldJungle != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeChestTileStyle.HasValue)
@@ -121,15 +122,15 @@ namespace AltLibrary.Common.Hooks
 				return style;
 			});
 
-			if (!c.TryGotoNext(i => i.MatchLdloc(97)))
+			if (!c.TryGotoNext(i => i.MatchLdloc(217)))
 			{
 				AltLibrary.Instance.Logger.Info("b $ 6");
 				return;
 			}
 
 			c.Index++;
-			c.Emit(OpCodes.Ldloc, 93);
-			c.Emit(OpCodes.Ldc_I4, hellChestIndex);
+			c.Emit(OpCodes.Ldloc, 213);
+			c.Emit(OpCodes.Ldsfld, typeof(DungeonChests).GetField("hellChestIndex", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public));
 			c.EmitDelegate<Func<int, int, int, int>>((chestTileType, chests, hellChestIndex) =>
 			{
 				if (chests == 0 && WorldBiomeManager.WorldJungle != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldJungle).BiomeChestTile.HasValue)

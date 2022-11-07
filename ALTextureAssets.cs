@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -31,6 +32,8 @@ namespace AltLibrary
 		internal static Asset<Texture2D> WorldIconNotTheBees;
 		internal static Asset<Texture2D> WorldIconAnniversary;
 		internal static Asset<Texture2D> WorldIconDontStarve;
+		internal static Asset<Texture2D> WorldIconNoTrapsWorld;
+		internal static Asset<Texture2D> WorldIconRemixWorld;
 		internal static Asset<Texture2D> NullPreview;
 		internal static Asset<Texture2D> OuterTexture;
 		internal static Asset<Texture2D> OuterLowerTexture;
@@ -41,6 +44,8 @@ namespace AltLibrary
 		internal static Asset<Texture2D>[] PreviewSizes;
 		internal static Asset<Texture2D>[,] PreviewSpecialSizes;
 		internal static Asset<Texture2D>[] UIWorldSeedIcon;
+		internal static Asset<Texture2D>[] WorldZenith;
+		internal static Asset<Texture2D>[] WorldZenith2;
 
 		internal static void Load()
 		{
@@ -68,17 +73,18 @@ namespace AltLibrary
 			WorldIconNormal = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/IconNormal", AssetRequestMode.ImmediateLoad);
 			WorldIconDrunk = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/IconDrunk", AssetRequestMode.ImmediateLoad);
 			WorldIconDrunkCrimson = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/DrunkBase/Crimson", AssetRequestMode.ImmediateLoad);
-			WorldIconDrunkCorrupt = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/DrunkBase/Corruption", AssetRequestMode.ImmediateLoad);
+			WorldIconDrunkCorrupt = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/DrunkBase/Corrupt", AssetRequestMode.ImmediateLoad);
 			WorldIconForTheWorthy = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/IconForTheWorthy", AssetRequestMode.ImmediateLoad);
 			WorldIconNotTheBees = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/IconNotTheBees", AssetRequestMode.ImmediateLoad);
 			WorldIconAnniversary = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/IconAnniversary", AssetRequestMode.ImmediateLoad);
 			WorldIconDontStarve = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/IconDontStarve", AssetRequestMode.ImmediateLoad);
+			WorldIconNoTrapsWorld = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/IconNoTrapsWorld", AssetRequestMode.ImmediateLoad);
+			WorldIconRemixWorld = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/IconRemixWorld", AssetRequestMode.ImmediateLoad);
 			NullPreview = ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/NullBiomePreview", AssetRequestMode.ImmediateLoad);
 			OuterTexture = ModContent.Request<Texture2D>("AltLibrary/Assets/Loading/Outer Empty", AssetRequestMode.ImmediateLoad);
 			OuterLowerTexture = ModContent.Request<Texture2D>("AltLibrary/Assets/Loading/Outer Lower Empty", AssetRequestMode.ImmediateLoad);
-			UIWorldSeedIcon = new Asset<Texture2D>[2];
+			UIWorldSeedIcon = new Asset<Texture2D>[1];
 			UIWorldSeedIcon[0] = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/ShadowIcon", AssetRequestMode.ImmediateLoad);
-			UIWorldSeedIcon[1] = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/ShadowIcon2", AssetRequestMode.ImmediateLoad);
 			PreviewSpecialSizes = new Asset<Texture2D>[6, 3];
 			PreviewSpecialSizes[0, 0] = Main.Assets.Request<Texture2D>("Images/UI/WorldCreation/PreviewSizeSmall", AssetRequestMode.ImmediateLoad);
 			PreviewSpecialSizes[0, 1] = Main.Assets.Request<Texture2D>("Images/UI/WorldCreation/PreviewSizeMedium", AssetRequestMode.ImmediateLoad);
@@ -142,6 +148,50 @@ namespace AltLibrary
 				biomeLower.Add(ModContent.Request<Texture2D>(path, AssetRequestMode.ImmediateLoad));
 			}
 			BiomeLower = biomeLower.ToArray();
+
+			Asset<Texture2D> emptyIcon = ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/EmptyIcon");
+			List<Asset<Texture2D>> zenithAssets = new()
+			{
+				ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Normal/Corrupt"),
+				ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Normal/Crimson"),
+				ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Normal/HallowLeftSide"),
+				ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Normal/HallowFull"),
+				ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Normal/Corrupt"),
+				ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Normal/Crimson"),
+			};
+			List<Asset<Texture2D>> zenithAssets2 = new()
+			{
+				emptyIcon,
+				emptyIcon,
+				emptyIcon,
+				emptyIcon,
+				ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Normal/HallowRightSide"),
+				ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Normal/HallowRightSide"),
+			};
+			List<AltBiome> hallows = AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow).ToList();
+			foreach (AltBiome biome in hallows)
+			{
+				zenithAssets.Add(ModContent.Request<Texture2D>(biome.WorldIcon + "ZenithLeftSide"));
+				zenithAssets.Add(ModContent.Request<Texture2D>(biome.WorldIcon + "ZenithFull"));
+				zenithAssets2.AddRange(Enumerable.Repeat(emptyIcon, 2));
+
+				zenithAssets.Add(ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Normal/Corrupt"));
+				zenithAssets.Add(ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Normal/Crimson"));
+				zenithAssets2.Add(ModContent.Request<Texture2D>(biome.WorldIcon + "ZenithLeftSide"));
+				zenithAssets2.Add(ModContent.Request<Texture2D>(biome.WorldIcon + "ZenithFull"));
+			}
+			foreach (AltBiome biome in AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Evil))
+			{
+				zenithAssets.AddRange(Enumerable.Repeat(ModContent.Request<Texture2D>(biome.WorldIcon + "Normal"), hallows.Count * 2 + 1));
+				zenithAssets2.Add(ModContent.Request<Texture2D>("AltLibrary/Assets/WorldIcons/Normal/HallowRightSide"));
+				foreach (var h in hallows)
+				{
+					zenithAssets2.Add(emptyIcon);
+					zenithAssets2.Add(ModContent.Request<Texture2D>(h.WorldIcon + "ZenithRightSide"));
+				}
+			}
+			WorldZenith = zenithAssets.ToArray();
+			WorldZenith2 = zenithAssets2.ToArray();
 		}
 
 		internal static void Unload()
@@ -167,6 +217,8 @@ namespace AltLibrary
 			WorldIconNotTheBees = null;
 			WorldIconAnniversary = null;
 			WorldIconDontStarve = null;
+			WorldIconNoTrapsWorld = null;
+			WorldIconRemixWorld = null;
 			BiomeIconLarge = null;
 			BiomeIconSmall = null;
 			BiomeLower = null;

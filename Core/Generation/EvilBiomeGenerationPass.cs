@@ -247,7 +247,7 @@ namespace AltLibrary.Core.Generation
 				{
 					FoundEvilLocation = false;
 				}
-				if (evilBiomePosition > WorldGen.UndergroundDesertLocation.X && evilBiomePosition < WorldGen.UndergroundDesertLocation.X + WorldGen.UndergroundDesertLocation.Width)
+				/*if (evilBiomePosition > WorldGen.UndergroundDesertLocation.X && evilBiomePosition < WorldGen.UndergroundDesertLocation.X + WorldGen.UndergroundDesertLocation.Width)
 				{
 					FoundEvilLocation = false;
 				}
@@ -258,7 +258,7 @@ namespace AltLibrary.Core.Generation
 				if (evilBiomePositionEastBound > WorldGen.UndergroundDesertLocation.X && evilBiomePositionEastBound < WorldGen.UndergroundDesertLocation.X + WorldGen.UndergroundDesertLocation.Width)
 				{
 					FoundEvilLocation = false;
-				}
+				}*/
 				if (evilBiomePositionWestBound < dungeonLocation + DungeonGive && evilBiomePositionEastBound > dungeonLocation - DungeonGive)
 				{
 					FoundEvilLocation = false;

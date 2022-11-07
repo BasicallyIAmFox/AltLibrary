@@ -23,20 +23,18 @@ namespace AltLibrary.Common.Hooks
 		private static void ItemDropDatabase_RegisterBoss_Twins(ILContext il)
 		{
 			ILCursor c = new(il);
-			if (!c.TryGotoNext(i => i.MatchLdcI4(1225)))
+			try
 			{
-				AltLibrary.Instance.Logger.Info("q $ 1");
-				return;
+				c.GotoNext(i => i.MatchLdcI4(ItemID.HallowedBar));
+				c.GotoNext(MoveType.After, i => i.MatchPop());
+
+				c.Emit(OpCodes.Ldloc, 1);
+				c.EmitDelegate(LeadingConditionRule);
+				c.Emit(OpCodes.Stloc, 1);
 			}
-			if (!c.TryGotoNext(i => i.MatchPop()))
+			catch
 			{
-				AltLibrary.Instance.Logger.Info("q $ 2");
-				return;
 			}
-			c.Index++;
-			c.Emit(OpCodes.Ldloc, 1);
-			c.EmitDelegate(LeadingConditionRule);
-			c.Emit(OpCodes.Stloc, 1);
 		}
 
 		private static LeadingConditionRule LeadingConditionRule(LeadingConditionRule leadCond)

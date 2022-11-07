@@ -151,7 +151,9 @@ namespace AltLibrary.Content.NPCs
 			;
 		}
 
-		public override bool CanTownNPCSpawn(int numTownNPCs, int money) => false;
+		public override bool CanTownNPCSpawn(int numTownNPCs) => false;
+
+		//public override bool CanTownNPCSpawn(int numTownNPCs, int money) => false;
 
 		public override void SetDefaults()
 		{
