@@ -11,12 +11,12 @@ namespace AltLibrary.Common.Hooks
 	{
 		public static void Load()
 		{
-			IL.Terraria.Main.UpdateTime_StartDay += Main_UpdateTime_StartDay;
+			IL_Main.UpdateTime_StartDay += Main_UpdateTime_StartDay;
 		}
 
 		public static void Unload()
 		{
-			IL.Terraria.Main.UpdateTime_StartDay -= Main_UpdateTime_StartDay;
+			IL_Main.UpdateTime_StartDay -= Main_UpdateTime_StartDay;
 		}
 
 		private static void Main_UpdateTime_StartDay(ILContext il)

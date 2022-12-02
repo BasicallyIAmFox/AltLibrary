@@ -18,12 +18,12 @@ namespace AltLibrary.Common.Hooks
 	{
 		public static void Init()
 		{
-			IL.Terraria.GameContent.UI.Elements.UIGenProgressBar.DrawSelf += UIGenProgressBar_DrawSelf;
+			IL_UIGenProgressBar.DrawSelf += UIGenProgressBar_DrawSelf;
 		}
 
 		public static void Unload()
 		{
-			IL.Terraria.GameContent.UI.Elements.UIGenProgressBar.DrawSelf -= UIGenProgressBar_DrawSelf;
+			IL_UIGenProgressBar.DrawSelf -= UIGenProgressBar_DrawSelf;
 		}
 
 		private static void UIGenProgressBar_DrawSelf(ILContext il)

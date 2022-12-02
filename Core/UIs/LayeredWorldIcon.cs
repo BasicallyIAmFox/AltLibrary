@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
@@ -10,11 +9,10 @@ using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.UI;
 
-namespace AltLibrary.Core.UIs
-{
+namespace AltLibrary.Core.UIs {
 	internal class LayeredWorldIcon : UIImage
 	{
-		private readonly List<Asset<Texture2D>> assets = new();
+		private readonly List<Asset<Texture2D>> assets = new(8);
 		private readonly bool zenith;
 		private int _glitchFrame;
 		private int _glitchFrameCounter;
@@ -52,15 +50,14 @@ namespace AltLibrary.Core.UIs
 				treeType = ALTextureAssets.WorldIconDontStarve;
 				extra = "DontStarve/";
 			}
+			else if (data.RemixWorld) {
+				treeType = ALTextureAssets.WorldIconRemixWorld;
+				extra = "Remix/";
+			}
 			else if (data.NoTrapsWorld)
 			{
 				treeType = ALTextureAssets.WorldIconNoTrapsWorld;
 				extra = "Traps/";
-			}
-			else if (data.RemixWorld)
-			{
-				treeType = ALTextureAssets.WorldIconRemixWorld;
-				extra = "Remix/";
 			}
 
 			Asset<Texture2D> FindOrReplace(string fullname, Asset<Texture2D> nullAsset)

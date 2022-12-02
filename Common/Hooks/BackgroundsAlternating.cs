@@ -19,7 +19,7 @@ namespace AltLibrary.Common
 {
 	public interface IAlternatingSurfaceBackground
 	{
-		void AddIn(string fullName, Func<Player, UnifiedRandom, bool> whenTrue, Func<int> getBg, Action<Player, UnifiedRandom> randomizeBg, Action onEncounter) => BackgroundsAlternating._cacheIndexes.Add(fullName, (whenTrue, getBg, randomizeBg, onEncounter));
+		void AddIn(string fullName, Func<Player, UnifiedRandom, bool> whenTrue, Func<int, int> getBg, Action<Player, UnifiedRandom> randomizeBg, Action<int> onEncounter) => BackgroundsAlternating._cacheIndexes.Add(fullName, (whenTrue, getBg, randomizeBg, onEncounter));
 
 		abstract Asset<Texture2D> GetFarTexture(int i);
 		abstract Asset<Texture2D> GetCloseTexture(int i);
@@ -33,7 +33,7 @@ namespace AltLibrary.Common
 		{
 			public static int rand = -1;
 
-			internal static Dictionary<string, (Func<Player, UnifiedRandom, bool>, Func<int>, Action<Player, UnifiedRandom>, Action)> _cacheIndexes = new();
+			internal static Dictionary<string, (Func<Player, UnifiedRandom, bool>, Func<int, int>, Action<Player, UnifiedRandom>, Action<int>)> _cacheIndexes = new();
 			internal static Dictionary<string, int> _cacheIndexByName = new();
 			private static float[] _oldFlashPower;
 			private static int[] _oldVariations;
@@ -67,39 +67,25 @@ namespace AltLibrary.Common
 			private static dynamic[] Fields;
 			internal static void Inject()
 			{
-				return;
+				On_BackgroundChangeFlashInfo.UpdateCache += FlashUpdateCache;
+				On_WorldGen.RandomizeBackgroundBasedOnPlayer += FlashRandomizeOnPlayer;
 
-				On.Terraria.GameContent.BackgroundChangeFlashInfo.UpdateCache += FlashUpdateCache;
-				On.Terraria.WorldGen.RandomizeBackgroundBasedOnPlayer += FlashRandomizeOnPlayer;
-
-				On.Terraria.Main.DrawSurfaceBG_BackMountainsStep1 += GetMagicNums;
-
-				Fields = new dynamic[]
-				{
-					typeof(Main).GetField("bgLoops", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic),
-					typeof(Main).GetField("ColorOfSurfaceBackgroundsModified", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static),
-					typeof(Main).GetField("bgWidthScaled", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static),
-					typeof(Main).GetField("scAdj", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance),
-					typeof(Main).GetField("bgScale", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static),
-					typeof(Main).Assembly.GetType("Terraria.ModLoader." + nameof(SurfaceBackgroundStylesLoader)),
-					typeof(BackgroundChangeFlashInfo).GetField("_flashPower", BindingFlags.Instance | BindingFlags.NonPublic),
-					typeof(BackgroundChangeFlashInfo).GetField("_variations", BindingFlags.Instance | BindingFlags.NonPublic),
-				};
+				On_Main.DrawSurfaceBG_BackMountainsStep1 += GetMagicNums;
 
 				var UIMods = typeof(SurfaceBackgroundStylesLoader);
 				SBSL_DCB = UIMods.GetMethod(nameof(SurfaceBackgroundStylesLoader.DrawCloseBackground));
 				SBSL_DMT = UIMods.GetMethod(nameof(SurfaceBackgroundStylesLoader.DrawMiddleTexture));
 				SBSL_DFT = UIMods.GetMethod(nameof(SurfaceBackgroundStylesLoader.DrawFarTexture));
 
-				//ModifySBSL_DCB += MSBSL_DCB;
-				//ModifySBSL_DMT += MSBSL_DMT;
-				//ModifySBSL_DFT += MSBSL_DFT;
+				ModifySBSL_DCB += MSBSL_DCB;
+				ModifySBSL_DMT += MSBSL_DMT;
+				ModifySBSL_DFT += MSBSL_DFT;
 			}
 
 			internal static void Init()
 			{
-				float[] _flashPower = (float[])ReflectionDictionary.GetField("Terraria.GameContent.BackgroundChangeFlashInfo", "_flashPower").Value.GetValue(WorldGen.BackgroundsCache);
-				int[] _variations = (int[])ReflectionDictionary.GetField("Terraria.GameContent.BackgroundChangeFlashInfo", "_variations").Value.GetValue(WorldGen.BackgroundsCache);
+				float[] _flashPower = WorldGen.BackgroundsCache._flashPower;
+				int[] _variations = WorldGen.BackgroundsCache._variations;
 				
 				_oldFlashPower = _flashPower;
 				_oldVariations = _variations;
@@ -130,28 +116,26 @@ namespace AltLibrary.Common
 					_count++;
 				}
 
-				ReflectionDictionary.GetField("Terraria.GameContent.BackgroundChangeFlashInfo", "_flashPower").Value.SetValue(WorldGen.BackgroundsCache, newFlashPower);
-				ReflectionDictionary.GetField("Terraria.GameContent.BackgroundChangeFlashInfo", "_variations").Value.SetValue(WorldGen.BackgroundsCache, newVariations);
+				WorldGen.BackgroundsCache._flashPower = newFlashPower;
+				WorldGen.BackgroundsCache._variations = newVariations;
 			}
 
 			public static void Uninit()
 			{
-				return;
+				On_BackgroundChangeFlashInfo.UpdateCache -= FlashUpdateCache;
+				On_WorldGen.RandomizeBackgroundBasedOnPlayer -= FlashRandomizeOnPlayer;
 
-				On.Terraria.GameContent.BackgroundChangeFlashInfo.UpdateCache -= FlashUpdateCache;
-				On.Terraria.WorldGen.RandomizeBackgroundBasedOnPlayer -= FlashRandomizeOnPlayer;
-
-				On.Terraria.Main.DrawSurfaceBG_BackMountainsStep1 -= GetMagicNums;
+				On_Main.DrawSurfaceBG_BackMountainsStep1 -= GetMagicNums;
 
 				if (SBSL_DCB != null)
-					//ModifySBSL_DCB -= MSBSL_DCB;
+					ModifySBSL_DCB -= MSBSL_DCB;
 				if (SBSL_DMT != null)
-					//ModifySBSL_DMT -= MSBSL_DMT;
+					ModifySBSL_DMT -= MSBSL_DMT;
 				if (SBSL_DFT != null)
-					//ModifySBSL_DFT -= MSBSL_DFT;
+					ModifySBSL_DFT -= MSBSL_DFT;
 
-				ReflectionDictionary.GetField("Terraria.GameContent.BackgroundChangeFlashInfo", "_flashPower").Value.SetValue(WorldGen.BackgroundsCache, _oldFlashPower);
-				ReflectionDictionary.GetField("Terraria.GameContent.BackgroundChangeFlashInfo", "_variations").Value.SetValue(WorldGen.BackgroundsCache, _oldVariations);
+				WorldGen.BackgroundsCache._flashPower = _oldFlashPower;
+				WorldGen.BackgroundsCache._variations = _oldVariations;
 
 				SBSL_DCB = null;
 				SBSL_DMT = null;
@@ -175,8 +159,8 @@ namespace AltLibrary.Common
 					{
 						if (style is IAlternatingSurfaceBackground)
 						{
-							_cacheIndexes[style.FullName].Item4();
-							return (style as IAlternatingSurfaceBackground).GetCloseTexture(_cacheIndexes[style.FullName].Item2()).Value;
+							_cacheIndexes[style.FullName].Item4(0);
+							return (style as IAlternatingSurfaceBackground).GetCloseTexture(_cacheIndexes[style.FullName].Item2(0)).Value;
 						}
 						return value;
 					});
@@ -191,29 +175,26 @@ namespace AltLibrary.Common
 					{
 						if (style is IAlternatingSurfaceBackground)
 						{
-							_cacheIndexes[style.FullName].Item4();
-							return (style as IAlternatingSurfaceBackground).GetCloseTexture(_cacheIndexes[style.FullName].Item2()).Value.Width;
+							_cacheIndexes[style.FullName].Item4(0);
+							return (style as IAlternatingSurfaceBackground).GetCloseTexture(_cacheIndexes[style.FullName].Item2(0)).Value.Width;
 						}
 						return v;
 					});
 
-					c.GotoNext(MoveType.After,
-						i => i.MatchLdsfld<Main>(nameof(Main.backgroundHeight)),
-						i => i.MatchLdloc(3),
-						i => i.MatchLdelemI4());
+					c.Index += 3;
 
 					c.Emit(OpCodes.Ldloc, 0);
 					c.EmitDelegate<Func<int, ModSurfaceBackgroundStyle, int>>((v, style) =>
 					{
 						if (style is IAlternatingSurfaceBackground)
 						{
-							_cacheIndexes[style.FullName].Item4();
+							_cacheIndexes[style.FullName].Item4(0);
 
 							Texture2D texture2 = TextureAssets.MagicPixel.Value;
 							Color color = Color.Black * WorldGen.BackgroundsCache.GetFlashPower(_cacheIndexByName[style.FullName]);
 							Main.spriteBatch.Draw(texture2, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), color);
 
-							return (style as IAlternatingSurfaceBackground).GetCloseTexture(_cacheIndexes[style.FullName].Item2()).Value.Height;
+							return (style as IAlternatingSurfaceBackground).GetCloseTexture(_cacheIndexes[style.FullName].Item2(0)).Value.Height;
 						}
 						return v;
 					});
@@ -231,45 +212,42 @@ namespace AltLibrary.Common
 				{
 					c.TryGotoNext(MoveType.After, i => i.MatchCallvirt(typeof(Asset<Texture2D>).GetMethod("get_Value")));
 
-					c.Emit(OpCodes.Ldloc, 1);
+					c.Emit(OpCodes.Ldloc, 2);
 					c.EmitDelegate<Func<Texture2D, ModSurfaceBackgroundStyle, Texture2D>>((value, style) =>
 					{
 						if (style is IAlternatingSurfaceBackground)
 						{
-							_cacheIndexes[style.FullName].Item4();
-							return (style as IAlternatingSurfaceBackground).GetMidTexture(_cacheIndexes[style.FullName].Item2()).Value;
+							_cacheIndexes[style.FullName].Item4(1);
+							return (style as IAlternatingSurfaceBackground).GetMidTexture(_cacheIndexes[style.FullName].Item2(1)).Value;
 						}
 						return value;
 					});
 
 					c.TryGotoNext(MoveType.After,
 						i => i.MatchLdsfld<Main>(nameof(Main.backgroundWidth)),
-						i => i.MatchLdloc(4),
+						i => i.MatchLdloc(5),
 						i => i.MatchLdelemI4());
 
-					c.Emit(OpCodes.Ldloc, 1);
+					c.Emit(OpCodes.Ldloc, 2);
 					c.EmitDelegate<Func<int, ModSurfaceBackgroundStyle, int>>((v, style) =>
 					{
 						if (style is IAlternatingSurfaceBackground)
 						{
-							_cacheIndexes[style.FullName].Item4();
-							return (style as IAlternatingSurfaceBackground).GetMidTexture(_cacheIndexes[style.FullName].Item2()).Value.Width;
+							_cacheIndexes[style.FullName].Item4(1);
+							return (style as IAlternatingSurfaceBackground).GetMidTexture(_cacheIndexes[style.FullName].Item2(1)).Value.Width;
 						}
 						return v;
 					});
 
-					c.TryGotoNext(MoveType.After,
-						i => i.MatchLdsfld<Main>(nameof(Main.backgroundHeight)),
-						i => i.MatchLdloc(4),
-						i => i.MatchLdelemI4());
+					c.Index += 3;
 
-					c.Emit(OpCodes.Ldloc, 1);
+					c.Emit(OpCodes.Ldloc, 2);
 					c.EmitDelegate<Func<int, ModSurfaceBackgroundStyle, int>>((v, style) =>
 					{
 						if (style is IAlternatingSurfaceBackground)
 						{
-							_cacheIndexes[style.FullName].Item4();
-							return (style as IAlternatingSurfaceBackground).GetMidTexture(_cacheIndexes[style.FullName].Item2()).Value.Height;
+							_cacheIndexes[style.FullName].Item4(1);
+							return (style as IAlternatingSurfaceBackground).GetMidTexture(_cacheIndexes[style.FullName].Item2(1)).Value.Height;
 						}
 						return v;
 					});
@@ -287,7 +265,7 @@ namespace AltLibrary.Common
 				{
 					c.GotoNext(i => i.MatchLdloc(5), i => i.MatchLdcR4(0));
 
-					c.Emit(OpCodes.Ldloc, 1);
+					c.Emit(OpCodes.Ldloc, 3);
 					c.EmitDelegate<Action<ModSurfaceBackgroundStyle>>((style) =>
 					{
 						if (style == null || style is not IAlternatingSurfaceBackground)
@@ -299,7 +277,7 @@ namespace AltLibrary.Common
 						{
 							for (int i = 0; i < (int)Fields[0].GetValue(Main.instance); i++)
 							{
-								_cacheIndexes[style.FullName].Item4();
+								_cacheIndexes[style.FullName].Item4(3);
 
 								Color ColorOfSurfaceBackgroundsModified = (Color)Fields[1].GetValue(null);
 								float scAdj = (float)Fields[3].GetValue(Main.instance);
@@ -309,7 +287,7 @@ namespace AltLibrary.Common
 								float bgScale = (float)Fields[4].GetValue(null);
 								int bgStartX = (int)(0.0 - Math.IEEERemainder((double)Main.screenPosition.X * 0.1f, bgWidthScaled) - (bgWidthScaled / 2));
 
-								Texture2D texture = (style as IAlternatingSurfaceBackground).GetUltraFarTexture(_cacheIndexes[style.FullName].Item2(), ColorOfSurfaceBackgroundsModified, scAdj, bgWidthScaled, ref bgTopY, ref bgScale, ref bgStartX).Value;
+								Texture2D texture = (style as IAlternatingSurfaceBackground).GetUltraFarTexture(_cacheIndexes[style.FullName].Item2(3), ColorOfSurfaceBackgroundsModified, scAdj, bgWidthScaled, ref bgTopY, ref bgScale, ref bgStartX).Value;
 								if (texture is null)
 									return;
 
@@ -324,13 +302,13 @@ namespace AltLibrary.Common
 
 					c.GotoNext(MoveType.After, i => i.MatchCallvirt(typeof(Asset<Texture2D>).GetMethod("get_Value")));
 
-					c.Emit(OpCodes.Ldloc, 1);
+					c.Emit(OpCodes.Ldloc, 3);
 					c.EmitDelegate<Func<Texture2D, ModSurfaceBackgroundStyle, Texture2D>>((value, style) =>
 					{
 						if (style is IAlternatingSurfaceBackground)
 						{
-							_cacheIndexes[style.FullName].Item4();
-							return (style as IAlternatingSurfaceBackground).GetFarTexture(_cacheIndexes[style.FullName].Item2()).Value;
+							_cacheIndexes[style.FullName].Item4(2);
+							return (style as IAlternatingSurfaceBackground).GetFarTexture(_cacheIndexes[style.FullName].Item2(2)).Value;
 						}
 						return value;
 					});
@@ -340,29 +318,26 @@ namespace AltLibrary.Common
 						i => i.MatchLdloc(6),
 						i => i.MatchLdelemI4());
 
-					c.Emit(OpCodes.Ldloc, 1);
+					c.Emit(OpCodes.Ldloc, 3);
 					c.EmitDelegate<Func<int, ModSurfaceBackgroundStyle, int>>((v, style) =>
 					{
 						if (style is IAlternatingSurfaceBackground)
 						{
-							_cacheIndexes[style.FullName].Item4();
-							return (style as IAlternatingSurfaceBackground).GetFarTexture(_cacheIndexes[style.FullName].Item2()).Value.Width;
+							_cacheIndexes[style.FullName].Item4(2);
+							return (style as IAlternatingSurfaceBackground).GetFarTexture(_cacheIndexes[style.FullName].Item2(2)).Value.Width;
 						}
 						return v;
 					});
 
-					c.GotoNext(MoveType.After,
-						i => i.MatchLdsfld<Main>(nameof(Main.backgroundHeight)),
-						i => i.MatchLdloc(6),
-						i => i.MatchLdelemI4());
+					c.Index += 3;
 
-					c.Emit(OpCodes.Ldloc, 1);
+					c.Emit(OpCodes.Ldloc, 3);
 					c.EmitDelegate<Func<int, ModSurfaceBackgroundStyle, int>>((v, style) =>
 					{
 						if (style is IAlternatingSurfaceBackground)
 						{
-							_cacheIndexes[style.FullName].Item4();
-							return (style as IAlternatingSurfaceBackground).GetFarTexture(_cacheIndexes[style.FullName].Item2()).Value.Height;
+							_cacheIndexes[style.FullName].Item4(2);
+							return (style as IAlternatingSurfaceBackground).GetFarTexture(_cacheIndexes[style.FullName].Item2(2)).Value.Height;
 						}
 						return v;
 					});
@@ -372,44 +347,49 @@ namespace AltLibrary.Common
 				}
 			}
 
-			private static void GetMagicNums(On.Terraria.Main.orig_DrawSurfaceBG_BackMountainsStep1 orig, Main self, double backgroundTopMagicNumber, float bgGlobalScaleMultiplier, int pushBGTopHack)
+			private static void GetMagicNums(On_Main.orig_DrawSurfaceBG_BackMountainsStep1 orig, Main self, double backgroundTopMagicNumber, float bgGlobalScaleMultiplier, int pushBGTopHack)
 			{
 				_backgroundTopMagicNumberCache = backgroundTopMagicNumber;
 				_pushBGTopHackCache = pushBGTopHack;
 				orig(self, backgroundTopMagicNumber, bgGlobalScaleMultiplier, pushBGTopHack);
 			}
 
-			private static void FlashUpdateCache(On.Terraria.GameContent.BackgroundChangeFlashInfo.orig_UpdateCache orig, BackgroundChangeFlashInfo self)
+			private static void FlashUpdateCache(On_BackgroundChangeFlashInfo.orig_UpdateCache orig, BackgroundChangeFlashInfo self)
 			{
 				orig(self);
 
-				int _count = 0;
+				/*int _count = 0;
 				foreach (var v in _cacheIndexes)
 				{
-					ReflectionDictionary.GetMethod("Terraria.GameContent.BackgroundChangeFlashInfo", "UpdateVariation").Value.Invoke(self, new object[] { _latestFlash + _count, v.Value.Item2() });
+					self.UpdateVariation(_latestFlash + _count, v.Value.Item2(0));
+					
+					ReflectionDictionary.GetMethod("Terraria.GameContent.BackgroundChangeFlashInfo", "UpdateVariation").Value
+						.Invoke(self, new object[] { _latestFlash + _count, v.Value.Item2() });
+
 					_cacheIndexByName.TryAdd(v.Key, _latestFlash + _count);
 					_count++;
-				}
+				}*/
 			}
 
-			private static void FlashRandomizeOnPlayer(On.Terraria.WorldGen.orig_RandomizeBackgroundBasedOnPlayer orig, UnifiedRandom random, Player player)
+			private static void FlashRandomizeOnPlayer(On_WorldGen.orig_RandomizeBackgroundBasedOnPlayer orig, UnifiedRandom random, Player player)
 			{
 				orig(random, player);
 
-				int _count = 0;
+				/*int _count = 0;
 				foreach (var v in _cacheIndexes)
 				{
 					if (v.Value.Item1(player, random))
 					{
 						v.Value.Item3(player, random);
-
-						ReflectionDictionary.GetMethod("Terraria.GameContent.BackgroundChangeFlashInfo", "UpdateVariation").Value.Invoke(WorldGen.BackgroundsCache, new object[] { _latestFlash + _count, v.Value.Item2() });
+						
+						ReflectionDictionary.GetMethod("Terraria.GameContent.BackgroundChangeFlashInfo", "UpdateVariation").Value
+							.Invoke(WorldGen.BackgroundsCache, new object[] { _latestFlash + _count, v.Value.Item2() });
 
 						if (Main.netMode == NetmodeID.MultiplayerClient)
 							NetMessage.SendData(MessageID.WorldData);
 					}
 					_count++;
-				}
+				}*/
 			}
 		}
 	}

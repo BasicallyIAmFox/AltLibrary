@@ -20,12 +20,12 @@ namespace AltLibrary.Common.Hooks
 		public static void Init()
 		{
 			hellChestIndex = -1;
-			IL.Terraria.WorldGen.MakeDungeon += WorldGen_MakeDungeon;
+			IL_WorldGen.MakeDungeon += WorldGen_MakeDungeon;
 		}
 
 		public static void Unload()
 		{
-			IL.Terraria.WorldGen.MakeDungeon -= WorldGen_MakeDungeon;
+			IL_WorldGen.MakeDungeon -= WorldGen_MakeDungeon;
 			hellChestIndex = 0;
 		}
 

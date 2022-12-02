@@ -63,23 +63,13 @@ namespace AltLibrary.Core
 							NetMessage.SendTileSquare(-1, k, l, TileChangeType.None);
 						}
 
-						//Hardcoded. Cannot eradicate.
-						int corruptGrass;
-						switch (conversionType)
+						var corruptGrass = conversionType switch
 						{
-							case 1:
-								corruptGrass = TileID.CorruptGrass;
-								break;
-							case 2:
-								corruptGrass = TileID.HallowedGrass;
-								break;
-							case 4:
-								corruptGrass = TileID.CrimsonGrass;
-								break;
-							default:
-								corruptGrass = 0;
-								break;
-						}
+							1 => TileID.CorruptGrass,
+							2 => TileID.HallowedGrass,
+							4 => TileID.CrimsonGrass,
+							_ => 0,
+						};
 						if (corruptGrass != 0)
 							if (tile.TileType == 59 && (Main.tile[k - 1, l].TileType == corruptGrass || Main.tile[k + 1, l].TileType == corruptGrass || Main.tile[k, l - 1].TileType == corruptGrass || Main.tile[k, l + 1].TileType == corruptGrass))
 							{

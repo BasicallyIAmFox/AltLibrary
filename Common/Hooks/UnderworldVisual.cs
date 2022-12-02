@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Hooks
@@ -13,12 +14,12 @@ namespace AltLibrary.Common.Hooks
 	{
 		public static void Init()
 		{
-			IL.Terraria.Main.DrawUnderworldBackgroudLayer += Main_DrawUnderworldBackgroudLayer;
+			IL_Main.DrawUnderworldBackgroudLayer += Main_DrawUnderworldBackgroudLayer;
 		}
 
 		public static void Unload()
 		{
-			IL.Terraria.Main.DrawUnderworldBackgroudLayer -= Main_DrawUnderworldBackgroudLayer;
+			IL_Main.DrawUnderworldBackgroudLayer -= Main_DrawUnderworldBackgroudLayer;
 		}
 
 		private static void Main_DrawUnderworldBackgroudLayer(ILContext il)

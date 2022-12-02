@@ -62,7 +62,7 @@ namespace AltLibrary.Core.Generation
 
 			List<EvilBiomeGenerationPass> EvilBiomes = new();
 
-			if (Main.drunkWorld)
+			if (WorldGen.drunkWorldGen)
 			{
 				EvilBiomes.Add(VanillaBiome.crimsonPass);
 				EvilBiomes.Add(VanillaBiome.corruptPass);
@@ -79,9 +79,9 @@ namespace AltLibrary.Core.Generation
 			}
 			else
 			{
-				if (WorldBiomeManager.WorldEvil == "" && !WorldGen.crimson)
+				if (WorldBiomeManager.IsCorruption)
 					EvilBiomes.Add(VanillaBiome.corruptPass);
-				else if (WorldBiomeManager.WorldEvil == "" && WorldGen.crimson)
+				else if (WorldBiomeManager.IsCrimson)
 					EvilBiomes.Add(VanillaBiome.crimsonPass);
 				else
 					EvilBiomes.Add(AltLibrary.Biomes.Find(x => x.FullName == WorldBiomeManager.WorldEvil).GetEvilBiomeGenerationPass());

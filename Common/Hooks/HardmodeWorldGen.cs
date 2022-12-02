@@ -13,23 +13,32 @@ namespace AltLibrary.Common.Hooks
 {
 	internal static class HardmodeWorldGen
 	{
+		private static Dictionary<int, int> OdditiesCollector;
+		private static Dictionary<int, int> OdditiesCollector2;
+
 		public static void Init()
 		{
-			IL.Terraria.WorldGen.smCallBack += GenPasses.ILSMCallBack;
-			IL.Terraria.WorldGen.GERunner += WorldGen_GERunner;
-			On.Terraria.WorldGen.GERunner += WorldGen_GERunner1;
+			OdditiesCollector = OdditiesCollector2 = new();
+
+			IL_WorldGen.smCallBack += GenPasses.ILSMCallBack;
+			IL_WorldGen.GERunner += WorldGen_GERunner;
+			On_WorldGen.GERunner += WorldGen_GERunner1;
 			GenPasses.HookGenPassHardmodeWalls += GenPasses_HookGenPassHardmodeWalls;
 		}
 
 		public static void Unload()
 		{
-			IL.Terraria.WorldGen.smCallBack -= GenPasses.ILSMCallBack;
-			IL.Terraria.WorldGen.GERunner -= WorldGen_GERunner;
-			On.Terraria.WorldGen.GERunner -= WorldGen_GERunner1;
+			IL_WorldGen.smCallBack -= GenPasses.ILSMCallBack;
+			IL_WorldGen.GERunner -= WorldGen_GERunner;
+			On_WorldGen.GERunner -= WorldGen_GERunner1;
 			GenPasses.HookGenPassHardmodeWalls -= GenPasses_HookGenPassHardmodeWalls;
+
+			OdditiesCollector.Clear();
+			OdditiesCollector2.Clear();
+			OdditiesCollector = OdditiesCollector2 = null;
 		}
 
-		private static void WorldGen_GERunner1(On.Terraria.WorldGen.orig_GERunner orig, int i, int j, double speedX, double speedY, bool good)
+		private static void WorldGen_GERunner1(On_WorldGen.orig_GERunner orig, int i, int j, float speedX, float speedY, bool good)
 		{
 			if (Main.drunkWorld && WorldBiomeGeneration.WofKilledTimes > 1)
 			{
@@ -160,44 +169,72 @@ namespace AltLibrary.Common.Hooks
 
 		private static int GetTileOnStateHallow(int tileID, int x, int y)
 		{
+			if (OdditiesCollector.TryGetValue(tileID, out int value))
+				return value;
+
 			int rv = ALConvertInheritanceData.GetConvertedTile_Vanilla(tileID, 2, x, y);
 			if (WorldBiomeManager.WorldHallow != "" && WorldBiomeGeneration.WofKilledTimes <= 1)
 				rv = ALConvertInheritanceData.GetConvertedTile_Modded(tileID, Find<AltBiome>(WorldBiomeManager.WorldHallow), x, y);
 			if (WorldBiomeManager.drunkGoodGen > 0)
 				rv = ALConvertInheritanceData.GetConvertedTile_Modded(tileID, Good, x, y);
-			if (rv == -1)
+			if (rv == -1) {
+				OdditiesCollector.Add(tileID, tileID);
 				return tileID;
-			else if (rv == -2)
+			}
+			else if (rv == -2) {
+				OdditiesCollector.Add(tileID, 0);
 				return 0;
+			}
+			OdditiesCollector.Add(tileID, rv);
 			return rv;
 		}
 
-		private static int GetTileOnStateEvil(int tileID, int x, int y)
-		{
+		private static int GetTileOnStateEvil(int tileID, int x, int y) {
+			if (OdditiesCollector.TryGetValue(tileID, out int value))
+				return value;
+
 			int rv = ALConvertInheritanceData.GetConvertedTile_Vanilla(tileID, WorldBiomeGeneration.WofKilledTimes <= 1 ? (!WorldGen.crimson ? 1 : 4) : (WorldBiomeManager.drunkEvilGen == 0 ? 1 : 4), x, y);
 			if (WorldBiomeManager.WorldEvil != "" && WorldBiomeGeneration.WofKilledTimes <= 1)
 				rv = ALConvertInheritanceData.GetConvertedTile_Modded(tileID, Find<AltBiome>(WorldBiomeManager.WorldEvil), x, y);
 			if (WorldBiomeManager.drunkEvilGen > 0)
 				rv = ALConvertInheritanceData.GetConvertedTile_Modded(tileID, Evil, x, y);
-			if (rv == -1)
+			if (rv == -1) {
+				OdditiesCollector.Add(tileID, tileID);
 				return tileID;
-			else if (rv == -2)
+			}
+			else if (rv == -2) {
+				OdditiesCollector.Add(tileID, 0);
 				return 0;
+			}
+			OdditiesCollector.Add(tileID, rv);
 			return rv;
 		}
 
 		private static int GetWallOnStateHallow(int wallID, int x, int y)
 		{
+			if (OdditiesCollector2.TryGetValue(wallID, out int value))
+				return value;
+
+			int rc;
 			if (WorldBiomeManager.drunkGoodGen > 0)
-				return ALConvertInheritanceData.GetConvertedWall_Modded(wallID, Good, x, y);
-			return ALConvertInheritanceData.GetConvertedWall_Vanilla(wallID, 2, x, y);
+				rc = ALConvertInheritanceData.GetConvertedWall_Modded(wallID, Good, x, y);
+			else
+				rc = ALConvertInheritanceData.GetConvertedWall_Vanilla(wallID, BiomeConversionID.Hallow, x, y);
+			OdditiesCollector2.Add(wallID, rc);
+			return rc;
 		}
 
-		private static int GetWallOnStateEvil(int wallID, int x, int y)
-		{
-			if (WorldBiomeManager.drunkEvilGen > 0)
-				return ALConvertInheritanceData.GetConvertedWall_Modded(wallID, Evil, x, y);
-			return ALConvertInheritanceData.GetConvertedWall_Vanilla(wallID, WorldBiomeManager.drunkEvilGen == 0 ? (!WorldGen.crimson ? 1 : 4) : 4, x, y);
+		private static int GetWallOnStateEvil(int wallID, int x, int y) {
+			if (OdditiesCollector2.TryGetValue(wallID, out int value))
+				return value;
+
+			int rc;
+			if (WorldBiomeManager.drunkGoodGen > 0)
+				rc = ALConvertInheritanceData.GetConvertedWall_Modded(wallID, Evil, x, y);
+			else
+				rc = ALConvertInheritanceData.GetConvertedWall_Vanilla(wallID, WorldGen.crimson ? BiomeConversionID.Crimson : BiomeConversionID.Corruption, x, y);
+			OdditiesCollector2.Add(wallID, rc);
+			return rc;
 		}
 
 		private static AltBiome Good => AltLibrary.Biomes.Find(x => x.Type == WorldBiomeManager.drunkGoodGen);
@@ -223,7 +260,7 @@ namespace AltLibrary.Common.Hooks
 				AltLibrary.Instance.Logger.Info("i $ 3");
 				return;
 			}
-			if (!c.TryGotoPrev(i => i.MatchBgeUn(out _)))
+			if (!c.TryGotoPrev(i => i.MatchBrfalse(out _)))
 			{
 				AltLibrary.Instance.Logger.Info("i $ 4");
 				return;

@@ -12,12 +12,12 @@ namespace AltLibrary.Common.Hooks
 	{
 		public static void Init()
 		{
-			IL.Terraria.GameContent.ItemDropRules.ItemDropDatabase.RegisterBoss_Twins += ItemDropDatabase_RegisterBoss_Twins;
+			IL_ItemDropDatabase.RegisterBoss_Twins += ItemDropDatabase_RegisterBoss_Twins;
 		}
 
 		public static void Unload()
 		{
-			IL.Terraria.GameContent.ItemDropRules.ItemDropDatabase.RegisterBoss_Twins -= ItemDropDatabase_RegisterBoss_Twins;
+			IL_ItemDropDatabase.RegisterBoss_Twins -= ItemDropDatabase_RegisterBoss_Twins;
 		}
 
 		private static void ItemDropDatabase_RegisterBoss_Twins(ILContext il)
@@ -40,6 +40,7 @@ namespace AltLibrary.Common.Hooks
 		private static LeadingConditionRule LeadingConditionRule(LeadingConditionRule leadCond)
 		{
 			leadCond.ChainedRules.RemoveAt(1);
+
 			leadCond.OnSuccess(ItemDropRule.ByCondition(new HallowDropCondition(), ItemID.HallowedBar, 1, 15, 30));
 			foreach (var biome in from AltBiome biome in AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow)
 								  where biome.MechDropItemType != null && biome.MechDropItemType.HasValue

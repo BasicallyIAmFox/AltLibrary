@@ -14,7 +14,7 @@ namespace AltLibrary.Common.Hooks
 
 		public static void Init()
 		{
-			On.Terraria.NPC.BigMimicSummonCheck += NPC_BigMimicSummonCheck;
+			On_NPC.BigMimicSummonCheck += NPC_BigMimicSummonCheck;
 		}
 
 		public static void SetupContent()
@@ -28,7 +28,7 @@ namespace AltLibrary.Common.Hooks
 
 		public static void Unload()
 		{
-			On.Terraria.NPC.BigMimicSummonCheck -= NPC_BigMimicSummonCheck;
+			On_NPC.BigMimicSummonCheck -= NPC_BigMimicSummonCheck;
 			MimicPairs = null;
 		}
 
@@ -53,7 +53,7 @@ namespace AltLibrary.Common.Hooks
 			}
 		}
 
-		private static bool NPC_BigMimicSummonCheck(On.Terraria.NPC.orig_BigMimicSummonCheck orig, int x, int y, Player user)
+		private static bool NPC_BigMimicSummonCheck(On_NPC.orig_BigMimicSummonCheck orig, int x, int y, Player user)
 		{
 			if (MimicPairs == null)
 			{
@@ -82,7 +82,7 @@ namespace AltLibrary.Common.Hooks
 
 			List<AltBiome> EvilHallow = new();
 			AltLibrary.Biomes.Where(x => x.BiomeType == BiomeType.Hallow || x.BiomeType == BiomeType.Evil)
-				.ToList().ForEach(x => EvilHallow.Add(x));
+				.ToList().ForEach(EvilHallow.Add);
 			Dictionary<string, (int, int)> keys = new()
 			{
 				{ "Terraria/Hallow", (NPCID.BigMimicHallow, 0) },

@@ -40,6 +40,16 @@ namespace AltLibrary.Common
 			{
 				case NPCID.EyeofCthulhu:
 					{
+						int oreCountDen = 0;
+						int oreCountMin = 0;
+						int oreCountMax = 0;
+						int oreSeedsDen = 0;
+						int oreSeedsMin = 0;
+						int oreSeedsMax = 0;
+						int arrowDen = 0;
+						int arrowMin = 0;
+						int arrowMax = 0;
+
 						foreach (var entry in entries)
 						{
 							if (entry is ItemDropWithConditionRule conditionRule)
@@ -48,22 +58,42 @@ namespace AltLibrary.Common
 									conditionRule.itemId == ItemID.CorruptSeeds || conditionRule.itemId == ItemID.CrimsonSeeds
 									|| conditionRule.itemId == ItemID.UnholyArrow)
 								{
+									if (conditionRule.itemId == ItemID.DemoniteOre || conditionRule.itemId == ItemID.CrimtaneOre)
+									{
+										oreCountDen = conditionRule.chanceDenominator;
+										oreCountMin = conditionRule.amountDroppedMinimum;
+										oreCountMax = conditionRule.amountDroppedMaximum;
+									}
+									else if (conditionRule.itemId == ItemID.UnholyArrow)
+									{
+										arrowDen = conditionRule.chanceDenominator;
+										arrowMin = conditionRule.amountDroppedMinimum;
+										arrowMax = conditionRule.amountDroppedMaximum;
+									}
+									else
+									{
+										oreSeedsDen = conditionRule.chanceDenominator;
+										oreSeedsMin = conditionRule.amountDroppedMinimum;
+										oreSeedsMax = conditionRule.amountDroppedMaximum;
+									}
+
 									npcLoot.Remove(entry);
 								}
 							}
 						}
+
 						var corroCrimCondition = new LeadingConditionRule(new CorroCrimDropCondition());
 						var corroCondition = new LeadingConditionRule(new Conditions.IsCorruptionAndNotExpert());
 						var crimCondition = new LeadingConditionRule(new Conditions.IsCrimsonAndNotExpert());
 
 						corroCrimCondition.OnSuccess(corroCondition);
 						corroCrimCondition.OnSuccess(crimCondition);
-						corroCondition.OnSuccess(ItemDropRule.Common(ItemID.DemoniteOre, 1, 30, 90));
-						corroCondition.OnSuccess(ItemDropRule.Common(ItemID.CorruptSeeds, 1, 1, 3));
-						corroCondition.OnSuccess(ItemDropRule.Common(ItemID.UnholyArrow, 1, 20, 50));
+						corroCondition.OnSuccess(ItemDropRule.Common(ItemID.DemoniteOre, oreCountDen, oreCountMin, oreCountMax));
+						corroCondition.OnSuccess(ItemDropRule.Common(ItemID.CorruptSeeds, oreSeedsDen, oreSeedsMin, oreSeedsMax));
+						corroCondition.OnSuccess(ItemDropRule.Common(ItemID.UnholyArrow, arrowDen, arrowMin, arrowMax));
 
-						crimCondition.OnSuccess(ItemDropRule.Common(ItemID.CrimtaneOre, 1, 30, 90));
-						crimCondition.OnSuccess(ItemDropRule.Common(ItemID.CrimsonSeeds, 1, 1, 3));
+						crimCondition.OnSuccess(ItemDropRule.Common(ItemID.CrimtaneOre, oreCountDen, oreCountMin, oreCountMax));
+						crimCondition.OnSuccess(ItemDropRule.Common(ItemID.CrimsonSeeds, oreSeedsDen, oreSeedsMin, oreSeedsMax));
 
 						npcLoot.Add(corroCrimCondition);
 
@@ -72,56 +102,75 @@ namespace AltLibrary.Common
 						foreach (AltBiome biome in EvilList)
 						{
 							var biomeDropRule = new LeadingConditionRule(new EvilAltDropCondition(biome));
-							if (biome.BiomeOreItem != null) biomeDropRule.OnSuccess(ItemDropRule.Common((int)biome.BiomeOreItem, 1, 30, 90));
-							if (biome.SeedType != null) biomeDropRule.OnSuccess(ItemDropRule.Common((int)biome.SeedType, 1, 1, 3));
-							if (biome.ArrowType != null) biomeDropRule.OnSuccess(ItemDropRule.Common((int)biome.ArrowType, 20, 50));
+							if (biome.BiomeOreItem != null) biomeDropRule.OnSuccess(ItemDropRule.Common((int)biome.BiomeOreItem, oreCountDen, oreCountMin, oreCountMax));
+							if (biome.SeedType != null) biomeDropRule.OnSuccess(ItemDropRule.Common((int)biome.SeedType, oreSeedsDen, oreSeedsMin, oreSeedsMax));
+							if (biome.ArrowType != null) biomeDropRule.OnSuccess(ItemDropRule.Common((int)biome.ArrowType, arrowDen, arrowMin, arrowMax));
 							expertCondition.OnSuccess(biomeDropRule);
 						}
 						npcLoot.Add(expertCondition);
+
 						break;
 					}
 				case NPCID.WallofFlesh:
 					{
+						ItemDropWithConditionRule pwnRule = null;
 						foreach (var entry in entries)
 						{
 							if (entry is ItemDropWithConditionRule rule && rule.itemId == ItemID.Pwnhammer)
 							{
-								npcLoot.Remove(rule);
+								npcLoot.Remove(pwnRule = rule);
 							}
 						}
+						if (pwnRule == null)
+							break;
+
 						var expertCondition = new LeadingConditionRule(new Conditions.NotExpert());
 						var hallowBarCondition = new LeadingConditionRule(new HallowDropCondition());
 						expertCondition.OnSuccess(hallowBarCondition);
-						hallowBarCondition.OnSuccess(ItemDropRule.Common(ItemID.Pwnhammer));
+						hallowBarCondition.OnSuccess(pwnRule);
 						foreach (AltBiome biome in HallowList)
 						{
+							if (biome.HammerType == 0)
+								continue;
+
 							var biomeDropRule = new LeadingConditionRule(new HallowAltDropCondition(biome));
-							biomeDropRule.OnSuccess(ItemDropRule.Common(biome.HammerType));
+							pwnRule.itemId = biome.HammerType;
+							biomeDropRule.OnSuccess(pwnRule);
 							expertCondition.OnSuccess(biomeDropRule);
 						}
 						npcLoot.Add(expertCondition);
 						break;
 					}
 				case NPCID.TheDestroyer:
-				case NPCID.SkeletronPrime:
-					{
+				case NPCID.SkeletronPrime: {
+						ItemDropWithConditionRule pwnRule = null;
 						foreach (var entry in entries)
 						{
 							if (entry is ItemDropWithConditionRule conditionRule && conditionRule.itemId == ItemID.HallowedBar)
 							{
+								pwnRule = conditionRule;
 								npcLoot.Remove(entry);
 								break;
 							}
 						}
+						if (pwnRule == null)
+							break;
+
 						var expertCondition = new LeadingConditionRule(new Conditions.NotExpert());
 						var hallowBarCondition = new LeadingConditionRule(new HallowDropCondition());
+						pwnRule.condition = new HallowDropCondition();
+
 						expertCondition.OnSuccess(hallowBarCondition);
-						hallowBarCondition.OnSuccess(ItemDropRule.Common(ItemID.HallowedBar, 1, 15, 30));
+						hallowBarCondition.OnSuccess(pwnRule);
 
 						foreach (AltBiome biome in HallowList)
 						{
 							var biomeDropRule = new LeadingConditionRule(new HallowAltDropCondition(biome));
-							if (biome.MechDropItemType != null) biomeDropRule.OnSuccess(ItemDropRule.Common((int)biome.MechDropItemType, 1, 15, 30));
+							if (biome.MechDropItemType != null) {
+								pwnRule.condition = new HallowAltDropCondition(biome);
+								pwnRule.itemId = biome.MechDropItemType.Value;
+								biomeDropRule.OnSuccess(pwnRule);
+							}
 							expertCondition.OnSuccess(biomeDropRule);
 						}
 						npcLoot.Add(expertCondition);

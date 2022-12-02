@@ -17,12 +17,12 @@ namespace AltLibrary.Common.Hooks
 	{
 		public static void Init()
 		{
-			IL.Terraria.WorldGen.SmashAltar += WorldGen_SmashAltar;
+			IL_WorldGen.SmashAltar += WorldGen_SmashAltar;
 		}
 
 		public static void Unload()
 		{
-			IL.Terraria.WorldGen.SmashAltar -= WorldGen_SmashAltar;
+			IL_WorldGen.SmashAltar -= WorldGen_SmashAltar;
 		}
 
 		private static void WorldGen_SmashAltar(ILContext il)

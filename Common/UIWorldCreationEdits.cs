@@ -70,14 +70,14 @@ namespace AltLibrary.Common
 			QuenedDrawing = new();
 			QuenedDrawing2 = new();
 			initializedLists = false;
-			IL.Terraria.GameContent.UI.States.UIWorldCreation.MakeInfoMenu += ILMakeInfoMenu;
-			On.Terraria.GameContent.UI.States.UIWorldCreation.AddWorldEvilOptions += OnAddWorldEvilOptions;
-			On.Terraria.GameContent.UI.States.UIWorldCreation.SetDefaultOptions += UIWorldCreation_SetDefaultOptions;
-			On.Terraria.GameContent.UI.States.UIWorldCreation.BuildPage += UIWorldCreation_BuildPage;
-			IL.Terraria.GameContent.UI.States.UIWorldCreation.Draw += UIWorldCreation_Draw;
-			IL.Terraria.GameContent.UI.States.UIWorldCreation.FinishCreatingWorld += UIWorldCreation_FinishCreatingWorld;
-			IL.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf += UIWorldCreationPreview_DrawSelf1;
-			On.Terraria.GameContent.UI.Elements.UIWorldListItem.PlayGame += MakesWorldsUnplayable;
+			IL_UIWorldCreation.MakeInfoMenu += ILMakeInfoMenu;
+			On_UIWorldCreation.AddWorldEvilOptions += OnAddWorldEvilOptions;
+			On_UIWorldCreation.SetDefaultOptions += UIWorldCreation_SetDefaultOptions;
+			On_UIWorldCreation.BuildPage += UIWorldCreation_BuildPage;
+			IL_UIWorldCreation.Draw += UIWorldCreation_Draw;
+			IL_UIWorldCreation.FinishCreatingWorld += UIWorldCreation_FinishCreatingWorld;
+			IL_UIWorldCreationPreview.DrawSelf += UIWorldCreationPreview_DrawSelf1;
+			On_UIWorldListItem.PlayGame += MakesWorldsUnplayable;
 		}
 
 		public static void Unload()
@@ -85,14 +85,14 @@ namespace AltLibrary.Common
 			if (Main.netMode == NetmodeID.Server)
 				return;
 
-			IL.Terraria.GameContent.UI.States.UIWorldCreation.MakeInfoMenu -= ILMakeInfoMenu;
-			On.Terraria.GameContent.UI.States.UIWorldCreation.AddWorldEvilOptions -= OnAddWorldEvilOptions;
-			On.Terraria.GameContent.UI.States.UIWorldCreation.SetDefaultOptions -= UIWorldCreation_SetDefaultOptions;
-			On.Terraria.GameContent.UI.States.UIWorldCreation.BuildPage -= UIWorldCreation_BuildPage;
-			IL.Terraria.GameContent.UI.States.UIWorldCreation.Draw -= UIWorldCreation_Draw;
-			IL.Terraria.GameContent.UI.States.UIWorldCreation.FinishCreatingWorld -= UIWorldCreation_FinishCreatingWorld;
-			IL.Terraria.GameContent.UI.Elements.UIWorldCreationPreview.DrawSelf -= UIWorldCreationPreview_DrawSelf1;
-			On.Terraria.GameContent.UI.Elements.UIWorldListItem.PlayGame -= MakesWorldsUnplayable;
+			IL_UIWorldCreation.MakeInfoMenu -= ILMakeInfoMenu;
+			On_UIWorldCreation.AddWorldEvilOptions -= OnAddWorldEvilOptions;
+			On_UIWorldCreation.SetDefaultOptions -= UIWorldCreation_SetDefaultOptions;
+			On_UIWorldCreation.BuildPage -= UIWorldCreation_BuildPage;
+			IL_UIWorldCreation.Draw -= UIWorldCreation_Draw;
+			IL_UIWorldCreation.FinishCreatingWorld -= UIWorldCreation_FinishCreatingWorld;
+			IL_UIWorldCreationPreview.DrawSelf -= UIWorldCreationPreview_DrawSelf1;
+			On_UIWorldListItem.PlayGame -= MakesWorldsUnplayable;
 			chosingOption = null;
 			chosenOption = CurrentAltOption.Biome;
 			AltEvilBiomeChosenType = 0;
@@ -262,7 +262,7 @@ namespace AltLibrary.Common
 			return list;
 		}
 
-		public static void UIWorldCreation_BuildPage(On.Terraria.GameContent.UI.States.UIWorldCreation.orig_BuildPage orig, UIWorldCreation self)
+		public static void UIWorldCreation_BuildPage(On_UIWorldCreation.orig_BuildPage orig, UIWorldCreation self)
 		{
 			if (!initializedLists)
 			{
@@ -326,18 +326,17 @@ namespace AltLibrary.Common
 				closeIcon.Top.Set(5, 0);
 				closeIcon.Left.Set(5, 0);
 				closeIcon.SetVisibility(1f, 1f);
-				closeIcon.OnClick += CloseIcon_OnClick;
+				closeIcon.OnLeftClick += CloseIcon_OnClick;
 				uIElement3.Append(closeIcon);
 
 				List<AltOre> prehmList = MakeOreList();
 				List<ALUIOreListItem> items = new();
 				prehmList.ForEach(x => items.Add(new(x, false)));
 				_oreList._items.AddRange(items);
-				foreach (UIElement item in items)
-				{
-					((UIElement)ALReflection.UIList__innerList.GetValue(_oreList)).Append(item);
+				foreach (UIElement item in items) {
+					_oreList._innerList.Append(item);
 				}
-				((UIElement)ALReflection.UIList__innerList.GetValue(_oreList)).Recalculate();
+				_oreList._innerList.Recalculate();
 				_oreElements.AddRange(items);
 			}
 			#endregion
@@ -391,7 +390,7 @@ namespace AltLibrary.Common
 				closeIcon.Top.Set(5, 0);
 				closeIcon.Left.Set(5, 0);
 				closeIcon.SetVisibility(1f, 1f);
-				closeIcon.OnClick += CloseIcon_OnClick;
+				closeIcon.OnLeftClick += CloseIcon_OnClick;
 				uIElement3.Append(closeIcon);
 
 				List<AltBiome> list = MakeBiomeList();
@@ -400,9 +399,9 @@ namespace AltLibrary.Common
 				_biomeList._items.AddRange(items);
 				foreach (UIElement item in items)
 				{
-					((UIElement)ALReflection.UIList__innerList.GetValue(_biomeList)).Append(item);
+					_biomeList._innerList.Append(item);
 				}
-				((UIElement)ALReflection.UIList__innerList.GetValue(_biomeList)).Recalculate();
+				_biomeList._innerList.Recalculate();
 				_biomeElements.AddRange(items);
 			}
 			#endregion
@@ -677,14 +676,15 @@ namespace AltLibrary.Common
 			c.Emit(OpCodes.Ldarg, 0);
 			c.EmitDelegate<Action<UIWorldCreation>>((self) =>
 			{
-				seed = (string)typeof(UIWorldCreation).GetField("_optionSeed", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(self);
+				seed = self._optionSeed;
 			});
 		}
 
-		private static void MakesWorldsUnplayable(On.Terraria.GameContent.UI.Elements.UIWorldListItem.orig_PlayGame orig, UIWorldListItem self, UIMouseEvent evt, UIElement listeningElement)
+		private static void MakesWorldsUnplayable(On_UIWorldListItem.orig_PlayGame orig, UIWorldListItem self, UIMouseEvent evt, UIElement listeningElement)
 		{
-			if ((WorldFileData)typeof(UIWorldListItem).GetField("_data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self) == null)
+			if (self._data == null)
 				return;
+
 			if (ALUtils.IsWorldValid(self))
 			{
 				orig(self, evt, listeningElement);
@@ -702,7 +702,7 @@ namespace AltLibrary.Common
 		}
 
 		public static void OnAddWorldEvilOptions(
-			On.Terraria.GameContent.UI.States.UIWorldCreation.orig_AddWorldEvilOptions orig,
+			On_UIWorldCreation.orig_AddWorldEvilOptions orig,
 			UIWorldCreation self, UIElement container,
 			float accumualtedHeight,
 			UIElement.MouseEvent clickEvent,
@@ -749,7 +749,7 @@ namespace AltLibrary.Common
 					HAlign = (float)i / (array6.Length - 1)
 				};
 				groupOptionButton.Top.Set(accumualtedHeight, 0f);
-				groupOptionButton.OnMouseDown += ClickEvilOption;
+				groupOptionButton.OnLeftMouseDown += ClickEvilOption;
 				groupOptionButton.OnMouseOver += self.ShowOptionDescription;
 				groupOptionButton.OnMouseOut += self.ClearOptionDescription;
 				groupOptionButton.SetSnapPoint(tagGroup, i, null, null);
@@ -770,7 +770,7 @@ namespace AltLibrary.Common
 			}
 		}
 
-		public static void UIWorldCreation_SetDefaultOptions(On.Terraria.GameContent.UI.States.UIWorldCreation.orig_SetDefaultOptions orig, UIWorldCreation self)
+		public static void UIWorldCreation_SetDefaultOptions(On_UIWorldCreation.orig_SetDefaultOptions orig, UIWorldCreation self)
 		{
 			orig(self);
 			ALGroupOptionButton<CurrentAltOption>[] evilButtons = chosingOption;
@@ -937,7 +937,7 @@ namespace AltLibrary.Common
 		internal readonly Func<string> onHoverName;
 		internal readonly Func<string, string> onHoverMod;
 
-		private readonly Func<bool> WhichOne
+		private static Func<bool> WhichOne
 		{
 			get
 			{

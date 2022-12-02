@@ -3,6 +3,7 @@ using AltLibrary.Common.Systems;
 using MonoMod.Cil;
 using System.Linq;
 using Terraria;
+using Terraria.GameContent.Biomes.Desert;
 using Terraria.ID;
 using static Terraria.ModLoader.ModContent;
 
@@ -12,25 +13,25 @@ namespace AltLibrary.Common.Hooks
 	{
 		internal static void Load()
 		{
-			IL.Terraria.NPC.AttemptToConvertNPCToEvil += NPC_AttemptToConvertNPCToEvil;
-			IL.Terraria.NPC.CreateBrickBoxForWallOfFlesh += NPC_CreateBrickBoxForWallOfFlesh;
-			On.Terraria.WorldGen.nearbyChlorophyte += GoodDetourChloro;
-			IL.Terraria.WorldGen.GrowUndergroundTree += WorldGen_GrowUndergroundTree;
-			IL.Terraria.GameContent.Biomes.Desert.DesertDescription.RowHasInvalidTiles += DesertDescription_RowHasInvalidTiles;
-			IL.Terraria.WorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort += WorldGen_AddBuriedChest_int_int_int_bool_int_bool_ushort;
+			IL_NPC.AttemptToConvertNPCToEvil += NPC_AttemptToConvertNPCToEvil;
+			IL_NPC.CreateBrickBoxForWallOfFlesh += NPC_CreateBrickBoxForWallOfFlesh;
+			On_WorldGen.nearbyChlorophyte += GoodDetourChloro;
+			IL_WorldGen.GrowUndergroundTree += WorldGen_GrowUndergroundTree;
+			IL_DesertDescription.RowHasInvalidTiles += DesertDescription_RowHasInvalidTiles;
+			IL_WorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort += WorldGen_AddBuriedChest_int_int_int_bool_int_bool_ushort;
 		}
 
 		internal static void Unload()
 		{
-			IL.Terraria.NPC.AttemptToConvertNPCToEvil -= NPC_AttemptToConvertNPCToEvil;
-			IL.Terraria.NPC.CreateBrickBoxForWallOfFlesh -= NPC_CreateBrickBoxForWallOfFlesh;
-			On.Terraria.WorldGen.nearbyChlorophyte -= GoodDetourChloro;
-			IL.Terraria.WorldGen.GrowUndergroundTree -= WorldGen_GrowUndergroundTree;
-			IL.Terraria.GameContent.Biomes.Desert.DesertDescription.RowHasInvalidTiles -= DesertDescription_RowHasInvalidTiles;
-			IL.Terraria.WorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort -= WorldGen_AddBuriedChest_int_int_int_bool_int_bool_ushort;
+			IL_NPC.AttemptToConvertNPCToEvil -= NPC_AttemptToConvertNPCToEvil;
+			IL_NPC.CreateBrickBoxForWallOfFlesh -= NPC_CreateBrickBoxForWallOfFlesh;
+			On_WorldGen.nearbyChlorophyte -= GoodDetourChloro;
+			IL_WorldGen.GrowUndergroundTree -= WorldGen_GrowUndergroundTree;
+			IL_DesertDescription.RowHasInvalidTiles -= DesertDescription_RowHasInvalidTiles;
+			IL_WorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort -= WorldGen_AddBuriedChest_int_int_int_bool_int_bool_ushort;
 		}
 
-		private static bool GoodDetourChloro(On.Terraria.WorldGen.orig_nearbyChlorophyte orig, int i, int j)
+		private static bool GoodDetourChloro(On_WorldGen.orig_nearbyChlorophyte orig, int i, int j)
 		{
 			bool ch = orig(i, j);
 			foreach (var b in AltLibrary.Biomes.Where(g => g.BiomeType == BiomeType.Jungle))

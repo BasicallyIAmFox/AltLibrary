@@ -64,8 +64,6 @@ namespace AltLibrary
 
 		public override void Load()
 		{
-			ALUtils.SteamID();
-			ALReflection.Init();
 			ALTextureAssets.Load();
 			ILHooks.OnInitialize();
 			AnimatedModIcon.Init();
@@ -91,7 +89,6 @@ namespace AltLibrary
 			ALTextureAssets.PostContentLoad();
 			MimicSummon.SetupContent();
 			ALConvertInheritanceData.FillData();
-			ModSupport.ModSupport.HookAll();
 
 			BackgroundsAlternating.Init();
 		}
@@ -292,7 +289,6 @@ namespace AltLibrary
 			GuideHelpText.Unload();
 			UIChanges.Unapply();
 			ExtractinatorOres.Unload();
-			ALReflection.Unload();
 			AnalystShopLoader.Unload();
 			AltLibraryConfig.Config = null;
 			TimeHoveringOnIcon = 0;
@@ -317,7 +313,6 @@ namespace AltLibrary
 			NPCsToNowShowUp = null;
 			TilesToNowShowUp = null;
 			ALBiomeTileCountModifiers = null;
-			ReflectionDictionary.Unload();
 			ALUtils.cacheBatch = null;
 			monday = null;
 		}

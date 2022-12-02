@@ -9,7 +9,7 @@ namespace AltLibrary.Common
 {
 	internal class DevArmorFromBags : GlobalItem
 	{
-		public override void OpenVanillaBag(string context, Player player, int arg)
+		/*public override void OpenVanillaBag(string context, Player player, int arg)
 		{
 			if (context == "bossBag")
 			{
@@ -29,6 +29,6 @@ namespace AltLibrary.Common
 					}
 				}
 			}
-		}
+		}*/
 	}
 }

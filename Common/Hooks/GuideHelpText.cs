@@ -10,12 +10,12 @@ namespace AltLibrary.Common.Hooks
 	{
 		public static void Load()
 		{
-			IL.Terraria.Main.HelpText += Main_HelpText;
+			IL_Main.HelpText += Main_HelpText;
 		}
 
 		public static void Unload()
 		{
-			IL.Terraria.Main.HelpText -= Main_HelpText;
+			IL_Main.HelpText -= Main_HelpText;
 		}
 
 		private static void Main_HelpText(ILContext il)

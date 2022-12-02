@@ -1,11 +1,13 @@
 ﻿using AltLibrary.Common.AltBiomes;
 using AltLibrary.Common.Systems;
+using AltLibrary.Core;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
+using System.Net.Mime;
+using System.Reflection;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Hooks
@@ -14,14 +16,14 @@ namespace AltLibrary.Common.Hooks
 	{
 		public static void Init()
 		{
-			IL.Terraria.WorldGen.ConvertSkyIslands += WorldGen_ConvertSkyIslands;
-			IL.Terraria.WorldGen.IslandHouse += WorldGen_IslandHouse;
+			IL_WorldGen.ConvertSkyIslands += WorldGen_ConvertSkyIslands;
+			IL_WorldGen.IslandHouse += WorldGen_IslandHouse;
 		}
 
 		public static void Unload()
 		{
-			IL.Terraria.WorldGen.ConvertSkyIslands -= WorldGen_ConvertSkyIslands;
-			IL.Terraria.WorldGen.IslandHouse -= WorldGen_IslandHouse;
+			IL_WorldGen.ConvertSkyIslands -= WorldGen_ConvertSkyIslands;
+			IL_WorldGen.IslandHouse -= WorldGen_IslandHouse;
 		}
 
 		private static void WorldGen_IslandHouse(ILContext il)
@@ -87,7 +89,7 @@ namespace AltLibrary.Common.Hooks
 				AltLibrary.Instance.Logger.Info("o $ 5");
 				return;
 			}
-			ILLabel label = il.DefineLabel();
+			ILLabel label = c.DefineLabel();
 
 			c.Remove();
 			c.EmitDelegate(() => WorldGen.tenthAnniversaryWorldGen ? WorldBiomeManager.WorldHallow : "");
@@ -114,47 +116,43 @@ namespace AltLibrary.Common.Hooks
 		private static void WorldGen_ConvertSkyIslands(ILContext il)
 		{
 			ILCursor c = new(il);
-			if (!c.TryGotoNext(i => i.MatchLdcI4(109)))
+			
+			try
 			{
-				AltLibrary.Instance.Logger.Info("p $ 1");
-				return;
-			}
+				int k = 0;
+				int j = 0;
+				int size = 0;
 
-			ALUtils.ReplaceIDs<int>(il,
-				TileID.HallowedGrass,
-				(orig) => ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeGrass ?? orig,
-				(orig) => WorldBiomeManager.WorldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeGrass.HasValue);
+				c.GotoNext(i => i.MatchLdloc(out k),
+					i => i.MatchLdloc(out j),
+					i => i.MatchLdarg(0),
+					i => i.MatchLdcI4(out size),
+					i => i.MatchCall<WorldGen>(nameof(WorldGen.Convert)));
 
-			if (!c.TryGotoNext(i => i.MatchCall<WorldGen>(nameof(WorldGen.Convert))))
-			{
-				AltLibrary.Instance.Logger.Info("p $ 2");
-				return;
+				var skip = c.DefineLabel();
+				var def = c.DefineLabel();
+
+				c.Emit(OpCodes.Ldarg, 0);
+				c.EmitDelegate((int convertType) => convertType == 2 && WorldBiomeManager.WorldHallow == string.Empty);
+				c.Emit(OpCodes.Brtrue_S, def);
+
+				c.Emit(OpCodes.Ldarg, 0);
+				c.EmitDelegate((int convertType) => convertType == 2 ? WorldBiomeManager.WorldHallow : string.Empty);
+				c.Emit(OpCodes.Ldloc, k);
+				c.Emit(OpCodes.Ldloc, j);
+				c.Emit(OpCodes.Ldc_I4, size);
+				c.EmitDelegate<Action<string, int, int, int>>(ALConvert.Convert);
+
+				c.Emit(OpCodes.Nop);
+				c.Emit(OpCodes.Br_S, skip);
+
+				c.MarkLabel(def);
+				c.Index += 5;
+				c.MarkLabel(skip);
 			}
-			c.Index++;
-			c.Emit(OpCodes.Ldloc, 4);
-			c.Emit(OpCodes.Ldloc, 5);
-			c.EmitDelegate<Action<int, int>>((i, j) =>
+			catch
 			{
-				if (WorldBiomeManager.WorldHallow != "" && ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeGrass.HasValue)
-				{
-					int size = 1;
-					for (int l = i - size; l <= i + size; l++)
-					{
-						for (int k = j - size; k <= j + size; k++)
-						{
-							Tile tile = Main.tile[l, k];
-							int type = tile.TileType;
-							if (TileID.Sets.Conversion.Grass[type] && type == 109)
-							{
-								tile = Main.tile[l, k];
-								tile.TileType = (ushort)ModContent.Find<AltBiome>(WorldBiomeManager.WorldHallow).BiomeGrass.Value;
-								WorldGen.SquareTileFrame(l, k, true);
-								NetMessage.SendTileSquare(-1, l, k, TileChangeType.None);
-							}
-						}
-					}
-				}
-			});
+			}
 		}
 	}
 }

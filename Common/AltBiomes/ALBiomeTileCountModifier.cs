@@ -31,7 +31,7 @@ namespace AltLibrary.Common.AltBiomes
 				HolyTileCountOriginal = 0;
 				EvilTileCountOriginal = 0;
 				ModSunflowerCount = 0;
-				IL.Terraria.SceneMetrics.ExportTileCountsToMain += SceneMetrics_GetModdedHallowEvil;
+				IL_SceneMetrics.ExportTileCountsToMain += SceneMetrics_GetModdedHallowEvil;
 			}
 
 			public void Unload()
@@ -39,7 +39,7 @@ namespace AltLibrary.Common.AltBiomes
 				HolyTileCountOriginal = 0;
 				EvilTileCountOriginal = 0;
 				ModSunflowerCount = 0;
-				IL.Terraria.SceneMetrics.ExportTileCountsToMain -= SceneMetrics_GetModdedHallowEvil;
+				IL_SceneMetrics.ExportTileCountsToMain -= SceneMetrics_GetModdedHallowEvil;
 			}
 		}
 

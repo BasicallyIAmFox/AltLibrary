@@ -25,23 +25,23 @@ namespace AltLibrary.Common.Hooks
 
 		public static void Init()
 		{
-			IL.Terraria.GameContent.UI.Elements.UIWorldListItem.ctor += UIWorldListItem_ctor;
-			IL.Terraria.GameContent.UI.Elements.UIWorldListItem.DrawSelf += UIWorldListItem_DrawSelf1;
-			On.Terraria.GameContent.UI.Elements.UIWorldListItem.DrawSelf += UIWorldListItem_DrawSelf;
-			On.Terraria.GameContent.UI.Elements.AWorldListItem.GetIconElement += AWorldListItem_GetIconElement;
+			IL_UIWorldListItem.ctor += UIWorldListItem_ctor;
+			IL_UIWorldListItem.DrawSelf += UIWorldListItem_DrawSelf1;
+			On_UIWorldListItem.DrawSelf += UIWorldListItem_DrawSelf;
+			On_AWorldListItem.GetIconElement += AWorldListItem_GetIconElement;
 			WarnUpdate = 0;
 		}
 
 		public static void Unload()
 		{
-			IL.Terraria.GameContent.UI.Elements.UIWorldListItem.ctor -= UIWorldListItem_ctor;
-			IL.Terraria.GameContent.UI.Elements.UIWorldListItem.DrawSelf -= UIWorldListItem_DrawSelf1;
-			On.Terraria.GameContent.UI.Elements.UIWorldListItem.DrawSelf -= UIWorldListItem_DrawSelf;
-			On.Terraria.GameContent.UI.Elements.AWorldListItem.GetIconElement -= AWorldListItem_GetIconElement;
+			IL_UIWorldListItem.ctor -= UIWorldListItem_ctor;
+			IL_UIWorldListItem.DrawSelf -= UIWorldListItem_DrawSelf1;
+			On_UIWorldListItem.DrawSelf -= UIWorldListItem_DrawSelf;
+			On_AWorldListItem.GetIconElement -= AWorldListItem_GetIconElement;
 			WarnUpdate = 0;
 		}
 
-		private static UIElement AWorldListItem_GetIconElement(On.Terraria.GameContent.UI.Elements.AWorldListItem.orig_GetIconElement orig, AWorldListItem self)
+		private static UIElement AWorldListItem_GetIconElement(On_AWorldListItem.orig_GetIconElement orig, AWorldListItem self)
 		{
 			return new UIImage(ALTextureAssets.UIWorldSeedIcon[0])
 			{
@@ -119,21 +119,20 @@ namespace AltLibrary.Common.Hooks
 			});
 		}
 
-		private static void UIWorldListItem_DrawSelf(On.Terraria.GameContent.UI.Elements.UIWorldListItem.orig_DrawSelf orig, UIWorldListItem self, SpriteBatch spriteBatch)
+		private static void UIWorldListItem_DrawSelf(On_UIWorldListItem.orig_DrawSelf orig, UIWorldListItem self, SpriteBatch spriteBatch)
 		{
 			orig(self, spriteBatch);
 			if (++WarnUpdate >= 120)
 			{
 				WarnUpdate = 0;
 			}
-			WorldFileData data = (WorldFileData)ReflectionDictionary.GetField("Terraria.GameContent.UI.Elements.UIWorldListItem", "_data").Value.GetValue(self);
+			WorldFileData data = self._data;
 			if (data == null)
 				return;
 			ALUtils.GetWorldData(data, out Dictionary<string, AltLibraryConfig.WorldDataValues> tempDict, out string path2);
-			UIImage _worldIcon = (UIImage)typeof(UIWorldListItem).GetField("_worldIcon", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self);
-			WorldFileData _data = (WorldFileData)typeof(UIWorldListItem).GetField("_data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self);
+			WorldFileData _data = data;
 			CalculatedStyle innerDimensions = self.GetInnerDimensions();
-			CalculatedStyle dimensions = _worldIcon.GetDimensions();
+			CalculatedStyle dimensions = self._worldIcon.GetDimensions();
 			float num7 = innerDimensions.X + innerDimensions.Width;
 			bool flag = tempDict.ContainsKey(path2);
 			for (int i = 0; i < 4; i++)

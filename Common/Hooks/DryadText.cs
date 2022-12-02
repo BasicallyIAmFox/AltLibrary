@@ -10,22 +10,23 @@ namespace AltLibrary.Common.Hooks
 	{
 		public static void Init()
 		{
-			On.Terraria.Lang.GetDryadWorldStatusDialog += Lang_GetDryadWorldStatusDialog;
-			IL.Terraria.WorldGen.AddUpAlignmentCounts += WorldGen_AddUpAlignmentCounts;
+			On_Lang.GetDryadWorldStatusDialog += Lang_GetDryadWorldStatusDialog;
+			IL_WorldGen.AddUpAlignmentCounts += WorldGen_AddUpAlignmentCounts;
 		}
 
 		public static void Unload()
 		{
-			On.Terraria.Lang.GetDryadWorldStatusDialog -= Lang_GetDryadWorldStatusDialog;
-			IL.Terraria.WorldGen.AddUpAlignmentCounts -= WorldGen_AddUpAlignmentCounts;
+			On_Lang.GetDryadWorldStatusDialog -= Lang_GetDryadWorldStatusDialog;
+			IL_WorldGen.AddUpAlignmentCounts -= WorldGen_AddUpAlignmentCounts;
 		}
 
-		private static string Lang_GetDryadWorldStatusDialog(On.Terraria.Lang.orig_GetDryadWorldStatusDialog orig, out bool worldIsEntirelyPure)
+		// TODO: Re-add worldIsEntirelyPure when detour is fixed by tModLoader/Cecil
+		private static string Lang_GetDryadWorldStatusDialog(On_Lang.orig_GetDryadWorldStatusDialog orig/*, out bool worldIsEntirelyPure*/)
 		{
 			string text2;
 			int tGood = WorldGen.tGood;
 			int tEvil = WorldGen.tEvil + WorldGen.tBlood;
-			worldIsEntirelyPure = false;
+			//worldIsEntirelyPure = false;
 			if (tGood > 0 && tEvil > 0)
 			{
 				text2 = Language.GetTextValue("Mods.AltLibrary.DryadSpecialText.WorldStatusGoodEvil", Main.worldName, tGood, tEvil);
@@ -38,12 +39,34 @@ namespace AltLibrary.Common.Hooks
 			{
 				if (tGood <= 0)
 				{
-					worldIsEntirelyPure = true;
+					//worldIsEntirelyPure = true;
 					return Language.GetTextValue("DryadSpecialText.WorldStatusPure", Main.worldName);
 				}
 				text2 = Language.GetTextValue("Mods.AltLibrary.DryadSpecialText.WorldStatusGood", Main.worldName, tGood);
 			}
-			string arg = (tGood * 1.2 >= tEvil && tGood * 0.8 <= tEvil) ? Language.GetTextValue("DryadSpecialText.WorldDescriptionBalanced") : ((tGood >= tEvil) ? Language.GetTextValue("DryadSpecialText.WorldDescriptionFairyTale") : ((tEvil > tGood + 20) ? Language.GetTextValue("DryadSpecialText.WorldDescriptionGrim") : ((tEvil <= 5) ? Language.GetTextValue("DryadSpecialText.WorldDescriptionClose") : Language.GetTextValue("DryadSpecialText.WorldDescriptionWork"))));
+			string arg;
+			if (tGood * 1.2 >= tEvil && tGood * 0.8 <= tEvil) {
+				arg = Language.GetTextValue("DryadSpecialText.WorldDescriptionBalanced");
+			}
+			else {
+				if (tGood >= tEvil) {
+					arg = Language.GetTextValue("DryadSpecialText.WorldDescriptionFairyTale");
+				}
+				else {
+					if (tEvil > tGood + 20) {
+						arg = (Language.GetTextValue("DryadSpecialText.WorldDescriptionGrim"));
+					}
+					else {
+						if (tEvil <= 5) {
+							arg = Language.GetTextValue("DryadSpecialText.WorldDescriptionClose");
+						}
+						else {
+							arg = Language.GetTextValue("DryadSpecialText.WorldDescriptionWork");
+						}
+					}
+				}
+			}
+
 			return text2 + " " + arg;
 		}
 

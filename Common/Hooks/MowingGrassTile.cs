@@ -10,12 +10,12 @@ namespace AltLibrary.Common.Hooks
 	{
 		public static void Init()
 		{
-			IL.Terraria.Player.MowGrassTile += Player_MowGrassTile;
+			IL_Player.MowGrassTile += Player_MowGrassTile;
 		}
 
 		public static void Unload()
 		{
-			IL.Terraria.Player.MowGrassTile -= Player_MowGrassTile;
+			IL_Player.MowGrassTile -= Player_MowGrassTile;
 		}
 
 		private static void Player_MowGrassTile(ILContext il)

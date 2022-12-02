@@ -1,6 +1,6 @@
 ﻿using System;
 using Terraria;
-using Terraria.ID;
+using Terraria.WorldBuilding;
 
 namespace AltLibrary.Core.Generation
 {
@@ -9,153 +9,154 @@ namespace AltLibrary.Core.Generation
 		public override string ProgressMessage => Lang.gen[20].Value;
 		public override bool CanGenerateNearDungeonOcean => false;
 
-		public override void GenerateEvil(int num33, int num34, int num35)
+		public override void GenerateEvil(int num40, int num41, int num42)
 		{
-			/*bool worldCrimson = WorldGen.crimson;
+			bool worldCrimson = WorldGen.crimson;
 			WorldGen.crimson = false;
 
-			int num38 = 0;
-			for (int n = num34; n < num35; n++)
+			int num45 = 0;
+			for (int num46 = num41; num46 < num42; num46++)
 			{
-				if (num38 > 0)
+				if (num45 > 0)
 				{
-					num38--;
+					num45--;
 				}
-				if (n == num33 || num38 == 0)
+				if (num46 == num40 || num45 == 0)
 				{
-					int num39 = (int)WorldGen.worldSurfaceLow;
-					while (num39 < Main.worldSurface - 1.0)
+					int num47 = (int)GenVars.worldSurfaceLow;
+					while ((double)num47 < Main.worldSurface - 1.0)
 					{
-						if (Main.tile[n, num39].HasTile || Main.tile[n, num39].WallType > 0)
+						if (Main.tile[num46, num47].HasTile || Main.tile[num46, num47].WallType > 0)
 						{
-							if (n == num33)
+							if (num46 == num40)
 							{
-								num38 = 20;
-								WorldGen.ChasmRunner(n, num39, WorldGen.genRand.Next(150) + 150, true);
+								num45 = 20;
+								WorldGen.ChasmRunner(num46, num47, WorldGen.genRand.Next(150) + 150, true);
 								break;
 							}
-							if (WorldGen.genRand.NextBool(35) && num38 == 0)
+							if (WorldGen.genRand.Next(35) == 0 && num45 == 0)
 							{
-								num38 = 30;
+								num45 = 30;
 								bool makeOrb = true;
-								WorldGen.ChasmRunner(n, num39, WorldGen.genRand.Next(50) + 50, makeOrb);
+								WorldGen.ChasmRunner(num46, num47, WorldGen.genRand.Next(50) + 50, makeOrb);
 								break;
 							}
 							break;
 						}
 						else
 						{
-							num39++;
+							num47++;
 						}
 					}
 				}
-				int num40 = (int)WorldGen.worldSurfaceLow;
-				while (num40 < Main.worldSurface - 1.0)
+				int num48 = (int)GenVars.worldSurfaceLow;
+				while ((double)num48 < Main.worldSurface - 1.0)
 				{
-					if (Main.tile[n, num40].HasTile)
+					if (Main.tile[num46, num48].HasTile)
 					{
-						int num41 = num40 + WorldGen.genRand.Next(10, 14);
-						for (int num42 = num40; num42 < num41; num42++)
+						int num49 = num48 + WorldGen.genRand.Next(10, 14);
+						for (int num50 = num48; num50 < num49; num50++)
 						{
-							if ((Main.tile[n, num42].TileType == TileID.Mud || Main.tile[n, num42].TileType == TileID.JungleGrass) && n >= num34 + WorldGen.genRand.Next(5) && n < num35 - WorldGen.genRand.Next(5))
+							if ((Main.tile[num46, num50].TileType == 59 || Main.tile[num46, num50].TileType == 60) && num46 >= num41 + WorldGen.genRand.Next(5) && num46 < num42 - WorldGen.genRand.Next(5))
 							{
-								Main.tile[n, num42].TileType = 0;
+								Main.tile[num46, num50].TileType = 0;
 							}
 						}
 						break;
 					}
-					num40++;
+					num48++;
 				}
 			}
-			double num43 = Main.worldSurface + 40.0;
-			for (int num44 = num34; num44 < num35; num44++)
+			double num51 = Main.worldSurface + 40.0;
+			for (int num52 = num41; num52 < num42; num52++)
 			{
-				num43 += WorldGen.genRand.Next(-2, 3);
-				if (num43 < Main.worldSurface + 30.0)
+				num51 += (double)WorldGen.genRand.Next(-2, 3);
+				if (num51 < Main.worldSurface + 30.0)
 				{
-					num43 = Main.worldSurface + 30.0;
+					num51 = Main.worldSurface + 30.0;
 				}
-				if (num43 > Main.worldSurface + 50.0)
+				if (num51 > Main.worldSurface + 50.0)
 				{
-					num43 = Main.worldSurface + 50.0;
+					num51 = Main.worldSurface + 50.0;
 				}
-				int i2 = num44;
-				bool flag7 = false;
-				int num45 = (int)WorldGen.worldSurfaceLow;
-				while (num45 < num43)
+				int i2 = num52;
+				bool flag52 = false;
+				int num53 = (int)GenVars.worldSurfaceLow;
+				while ((double)num53 < num51)
 				{
-					if (Main.tile[i2, num45].HasTile)
+					if (Main.tile[i2, num53].HasTile)
 					{
-						if (Main.tile[i2, num45].TileType == 53 && i2 >= num34 + WorldGen.genRand.Next(5) && i2 <= num35 - WorldGen.genRand.Next(5))
+						if (Main.tile[i2, num53].TileType == 53 && i2 >= num41 + WorldGen.genRand.Next(5) && i2 <= num42 - WorldGen.genRand.Next(5))
 						{
-							Main.tile[i2, num45].TileType = 112;
+							Main.tile[i2, num53].TileType = 112;
 						}
-						if (Main.tile[i2, num45].TileType == 0 && num45 < Main.worldSurface - 1.0 && !flag7)
+						if (Main.tile[i2, num53].TileType == 0 && (double)num53 < Main.worldSurface - 1.0 && !flag52)
 						{
 							WorldGen.grassSpread = 0;
-							WorldGen.SpreadGrass(i2, num45, 0, 23, true, 0);
+							WorldGen.SpreadGrass(i2, num53, 0, 23, true);
 						}
-						flag7 = true;
-						if (Main.tile[i2, num45].TileType == 1 && i2 >= num34 + WorldGen.genRand.Next(5) && i2 <= num35 - WorldGen.genRand.Next(5))
+						flag52 = true;
+						if (Main.tile[i2, num53].TileType == 1 && i2 >= num41 + WorldGen.genRand.Next(5) && i2 <= num42 - WorldGen.genRand.Next(5))
 						{
-							Main.tile[i2, num45].TileType = 25;
+							Main.tile[i2, num53].TileType = 25;
 						}
-						if (Main.tile[i2, num45].WallType == 216)
+						if (Main.tile[i2, num53].WallType == 216)
 						{
-							Main.tile[i2, num45].WallType = 217;
+							Main.tile[i2, num53].WallType = 217;
 						}
-						else if (Main.tile[i2, num45].WallType == 187)
+						else if (Main.tile[i2, num53].WallType == 187)
 						{
-							Main.tile[i2, num45].WallType = 220;
+							Main.tile[i2, num53].WallType = 220;
 						}
-						if (Main.tile[i2, num45].TileType == 2)
+						if (Main.tile[i2, num53].TileType == 2)
 						{
-							Main.tile[i2, num45].TileType = 23;
+							Main.tile[i2, num53].TileType = 23;
 						}
-						if (Main.tile[i2, num45].TileType == 161)
+						if (Main.tile[i2, num53].TileType == 161)
 						{
-							Main.tile[i2, num45].TileType = 163;
+							Main.tile[i2, num53].TileType = 163;
 						}
-						else if (Main.tile[i2, num45].TileType == 396)
+						else if (Main.tile[i2, num53].TileType == 396)
 						{
-							Main.tile[i2, num45].TileType = 400;
+							Main.tile[i2, num53].TileType = 400;
 						}
-						else if (Main.tile[i2, num45].TileType == 397)
+						else if (Main.tile[i2, num53].TileType == 397)
 						{
-							Main.tile[i2, num45].TileType = 398;
+							Main.tile[i2, num53].TileType = 398;
 						}
 					}
-					num45++;
+					num53++;
 				}
 			}
-			for (int num46 = num34; num46 < num35; num46++)
+			for (int num54 = num41; num54 < num42; num54++)
 			{
-				for (int num47 = 0; num47 < Main.maxTilesY - 50; num47++)
+				for (int num55 = 0; num55 < Main.maxTilesY - 50; num55++)
 				{
-					if (Main.tile[num46, num47].HasTile && Main.tile[num46, num47].TileType == 31)
+					if (Main.tile[num54, num55].HasTile && Main.tile[num54, num55].TileType == 31)
 					{
-						int num48 = num46 - 13;
-						int num49 = num46 + 13;
-						int num50 = num47 - 13;
-						int num51 = num47 + 13;
-						for (int num52 = num48; num52 < num49; num52++)
+						int num61 = num54 - 13;
+						int num56 = num54 + 13;
+						int num57 = num55 - 13;
+						int num58 = num55 + 13;
+						for (int num59 = num61; num59 < num56; num59++)
 						{
-							if (num52 > 10 && num52 < Main.maxTilesX - 10)
+							if (num59 > 10 && num59 < Main.maxTilesX - 10)
 							{
-								for (int num53 = num50; num53 < num51; num53++)
+								for (int num60 = num57; num60 < num58; num60++)
 								{
-									if (Math.Abs(num52 - num46) + Math.Abs(num53 - num47) < 9 + WorldGen.genRand.Next(11) && !WorldGen.genRand.NextBool(3) && Main.tile[num52, num53].TileType != 31)
+									Tile tile = Main.tile[num59, num60];
+									if (Math.Abs(num59 - num54) + Math.Abs(num60 - num55) < 9 + WorldGen.genRand.Next(11) && WorldGen.genRand.Next(3) != 0 && Main.tile[num59, num60].TileType != 31)
 									{
-										Main.tile[num52, num53].TileType = 0;
-										Main.tile[num52, num53].TileType = 25;
-										if (Math.Abs(num52 - num46) <= 1 && Math.Abs(num53 - num47) <= 1)
+										tile.HasTile = true;
+										Main.tile[num59, num60].TileType = 25;
+										if (Math.Abs(num59 - num54) <= 1 && Math.Abs(num60 - num55) <= 1)
 										{
-											Main.tile[num52, num53].TileType = 0;
+											tile.HasTile = false;
 										}
 									}
-									if (Main.tile[num52, num53].TileType != 31 && Math.Abs(num52 - num46) <= 2 + WorldGen.genRand.Next(3) && Math.Abs(num53 - num47) <= 2 + WorldGen.genRand.Next(3))
+									if (Main.tile[num59, num60].TileType != 31 && Math.Abs(num59 - num54) <= 2 + WorldGen.genRand.Next(3) && Math.Abs(num60 - num55) <= 2 + WorldGen.genRand.Next(3))
 									{
-										Main.tile[num52, num53].TileType = 0;
+										tile.HasTile = true;
 									}
 								}
 							}
@@ -163,7 +164,8 @@ namespace AltLibrary.Core.Generation
 					}
 				}
 			}
-			WorldGen.crimson = worldCrimson;*/
+
+			WorldGen.crimson = worldCrimson;
 		}
 
 		public override void PostGenerateEvil()
