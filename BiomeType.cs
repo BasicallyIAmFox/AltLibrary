@@ -1,7 +1,5 @@
-﻿namespace AltLibrary
-{
-	public enum BiomeType
-	{
+﻿namespace AltLibrary {
+	public enum BiomeType {
 		Evil,
 		Hallow,
 		Hell,

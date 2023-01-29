@@ -10,43 +10,41 @@ using Terraria.ModLoader;
 using Terraria.UI;
 
 namespace AltLibrary.Core.UIs {
-	internal class LayeredWorldIcon : UIImage
-	{
+	internal class LayeredWorldIcon : UIImage {
 		private readonly List<Asset<Texture2D>> assets = new(8);
 		private readonly bool zenith;
+		private readonly SpriteEffects effects = SpriteEffects.None;
 		private int _glitchFrame;
 		private int _glitchFrameCounter;
 		private int _glitchVariation;
 
-		internal LayeredWorldIcon(WorldFileData data, AltLibraryConfig.WorldDataValues worldDataValues) : base(Asset<Texture2D>.Empty)
-		{
+		internal LayeredWorldIcon(WorldFileData data, AltLibraryConfig.WorldDataValues worldDataValues) : base(Asset<Texture2D>.Empty) {
 			Asset<Texture2D> treeType = ALTextureAssets.WorldIconNormal;
 			string path = "AltLibrary/Assets/WorldIcons/";
 			string extra = data.DrunkWorld ? "Drunk/" : "Normal/";
-			if (data.ZenithWorld)
-			{
+			if (data.ZenithWorld) {
 				zenith = true;
 				assets.Add(treeType);
 				OnUpdate += ZenithGlitch;
 				return;
 			}
-			else if (data.ForTheWorthy)
-			{
+			else if (data.DrunkWorld && data.RemixWorld) {
+				effects = SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically;
+				extra = "Drunk/";
+			}
+			else if (data.ForTheWorthy) {
 				treeType = ALTextureAssets.WorldIconForTheWorthy;
 				extra = "ForTheWorthy/";
 			}
-			else if (data.NotTheBees)
-			{
+			else if (data.NotTheBees) {
 				treeType = ALTextureAssets.WorldIconNotTheBees;
 				extra = "NotTheBees/";
 			}
-			else if (data.Anniversary)
-			{
+			else if (data.Anniversary) {
 				treeType = ALTextureAssets.WorldIconAnniversary;
 				extra = "Anniversary/";
 			}
-			else if (data.DontStarve)
-			{
+			else if (data.DontStarve) {
 				treeType = ALTextureAssets.WorldIconDontStarve;
 				extra = "DontStarve/";
 			}
@@ -54,14 +52,13 @@ namespace AltLibrary.Core.UIs {
 				treeType = ALTextureAssets.WorldIconRemixWorld;
 				extra = "Remix/";
 			}
-			else if (data.NoTrapsWorld)
-			{
+			else if (data.NoTrapsWorld) {
 				treeType = ALTextureAssets.WorldIconNoTrapsWorld;
-				extra = "Traps/";
+				extra = "Normal/";
+				//extra = "Traps/";
 			}
 
-			Asset<Texture2D> FindOrReplace(string fullname, Asset<Texture2D> nullAsset)
-			{
+			Asset<Texture2D> FindOrReplace(string fullname, Asset<Texture2D> nullAsset) {
 				if (ModContent.TryFind(fullname, out AltBiome biome))
 					return ModContent.Request<Texture2D>(biome.WorldIcon + extra[..^1]);
 				return nullAsset;
@@ -69,8 +66,7 @@ namespace AltLibrary.Core.UIs {
 
 			assets.Add(treeType);
 
-			if (data.DrunkWorld)
-			{
+			if (data.DrunkWorld) {
 				extra = "DrunkBase/";
 
 				if (worldDataValues.drunkEvil != null && worldDataValues.drunkEvil != string.Empty)
@@ -90,8 +86,7 @@ namespace AltLibrary.Core.UIs {
 			else
 				assets.Add(ModContent.Request<Texture2D>(path + extra + "Crimson"));
 
-			if (data.IsHardMode)
-			{
+			if (data.IsHardMode) {
 				if (worldDataValues.worldHallow != null && worldDataValues.worldHallow != string.Empty)
 					assets.Add(FindOrReplace(worldDataValues.worldHallow, ModContent.Request<Texture2D>(path + "NullBiome/NullBiomeDrunkBase")));
 				else
@@ -99,55 +94,47 @@ namespace AltLibrary.Core.UIs {
 			}
 		}
 
-		private void ZenithGlitch(UIElement affectedElement)
-		{
+		private void ZenithGlitch(UIElement affectedElement) {
 			int minValue = 3;
 			int num = 3;
-			if (_glitchFrame == 0)
-			{
+			if (_glitchFrame == 0) {
 				minValue = 15;
 				num = 120;
 			}
 			int num2 = _glitchFrameCounter + 1;
 			_glitchFrameCounter = num2;
-			if (num2 >= Main.rand.Next(minValue, num + 1))
-			{
+			if (num2 >= Main.rand.Next(minValue, num + 1)) {
 				_glitchFrameCounter = 0;
 				_glitchFrame = (_glitchFrame + 1) % 16;
 
-				if ((_glitchFrame == 4 || _glitchFrame == 8 || _glitchFrame == 12) && Main.rand.NextBool(3))
-				{
+				if ((_glitchFrame == 4 || _glitchFrame == 8 || _glitchFrame == 12) && Main.rand.NextBool(3)) {
 					_glitchVariation = Main.rand.Next(ALTextureAssets.WorldZenith.Length);
 				}
 			}
 		}
 
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
+		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			CalculatedStyle dimensions = GetDimensions();
 			var a = assets[0];
 			Vector2 vector = a.Size();
 			Vector2 vector2 = dimensions.Position() + vector * (1f - ImageScale) / 2f + vector * NormalizedOrigin;
-			if (RemoveFloatingPointsFromDrawPosition)
-			{
+			if (RemoveFloatingPointsFromDrawPosition) {
 				vector2 = vector2.Floor();
 			}
 
-			if (zenith)
-			{
-				spriteBatch.GetParameters(out SpriteSortMode sortMode, out BlendState blendState, out SamplerState samplerState, out DepthStencilState depthStencilState, out RasterizerState rasterizerState, out Effect effect, out Matrix transformationMatrix);
-				spriteBatch.End();
-				spriteBatch.Begin(SpriteSortMode.Immediate, blendState, samplerState, depthStencilState, rasterizerState, effect, transformationMatrix);
+			if (zenith) {
+				var sortMode = spriteBatch.GetData().SortMode;
+				spriteBatch.GetData().SortMode = SpriteSortMode.Immediate;
+
 				Effect shader = AltLibrary.GetEffect();
 				shader.Parameters["frame"].SetValue(_glitchFrame);
 				shader.CurrentTechnique.Passes[0].Apply();
 
-				void Draw(Asset<Texture2D> asset)
-				{
+				void Draw(Asset<Texture2D> asset) {
 					if (!ScaleToFit)
-						spriteBatch.Draw(asset.Value, dimensions.ToRectangle(), Color);
+						spriteBatch.Draw(asset.Value, new Vector2(dimensions.X, dimensions.Y), null, Color, Rotation, vector * NormalizedOrigin, new Vector2(dimensions.Width, dimensions.Height), effects, 0f);
 					else
-						spriteBatch.Draw(asset.Value, vector2, null, Color, Rotation, vector * NormalizedOrigin, ImageScale, SpriteEffects.None, 0f);
+						spriteBatch.Draw(asset.Value, vector2, null, Color, Rotation, vector * NormalizedOrigin, ImageScale, effects, 0f);
 				}
 
 				Draw(a);
@@ -155,22 +142,18 @@ namespace AltLibrary.Core.UIs {
 				Draw(ALTextureAssets.WorldZenith2[_glitchVariation]);
 
 				spriteBatch.End();
-				spriteBatch.Begin(sortMode, blendState, samplerState, depthStencilState, rasterizerState, effect, transformationMatrix);
+				spriteBatch.GetData().SortMode = sortMode;
 				return;
 			}
 
-			if (ScaleToFit)
-			{
-				foreach (var b in assets)
-				{
-					spriteBatch.Draw(b.Value, dimensions.ToRectangle(), Color);
+			if (ScaleToFit) {
+				foreach (var b in assets) {
+					spriteBatch.Draw(b.Value, new(dimensions.X, dimensions.Y), null, Color, Rotation, vector * NormalizedOrigin, new Vector2(dimensions.Width, dimensions.Height), effects, 0f);
 				}
 			}
-			else
-			{
-				foreach (var b in assets)
-				{
-					spriteBatch.Draw(b.Value, vector2, null, Color, Rotation, vector * NormalizedOrigin, ImageScale, SpriteEffects.None, 0f);
+			else {
+				foreach (var b in assets) {
+					spriteBatch.Draw(b.Value, vector2, null, Color, Rotation, vector * NormalizedOrigin, ImageScale, effects, 0f);
 				}
 			}
 		}

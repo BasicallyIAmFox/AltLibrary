@@ -16,34 +16,28 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
 
-namespace AltLibrary.Content.NPCs
-{
+namespace AltLibrary.Content.NPCs {
 	[AutoloadHead]
-	internal class PieChartTownNPC : ModNPC
-	{
+	internal class PieChartTownNPC : ModNPC {
 		internal static int CurrentPage = 0;
 
 		public override bool IsLoadingEnabled(Mod mod) => false;
 
-		public override void Load()
-		{
+		public override void Load() {
 			CurrentPage = 0;
-			IL.Terraria.Main.GUIChatDrawInner += Main_GUIChatDrawInner;
+			IL_Main.GUIChatDrawInner += Main_GUIChatDrawInner;
 		}
 
-		private void Main_GUIChatDrawInner(ILContext il)
-		{
+		private void Main_GUIChatDrawInner(ILContext il) {
 			ILCursor c = new(il);
 			if (!c.TryGotoNext(i => i.MatchLdsfld<Main>(nameof(Main.npcChatCornerItem)),
 				i => i.MatchBrfalse(out _),
-				i => i.MatchLdloca(21)))
-			{
+				i => i.MatchLdloca(21))) {
 				AltLibrary.Instance.Logger.Info("10 $ 1");
 				return;
 			}
 
-			if (!c.TryGotoNext(i => i.MatchStloc(24)))
-			{
+			if (!c.TryGotoNext(i => i.MatchStloc(24))) {
 				AltLibrary.Instance.Logger.Info("10 $ 2");
 				return;
 			}
@@ -51,61 +45,50 @@ namespace AltLibrary.Content.NPCs
 			c.Index++;
 			c.Emit(OpCodes.Ldloc, 24);
 			c.Emit(OpCodes.Ldloc, 22);
-			c.EmitDelegate<Func<Texture2D, Item, Texture2D>>((value, item) =>
-			{
-				if (Main.npc[Main.LocalPlayer.talkNPC].type == Type && item.type == ItemID.DirtBlock && AnalystShopLoader.MaxShopCount() >= 1)
-				{
+			c.EmitDelegate<Func<Texture2D, Item, Texture2D>>((value, item) => {
+				if (Main.npc[Main.LocalPlayer.talkNPC].type == Type && item.type == ItemID.DirtBlock && AnalystShopLoader.MaxShopCount() >= 1) {
 					return ModContent.Request<Texture2D>("AltLibrary/Assets/Menu/ButtonCorrupt", AssetRequestMode.ImmediateLoad).Value;
 				}
 				return value;
 			});
 			c.Emit(OpCodes.Stloc, 24);
 
-			if (!c.TryGotoNext(i => i.MatchCallvirt<Item>("get_Name")))
-			{
+			if (!c.TryGotoNext(i => i.MatchCallvirt<Item>("get_Name"))) {
 				AltLibrary.Instance.Logger.Info("10 $ 3");
 				return;
 			}
 
 			c.Index++;
 			c.Emit(OpCodes.Ldloc, 22);
-			c.EmitDelegate<Func<string, Item, string>>((value, item) =>
-			{
-				if (Main.npc[Main.LocalPlayer.talkNPC].type == Type && item.type == ItemID.DirtBlock && AnalystShopLoader.MaxShopCount() >= 1)
-				{
+			c.EmitDelegate<Func<string, Item, string>>((value, item) => {
+				if (Main.npc[Main.LocalPlayer.talkNPC].type == Type && item.type == ItemID.DirtBlock && AnalystShopLoader.MaxShopCount() >= 1) {
 					return Language.GetTextValue("Mods.AltLibrary.AnalysisNext");
 				}
 				return value;
 			});
 
-			if (!c.TryGotoNext(i => i.MatchLdcI4(-11)))
-			{
+			if (!c.TryGotoNext(i => i.MatchLdcI4(-11))) {
 				AltLibrary.Instance.Logger.Info("10 $ 4");
 				return;
 			}
 
 			c.Index++;
 			c.Emit(OpCodes.Ldloc, 22);
-			c.EmitDelegate<Func<int, Item, int>>((rare, item) =>
-			{
-				if (Main.npc[Main.LocalPlayer.talkNPC].type == Type && item.type == ItemID.DirtBlock && AnalystShopLoader.MaxShopCount() >= 1)
-				{
+			c.EmitDelegate<Func<int, Item, int>>((rare, item) => {
+				if (Main.npc[Main.LocalPlayer.talkNPC].type == Type && item.type == ItemID.DirtBlock && AnalystShopLoader.MaxShopCount() >= 1) {
 					return ItemRarityID.Blue;
 				}
 				return rare;
 			});
 
-			if (!c.TryGotoNext(i => i.MatchCall(out _)))
-			{
+			if (!c.TryGotoNext(i => i.MatchCall(out _))) {
 				AltLibrary.Instance.Logger.Info("10 $ 5");
 				return;
 			}
 
 			c.Index++;
-			c.EmitDelegate(() =>
-			{
-				if (Main.npc[Main.LocalPlayer.talkNPC].type == Type && Main.mouseLeft && Main.mouseLeftRelease && AnalystShopLoader.MaxShopCount() >= 1)
-				{
+			c.EmitDelegate(() => {
+				if (Main.npc[Main.LocalPlayer.talkNPC].type == Type && Main.mouseLeft && Main.mouseLeftRelease && AnalystShopLoader.MaxShopCount() >= 1) {
 					CurrentPage++;
 					if (CurrentPage >= AnalystShopLoader.MaxShopCount())
 						CurrentPage = 0;
@@ -114,14 +97,12 @@ namespace AltLibrary.Content.NPCs
 			});
 		}
 
-		public override void Unload()
-		{
-			IL.Terraria.Main.GUIChatDrawInner -= Main_GUIChatDrawInner;
+		public override void Unload() {
+			IL_Main.GUIChatDrawInner -= Main_GUIChatDrawInner;
 			CurrentPage = 0;
 		}
 
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Analyst");
 
 			Main.npcFrameCount[Type] = Main.npcFrameCount[NPCID.Mechanic];
@@ -134,8 +115,7 @@ namespace AltLibrary.Content.NPCs
 			NPCID.Sets.AttackAverageChance[Type] = 30;
 			NPCID.Sets.HatOffsetY[Type] = 4;
 
-			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new(0)
-			{
+			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new(0) {
 				Velocity = 1f,
 			};
 
@@ -153,10 +133,7 @@ namespace AltLibrary.Content.NPCs
 
 		public override bool CanTownNPCSpawn(int numTownNPCs) => false;
 
-		//public override bool CanTownNPCSpawn(int numTownNPCs, int money) => false;
-
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			NPC.townNPC = true;
 			NPC.friendly = true;
 			NPC.width = 18;
@@ -171,8 +148,7 @@ namespace AltLibrary.Content.NPCs
 			AnimationType = NPCID.Mechanic;
 		}
 
-		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
-		{
+		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
 				new FlavorTextBestiaryInfoElement("Mods.AltLibrary.Bestiary.PieChartTownNPC")
@@ -181,8 +157,7 @@ namespace AltLibrary.Content.NPCs
 
 		public override ITownNPCProfile TownNPCProfile() => new PieChartTownNPCProfile();
 
-		public override List<string> SetNPCNameList()
-		{
+		public override List<string> SetNPCNameList() {
 			return new()
 			{
 				"Kenzie",
@@ -197,25 +172,21 @@ namespace AltLibrary.Content.NPCs
 			};
 		}
 
-		public override string GetChat()
-		{
+		public override string GetChat() {
 			CurrentPage = 0;
 			WeightedRandom<string> chat = new();
-			for (int i = 0; i < ALUtils.AdvancedGetSizeOfCategory("Mods.AltLibrary.Analyser.Dialog", out LocalizedText[] texts); i++)
-			{
+			for (int i = 0; i < ALUtils.AdvancedGetSizeOfCategory("Mods.AltLibrary.Analyser.Dialog", out LocalizedText[] texts); i++) {
 				chat.Add(texts[i].Value);
 			}
 			return chat;
 		}
 
-		public override void SetChatButtons(ref string button, ref string button2)
-		{
+		public override void SetChatButtons(ref string button, ref string button2) {
 			button = Language.GetTextValue("LegacyInterface.28") + (AnalystShopLoader.MaxShopCount() > 1 ? " " + Language.GetTextValue("Mods.AltLibrary.AnalysisPage", CurrentPage + 1) : "");
 			button2 = Language.GetTextValue("Mods.AltLibrary.Analysis");
 		}
 
-		public override void SetupShop(Chest shop, ref int nextSlot)
-		{
+		public override void SetupShop(Chest shop, ref int nextSlot) {
 			nextSlot = 0;
 
 			List<int> sellableItems = AnalystShopLoader.SellableItems();
@@ -224,8 +195,7 @@ namespace AltLibrary.Content.NPCs
 			if (startOffset < 0)
 				startOffset = 0;
 
-			foreach (int type in sellableItems)
-			{
+			foreach (int type in sellableItems) {
 				if (++i < startOffset)
 					continue;
 				if (nextSlot >= 40)
@@ -235,16 +205,13 @@ namespace AltLibrary.Content.NPCs
 			}
 		}
 
-		public override void OnChatButtonClicked(bool firstButton, ref bool shop)
-		{
+		public override void OnChatButtonClicked(bool firstButton, ref bool shop) {
 			Main.LocalPlayer.GetModPlayer<ALPlayer>().IsAnalysing = false;
 			Main.LocalPlayer.GetModPlayer<ALPlayer>().IsAnalysingClick = false;
-			if (firstButton)
-			{
+			if (firstButton) {
 				shop = true;
 			}
-			else
-			{
+			else {
 				Main.LocalPlayer.GetModPlayer<ALPlayer>().IsAnalysingClick = true;
 				WorldBiomeManager.AnalysisTiles();
 			}
@@ -253,35 +220,28 @@ namespace AltLibrary.Content.NPCs
 		public override bool CanGoToStatue(bool toQueenStatue) => true;
 	}
 
-	internal class PieChartTownNPCProfile : ITownNPCProfile
-	{
-		public int GetHeadTextureIndex(NPC npc)
-		{
+	internal class PieChartTownNPCProfile : ITownNPCProfile {
+		public int GetHeadTextureIndex(NPC npc) {
 			return ModContent.GetModHeadSlot("AltLibrary/Content/NPCs/PieChartTownNPC_Head");
 		}
 
-		public string GetNameForVariant(NPC npc)
-		{
+		public string GetNameForVariant(NPC npc) {
 			return npc.getNewNPCName();
 		}
 
-		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc)
-		{
+		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc) {
 			if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
 				return ModContent.Request<Texture2D>("AltLibrary/Content/NPCs/PieChartTownNPC");
 			return ModContent.Request<Texture2D>("AltLibrary/Content/NPCs/PieChartTownNPC");
 		}
 
-		public int RollVariation()
-		{
+		public int RollVariation() {
 			return 0;
 		}
 	}
 
-	internal class AnalystNPCRelationships : GlobalNPC
-	{
-		public override void SetStaticDefaults()
-		{
+	internal class AnalystNPCRelationships : GlobalNPC {
+		public override void SetStaticDefaults() {
 			int analystType = ModContent.NPCType<PieChartTownNPC>();
 
 			var otherNPC = NPCHappiness.Get(NPCID.Steampunker);

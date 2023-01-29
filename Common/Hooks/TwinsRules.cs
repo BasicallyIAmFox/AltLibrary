@@ -12,12 +12,11 @@ namespace AltLibrary.Common.Hooks
 	{
 		public static void Init()
 		{
-			IL_ItemDropDatabase.RegisterBoss_Twins += ItemDropDatabase_RegisterBoss_Twins;
+			EditsHelper.IL<ItemDropDatabase>(nameof(ItemDropDatabase.RegisterBoss_Twins), ItemDropDatabase_RegisterBoss_Twins);
 		}
 
 		public static void Unload()
 		{
-			IL_ItemDropDatabase.RegisterBoss_Twins -= ItemDropDatabase_RegisterBoss_Twins;
 		}
 
 		private static void ItemDropDatabase_RegisterBoss_Twins(ILContext il)

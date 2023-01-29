@@ -63,9 +63,9 @@ namespace AltLibrary.Core.UIs
 			button = new(ALTextureAssets.Empty);
 			biomeIcon.Width.Set(0f, 1f);
 			biomeIcon.Height.Set(0, 1f);
-			button.OnClick += AchievementIcon_OnClick;
+			button.OnLeftClick += AchievementIcon_OnClick;
 			button.SetVisibility(0f, 0f);
-			OnClick += AchievementIcon_OnClick;
+			OnLeftClick += AchievementIcon_OnClick;
 			biomeIcon.Append(button);
 			_innerPanelTopTexture = Main.Assets.Request<Texture2D>("Images/UI/Achievement_InnerPanelTop");
 			if (_large)

@@ -10,23 +10,20 @@ namespace AltLibrary.Common.Hooks
 	{
 		public static void Init()
 		{
-			On_Lang.GetDryadWorldStatusDialog += Lang_GetDryadWorldStatusDialog;
-			IL_WorldGen.AddUpAlignmentCounts += WorldGen_AddUpAlignmentCounts;
+			EditsHelper.On<Lang>(nameof(Lang.GetDryadWorldStatusDialog), Lang_GetDryadWorldStatusDialog);
+			EditsHelper.IL<WorldGen>(nameof(WorldGen.AddUpAlignmentCounts), WorldGen_AddUpAlignmentCounts);
 		}
 
 		public static void Unload()
 		{
-			On_Lang.GetDryadWorldStatusDialog -= Lang_GetDryadWorldStatusDialog;
-			IL_WorldGen.AddUpAlignmentCounts -= WorldGen_AddUpAlignmentCounts;
 		}
 
-		// TODO: Re-add worldIsEntirelyPure when detour is fixed by tModLoader/Cecil
-		private static string Lang_GetDryadWorldStatusDialog(On_Lang.orig_GetDryadWorldStatusDialog orig/*, out bool worldIsEntirelyPure*/)
+		private static string Lang_GetDryadWorldStatusDialog(On_Lang.orig_GetDryadWorldStatusDialog orig, out bool worldIsEntirelyPure)
 		{
 			string text2;
 			int tGood = WorldGen.tGood;
 			int tEvil = WorldGen.tEvil + WorldGen.tBlood;
-			//worldIsEntirelyPure = false;
+			worldIsEntirelyPure = false;
 			if (tGood > 0 && tEvil > 0)
 			{
 				text2 = Language.GetTextValue("Mods.AltLibrary.DryadSpecialText.WorldStatusGoodEvil", Main.worldName, tGood, tEvil);
@@ -39,7 +36,7 @@ namespace AltLibrary.Common.Hooks
 			{
 				if (tGood <= 0)
 				{
-					//worldIsEntirelyPure = true;
+					worldIsEntirelyPure = true;
 					return Language.GetTextValue("DryadSpecialText.WorldStatusPure", Main.worldName);
 				}
 				text2 = Language.GetTextValue("Mods.AltLibrary.DryadSpecialText.WorldStatusGood", Main.worldName, tGood);

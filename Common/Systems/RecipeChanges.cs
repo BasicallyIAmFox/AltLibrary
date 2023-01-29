@@ -3,14 +3,10 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace AltLibrary.Common.Systems
-{
-	internal class RecipeChanges : ModSystem
-	{
-		public override void PostAddRecipes()
-		{
-			for (int i = 0; i < Recipe.numRecipes; i++)
-			{
+namespace AltLibrary.Common.Systems {
+	internal class RecipeChanges : ModSystem {
+		public override void PostAddRecipes() {
+			for (int i = 0; i < Recipe.numRecipes; i++) {
 				Recipe recipe = Main.recipe[i];
 
 				ReplaceRecipe(ref recipe,
@@ -151,47 +147,39 @@ namespace AltLibrary.Common.Systems
 			}
 		}
 
-		private static void ReplaceRecipe(ref Recipe r, int[] results, int[] ingredients, string group)
-		{
-			foreach (int result in results)
-			{
-				if (r.HasResult(result))
-				{
-					foreach (int ingredient in ingredients)
-					{
-						if (r.HasIngredient(ingredient))
-						{
-							r.TryGetIngredient(ingredient, out Item ing);
-							if (ing == null)
-								continue;
-							r.RemoveIngredient(ing);
-							r.AddRecipeGroup(group, ing.stack);
-						}
+		private static void ReplaceRecipe(ref Recipe r, int[] results, int[] ingredients, string group) {
+			foreach (int result in results) {
+				if (!r.HasResult(result)) {
+					continue;
+				}
+				foreach (int ingredient in ingredients) {
+					if (!r.HasIngredient(ingredient)) {
+						continue;
 					}
+					r.TryGetIngredient(ingredient, out Item ing);
+					if (ing == null)
+						continue;
+					r.RemoveIngredient(ing);
+					r.AddRecipeGroup(group, ing.stack);
 				}
 			}
 		}
 
-		private static void ReplaceRecipe(ref Recipe r, int[] results, int[] ingredients, string group, int altIng)
-		{
-			foreach (int result in results)
-			{
-				if (r.HasResult(result))
-				{
-					foreach (int ingredient in ingredients)
-					{
-						if (r.HasIngredient(altIng))
-						{
-							r.DisableRecipe();
-						}
-						else if (r.HasIngredient(ingredient))
-						{
-							r.TryGetIngredient(ingredient, out Item ing);
-							if (ing == null)
-								continue;
-							r.RemoveIngredient(ing);
-							r.AddRecipeGroup(group, ing.stack);
-						}
+		private static void ReplaceRecipe(ref Recipe r, int[] results, int[] ingredients, string group, int altIng) {
+			foreach (int result in results) {
+				if (!r.HasResult(result)) {
+					continue;
+				}
+				foreach (int ingredient in ingredients) {
+					if (r.HasIngredient(altIng)) {
+						r.DisableRecipe();
+					}
+					else if (r.HasIngredient(ingredient)) {
+						r.TryGetIngredient(ingredient, out Item ing);
+						if (ing == null)
+							continue;
+						r.RemoveIngredient(ing);
+						r.AddRecipeGroup(group, ing.stack);
 					}
 				}
 			}

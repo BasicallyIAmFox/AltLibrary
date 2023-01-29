@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel;
 using Terraria.ModLoader.Config;
 
-namespace AltLibrary
-{
+namespace AltLibrary {
 #pragma warning disable CS0649
-	internal class AltLibraryServerConfig : ModConfig
-	{
+	internal class AltLibraryServerConfig : ModConfig {
 		public override ConfigScope Mode => ConfigScope.ServerSide;
 		public static AltLibraryServerConfig Config;
 

@@ -6,20 +6,15 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace AltLibrary.Common
-{
-	internal class BossBags : GlobalItem
-	{
-		public override void ModifyItemLoot(Item item, ItemLoot itemLoot)
-		{
+namespace AltLibrary.Common {
+	internal class BossBags : GlobalItem {
+		public override void ModifyItemLoot(Item item, ItemLoot itemLoot) {
 			List<AltBiome> HallowList = new();
 			List<AltBiome> HellList = new();
 			List<AltBiome> JungleList = new();
 			List<AltBiome> EvilList = new();
-			foreach (AltBiome biome in AltLibrary.Biomes)
-			{
-				switch (biome.BiomeType)
-				{
+			foreach (AltBiome biome in AltLibrary.Biomes) {
+				switch (biome.BiomeType) {
 					case BiomeType.Evil:
 						EvilList.Add(biome);
 						break;
@@ -36,10 +31,8 @@ namespace AltLibrary.Common
 			}
 
 			var entries = itemLoot.Get(false);
-			switch (item.type)
-			{
-				case ItemID.EyeOfCthulhuBossBag:
-					{
+			switch (item.type) {
+				case ItemID.EyeOfCthulhuBossBag: {
 						int oreCountDen = 0;
 						int oreCountMin = 0;
 						int oreCountMax = 0;
@@ -50,28 +43,22 @@ namespace AltLibrary.Common
 						int arrowMin = 0;
 						int arrowMax = 0;
 
-						foreach (var entry in entries)
-						{
-							if (entry is ItemDropWithConditionRule conditionRule)
-							{
+						foreach (var entry in entries) {
+							if (entry is ItemDropWithConditionRule conditionRule) {
 								if (conditionRule.itemId == ItemID.DemoniteOre || conditionRule.itemId == ItemID.CrimtaneOre ||
 									conditionRule.itemId == ItemID.CorruptSeeds || conditionRule.itemId == ItemID.CrimsonSeeds
-									|| conditionRule.itemId == ItemID.UnholyArrow)
-								{
-									if (conditionRule.itemId == ItemID.DemoniteOre || conditionRule.itemId == ItemID.CrimtaneOre)
-									{
+									|| conditionRule.itemId == ItemID.UnholyArrow) {
+									if (conditionRule.itemId == ItemID.DemoniteOre || conditionRule.itemId == ItemID.CrimtaneOre) {
 										oreCountDen = conditionRule.chanceDenominator;
 										oreCountMin = conditionRule.amountDroppedMinimum;
 										oreCountMax = conditionRule.amountDroppedMaximum;
 									}
-									else if (conditionRule.itemId == ItemID.UnholyArrow)
-									{
+									else if (conditionRule.itemId == ItemID.UnholyArrow) {
 										arrowDen = conditionRule.chanceDenominator;
 										arrowMin = conditionRule.amountDroppedMinimum;
 										arrowMax = conditionRule.amountDroppedMaximum;
 									}
-									else
-									{
+									else {
 										oreSeedsDen = conditionRule.chanceDenominator;
 										oreSeedsMin = conditionRule.amountDroppedMinimum;
 										oreSeedsMax = conditionRule.amountDroppedMaximum;
@@ -99,8 +86,7 @@ namespace AltLibrary.Common
 
 						var expertCondition = new LeadingConditionRule(new Conditions.NotExpert());
 
-						foreach (AltBiome biome in EvilList)
-						{
+						foreach (AltBiome biome in EvilList) {
 							var biomeDropRule = new LeadingConditionRule(new EvilAltDropCondition(biome));
 							if (biome.BiomeOreItem != null) biomeDropRule.OnSuccess(ItemDropRule.Common((int)biome.BiomeOreItem, oreCountDen, oreCountMin, oreCountMax));
 							if (biome.SeedType != null) biomeDropRule.OnSuccess(ItemDropRule.Common((int)biome.SeedType, oreSeedsDen, oreSeedsMin, oreSeedsMax));
@@ -111,12 +97,9 @@ namespace AltLibrary.Common
 
 						break;
 					}
-				case ItemID.WallOfFleshBossBag:
-					{
-						foreach (var entry in entries)
-						{
-							if (entry is ItemDropWithConditionRule rule && rule.itemId == ItemID.Pwnhammer)
-							{
+				case ItemID.WallOfFleshBossBag: {
+						foreach (var entry in entries) {
+							if (entry is ItemDropWithConditionRule rule && rule.itemId == ItemID.Pwnhammer) {
 								itemLoot.Remove(rule);
 							}
 						}
@@ -124,8 +107,7 @@ namespace AltLibrary.Common
 						var hallowBarCondition = new LeadingConditionRule(new HallowDropCondition());
 						expertCondition.OnSuccess(hallowBarCondition);
 						hallowBarCondition.OnSuccess(ItemDropRule.Common(ItemID.Pwnhammer));
-						foreach (AltBiome biome in HallowList)
-						{
+						foreach (AltBiome biome in HallowList) {
 							var biomeDropRule = new LeadingConditionRule(new HallowAltDropCondition(biome));
 							biomeDropRule.OnSuccess(ItemDropRule.Common(biome.HammerType));
 							expertCondition.OnSuccess(biomeDropRule);
@@ -135,12 +117,9 @@ namespace AltLibrary.Common
 					}
 				case ItemID.TwinsBossBag:
 				case ItemID.DestroyerBossBag:
-				case ItemID.SkeletronPrimeBossBag:
-					{
-						foreach (var entry in entries)
-						{
-							if (entry is ItemDropWithConditionRule conditionRule && conditionRule.itemId == ItemID.HallowedBar)
-							{
+				case ItemID.SkeletronPrimeBossBag: {
+						foreach (var entry in entries) {
+							if (entry is ItemDropWithConditionRule conditionRule && conditionRule.itemId == ItemID.HallowedBar) {
 								itemLoot.Remove(entry);
 								break;
 							}
@@ -150,8 +129,7 @@ namespace AltLibrary.Common
 						expertCondition.OnSuccess(hallowBarCondition);
 						hallowBarCondition.OnSuccess(ItemDropRule.Common(ItemID.HallowedBar, 1, 15, 30));
 
-						foreach (AltBiome biome in HallowList)
-						{
+						foreach (AltBiome biome in HallowList) {
 							var biomeDropRule = new LeadingConditionRule(new HallowAltDropCondition(biome));
 							if (biome.MechDropItemType != null) biomeDropRule.OnSuccess(ItemDropRule.Common((int)biome.MechDropItemType, 1, 15, 30));
 							expertCondition.OnSuccess(biomeDropRule);

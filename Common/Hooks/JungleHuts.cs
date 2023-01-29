@@ -14,12 +14,11 @@ namespace AltLibrary.Common.Hooks
 	{
 		public static void Init()
 		{
-			IL_HouseUtils.CreateBuilder += HouseUtils_CreateBuilder;
+			EditsHelper.IL(typeof(HouseUtils), nameof(HouseUtils.CreateBuilder), HouseUtils_CreateBuilder);
 		}
 
 		public static void Unload()
 		{
-			IL_HouseUtils.CreateBuilder -= HouseUtils_CreateBuilder;
 		}
 
 		private static void HouseUtils_CreateBuilder(ILContext il)

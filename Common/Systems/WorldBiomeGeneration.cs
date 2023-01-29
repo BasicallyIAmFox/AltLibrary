@@ -443,7 +443,7 @@ namespace AltLibrary.Common.Systems
 				int worldCrimson = vs[index];
 				bool worldCrimson2 = worldCrimson == -666;
 				AltBiome worldCrimson3 = worldCrimson >= 0 ? AltLibrary.Biomes[worldCrimson] : null;
-				WorldBiomeManager.drunkEvil = worldCrimson3 != null ? worldCrimson3.FullName : (!worldCrimson2 ? "Terraria/Corruption" : "Terraria/Crimson");
+				WorldBiomeManager.drunkEvil = worldCrimson3?.FullName ?? (!worldCrimson2 ? "Terraria/Corruption" : "Terraria/Crimson");
 				WorldCrimson = worldCrimson;
 				WorldCrimson2 = worldCrimson2;
 				WorldCrimson3 = worldCrimson3;

@@ -10,12 +10,11 @@ namespace AltLibrary.Common.Hooks
 	{
 		public static void Load()
 		{
-			IL_Main.HelpText += Main_HelpText;
+			EditsHelper.IL<Main>(nameof(Main.HelpText), Main_HelpText);
 		}
 
 		public static void Unload()
 		{
-			IL_Main.HelpText -= Main_HelpText;
 		}
 
 		private static void Main_HelpText(ILContext il)

@@ -59,10 +59,10 @@ namespace AltLibrary.Core.UIs
 			button = new(ALTextureAssets.Empty);
 			oreIcon.Width.Set(0f, 1f);
 			oreIcon.Height.Set(0, 1f);
-			button.OnClick += _achievementIcon_OnClick;
+			button.OnLeftClick += _achievementIcon_OnClick;
 			button.SetVisibility(0f, 0f);
 			oreIcon.Append(button);
-			OnClick += _achievementIcon_OnClick;
+			OnLeftClick += _achievementIcon_OnClick;
 			_innerPanelTopTexture = Main.Assets.Request<Texture2D>("Images/UI/Achievement_InnerPanelTop");
 			if (_large)
 			{

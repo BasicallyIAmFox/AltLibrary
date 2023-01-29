@@ -1,5 +1,8 @@
-﻿namespace AltLibrary.Common.Hooks
+﻿using System;
+
+namespace AltLibrary.Common.Hooks
 {
+	[Obsolete]
 	internal class UIChanges
 	{
 		//public delegate void hook_SpriteFontInternalDraw(orig_SpriteFontInternalDraw orig, DynamicSpriteFont self,

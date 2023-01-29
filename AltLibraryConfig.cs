@@ -4,16 +4,13 @@ using System.ComponentModel;
 using System.IO;
 using Terraria.ModLoader.Config;
 
-namespace AltLibrary
-{
+namespace AltLibrary {
 #pragma warning disable CS0649
-	internal class AltLibraryConfig : ModConfig
-	{
+	internal class AltLibraryConfig : ModConfig {
 		public override ConfigScope Mode => ConfigScope.ServerSide;
 		public static AltLibraryConfig Config;
 
-		public struct WorldDataValues
-		{
+		public struct WorldDataValues {
 			public string worldEvil;
 			public string worldHallow;
 			public string worldHell;
@@ -53,8 +50,7 @@ namespace AltLibrary
 
 		public Dictionary<string, WorldDataValues> GetWorldData() => worldData;
 		public void SetWorldData(Dictionary<string, WorldDataValues> newDict) => worldData = newDict;
-		public static void Save(ModConfig config)
-		{
+		public static void Save(ModConfig config) {
 			Directory.CreateDirectory(ConfigManager.ModConfigPath);
 			string filename = config.Mod.Name + "_" + config.Name + ".json";
 			string path = Path.Combine(ConfigManager.ModConfigPath, filename);

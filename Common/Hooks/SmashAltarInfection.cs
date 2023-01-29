@@ -17,12 +17,11 @@ namespace AltLibrary.Common.Hooks
 	{
 		public static void Init()
 		{
-			IL_WorldGen.SmashAltar += WorldGen_SmashAltar;
+			EditsHelper.IL<WorldGen>(nameof(WorldGen.SmashAltar), WorldGen_SmashAltar);
 		}
 
 		public static void Unload()
 		{
-			IL_WorldGen.SmashAltar -= WorldGen_SmashAltar;
 		}
 
 		private static void WorldGen_SmashAltar(ILContext il)

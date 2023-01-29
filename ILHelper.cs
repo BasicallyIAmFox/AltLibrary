@@ -7,15 +7,12 @@ using System.Reflection;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace AltLibrary
-{
+namespace AltLibrary {
 	// https://github.com/blushiemagic/MagicStorage/blob/1.4/Edits/ILHelper.cs
-	internal static class ILHelper
-	{
+	internal static class ILHelper {
 		public static bool LogILEdits { get; set; } = true;
 
-		private static void PrepareInstruction(Instruction instr, out string offset, out string opcode, out string operand)
-		{
+		private static void PrepareInstruction(Instruction instr, out string offset, out string opcode, out string operand) {
 			offset = $"IL_{instr.Offset:X5}:";
 
 			opcode = instr.OpCode.Name;
@@ -30,8 +27,7 @@ namespace AltLibrary
 				operand = instr.Operand.ToString()!;
 		}
 
-		public static void CompleteLog(Mod mod, ILCursor c, bool beforeEdit = false)
-		{
+		public static void CompleteLog(Mod mod, ILCursor c, bool beforeEdit = false) {
 			if (!LogILEdits)
 				return;
 
@@ -79,10 +75,8 @@ namespace AltLibrary
 			var args = c.Method.Parameters;
 			if (args.Count == 0)
 				writer.WriteLine($"{"none",8}");
-			else
-			{
-				foreach (var arg in args)
-				{
+			else {
+				foreach (var arg in args) {
 					string argIndex = $"[{arg.Index}]";
 					writer.WriteLine($"{argIndex,8} {arg.ParameterType.FullName} {arg.Name}");
 				}
@@ -94,10 +88,8 @@ namespace AltLibrary
 
 			if (!c.Body.HasVariables)
 				writer.WriteLine($"{"none",8}");
-			else
-			{
-				foreach (var local in c.Body.Variables)
-				{
+			else {
+				foreach (var local in c.Body.Variables) {
 					string localIndex = $"[{local.Index}]";
 					writer.WriteLine($"{localIndex,8} {local.VariableType.FullName} V_{local.Index}");
 				}
@@ -106,8 +98,7 @@ namespace AltLibrary
 			writer.WriteLine();
 
 			writer.WriteLine("// Body:");
-			do
-			{
+			do {
 				PrepareInstruction(c.Instrs[index], out string offset, out string opcode, out string operand);
 
 				writer.WriteLine($"{offset,-10}{opcode,-12} {operand}");
@@ -115,16 +106,14 @@ namespace AltLibrary
 			} while (index < c.Instrs.Count);
 		}
 
-		public static void UpdateInstructionOffsets(ILCursor c)
-		{
+		public static void UpdateInstructionOffsets(ILCursor c) {
 			if (!LogILEdits)
 				return;
 
 			var instrs = c.Instrs;
 			int curOffset = 0;
 
-			static Instruction[] ConvertToInstructions(ILLabel[] labels)
-			{
+			static Instruction[] ConvertToInstructions(ILLabel[] labels) {
 				Instruction[] ret = new Instruction[labels.Length];
 
 				for (int i = 0; i < labels.Length; i++)
@@ -133,14 +122,12 @@ namespace AltLibrary
 				return ret;
 			}
 
-			foreach (var ins in instrs)
-			{
+			foreach (var ins in instrs) {
 				ins.Offset = curOffset;
 
 				if (ins.OpCode != OpCodes.Switch)
 					curOffset += ins.GetSize();
-				else
-				{
+				else {
 					//'switch' opcodes don't like having the operand as an ILLabel[] when calling GetSize()
 					//thus, this is required to even let the mod compile
 
@@ -150,8 +137,7 @@ namespace AltLibrary
 			}
 		}
 
-		public static void InitMonoModDumps()
-		{
+		public static void InitMonoModDumps() {
 			//Disable assembly dumping until this bug is fixed by MonoMod
 			//see: https://discord.com/channels/103110554649894912/445276626352209920/953380019072270419
 			bool noLog = false;
@@ -168,8 +154,7 @@ namespace AltLibrary
 			Environment.SetEnvironmentVariable("MONOMOD_DMD_DUMP", dumpDir);
 		}
 
-		public static void DeInitMonoModDumps()
-		{
+		public static void DeInitMonoModDumps() {
 			bool noLog = false;
 			if (!LogILEdits || noLog)
 				return;
@@ -177,8 +162,7 @@ namespace AltLibrary
 			Environment.SetEnvironmentVariable("MONOMOD_DMD_DEBUG", "0");
 		}
 
-		public static string GetInstructionString(ILCursor c, int index)
-		{
+		public static string GetInstructionString(ILCursor c, int index) {
 			if (index < 0 || index >= c.Instrs.Count)
 				return "ERROR: Index out of bounds.";
 
@@ -187,8 +171,7 @@ namespace AltLibrary
 			return $"{offset} {opcode}   {operand}";
 		}
 
-		public static void EnsureAreNotNull(params (MemberInfo member, string identifier)[] memberInfos)
-		{
+		public static void EnsureAreNotNull(params (MemberInfo member, string identifier)[] memberInfos) {
 			foreach (var (member, identifier) in memberInfos)
 				if (member is null)
 					throw new NullReferenceException($"Member reference \"{identifier}\" is null");
@@ -196,8 +179,7 @@ namespace AltLibrary
 
 		public delegate bool PatchingContextDelegate(ILCursor c, ref string badReturnReason);
 
-		public static void CommonPatchingWrapper(ILContext il, PatchingContextDelegate doEdits)
-		{
+		public static void CommonPatchingWrapper(ILContext il, PatchingContextDelegate doEdits) {
 			ArgumentNullException.ThrowIfNull(doEdits);
 
 			ILCursor c = new(il);
@@ -205,12 +187,10 @@ namespace AltLibrary
 			CompleteLog(AltLibrary.Instance, c, beforeEdit: true);
 
 			string badReturnReason = "Unable to fully patch " + il.Method.Name + "()";
-			if (!doEdits(c, ref badReturnReason))
-			{
+			if (!doEdits(c, ref badReturnReason)) {
 				if (!BuildInfo.IsDev)
 					throw new Exception(badReturnReason);
-				else
-				{
+				else {
 					AltLibrary.Instance.Logger.Error(badReturnReason);
 					return;
 				}

@@ -10,12 +10,11 @@ namespace AltLibrary.Common.Hooks
 	{
 		public static void Init()
 		{
-			IL_Player.MowGrassTile += Player_MowGrassTile;
+			EditsHelper.IL<Player>(nameof(Player.MowGrassTile), Player_MowGrassTile);
 		}
 
 		public static void Unload()
 		{
-			IL_Player.MowGrassTile -= Player_MowGrassTile;
 		}
 
 		private static void Player_MowGrassTile(ILContext il)

@@ -59,13 +59,11 @@ namespace AltLibrary.Common.Hooks
 			foreach (AltOre o in AltLibrary.Ores.Where(x => x.OreType >= OreType.Cobalt && x.OreType <= OreType.Adamantite || x.IncludeInChloroExtractinator))
 				HardmodeOres.Add(o.ore);
 
-			IL_Player.ExtractinatorUse += Player_ExtractinatorUse;
+			EditsHelper.IL<Player>(nameof(Player.ExtractinatorUse), Player_ExtractinatorUse);
 		}
 
 		internal static void Unload()
 		{
-			IL_Player.ExtractinatorUse -= Player_ExtractinatorUse;
-
 			Gems = null;
 			HardmodeOres = null;
 			Ores = null;

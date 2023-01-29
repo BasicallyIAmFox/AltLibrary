@@ -8,10 +8,6 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="ALUtils.cs~RF29a45bc.TMP" />
-    <None Remove="Common\Hooks\BloodMoonCritterTransformations.cs~RF4e38d37.TMP" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
   </ItemGroup>
 </Project>

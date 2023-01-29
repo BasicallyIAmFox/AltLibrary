@@ -14,7 +14,7 @@ namespace AltLibrary.Common.Hooks
 
 		public static void Init()
 		{
-			On_NPC.BigMimicSummonCheck += NPC_BigMimicSummonCheck;
+			EditsHelper.On<NPC>(nameof(NPC.BigMimicSummonCheck), NPC_BigMimicSummonCheck, true);
 		}
 
 		public static void SetupContent()
@@ -28,7 +28,6 @@ namespace AltLibrary.Common.Hooks
 
 		public static void Unload()
 		{
-			On_NPC.BigMimicSummonCheck -= NPC_BigMimicSummonCheck;
 			MimicPairs = null;
 		}
 

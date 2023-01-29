@@ -18,12 +18,11 @@ namespace AltLibrary.Common.Hooks
 	{
 		public static void Init()
 		{
-			IL_UIGenProgressBar.DrawSelf += UIGenProgressBar_DrawSelf;
+			EditsHelper.IL<UIGenProgressBar>("DrawSelf", UIGenProgressBar_DrawSelf);
 		}
 
 		public static void Unload()
 		{
-			IL_UIGenProgressBar.DrawSelf -= UIGenProgressBar_DrawSelf;
 		}
 
 		private static void UIGenProgressBar_DrawSelf(ILContext il)

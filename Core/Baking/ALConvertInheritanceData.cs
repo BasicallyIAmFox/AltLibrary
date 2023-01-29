@@ -184,7 +184,7 @@ namespace AltLibrary.Core.Baking
 					default:
 						string worldJungle = WorldBiomeManager.WorldJungle;
 						if (worldJungle != "")
-							test = AltLibrary.Biomes.Find(x => x.FullName == worldJungle).GetAltBlock(i, x, y);
+							test = ModContent.Find<AltBiome>(worldJungle).GetAltBlock(i, x, y);
 						else if (i == TileID.JungleGrass)
 							test = TileID.JungleGrass;
 						else if (!ForestConversion.TryGetValue(i, out test))

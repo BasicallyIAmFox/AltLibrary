@@ -15,10 +15,8 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Utilities;
 
-namespace AltLibrary.Common
-{
-	public interface IAlternatingSurfaceBackground
-	{
+namespace AltLibrary.Common {
+	public interface IAlternatingSurfaceBackground {
 		void AddIn(string fullName, Func<Player, UnifiedRandom, bool> whenTrue, Func<int, int> getBg, Action<Player, UnifiedRandom> randomizeBg, Action<int> onEncounter) => BackgroundsAlternating._cacheIndexes.Add(fullName, (whenTrue, getBg, randomizeBg, onEncounter));
 
 		abstract Asset<Texture2D> GetFarTexture(int i);
@@ -27,10 +25,8 @@ namespace AltLibrary.Common
 		virtual Asset<Texture2D> GetUltraFarTexture(int i, Color ColorOfSurfaceBackgroundsModified, float scAdj, int bgWidthScaled, ref int bgTopY, ref float bgScale, ref int bgStartX) { return null; }
 	}
 
-	namespace Hooks
-	{
-		public static class BackgroundsAlternating
-		{
+	namespace Hooks {
+		public static class BackgroundsAlternating {
 			public static int rand = -1;
 
 			internal static Dictionary<string, (Func<Player, UnifiedRandom, bool>, Func<int, int>, Action<Player, UnifiedRandom>, Action<int>)> _cacheIndexes = new();
@@ -46,27 +42,23 @@ namespace AltLibrary.Common
 			private static MethodInfo SBSL_DFT = null;
 			private static MethodInfo SBSL_DCB = null;
 
-			private static event ILContext.Manipulator ModifySBSL_DMT
-			{
+			private static event ILContext.Manipulator ModifySBSL_DMT {
 				add => HookEndpointManager.Modify(SBSL_DMT, value);
 				remove => HookEndpointManager.Unmodify(SBSL_DMT, value);
 			}
 
-			private static event ILContext.Manipulator ModifySBSL_DFT
-			{
+			private static event ILContext.Manipulator ModifySBSL_DFT {
 				add => HookEndpointManager.Modify(SBSL_DFT, value);
 				remove => HookEndpointManager.Unmodify(SBSL_DFT, value);
 			}
 
-			private static event ILContext.Manipulator ModifySBSL_DCB
-			{
+			private static event ILContext.Manipulator ModifySBSL_DCB {
 				add => HookEndpointManager.Modify(SBSL_DCB, value);
 				remove => HookEndpointManager.Unmodify(SBSL_DCB, value);
 			}
 
 			private static dynamic[] Fields;
-			internal static void Inject()
-			{
+			internal static void Inject() {
 				On_BackgroundChangeFlashInfo.UpdateCache += FlashUpdateCache;
 				On_WorldGen.RandomizeBackgroundBasedOnPlayer += FlashRandomizeOnPlayer;
 
@@ -82,11 +74,10 @@ namespace AltLibrary.Common
 				ModifySBSL_DFT += MSBSL_DFT;
 			}
 
-			internal static void Init()
-			{
+			internal static void Init() {
 				float[] _flashPower = WorldGen.BackgroundsCache._flashPower;
 				int[] _variations = WorldGen.BackgroundsCache._variations;
-				
+
 				_oldFlashPower = _flashPower;
 				_oldVariations = _variations;
 
@@ -95,10 +86,8 @@ namespace AltLibrary.Common
 
 				int _count = 0;
 
-				for (int i = 0; i < newFlashPower.Length; i++)
-				{
-					if (i >= _flashPower.Length)
-					{
+				for (int i = 0; i < newFlashPower.Length; i++) {
+					if (i >= _flashPower.Length) {
 						newFlashPower[i] = 0f;
 						newVariations[i] = 0;
 						continue;
@@ -108,8 +97,7 @@ namespace AltLibrary.Common
 					newVariations[i] = _variations[i];
 					_latestFlash = i;
 				}
-				foreach (var v in _cacheIndexes)
-				{
+				foreach (var v in _cacheIndexes) {
 					newFlashPower[_latestFlash + _count] = 0f;
 					newVariations[_latestFlash + _count] = 0;
 					_cacheIndexByName.TryAdd(v.Key, _latestFlash + _count);
@@ -120,8 +108,7 @@ namespace AltLibrary.Common
 				WorldGen.BackgroundsCache._variations = newVariations;
 			}
 
-			public static void Uninit()
-			{
+			public static void Uninit() {
 				On_BackgroundChangeFlashInfo.UpdateCache -= FlashUpdateCache;
 				On_WorldGen.RandomizeBackgroundBasedOnPlayer -= FlashRandomizeOnPlayer;
 
@@ -147,18 +134,14 @@ namespace AltLibrary.Common
 				Fields = null;
 			}
 
-			private static void MSBSL_DCB(ILContext il)
-			{
+			private static void MSBSL_DCB(ILContext il) {
 				ILCursor c = new(il);
-				try
-				{
+				try {
 					c.GotoNext(MoveType.After, i => i.MatchCallvirt(typeof(Asset<Texture2D>).GetMethod("get_Value")));
 
 					c.Emit(OpCodes.Ldloc, 0);
-					c.EmitDelegate<Func<Texture2D, ModSurfaceBackgroundStyle, Texture2D>>((value, style) =>
-					{
-						if (style is IAlternatingSurfaceBackground)
-						{
+					c.EmitDelegate<Func<Texture2D, ModSurfaceBackgroundStyle, Texture2D>>((value, style) => {
+						if (style is IAlternatingSurfaceBackground) {
 							_cacheIndexes[style.FullName].Item4(0);
 							return (style as IAlternatingSurfaceBackground).GetCloseTexture(_cacheIndexes[style.FullName].Item2(0)).Value;
 						}
@@ -171,10 +154,8 @@ namespace AltLibrary.Common
 						i => i.MatchLdelemI4());
 
 					c.Emit(OpCodes.Ldloc, 0);
-					c.EmitDelegate<Func<int, ModSurfaceBackgroundStyle, int>>((v, style) =>
-					{
-						if (style is IAlternatingSurfaceBackground)
-						{
+					c.EmitDelegate<Func<int, ModSurfaceBackgroundStyle, int>>((v, style) => {
+						if (style is IAlternatingSurfaceBackground) {
 							_cacheIndexes[style.FullName].Item4(0);
 							return (style as IAlternatingSurfaceBackground).GetCloseTexture(_cacheIndexes[style.FullName].Item2(0)).Value.Width;
 						}
@@ -184,10 +165,8 @@ namespace AltLibrary.Common
 					c.Index += 3;
 
 					c.Emit(OpCodes.Ldloc, 0);
-					c.EmitDelegate<Func<int, ModSurfaceBackgroundStyle, int>>((v, style) =>
-					{
-						if (style is IAlternatingSurfaceBackground)
-						{
+					c.EmitDelegate<Func<int, ModSurfaceBackgroundStyle, int>>((v, style) => {
+						if (style is IAlternatingSurfaceBackground) {
 							_cacheIndexes[style.FullName].Item4(0);
 
 							Texture2D texture2 = TextureAssets.MagicPixel.Value;
@@ -199,24 +178,19 @@ namespace AltLibrary.Common
 						return v;
 					});
 				}
-				catch (Exception e)
-				{
+				catch (Exception e) {
 					AltLibrary.Instance.Logger.Error($"[BG Close Alt]\n{e.Message}\n{e.StackTrace}");
 				}
 			}
 
-			private static void MSBSL_DMT(ILContext il)
-			{
+			private static void MSBSL_DMT(ILContext il) {
 				ILCursor c = new(il);
-				try
-				{
+				try {
 					c.TryGotoNext(MoveType.After, i => i.MatchCallvirt(typeof(Asset<Texture2D>).GetMethod("get_Value")));
 
 					c.Emit(OpCodes.Ldloc, 2);
-					c.EmitDelegate<Func<Texture2D, ModSurfaceBackgroundStyle, Texture2D>>((value, style) =>
-					{
-						if (style is IAlternatingSurfaceBackground)
-						{
+					c.EmitDelegate<Func<Texture2D, ModSurfaceBackgroundStyle, Texture2D>>((value, style) => {
+						if (style is IAlternatingSurfaceBackground) {
 							_cacheIndexes[style.FullName].Item4(1);
 							return (style as IAlternatingSurfaceBackground).GetMidTexture(_cacheIndexes[style.FullName].Item2(1)).Value;
 						}
@@ -229,10 +203,8 @@ namespace AltLibrary.Common
 						i => i.MatchLdelemI4());
 
 					c.Emit(OpCodes.Ldloc, 2);
-					c.EmitDelegate<Func<int, ModSurfaceBackgroundStyle, int>>((v, style) =>
-					{
-						if (style is IAlternatingSurfaceBackground)
-						{
+					c.EmitDelegate<Func<int, ModSurfaceBackgroundStyle, int>>((v, style) => {
+						if (style is IAlternatingSurfaceBackground) {
 							_cacheIndexes[style.FullName].Item4(1);
 							return (style as IAlternatingSurfaceBackground).GetMidTexture(_cacheIndexes[style.FullName].Item2(1)).Value.Width;
 						}
@@ -242,41 +214,33 @@ namespace AltLibrary.Common
 					c.Index += 3;
 
 					c.Emit(OpCodes.Ldloc, 2);
-					c.EmitDelegate<Func<int, ModSurfaceBackgroundStyle, int>>((v, style) =>
-					{
-						if (style is IAlternatingSurfaceBackground)
-						{
+					c.EmitDelegate<Func<int, ModSurfaceBackgroundStyle, int>>((v, style) => {
+						if (style is IAlternatingSurfaceBackground) {
 							_cacheIndexes[style.FullName].Item4(1);
 							return (style as IAlternatingSurfaceBackground).GetMidTexture(_cacheIndexes[style.FullName].Item2(1)).Value.Height;
 						}
 						return v;
 					});
 				}
-				catch (Exception e)
-				{
+				catch (Exception e) {
 					AltLibrary.Instance.Logger.Error($"[BG Middle Alt]\n{e.Message}\n{e.StackTrace}");
 				}
 			}
 
-			private static void MSBSL_DFT(ILContext il)
-			{
+			private static void MSBSL_DFT(ILContext il) {
 				ILCursor c = new(il);
-				try
-				{
+				try {
 					c.GotoNext(i => i.MatchLdloc(5), i => i.MatchLdcR4(0));
 
 					c.Emit(OpCodes.Ldloc, 3);
-					c.EmitDelegate<Action<ModSurfaceBackgroundStyle>>((style) =>
-					{
+					c.EmitDelegate<Action<ModSurfaceBackgroundStyle>>((style) => {
 						if (style == null || style is not IAlternatingSurfaceBackground)
 							return;
 
 						int slot = style.Slot;
 						float alpha = Main.bgAlphaFarBackLayer[slot];
-						if (alpha > 0f)
-						{
-							for (int i = 0; i < (int)Fields[0].GetValue(Main.instance); i++)
-							{
+						if (alpha > 0f) {
+							for (int i = 0; i < (int)Fields[0].GetValue(Main.instance); i++) {
 								_cacheIndexes[style.FullName].Item4(3);
 
 								Color ColorOfSurfaceBackgroundsModified = (Color)Fields[1].GetValue(null);
@@ -303,10 +267,8 @@ namespace AltLibrary.Common
 					c.GotoNext(MoveType.After, i => i.MatchCallvirt(typeof(Asset<Texture2D>).GetMethod("get_Value")));
 
 					c.Emit(OpCodes.Ldloc, 3);
-					c.EmitDelegate<Func<Texture2D, ModSurfaceBackgroundStyle, Texture2D>>((value, style) =>
-					{
-						if (style is IAlternatingSurfaceBackground)
-						{
+					c.EmitDelegate<Func<Texture2D, ModSurfaceBackgroundStyle, Texture2D>>((value, style) => {
+						if (style is IAlternatingSurfaceBackground) {
 							_cacheIndexes[style.FullName].Item4(2);
 							return (style as IAlternatingSurfaceBackground).GetFarTexture(_cacheIndexes[style.FullName].Item2(2)).Value;
 						}
@@ -319,10 +281,8 @@ namespace AltLibrary.Common
 						i => i.MatchLdelemI4());
 
 					c.Emit(OpCodes.Ldloc, 3);
-					c.EmitDelegate<Func<int, ModSurfaceBackgroundStyle, int>>((v, style) =>
-					{
-						if (style is IAlternatingSurfaceBackground)
-						{
+					c.EmitDelegate<Func<int, ModSurfaceBackgroundStyle, int>>((v, style) => {
+						if (style is IAlternatingSurfaceBackground) {
 							_cacheIndexes[style.FullName].Item4(2);
 							return (style as IAlternatingSurfaceBackground).GetFarTexture(_cacheIndexes[style.FullName].Item2(2)).Value.Width;
 						}
@@ -332,30 +292,25 @@ namespace AltLibrary.Common
 					c.Index += 3;
 
 					c.Emit(OpCodes.Ldloc, 3);
-					c.EmitDelegate<Func<int, ModSurfaceBackgroundStyle, int>>((v, style) =>
-					{
-						if (style is IAlternatingSurfaceBackground)
-						{
+					c.EmitDelegate<Func<int, ModSurfaceBackgroundStyle, int>>((v, style) => {
+						if (style is IAlternatingSurfaceBackground) {
 							_cacheIndexes[style.FullName].Item4(2);
 							return (style as IAlternatingSurfaceBackground).GetFarTexture(_cacheIndexes[style.FullName].Item2(2)).Value.Height;
 						}
 						return v;
 					});
 				}
-				catch
-				{
+				catch {
 				}
 			}
 
-			private static void GetMagicNums(On_Main.orig_DrawSurfaceBG_BackMountainsStep1 orig, Main self, double backgroundTopMagicNumber, float bgGlobalScaleMultiplier, int pushBGTopHack)
-			{
+			private static void GetMagicNums(On_Main.orig_DrawSurfaceBG_BackMountainsStep1 orig, Main self, double backgroundTopMagicNumber, float bgGlobalScaleMultiplier, int pushBGTopHack) {
 				_backgroundTopMagicNumberCache = backgroundTopMagicNumber;
 				_pushBGTopHackCache = pushBGTopHack;
 				orig(self, backgroundTopMagicNumber, bgGlobalScaleMultiplier, pushBGTopHack);
 			}
 
-			private static void FlashUpdateCache(On_BackgroundChangeFlashInfo.orig_UpdateCache orig, BackgroundChangeFlashInfo self)
-			{
+			private static void FlashUpdateCache(On_BackgroundChangeFlashInfo.orig_UpdateCache orig, BackgroundChangeFlashInfo self) {
 				orig(self);
 
 				/*int _count = 0;
@@ -371,8 +326,7 @@ namespace AltLibrary.Common
 				}*/
 			}
 
-			private static void FlashRandomizeOnPlayer(On_WorldGen.orig_RandomizeBackgroundBasedOnPlayer orig, UnifiedRandom random, Player player)
-			{
+			private static void FlashRandomizeOnPlayer(On_WorldGen.orig_RandomizeBackgroundBasedOnPlayer orig, UnifiedRandom random, Player player) {
 				orig(random, player);
 
 				/*int _count = 0;

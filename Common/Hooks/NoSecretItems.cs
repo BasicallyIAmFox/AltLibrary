@@ -10,6 +10,7 @@ using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Hooks
 {
+    [Obsolete]
 	internal static class NoSecretItems
 	{
 		internal static void Load()

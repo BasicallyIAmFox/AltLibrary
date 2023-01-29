@@ -13,10 +13,8 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
 
-namespace AltLibrary.Common.AltBiomes
-{
-	public abstract class AltBiome : ModType
-	{
+namespace AltLibrary.Common.AltBiomes {
+	public abstract class AltBiome : ModType {
 		internal int SpecialValueForWorldUIDoNotTouchElseYouCanBreakStuff { get; set; }
 		internal bool? IsForCrimsonOrCorruptWorldUIFix { get; set; }
 		/// <summary>
@@ -28,24 +26,21 @@ namespace AltLibrary.Common.AltBiomes
 		/// <summary>
 		/// The name of this biome that will display on the biome selection screen.
 		/// </summary>
-		public ModTranslation DisplayName
-		{
+		public ModTranslation DisplayName {
 			get;
 			private set;
 		}
 		/// <summary>
 		/// The description for this biome that will appear on the biome selection screen.
 		/// </summary>
-		public ModTranslation Description
-		{
+		public ModTranslation Description {
 			get;
 			private set;
 		}
 		/// <summary>
 		/// The message that will appear during world generation. Used by Underworld and Jungle alts. Yet.
 		/// </summary>
-		public ModTranslation GenPassName
-		{
+		public ModTranslation GenPassName {
 			get;
 			private set;
 		}
@@ -200,6 +195,9 @@ namespace AltLibrary.Common.AltBiomes
 		public WallContext WallContext = new();
 
 		public virtual List<int> HardmodeWalls => new();
+
+		public int? BiomeShadowChest = null;
+		public virtual List<int> BiomeShadowChestLoot { get; set; } = new();
 		#endregion
 
 		#region Blood Moon
@@ -318,38 +316,34 @@ namespace AltLibrary.Common.AltBiomes
 		public virtual Asset<Texture2D>[] AltUnderworldBackgrounds => new Asset<Texture2D>[14];
 		public virtual AltMaterialContext MaterialContext => null;
 
-		public sealed override void SetupContent()
-		{
+		public sealed override void SetupContent() {
 			AutoStaticDefaults();
 			SetStaticDefaults();
 			BakeAllAltBlockData();
 		}
 
-		public virtual void AutoStaticDefaults()
-		{
-			if (DisplayName.IsDefault())
-			{
+		public virtual void AutoStaticDefaults() {
+			if (DisplayName.IsDefault()) {
 				DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
 			}
-			if (GenPassName.IsDefault())
-			{
+			if (GenPassName.IsDefault()) {
 				GenPassName.SetDefault("Generating " + Regex.Replace(Name, "([A-Z])", " $1").Trim());
 			}
+		}
+
+		public virtual void ModifyHellLight(ref float r, ref float g, ref float b) {
 		}
 
 		/// <summary>
 		/// This is a lazy way to add blocks which should inherit from other blocks (when converting). For example, Hallowed Grass inherits from Grass.
 		/// </summary>
-		public void BakeTileChild(int Block, int ParentBlock, BitsByte? ForceDeconvert = null, BitsByte? BreakIfConversionFail = null)
-		{
+		public void BakeTileChild(int Block, int ParentBlock, BitsByte? ForceDeconvert = null, BitsByte? BreakIfConversionFail = null) {
 			TileChild.Add(ParentBlock, Block);
 			ALConvertInheritanceData.tileParentageData.Parent.Add(Block, ParentBlock);
-			if (ForceDeconvert != null)
-			{
+			if (ForceDeconvert != null) {
 				ALConvertInheritanceData.tileParentageData.ForceDeconversion.Add(Block, ForceDeconvert.Value);
 			}
-			if (BreakIfConversionFail != null)
-			{
+			if (BreakIfConversionFail != null) {
 				ALConvertInheritanceData.tileParentageData.BreakIfConversionFail.Add(Block, BreakIfConversionFail.Value);
 			}
 		}
@@ -361,10 +355,8 @@ namespace AltLibrary.Common.AltBiomes
 		/// For Clentaminator purposes. Gets the alt block of the base block. Override this function and call base(BaseBlock) if you want to add new functionality.
 		/// Returns -1 if it's an invalid conversion
 		/// </summary>
-		public virtual int GetAltBlock(int BaseBlock, int posX, int posY)
-		{
-			switch (BaseBlock)
-			{
+		public virtual int GetAltBlock(int BaseBlock, int posX, int posY) {
+			switch (BaseBlock) {
 				case TileID.Stone:
 					return BiomeStone ?? -1;
 				case TileID.Grass:
@@ -392,8 +384,7 @@ namespace AltLibrary.Common.AltBiomes
 		/// <summary>
 		/// You have no reason to overwrite this unless for some reason you don't want your tiles to be converted back.
 		/// </summary>
-		public virtual void BakeAllAltBlockData()
-		{
+		public virtual void BakeAllAltBlockData() {
 			TileParentageData data = ALConvertInheritanceData.tileParentageData;
 			if (BiomeStone != null)
 				data.Parent.Add(BiomeStone.Value, TileID.Stone);
@@ -415,8 +406,7 @@ namespace AltLibrary.Common.AltBiomes
 				data.Parent.Add(BiomeThornBush.Value, TileID.CorruptThorns);
 		}
 
-		protected sealed override void Register()
-		{
+		protected sealed override void Register() {
 			ModTypeLookup<AltBiome>.Register(this);
 
 			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"AltBiomeName.{Name}", false);
@@ -425,14 +415,11 @@ namespace AltLibrary.Common.AltBiomes
 
 			AltLibrary.Biomes.Add(this);
 			if (BossBulb != null) AltLibrary.planteraBulbs.Add((int)BossBulb);
-			if (BiomeType == BiomeType.Jungle)
-			{
-				if (BiomeGrass != null)
-				{
+			if (BiomeType == BiomeType.Jungle) {
+				if (BiomeGrass != null) {
 					AltLibrary.jungleGrass.Add((int)BiomeGrass);
 				}
-				else
-				{
+				else {
 					if (BiomeJungleGrass != null) AltLibrary.jungleGrass.Add((int)BiomeJungleGrass);
 				}
 				if (BiomeMowedGrass != null) AltLibrary.jungleGrass.Add((int)BiomeGrass);
@@ -440,8 +427,7 @@ namespace AltLibrary.Common.AltBiomes
 				if (BiomeOre != null) AltLibrary.evilStoppingOres.Add((int)BiomeOre);
 				if (BiomeOreBrick != null) AltLibrary.evilStoppingOres.Add((int)BiomeOreBrick);
 			}
-			if (BiomeType == BiomeType.Hell && AltUnderworldBackgrounds != null && AltUnderworldBackgrounds.Length != TextureAssets.Underworld.Length)
-			{
+			if (BiomeType == BiomeType.Hell && AltUnderworldBackgrounds != null && AltUnderworldBackgrounds.Length != TextureAssets.Underworld.Length) {
 				throw new IndexOutOfRangeException(nameof(AltUnderworldBackgrounds) + " length isn't same as Underworld's! (" + TextureAssets.Underworld.Length + ")");
 			}
 			Type = AltLibrary.Biomes.Count;
@@ -451,11 +437,9 @@ namespace AltLibrary.Common.AltBiomes
 		/// Override if you want custom selection
 		/// </summary>
 		/// <param name="list"></param>
-		public virtual void CustomSelection(List<AltBiome> list)
-		{
+		public virtual void CustomSelection(List<AltBiome> list) {
 			int index = list.FindLastIndex(x => x.BiomeType == BiomeType);
-			if (index != -1)
-			{
+			if (index != -1) {
 				list.Insert(index + 1, this);
 			}
 		}
@@ -463,8 +447,7 @@ namespace AltLibrary.Common.AltBiomes
 		/// <summary>
 		/// Override if you want to have random value whenever creating new world. Should be used just for custom tiers.
 		/// </summary>
-		public virtual void OnInitialize()
-		{
+		public virtual void OnInitialize() {
 		}
 
 		/// <summary>
@@ -474,36 +457,28 @@ namespace AltLibrary.Common.AltBiomes
 		/// </summary>
 		public virtual bool OnClick() => false;
 
-		public virtual void OnCreating()
-		{
+		public virtual void OnCreating() {
 		}
 
-		public virtual void AddBiomeOnScreenIcon(List<ALDrawingStruct<AltBiome>> list)
-		{
+		public virtual void AddBiomeOnScreenIcon(List<ALDrawingStruct<AltBiome>> list) {
 		}
 	}
-
-	public class WallContext
-	{
+	public class WallContext {
 		internal Dictionary<ushort, ushort> wallsReplacement;
 
-		public WallContext()
-		{
+		public WallContext() {
 			wallsReplacement = new Dictionary<ushort, ushort>();
 		}
 
-		public WallContext AddReplacement(ushort orig, ushort with)
-		{
+		public WallContext AddReplacement(ushort orig, ushort with) {
 			wallsReplacement.TryAdd(orig, with);
 			ALConvertInheritanceData.wallParentageData.Parent.TryAdd(with, orig);
 			return this;
 		}
 
-		public WallContext AddReplacement<T>(params ushort[] orig) where T : ModWall
-		{
+		public WallContext AddReplacement<T>(params ushort[] orig) where T : ModWall {
 			ushort type = ContentInstance<T>.Instance.Type;
-			foreach (ushort original in orig)
-			{
+			foreach (ushort original in orig) {
 				AddReplacement(original, type);
 			}
 			return this;

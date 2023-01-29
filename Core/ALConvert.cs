@@ -1,5 +1,7 @@
+using AltLibrary.Common;
 using AltLibrary.Common.AltBiomes;
 using AltLibrary.Core.Baking;
+using MonoMod.Utils;
 using System;
 using Terraria;
 using Terraria.ID;
@@ -11,76 +13,57 @@ namespace AltLibrary.Core
 	{
 		internal static void Load()
 		{
-			On.Terraria.WorldGen.Convert += WorldGen_Convert;
-		}
-
-		internal static void Unload()
-		{
-			On.Terraria.WorldGen.Convert -= WorldGen_Convert;
-		}
-
-		private static void WorldGen_Convert(On.Terraria.WorldGen.orig_Convert orig, int i, int j, int conversionType, int size)
-		{
-			for (int k = i - size; k <= i + size; k++)
-			{
-				for (int l = j - size; l <= j + size; l++)
-				{
-					if (WorldGen.InWorld(k, l, 1) && Math.Abs(k - i) + Math.Abs(l - j) < 6)
-					{
-						Tile tile = Main.tile[k, l];
-						int newTile = ALConvertInheritanceData.GetConvertedTile_Vanilla(tile.TileType, conversionType, k, l);
-						if (newTile == -2)
-						{
-							WorldGen.KillTile(k, l, false, false, false);
-							if (Main.netMode == NetmodeID.MultiplayerClient)
-							{
-								NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 0, k, l, 0f, 0, 0, 0);
+			EditsHelper.On<WorldGen>("Convert", (On_WorldGen.orig_Convert orig, int i, int j, int conversionType, int size) => {
+				for (int k = i - size; k <= i + size; k++) {
+					for (int l = j - size; l <= j + size; l++) {
+						if (WorldGen.InWorld(k, l, 1) && Math.Abs(k - i) + Math.Abs(l - j) < 6) {
+							Tile tile = Main.tile[k, l];
+							int newTile = ALConvertInheritanceData.GetConvertedTile_Vanilla(tile.TileType, conversionType, k, l);
+							if (newTile == -2) {
+								WorldGen.KillTile(k, l, false, false, false);
+								if (Main.netMode == NetmodeID.MultiplayerClient) {
+									NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 0, k, l, 0f, 0, 0, 0);
+								}
 							}
-						}
-						else if (newTile != -1 && newTile != tile.TileType)
-						{
-							tile.TileType = (ushort)newTile;
+							else if (newTile != -1 && newTile != tile.TileType) {
+								tile.TileType = (ushort)newTile;
 
-							WorldGen.SquareTileFrame(k, l, true);
-							NetMessage.SendTileSquare(-1, k, l, TileChangeType.None);
-						}
-
-						int newWall = ALConvertInheritanceData.GetConvertedWall_Vanilla(tile.WallType, conversionType, k, l);
-
-						if (newWall == -2)
-						{
-							WorldGen.KillWall(k, l, false);
-							if (Main.netMode == NetmodeID.MultiplayerClient)
-							{
-								NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 0, k, l, 0f, 0, 0, 0);
-							}
-						}
-						else if (newWall != -1 && newWall != tile.WallType)
-						{
-							tile.WallType = (ushort)newWall;
-
-							WorldGen.SquareTileFrame(k, l, true);
-							NetMessage.SendTileSquare(-1, k, l, TileChangeType.None);
-						}
-
-						var corruptGrass = conversionType switch
-						{
-							1 => TileID.CorruptGrass,
-							2 => TileID.HallowedGrass,
-							4 => TileID.CrimsonGrass,
-							_ => 0,
-						};
-						if (corruptGrass != 0)
-							if (tile.TileType == 59 && (Main.tile[k - 1, l].TileType == corruptGrass || Main.tile[k + 1, l].TileType == corruptGrass || Main.tile[k, l - 1].TileType == corruptGrass || Main.tile[k, l + 1].TileType == corruptGrass))
-							{
-								Main.tile[k, l].TileType = 0;
 								WorldGen.SquareTileFrame(k, l, true);
 								NetMessage.SendTileSquare(-1, k, l, TileChangeType.None);
 							}
+
+							int newWall = ALConvertInheritanceData.GetConvertedWall_Vanilla(tile.WallType, conversionType, k, l);
+
+							if (newWall == -2) {
+								WorldGen.KillWall(k, l, false);
+								if (Main.netMode == NetmodeID.MultiplayerClient) {
+									NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 0, k, l, 0f, 0, 0, 0);
+								}
+							}
+							else if (newWall != -1 && newWall != tile.WallType) {
+								tile.WallType = (ushort)newWall;
+
+								WorldGen.SquareTileFrame(k, l, true);
+								NetMessage.SendTileSquare(-1, k, l, TileChangeType.None);
+							}
+
+							var corruptGrass = conversionType switch {
+								1 => TileID.CorruptGrass,
+								2 => TileID.HallowedGrass,
+								4 => TileID.CrimsonGrass,
+								_ => 0,
+							};
+							if (corruptGrass != 0) {
+								if (tile.TileType == 59 && (Main.tile[k - 1, l].TileType == corruptGrass || Main.tile[k + 1, l].TileType == corruptGrass || Main.tile[k, l - 1].TileType == corruptGrass || Main.tile[k, l + 1].TileType == corruptGrass)) {
+									Main.tile[k, l].TileType = 0;
+									WorldGen.SquareTileFrame(k, l, true);
+									NetMessage.SendTileSquare(-1, k, l, TileChangeType.None);
+								}
+							}
+						}
 					}
 				}
-			}
-			return;
+			});
 		}
 
 		/// <summary>

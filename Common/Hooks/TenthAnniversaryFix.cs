@@ -16,14 +16,12 @@ namespace AltLibrary.Common.Hooks
 	{
 		public static void Init()
 		{
-			IL_WorldGen.ConvertSkyIslands += WorldGen_ConvertSkyIslands;
-			IL_WorldGen.IslandHouse += WorldGen_IslandHouse;
+			EditsHelper.IL<WorldGen>(nameof(WorldGen.ConvertSkyIslands), WorldGen_ConvertSkyIslands);
+			EditsHelper.IL<WorldGen>(nameof(WorldGen.IslandHouse), WorldGen_IslandHouse);
 		}
 
 		public static void Unload()
 		{
-			IL_WorldGen.ConvertSkyIslands -= WorldGen_ConvertSkyIslands;
-			IL_WorldGen.IslandHouse -= WorldGen_IslandHouse;
 		}
 
 		private static void WorldGen_IslandHouse(ILContext il)

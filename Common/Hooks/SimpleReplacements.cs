@@ -13,21 +13,17 @@ namespace AltLibrary.Common.Hooks
 	{
 		internal static void Load()
 		{
-			IL_NPC.AttemptToConvertNPCToEvil += NPC_AttemptToConvertNPCToEvil;
-			IL_NPC.CreateBrickBoxForWallOfFlesh += NPC_CreateBrickBoxForWallOfFlesh;
-			On_WorldGen.nearbyChlorophyte += GoodDetourChloro;
-			IL_WorldGen.GrowUndergroundTree += WorldGen_GrowUndergroundTree;
-			IL_DesertDescription.RowHasInvalidTiles += DesertDescription_RowHasInvalidTiles;
+			EditsHelper.IL<NPC>(nameof(NPC.AttemptToConvertNPCToEvil), NPC_AttemptToConvertNPCToEvil);
+			EditsHelper.IL<NPC>(nameof(NPC.CreateBrickBoxForWallOfFlesh), NPC_CreateBrickBoxForWallOfFlesh);
+			EditsHelper.On<WorldGen>(nameof(WorldGen.nearbyChlorophyte), GoodDetourChloro);
+			EditsHelper.IL<WorldGen>(nameof(WorldGen.GrowUndergroundTree), WorldGen_GrowUndergroundTree);
+			EditsHelper.IL<DesertDescription>(nameof(DesertDescription.RowHasInvalidTiles), DesertDescription_RowHasInvalidTiles);
+			EditsHelper.IL<WorldGen>(nameof(NPC.CreateBrickBoxForWallOfFlesh), NPC_CreateBrickBoxForWallOfFlesh);
 			IL_WorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort += WorldGen_AddBuriedChest_int_int_int_bool_int_bool_ushort;
 		}
 
 		internal static void Unload()
 		{
-			IL_NPC.AttemptToConvertNPCToEvil -= NPC_AttemptToConvertNPCToEvil;
-			IL_NPC.CreateBrickBoxForWallOfFlesh -= NPC_CreateBrickBoxForWallOfFlesh;
-			On_WorldGen.nearbyChlorophyte -= GoodDetourChloro;
-			IL_WorldGen.GrowUndergroundTree -= WorldGen_GrowUndergroundTree;
-			IL_DesertDescription.RowHasInvalidTiles -= DesertDescription_RowHasInvalidTiles;
 			IL_WorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort -= WorldGen_AddBuriedChest_int_int_int_bool_int_bool_ushort;
 		}
 

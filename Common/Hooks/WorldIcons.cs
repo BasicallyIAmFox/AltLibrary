@@ -28,7 +28,7 @@ namespace AltLibrary.Common.Hooks
 			IL_UIWorldListItem.ctor += UIWorldListItem_ctor;
 			IL_UIWorldListItem.DrawSelf += UIWorldListItem_DrawSelf1;
 			On_UIWorldListItem.DrawSelf += UIWorldListItem_DrawSelf;
-			On_AWorldListItem.GetIconElement += AWorldListItem_GetIconElement;
+			EditsHelper.On<AWorldListItem>(nameof(AWorldListItem.GetIconElement), AWorldListItem_GetIconElement);
 			WarnUpdate = 0;
 		}
 
@@ -37,11 +37,10 @@ namespace AltLibrary.Common.Hooks
 			IL_UIWorldListItem.ctor -= UIWorldListItem_ctor;
 			IL_UIWorldListItem.DrawSelf -= UIWorldListItem_DrawSelf1;
 			On_UIWorldListItem.DrawSelf -= UIWorldListItem_DrawSelf;
-			On_AWorldListItem.GetIconElement -= AWorldListItem_GetIconElement;
 			WarnUpdate = 0;
 		}
 
-		private static UIElement AWorldListItem_GetIconElement(On_AWorldListItem.orig_GetIconElement orig, AWorldListItem self)
+		private static UIElement AWorldListItem_GetIconElement(Action<AWorldListItem> orig, AWorldListItem self)
 		{
 			return new UIImage(ALTextureAssets.UIWorldSeedIcon[0])
 			{
@@ -109,7 +108,7 @@ namespace AltLibrary.Common.Hooks
 			c.Emit(OpCodes.Ldfld, fieldReference);
 			c.EmitDelegate<Action<UIWorldListItem, UIImage>>((uiWorldListItem, _worldIcon) =>
 			{
-				WorldFileData data = (WorldFileData)typeof(UIWorldListItem).GetField("_data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(uiWorldListItem);
+				WorldFileData data = uiWorldListItem._data;
 				ALUtils.GetWorldData(data, out Dictionary<string, AltLibraryConfig.WorldDataValues> tempDict, out string path2);
 
 				LayeredWorldIcon worldIcon = new(data, tempDict.TryGetValue(path2, out AltLibraryConfig.WorldDataValues worldData) ? worldData : new());

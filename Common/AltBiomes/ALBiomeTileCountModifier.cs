@@ -5,12 +5,9 @@ using System.Reflection;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace AltLibrary.Common.AltBiomes
-{
-	public abstract class ALBiomeTileCountModifier : ModSystem
-	{
-		public enum TileCountType
-		{
+namespace AltLibrary.Common.AltBiomes {
+	public abstract class ALBiomeTileCountModifier : ModSystem {
+		public enum TileCountType {
 			HALLOW,
 			EVIL,
 			SUNFLOWER,
@@ -24,18 +21,15 @@ namespace AltLibrary.Common.AltBiomes
 
 		public abstract void OnReceiveModifiedTileCount(int TileCount);
 
-		public class ALBiomeTileCountModifier_Loader : ILoadable
-		{
-			public void Load(Mod mod)
-			{
+		public class ALBiomeTileCountModifier_Loader : ILoadable {
+			public void Load(Mod mod) {
 				HolyTileCountOriginal = 0;
 				EvilTileCountOriginal = 0;
 				ModSunflowerCount = 0;
 				IL_SceneMetrics.ExportTileCountsToMain += SceneMetrics_GetModdedHallowEvil;
 			}
 
-			public void Unload()
-			{
+			public void Unload() {
 				HolyTileCountOriginal = 0;
 				EvilTileCountOriginal = 0;
 				ModSunflowerCount = 0;
@@ -43,8 +37,7 @@ namespace AltLibrary.Common.AltBiomes
 			}
 		}
 
-		internal static void SceneMetrics_GetModdedHallowEvil(ILContext il)
-		{
+		internal static void SceneMetrics_GetModdedHallowEvil(ILContext il) {
 			ILCursor c = new(il);
 			if (!c.TryGotoNext(i => i.MatchStloc(0)))
 				throw new Exception("[SceneMetrics_GetModdedHallowEvil] Failed to find i => i.MatchStloc(0)");
@@ -55,8 +48,7 @@ namespace AltLibrary.Common.AltBiomes
 			c.EmitDelegate(GetOriginalTileCounts);
 
 			c.Index++;
-			if (!c.TryGotoNext(i => i.MatchBge(out ILLabel _)))
-			{
+			if (!c.TryGotoNext(i => i.MatchBge(out ILLabel _))) {
 				AltLibrary.Instance.Logger.Info("10 $ 1");
 			}
 			c.Index--;
@@ -66,8 +58,7 @@ namespace AltLibrary.Common.AltBiomes
 			c.EmitDelegate(ExportTileCounts);
 		}
 
-		protected sealed override void Register()
-		{
+		protected sealed override void Register() {
 			AltLibrary.ALBiomeTileCountModifiers.Add(this);
 		}
 
@@ -75,13 +66,10 @@ namespace AltLibrary.Common.AltBiomes
 		internal static int EvilTileCountOriginal = 0;
 		internal static int ModSunflowerCount = 0;
 
-		internal static void GetOriginalTileCounts(SceneMetrics metrics, int[] tileCounts)
-		{
+		internal static void GetOriginalTileCounts(SceneMetrics metrics, int[] tileCounts) {
 			ModSunflowerCount = 0;
-			AltLibrary.ALBiomeTileCountModifiers.ForEach(i =>
-			{
-				switch (i.TileType)
-				{
+			AltLibrary.ALBiomeTileCountModifiers.ForEach(i => {
+				switch (i.TileType) {
 					case TileCountType.SUNFLOWER:
 						int TileCount = i.GetTileCount(tileCounts);
 						i.TileCount = TileCount;
@@ -94,20 +82,17 @@ namespace AltLibrary.Common.AltBiomes
 			metrics.BloodTileCount = Math.Max(0, metrics.BloodTileCount - ModSunflowerCount);
 			EvilTileCountOriginal = metrics.EvilTileCount + metrics.BloodTileCount;
 		}
-		internal static void ExportTileCounts(SceneMetrics metrics, int[] tileCounts)
-		{
+		internal static void ExportTileCounts(SceneMetrics metrics, int[] tileCounts) {
 			int TotalHolyTiles = 0;
 			int TotalEvilTiles = 0;
-			AltLibrary.ALBiomeTileCountModifiers.ForEach(i =>
-			{
+			AltLibrary.ALBiomeTileCountModifiers.ForEach(i => {
 				if (i.TileType == TileCountType.SUNFLOWER)
 					return;
 				int TileCount = i.GetTileCount(tileCounts);
 				if (i.TileType == TileCountType.EVIL)
 					Math.Max(0, TileCount - (tileCounts[27] + ModSunflowerCount));
 				i.TileCount = TileCount;
-				switch (i.TileType)
-				{
+				switch (i.TileType) {
 					case TileCountType.HALLOW:
 						TotalHolyTiles += TileCount;
 						break;
@@ -124,10 +109,8 @@ namespace AltLibrary.Common.AltBiomes
 			TotalHolyTiles += HolyTileCountOriginal;
 			TotalEvilTiles += EvilTileCountOriginal;
 
-			AltLibrary.ALBiomeTileCountModifiers.ForEach(i =>
-			{
-				switch (i.TileType)
-				{
+			AltLibrary.ALBiomeTileCountModifiers.ForEach(i => {
+				switch (i.TileType) {
 					case TileCountType.HALLOW:
 						i.OnReceiveModifiedTileCount(Math.Max(i.TileCount - TotalEvilTiles, 0));
 						break;

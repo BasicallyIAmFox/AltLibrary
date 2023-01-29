@@ -6,10 +6,8 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace AltLibrary.Common.Systems
-{
-	internal class RecipeGroups : ModSystem
-	{
+namespace AltLibrary.Common.Systems {
+	internal class RecipeGroups : ModSystem {
 		internal static RecipeGroup EvilOres;
 		internal static RecipeGroup EvilBars;
 		internal static RecipeGroup HallowBars;
@@ -49,8 +47,7 @@ namespace AltLibrary.Common.Systems
 		internal static RecipeGroup GoldWatches;
 		internal static RecipeGroup SoulsOfEvil;
 
-		public override void Unload()
-		{
+		public override void Unload() {
 			EvilOres = null;
 			EvilBars = null;
 			HallowBars = null;
@@ -91,18 +88,15 @@ namespace AltLibrary.Common.Systems
 			SoulsOfEvil = null;
 		}
 
-		public override void AddRecipeGroups()
-		{
+		public override void AddRecipeGroups() {
 			List<AltBiome> Hell = AltLibrary.Biomes.FindAll(x => x.BiomeType == BiomeType.Hell);
 			List<AltBiome> Light = AltLibrary.Biomes.FindAll(x => x.BiomeType == BiomeType.Hallow);
 			List<AltBiome> Evil = AltLibrary.Biomes.FindAll(x => x.BiomeType == BiomeType.Evil);
 			List<AltBiome> Tropic = AltLibrary.Biomes.FindAll(x => x.BiomeType == BiomeType.Jungle);
 
 			List<int> array = new() { ItemID.DemoniteOre, ItemID.CrimtaneOre };
-			Evil.ForEach(x =>
-			{
-				if (x.MaterialContext != null && x.MaterialContext.EvilOre != -1)
-				{
+			Evil.ForEach(x => {
+				if (x.MaterialContext != null && x.MaterialContext.EvilOre != -1) {
 					array.Add(x.MaterialContext.EvilOre);
 				}
 			});
@@ -110,10 +104,8 @@ namespace AltLibrary.Common.Systems
 			RecipeGroup.RegisterGroup("EvilOres", EvilOres);
 
 			array = new List<int>() { ItemID.DemoniteBar, ItemID.CrimtaneBar };
-			Evil.ForEach(x =>
-			{
-				if (x.MaterialContext != null && x.MaterialContext.EvilBar != -1)
-				{
+			Evil.ForEach(x => {
+				if (x.MaterialContext != null && x.MaterialContext.EvilBar != -1) {
 					array.Add(x.MaterialContext.EvilBar);
 				}
 			});
@@ -121,10 +113,8 @@ namespace AltLibrary.Common.Systems
 			RecipeGroup.RegisterGroup("EvilBars", EvilBars);
 
 			array = new List<int>() { ItemID.HallowedBar };
-			Light.ForEach(x =>
-			{
-				if (x.MaterialContext != null && x.MaterialContext.LightBar != -1)
-				{
+			Light.ForEach(x => {
+				if (x.MaterialContext != null && x.MaterialContext.LightBar != -1) {
 					array.Add(x.MaterialContext.LightBar);
 				}
 			});
@@ -132,10 +122,8 @@ namespace AltLibrary.Common.Systems
 			RecipeGroup.RegisterGroup("HallowBars", HallowBars);
 
 			array = new List<int>() { ItemID.HellstoneBar };
-			Hell.ForEach(x =>
-			{
-				if (x.MaterialContext != null && x.MaterialContext.UnderworldBar != -1)
-				{
+			Hell.ForEach(x => {
+				if (x.MaterialContext != null && x.MaterialContext.UnderworldBar != -1) {
 					array.Add(x.MaterialContext.UnderworldBar);
 				}
 			});
@@ -143,10 +131,8 @@ namespace AltLibrary.Common.Systems
 			RecipeGroup.RegisterGroup("HellBars", HellBars);
 
 			array = new List<int>() { ItemID.ChlorophyteBar };
-			Tropic.ForEach(x =>
-			{
-				if (x.MaterialContext != null && x.MaterialContext.TropicalBar != -1)
-				{
+			Tropic.ForEach(x => {
+				if (x.MaterialContext != null && x.MaterialContext.TropicalBar != -1) {
 					array.Add(x.MaterialContext.TropicalBar);
 				}
 			});
@@ -154,10 +140,8 @@ namespace AltLibrary.Common.Systems
 			RecipeGroup.RegisterGroup("JungleBars", JungleBars);
 
 			array = new List<int>() { ItemID.ShroomiteBar };
-			Tropic.ForEach(x =>
-			{
-				if (x.MaterialContext != null && x.MaterialContext.MushroomBar != -1)
-				{
+			Tropic.ForEach(x => {
+				if (x.MaterialContext != null && x.MaterialContext.MushroomBar != -1) {
 					array.Add(x.MaterialContext.MushroomBar);
 				}
 			});
@@ -165,10 +149,8 @@ namespace AltLibrary.Common.Systems
 			RecipeGroup.RegisterGroup("MushroomBars", MushroomBars);
 
 			array = new List<int>() { ItemID.LightsBane, ItemID.BloodButcherer };
-			Evil.ForEach(x =>
-			{
-				if (x.MaterialContext != null && x.MaterialContext.EvilSword != -1)
-				{
+			Evil.ForEach(x => {
+				if (x.MaterialContext != null && x.MaterialContext.EvilSword != -1) {
 					array.Add(x.MaterialContext.EvilSword);
 				}
 			});
@@ -176,10 +158,8 @@ namespace AltLibrary.Common.Systems
 			RecipeGroup.RegisterGroup("EvilSwords", EvilSwords);
 
 			array = new List<int>() { ItemID.Excalibur };
-			Light.ForEach(x =>
-			{
-				if (x.MaterialContext != null && x.MaterialContext.LightSword != -1)
-				{
+			Light.ForEach(x => {
+				if (x.MaterialContext != null && x.MaterialContext.LightSword != -1) {
 					array.Add(x.MaterialContext.LightSword);
 				}
 			});
@@ -187,10 +167,8 @@ namespace AltLibrary.Common.Systems
 			RecipeGroup.RegisterGroup("HallowSwords", HallowSwords);
 
 			array = new List<int>() { ItemID.FieryGreatsword };
-			Hell.ForEach(x =>
-			{
-				if (x.MaterialContext != null && x.MaterialContext.UnderworldSword != -1)
-				{
+			Hell.ForEach(x => {
+				if (x.MaterialContext != null && x.MaterialContext.UnderworldSword != -1) {
 					array.Add(x.MaterialContext.UnderworldSword);
 				}
 			});
@@ -198,10 +176,8 @@ namespace AltLibrary.Common.Systems
 			RecipeGroup.RegisterGroup("HellSwords", HellSwords);
 
 			array = new List<int>() { ItemID.BladeofGrass };
-			Tropic.ForEach(x =>
-			{
-				if (x.MaterialContext != null && x.MaterialContext.TropicalSword != -1)
-				{
+			Tropic.ForEach(x => {
+				if (x.MaterialContext != null && x.MaterialContext.TropicalSword != -1) {
 					array.Add(x.MaterialContext.TropicalSword);
 				}
 			});
@@ -209,10 +185,8 @@ namespace AltLibrary.Common.Systems
 			RecipeGroup.RegisterGroup("JungleSwords", JungleSwords);
 
 			array = new List<int>() { ItemID.NightsEdge };
-			Evil.ForEach(x =>
-			{
-				if (x.MaterialContext != null && x.MaterialContext.CombinationSword != -1)
-				{
+			Evil.ForEach(x => {
+				if (x.MaterialContext != null && x.MaterialContext.CombinationSword != -1) {
 					array.Add(x.MaterialContext.CombinationSword);
 				}
 			});
@@ -220,10 +194,8 @@ namespace AltLibrary.Common.Systems
 			RecipeGroup.RegisterGroup("ComboSwords", ComboSwords);
 
 			array = new List<int>() { ItemID.TrueNightsEdge };
-			Evil.ForEach(x =>
-			{
-				if (x.MaterialContext != null && x.MaterialContext.TrueCombinationSword != -1)
-				{
+			Evil.ForEach(x => {
+				if (x.MaterialContext != null && x.MaterialContext.TrueCombinationSword != -1) {
 					array.Add(x.MaterialContext.TrueCombinationSword);
 				}
 			});
@@ -231,10 +203,8 @@ namespace AltLibrary.Common.Systems
 			RecipeGroup.RegisterGroup("TrueComboSwords", TrueComboSwords);
 
 			array = new List<int>() { ItemID.TrueExcalibur };
-			Light.ForEach(x =>
-			{
-				if (x.MaterialContext != null && x.MaterialContext.TrueLightSword != -1)
-				{
+			Light.ForEach(x => {
+				if (x.MaterialContext != null && x.MaterialContext.TrueLightSword != -1) {
 					array.Add(x.MaterialContext.TrueLightSword);
 				}
 			});
@@ -242,10 +212,8 @@ namespace AltLibrary.Common.Systems
 			RecipeGroup.RegisterGroup("TrueHallowSwords", TrueHallowSwords);
 
 			array = new List<int>() { ItemID.RottenChunk, ItemID.Vertebrae };
-			Evil.ForEach(x =>
-			{
-				if (x.MaterialContext != null && x.MaterialContext.VileInnard != -1)
-				{
+			Evil.ForEach(x => {
+				if (x.MaterialContext != null && x.MaterialContext.VileInnard != -1) {
 					array.Add(x.MaterialContext.VileInnard);
 				}
 			});
@@ -253,10 +221,8 @@ namespace AltLibrary.Common.Systems
 			RecipeGroup.RegisterGroup("RottenChunks", RottenChunks);
 
 			array = new List<int>() { ItemID.PixieDust };
-			Light.ForEach(x =>
-			{
-				if (x.MaterialContext != null && x.MaterialContext.LightResidue != -1)
-				{
+			Light.ForEach(x => {
+				if (x.MaterialContext != null && x.MaterialContext.LightResidue != -1) {
 					array.Add(x.MaterialContext.LightResidue);
 				}
 			});
@@ -264,10 +230,8 @@ namespace AltLibrary.Common.Systems
 			RecipeGroup.RegisterGroup("PixieDusts", PixieDusts);
 
 			array = new List<int>() { ItemID.UnicornHorn };
-			Light.ForEach(x =>
-			{
-				if (x.MaterialContext != null && x.MaterialContext.LightInnard != -1)
-				{
+			Light.ForEach(x => {
+				if (x.MaterialContext != null && x.MaterialContext.LightInnard != -1) {
 					array.Add(x.MaterialContext.LightInnard);
 				}
 			});
@@ -275,10 +239,8 @@ namespace AltLibrary.Common.Systems
 			RecipeGroup.RegisterGroup("UnicornHorns", UnicornHorns);
 
 			array = new List<int>() { ItemID.CrystalShard };
-			Light.ForEach(x =>
-			{
-				if (x.MaterialContext != null && x.MaterialContext.LightComponent != -1)
-				{
+			Light.ForEach(x => {
+				if (x.MaterialContext != null && x.MaterialContext.LightComponent != -1) {
 					array.Add(x.MaterialContext.LightComponent);
 				}
 			});
@@ -286,10 +248,8 @@ namespace AltLibrary.Common.Systems
 			RecipeGroup.RegisterGroup("CrystalShards", CrystalShards);
 
 			array = new List<int>() { ItemID.CursedFlame, ItemID.Ichor };
-			Evil.ForEach(x =>
-			{
-				if (x.MaterialContext != null && x.MaterialContext.VileComponent != -1)
-				{
+			Evil.ForEach(x => {
+				if (x.MaterialContext != null && x.MaterialContext.VileComponent != -1) {
 					array.Add(x.MaterialContext.VileComponent);
 				}
 			});
@@ -297,10 +257,8 @@ namespace AltLibrary.Common.Systems
 			RecipeGroup.RegisterGroup("CursedFlames", CursedFlames);
 
 			array = new List<int>() { ItemID.ShadowScale, ItemID.TissueSample };
-			Evil.ForEach(x =>
-			{
-				if (x.MaterialContext != null && x.MaterialContext.EvilBossDrop != -1)
-				{
+			Evil.ForEach(x => {
+				if (x.MaterialContext != null && x.MaterialContext.EvilBossDrop != -1) {
 					array.Add(x.MaterialContext.EvilBossDrop);
 				}
 			});
@@ -308,10 +266,8 @@ namespace AltLibrary.Common.Systems
 			RecipeGroup.RegisterGroup("ShadowScales", ShadowScales);
 
 			array = new List<int>() { ItemID.JungleSpores };
-			Tropic.ForEach(x =>
-			{
-				if (x.MaterialContext != null && x.MaterialContext.TropicalComponent != -1)
-				{
+			Tropic.ForEach(x => {
+				if (x.MaterialContext != null && x.MaterialContext.TropicalComponent != -1) {
 					array.Add(x.MaterialContext.TropicalComponent);
 				}
 			});
@@ -319,10 +275,8 @@ namespace AltLibrary.Common.Systems
 			RecipeGroup.RegisterGroup("JungleSpores", JungleSpores);
 
 			array = new List<int>() { ItemID.Deathweed };
-			Evil.ForEach(x =>
-			{
-				if (x.MaterialContext != null && x.MaterialContext.EvilHerb != -1)
-				{
+			Evil.ForEach(x => {
+				if (x.MaterialContext != null && x.MaterialContext.EvilHerb != -1) {
 					array.Add(x.MaterialContext.EvilHerb);
 				}
 			});
@@ -330,10 +284,8 @@ namespace AltLibrary.Common.Systems
 			RecipeGroup.RegisterGroup("Deathweed", Deathweed);
 
 			array = new List<int>() { ItemID.Fireblossom };
-			Hell.ForEach(x =>
-			{
-				if (x.MaterialContext != null && x.MaterialContext.UnderworldHerb != -1)
-				{
+			Hell.ForEach(x => {
+				if (x.MaterialContext != null && x.MaterialContext.UnderworldHerb != -1) {
 					array.Add(x.MaterialContext.UnderworldHerb);
 				}
 			});
@@ -341,10 +293,8 @@ namespace AltLibrary.Common.Systems
 			RecipeGroup.RegisterGroup("Fireblossom", Fireblossom);
 
 			array = new List<int>() { ItemID.Moonglow };
-			Tropic.ForEach(x =>
-			{
-				if (x.MaterialContext != null && x.MaterialContext.TropicalHerb != -1)
-				{
+			Tropic.ForEach(x => {
+				if (x.MaterialContext != null && x.MaterialContext.TropicalHerb != -1) {
 					array.Add(x.MaterialContext.TropicalHerb);
 				}
 			});
@@ -352,10 +302,8 @@ namespace AltLibrary.Common.Systems
 			RecipeGroup.RegisterGroup("Moonglow", Moonglow);
 
 			array = new List<int>() { ItemID.Hellforge };
-			Hell.ForEach(x =>
-			{
-				if (x.MaterialContext != null && x.MaterialContext.UnderworldForge != -1)
-				{
+			Hell.ForEach(x => {
+				if (x.MaterialContext != null && x.MaterialContext.UnderworldForge != -1) {
 					array.Add(x.MaterialContext.UnderworldForge);
 				}
 			});
