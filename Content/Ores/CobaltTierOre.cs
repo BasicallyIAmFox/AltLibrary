@@ -1,24 +1,17 @@
-﻿using AltLibrary.Common.AltOres;
-using AltLibrary.Common.TierOres;
+﻿using AltLibrary.Common.AltTypes;
+using AltLibrary.Content.Groups;
 using Terraria.ID;
 
 namespace AltLibrary.Content.Ores;
 
-public sealed class CobaltTierOre : TierOre {
-	public sealed override void SetupContent() {
-		Order = 4f;
-		base.SetupContent();
-	}
-}
-
-public sealed class CobaltOre : AltOre<CobaltTierOre> {
+public sealed class CobaltOre : AltOre<CobaltOreGroup> {
 	public override void SetStaticDefaults() {
 		OreTile = TileID.Cobalt;
 		OreItem = ItemID.CobaltOre;
 		OreBar = ItemID.CobaltBar;
 	}
 }
-public sealed class PalladiumOre : AltOre<CobaltTierOre> {
+public sealed class PalladiumOre : AltOre<CobaltOreGroup> {
 	public override void SetStaticDefaults() {
 		OreTile = TileID.Palladium;
 		OreItem = ItemID.PalladiumOre;

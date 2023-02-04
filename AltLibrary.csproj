@@ -6,6 +6,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>latest</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="ALUtils.cs~RF29a45bc.TMP" />

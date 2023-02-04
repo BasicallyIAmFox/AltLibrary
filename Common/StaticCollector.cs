@@ -4,7 +4,6 @@ using Terraria.ModLoader;
 
 namespace AltLibrary.Common;
 
-// TODO: Do something for structs...
 /// <summary>
 /// Used to null-ify static fields.
 /// </summary>
@@ -19,7 +18,7 @@ public static class StaticCollector {
 		var list = new List<FieldInfo>();
 		LibTils.ForEachSpecificMod(mod,
 			x => x.GetFields(Flags).Length > 0,
-			(type, mod) => list.AddRange(type.GetFields(Flags)));
+			type => list.AddRange(type.GetFields(Flags)));
 		return list;
 	}
 
@@ -33,11 +32,6 @@ public static class StaticCollector {
 			if (current.IsInitOnly || !current.FieldType.IsClass) {
 				continue;
 			}
-
-			/*var clearMethod = current.FieldType.GetMethod("Clear", BindingFlags.Instance | BindingFlags.Public);
-			if (clearMethod != null && !clearMethod.GetParameters().Any()) {
-				clearMethod.Invoke(current.GetValue(null), null);
-			}*/
 
 			current.SetValue(null, null);
 		}

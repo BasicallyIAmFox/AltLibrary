@@ -1,6 +1,5 @@
 using AltLibrary.Common;
-using AltLibrary.Common.AltBiomes;
-using AltLibrary.Common.AltOres;
+using AltLibrary.Common.AltTypes;
 using System;
 using Terraria.ModLoader;
 
@@ -17,12 +16,14 @@ public class AltLibrary : Mod {
 	}
 
 	public override void PostSetupContent() {
+#if DEBUG
 		LibTils.ForEachContent<IAltOre>(ore => {
 			Console.WriteLine(ore.FullName);
 		});
 		LibTils.ForEachContent<IAltBiome>(biome => {
 			Console.WriteLine(biome.FullName);
 		});
+#endif
 	}
 
 	public override void Unload() {
