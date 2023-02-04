@@ -1,6 +1,6 @@
 ﻿using AltLibrary.Common.AltBiomes;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria.ModLoader;
 
 namespace AltLibrary.Common.BiomeTypes;
@@ -18,7 +18,9 @@ public abstract class BiomeType : ModType {
 	#region Loading
 	private void LoadInternal() {
 		LibTils.ForEachType(x => !x.IsAbstract && x.IsSubclassOf(typeof(AltBiome<>).MakeGenericType(GetType())), (current, mod) => {
-			Add(mod.GetContent<IAltBiome>().First(x => x.GetType() == current));
+			var biome = Activator.CreateInstance(current) as IAltBiome;
+			mod.AddContent(biome);
+			Add(biome);
 		});
 	}
 

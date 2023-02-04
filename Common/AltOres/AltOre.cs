@@ -4,6 +4,7 @@ using static AltLibrary.Common.AltOres.IAltOre;
 
 namespace AltLibrary.Common.AltOres;
 
+[Autoload(false)]
 public abstract class AltOre<T> : ModType, IAltOre where T : TierOre {
 	public int Type { get; private set; }
 
@@ -17,6 +18,8 @@ public abstract class AltOre<T> : ModType, IAltOre where T : TierOre {
 
 	protected sealed override void Register() {
 		ModTypeLookup<IAltOre>.Register(this);
+		ModTypeLookup<AltOre<T>>.Register(this);
+
 		Type = altOres.Count;
 		altOres.Add(this);
 	}

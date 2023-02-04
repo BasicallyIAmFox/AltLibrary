@@ -5,6 +5,7 @@ using static AltLibrary.Common.AltBiomes.IAltBiome;
 
 namespace AltLibrary.Common.AltBiomes;
 
+[Autoload(false)]
 public abstract class AltBiome<T> : ModType, IAltBiome where T : BiomeType {
 	public int Type { get; private set; }
 	public IMaterialContext MaterialContext { get; private set; } = null;
@@ -22,6 +23,8 @@ public abstract class AltBiome<T> : ModType, IAltBiome where T : BiomeType {
 
 	protected sealed override void Register() {
 		ModTypeLookup<IAltBiome>.Register(this);
+		ModTypeLookup<AltBiome<T>>.Register(this);
+
 		Type = altBiomes.Count;
 		altBiomes.Add(this);
 	}

@@ -1,9 +1,6 @@
-﻿using MonoMod.Utils;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Reflection;
+using Terraria.ModLoader;
 
 namespace AltLibrary.Common;
 
@@ -18,30 +15,29 @@ public static class StaticCollector {
 	/// Collects all types with static fields.
 	/// </summary>
 	/// <returns></returns>
-	public static IEnumerable<FieldInfo> Collect() {
+	public static List<FieldInfo> Collect(Mod mod) {
 		var list = new List<FieldInfo>();
-		LibTils.ForEachSpecificMod(AltLibrary.Instance,
+		LibTils.ForEachSpecificMod(mod,
 			x => x.GetFields(Flags).Length > 0,
 			(type, mod) => list.AddRange(type.GetFields(Flags)));
 		return list;
 	}
 
 	/// <summary>
-	/// Nullifies (and clears) static fields from AltLibrary assembly.
+	/// Nullifies (and clears) static fields from mod assembly.
 	/// </summary>
-	public static void Clean() {
-		using var enumerator = Collect().GetEnumerator();
-		enumerator.Reset();
-		while (enumerator.MoveNext()) {
-			var current = enumerator.Current;
-			if (!current.FieldType.IsClass) {
+	public static void Clean(Mod mod) {
+		var list = Collect(mod);
+		for (int i = list.Count - 1; i >= 0; i--) {
+			var current = list[i];
+			if (current.IsInitOnly || !current.FieldType.IsClass) {
 				continue;
 			}
 
-			var clearMethod = current.FieldType.FindMethod("Clear");
+			/*var clearMethod = current.FieldType.GetMethod("Clear", BindingFlags.Instance | BindingFlags.Public);
 			if (clearMethod != null && !clearMethod.GetParameters().Any()) {
 				clearMethod.Invoke(current.GetValue(null), null);
-			}
+			}*/
 
 			current.SetValue(null, null);
 		}

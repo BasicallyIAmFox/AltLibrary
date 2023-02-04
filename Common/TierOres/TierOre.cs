@@ -1,4 +1,5 @@
 ﻿using AltLibrary.Common.AltOres;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.ModLoader;
@@ -18,7 +19,9 @@ public abstract class TierOre : ModType {
 	#region Loading
 	private void LoadInternal() {
 		LibTils.ForEachType(x => !x.IsAbstract && x.IsSubclassOf(typeof(AltOre<>).MakeGenericType(GetType())), (current, mod) => {
-			Add(mod.GetContent<IAltOre>().First(x => x.GetType() == current));
+			var ore = Activator.CreateInstance(current) as IAltOre;
+			mod.AddContent(ore);
+			Add(ore);
 		});
 	}
 
