@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using MonoMod.Utils;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -12,7 +15,7 @@ public static class StaticCollector {
 	private const BindingFlags Flags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
 
 	/// <summary>
-	/// Collects all static fields.
+	/// Collects all types with static fields.
 	/// </summary>
 	/// <returns></returns>
 	public static IEnumerable<FieldInfo> Collect() {
@@ -35,10 +38,9 @@ public static class StaticCollector {
 				continue;
 			}
 
-			var type = current.GetValue(null).GetType();
-			var clearMethod = type.GetMethod("Clear");
+			var clearMethod = current.FieldType.FindMethod("Clear");
 			if (clearMethod != null && !clearMethod.GetParameters().Any()) {
-				clearMethod.Invoke(null, null);
+				clearMethod.Invoke(current.GetValue(null), null);
 			}
 
 			current.SetValue(null, null);
