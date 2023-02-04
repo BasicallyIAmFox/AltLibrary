@@ -1,4 +1,4 @@
-﻿using AltLibrary.Common.MaterialContexts;
+﻿using AltLibrary.Common.Data;
 using AltLibrary.Common.OrderGroups;
 using System.Collections.Generic;
 
@@ -11,10 +11,15 @@ public interface IAltOre : IAAltType {
 	int OreBar { get; }
 	int OreItem { get; }
 }
-public abstract class AltOre<T> : AAltType<AltOre<T>, T, IAltOre, OreMaterialContext>, IAltOre where T : OreGroup {
+public abstract class AltOre<T> : AAltType<AltOre<T>, T, IAltOre>, IAltOre where T : OreGroup {
 	public int OreTile { get; protected set; }
 	public int OreBar { get; protected set; }
 	public int OreItem { get; protected set; }
+
+	public sealed override void SetupContent() {
+		DataHandler = new OreDataHandler();
+		base.SetupContent();
+	}
 
 	private protected override List<IAltOre> GetListOfTypes() => IAltOre.altOres;
 }

@@ -1,7 +1,6 @@
-﻿using AltLibrary.Common.MaterialContexts;
+﻿using AltLibrary.Common.Data;
 using AltLibrary.Common.OrderGroups;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
 using Terraria.ModLoader;
 
@@ -9,31 +8,28 @@ namespace AltLibrary.Common.AltTypes;
 
 public interface IAAltType : IModType {
 	int Type { get; }
-	IMaterialContext MaterialContext { get; }
+
+	IReadonlyDataHandler DataHandler { get; }
 }
 [Autoload(false)]
-public abstract class AAltType<Self, G, I, M> : ModTexturedType
-	where Self : AAltType<Self, G, I, M>, I
+public abstract class AAltType<Self, G, I> : ModTexturedType, IAAltType
+	where Self : AAltType<Self, G, I>, I
 	where G : class, IAOrderGroup
-	where I : IAAltType
-	where M : IMaterialContext {
+	where I : IAAltType {
+	int IAAltType.Type => Type;
 	public int Type { get; private set; }
-	public IMaterialContext MaterialContext { get; private set; } = null;
+
+	IReadonlyDataHandler IAAltType.DataHandler { get; }
+	public IDataHandler DataHandler { get; protected set; }
 
 	public G Group => ModContent.GetInstance<G>();
 
-	public IMaterialContext CreateMaterial() {
-		if (MaterialContext != null) {
-			throw new UsageException("Only one Material Context can be made!");
-		}
-		return MaterialContext = Activator.CreateInstance<M>();
-	}
-
-	public sealed override void SetupContent() {
+	public override void SetupContent() {
 		SetStaticDefaults();
 	}
 
 	protected sealed override void Register() {
+		ModTypeLookup<IAAltType>.Register(this);
 		ModTypeLookup<I>.Register((Self)this);
 		ModTypeLookup<Self>.Register((Self)this);
 
