@@ -1,5 +1,7 @@
-﻿using System;
+﻿using AltLibrary.Common.AltTypes;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria.ModLoader;
 using static AltLibrary.Common.OrderGroups.IAOrderGroup;
 
@@ -8,14 +10,19 @@ namespace AltLibrary.Common.OrderGroups;
 public interface IAOrderGroup : IModType {
 	internal static List<IAOrderGroup> tiers = new(4);
 
+	List<IAAltType> Elements { get; }
+	string Texture { get; }
 	int Type { get; }
 	float Order { get; }
 }
-public abstract class AOrderGroup<Self, T> : ModType, IAOrderGroup where Self : AOrderGroup<Self, T> where T : IModType {
+public abstract class AOrderGroup<Self, T> : ModTexturedType, IAOrderGroup where Self : AOrderGroup<Self, T> where T : IAAltType {
 	public List<T> Elements { get; } = new(3);
 	public int Type { get; private set; }
 
 	public float Order { get; set; }
+
+	List<IAAltType> IAOrderGroup.Elements => Elements.Cast<IAAltType>().ToList();
+	string IAOrderGroup.Texture => Texture;
 
 	public void Add(T ore) => Elements.Add(ore);
 

@@ -12,11 +12,14 @@ public class AltLibrary : Mod {
 	}
 
 	public override void Load() {
+		ILHelper.Load();
 	}
 
 	public override void PostSetupContent() {
 		LibTils.ForEachType(x => !x.IsAbstract && x.IsAssignableTo(typeof(IPostContent)), (current, mod)
 			=> ((IPostContent)Activator.CreateInstance(current)).Load(mod));
+
+		ILHelper.PostLoad();
 	}
 
 	public override void Unload() {
@@ -24,6 +27,7 @@ public class AltLibrary : Mod {
 		LibTils.ForEachType(x => !x.IsAbstract && x.IsAssignableTo(typeof(IPostContent)), (current, mod)
 			=> ((IPostContent)Activator.CreateInstance(current)).Unload());
 
+		ILHelper.Unload(); // Have to unload ILs and Detours manually.
 		StaticCollector.Clean(this);
 	}
 }

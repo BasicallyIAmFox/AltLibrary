@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
+using System.Linq;
 using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Assets;
@@ -14,18 +15,22 @@ public static class TextureFactory {
 		var array = new Asset<Texture2D>[size];
 		var enumerator = array.GetEnumerator();
 		int i = 0;
-
 		while (enumerator.MoveNext()) {
 			array[i] = CreateSingle(selector(i));
 			i++;
 		}
-
 		return array;
+	}
+
+	public static Asset<Texture2D>[] CreateMultipleFrom<T>(Func<T, string> output) where T : ILoadable {
+		return ModContent.GetContent<T>().Select(x => {
+			return CreateSingle(output(x));
+		}).ToArray();
 	}
 
 	public static Array CreateMultidimensional(Func<int, string> selector, params int[] size) {
 		var mdArray = Array.CreateInstance(typeof(Asset<Texture2D>), size);
-		RecursiveFill(new int[size.Length], 0);
+		RecursiveFill(new int[size.Length], size, 0);
 
 		int GetIndex(int[] indices, int[] size) {
 			int index = 0;
@@ -34,14 +39,14 @@ public static class TextureFactory {
 			}
 			return index;
 		}
-		void RecursiveFill(int[] indices, int dimension) {
+		void RecursiveFill(int[] indices, int[] size, int dimension) {
 			if (dimension == size.Length) {
 				mdArray.SetValue(CreateSingle(selector(GetIndex(indices, size))), indices);
 				return;
 			}
 			for (int i = 0, c = size[dimension]; i < c; i++) {
 				indices[dimension] = i;
-				RecursiveFill(indices, dimension + 1);
+				RecursiveFill(indices, size, dimension + 1);
 			}
 		}
 

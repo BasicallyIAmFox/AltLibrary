@@ -1,6 +1,8 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using AltLibrary.Common.OrderGroups;
+using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
+using Terraria;
 using Terraria.ModLoader;
 using static AltLibrary.Common.Assets.TextureFactory;
 
@@ -9,10 +11,17 @@ namespace AltLibrary.Common.Assets;
 public class LibAssets : IPostContent {
 	public static Asset<Texture2D> ShadowIcon;
 
+	public static Asset<Texture2D>[] OrderGroupIcons;
+
 	public static Asset<Texture2D>[,] PreviewIcons;
 
 	public void Load(Mod mod) {
+		if (Main.dedServ)
+			return;
+
 		ShadowIcon = CreateSingle("AltLibrary/Assets/WorldIcons/ShadowIcon");
+
+		OrderGroupIcons = CreateMultipleFrom<IAOrderGroup>(x => x.Texture);
 
 		PreviewIcons = CreateMultidimensional(i => {
 			int x = i / 3;

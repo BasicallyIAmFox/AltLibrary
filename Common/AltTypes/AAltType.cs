@@ -11,6 +11,7 @@ public interface IAAltType : IModType {
 	string Texture { get; }
 	int Type { get; }
 
+	IAOrderGroup Group { get; }
 	IDataHandler DataHandler { get; }
 }
 [Autoload(false)]
@@ -18,20 +19,21 @@ public abstract class AAltType<Self, G, I> : ModTexturedType, IAAltType
 	where Self : AAltType<Self, G, I>, I
 	where G : class, IAOrderGroup
 	where I : IAAltType {
+	string IAAltType.Texture => Texture;
+
 	int IAAltType.Type => Type;
 	public int Type { get; private set; }
 
 	IDataHandler IAAltType.DataHandler => DataHandler;
 	public IDataHandler DataHandler { get; protected set; }
 
-	string IAAltType.Texture => Texture;
-
+	IAOrderGroup IAAltType.Group => Group;
 	public G Group => ModContent.GetInstance<G>();
 
 	public override void SetupContent() {
 		SetStaticDefaults();
 
-		LibTils.ForEachType(x => x.GetCustomAttribute<DataAlwaysExistsAttribute>() != null, (current, mod) => {
+		LibTils.ForEachType(x => x.IsAssignableTo(typeof(IDataAlwaysExists<>).MakeGenericType(typeof(I))) && x.GetCustomAttribute<DataAlwaysExistsAttribute>() != null, (current, mod) => {
 			current.GetMethod("CheckThere", BindingFlags.Static | BindingFlags.Public).Invoke(null, new object[] { this });
 		});
 	}
