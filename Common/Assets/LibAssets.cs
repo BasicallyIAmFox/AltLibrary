@@ -19,9 +19,9 @@ public class LibAssets : IPostContent {
 			int y = i % 3;
 			if (x == 0) {
 				return y switch {
-					0 => $"Terraria/Images/UI/WorldCreation/PreviewSizeSmall",
-					1 => $"Terraria/Images/UI/WorldCreation/PreviewSizeMedium",
-					2 => $"Terraria/Images/UI/WorldCreation/PreviewSizeLarge",
+					0 => "Terraria/Images/UI/WorldCreation/PreviewSizeSmall",
+					1 => "Terraria/Images/UI/WorldCreation/PreviewSizeMedium",
+					2 => "Terraria/Images/UI/WorldCreation/PreviewSizeLarge",
 					_ => throw new ArgumentException()
 				};
 			}
