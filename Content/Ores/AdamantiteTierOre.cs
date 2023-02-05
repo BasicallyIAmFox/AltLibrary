@@ -5,16 +5,14 @@ using Terraria.ID;
 namespace AltLibrary.Content.Ores;
 
 public sealed class AdamantiteOre : AltOre<AdamantiteOreGroup> {
+	public override string Texture => $"Terraria/Images/Item_{ItemID.AdamantiteOre}";
+
 	public override void SetStaticDefaults() {
-		OreTile = TileID.Adamantite;
-		OreItem = ItemID.AdamantiteOre;
-		OreBar = ItemID.AdamantiteBar;
 	}
 }
 public sealed class TitaniumOre : AltOre<AdamantiteOreGroup> {
+	public override string Texture => $"Terraria/Images/Item_{ItemID.TitaniumOre}";
+
 	public override void SetStaticDefaults() {
-		OreTile = TileID.Titanium;
-		OreItem = ItemID.TitaniumOre;
-		OreBar = ItemID.TitaniumBar;
 	}
 }

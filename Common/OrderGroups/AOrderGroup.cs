@@ -21,7 +21,7 @@ public abstract class AOrderGroup<Self, T> : ModType, IAOrderGroup where Self : 
 
 	#region Loading
 	private protected abstract Type GetMainSubclass();
-	
+
 	private void LoadInternal() {
 		LibTils.ForEachType(x => !x.IsAbstract && x.IsSubclassOf(GetMainSubclass().MakeGenericType(GetType())), (current, mod) => {
 			var ore = (T)Activator.CreateInstance(current);

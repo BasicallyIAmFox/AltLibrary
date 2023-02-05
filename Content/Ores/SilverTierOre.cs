@@ -5,16 +5,14 @@ using Terraria.ID;
 namespace AltLibrary.Content.Ores;
 
 public sealed class SilverOre : AltOre<SilverOreGroup> {
+	public override string Texture => $"Terraria/Images/Item_{ItemID.SilverOre}";
+
 	public override void SetStaticDefaults() {
-		OreTile = TileID.Silver;
-		OreItem = ItemID.SilverOre;
-		OreBar = ItemID.SilverBar;
 	}
 }
 public sealed class TungstenOre : AltOre<SilverOreGroup> {
+	public override string Texture => $"Terraria/Images/Item_{ItemID.TungstenOre}";
+
 	public override void SetStaticDefaults() {
-		OreTile = TileID.Tungsten;
-		OreItem = ItemID.TungstenOre;
-		OreBar = ItemID.TungstenBar;
 	}
 }

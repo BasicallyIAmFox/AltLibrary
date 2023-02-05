@@ -7,3 +7,4 @@ hideResources = true
 includeSource = false
 
 homepage = https://discord.gg/rrxE78cyjm
+buildIgnore = ., bin/*, obj/*, .csproj, .cs, .sln, .fx

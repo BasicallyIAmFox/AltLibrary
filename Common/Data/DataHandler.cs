@@ -3,20 +3,16 @@ using System.Collections.Generic;
 
 namespace AltLibrary.Common.Data;
 
-public interface IReadonlyDataHandler {
-	V Get<V>() where V : IAltData;
-}
-public interface IDataHandler : IReadonlyDataHandler {
+public interface IDataHandler {
 	void Add<T>(T data) where T : IAltData;
+	V Get<V>() where V : IAltData;
 }
 
 public abstract class DataHandler : IDataHandler {
 	private readonly Dictionary<Type, IAltData> database = new();
 
 	public void Add<T>(T data) where T : IAltData {
-		if (!database.ContainsKey(typeof(T))) {
-			database[typeof(T)] = data;
-		}
+		database[typeof(T)] = data;
 	}
 
 	public T Get<T>() where T : IAltData {

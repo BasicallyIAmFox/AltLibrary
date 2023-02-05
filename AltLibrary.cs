@@ -1,7 +1,4 @@
 using AltLibrary.Common;
-using AltLibrary.Common.AltTypes;
-using AltLibrary.Common.Data;
-using AltLibrary.Content.Groups;
 using System;
 using Terraria.ModLoader;
 
@@ -18,23 +15,15 @@ public class AltLibrary : Mod {
 	}
 
 	public override void PostSetupContent() {
-#if DEBUG
-		LibTils.ForEachContent<IAltOre>(ore => {
-			Console.WriteLine(ore.FullName);
-		});
-		LibTils.ForEachContent<AltBiome<GoodBiomeGroup>>(biome => {
-			Console.WriteLine(biome.FullName);
-
-			var data = biome.DataHandler.Get<ConversionData>();
-			Console.WriteLine($"Stone: {data.Stone}");
-			Console.WriteLine($"Grass: {data.Grass}");
-			Console.WriteLine($"Ice: {data.Ice}");
-		});
-#endif
+		LibTils.ForEachType(x => !x.IsAbstract && x.IsAssignableTo(typeof(IPostContent)), (current, mod)
+			=> ((IPostContent)Activator.CreateInstance(current)).Load(mod));
 	}
 
 	public override void Unload() {
+		// I'm not exactly sure about re-creating instance twice, honestly...
+		LibTils.ForEachType(x => !x.IsAbstract && x.IsAssignableTo(typeof(IPostContent)), (current, mod)
+			=> ((IPostContent)Activator.CreateInstance(current)).Unload());
+
 		StaticCollector.Clean(this);
-		Instance = null;
 	}
 }
