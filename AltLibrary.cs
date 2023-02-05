@@ -1,5 +1,8 @@
 using AltLibrary.Common;
+using AltLibrary.Common.Attributes;
 using System;
+using System.Linq;
+using System.Reflection;
 using Terraria.ModLoader;
 
 namespace AltLibrary;
@@ -16,6 +19,9 @@ public class AltLibrary : Mod {
 	}
 
 	public override void PostSetupContent() {
+		LibTils.ForEachType(x => x.GetCustomAttribute<CacheAttribute>() != null, (current, mod)
+			=> current.GetMethods(BindingFlags.Static | BindingFlags.Public).First().Invoke(null, null));
+
 		LibTils.ForEachType(x => !x.IsAbstract && x.IsAssignableTo(typeof(IPostContent)), (current, mod)
 			=> ((IPostContent)Activator.CreateInstance(current)).Load(mod));
 

@@ -1,17 +1,18 @@
-﻿using AltLibrary.Common.OrderGroups;
+﻿using AltLibrary.Common.Cache;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using Terraria;
 using Terraria.ModLoader;
-using static AltLibrary.Common.Assets.TextureFactory;
+using static AltLibrary.Common.Assets.AssetFactory;
 
 namespace AltLibrary.Common.Assets;
 
 public class LibAssets : IPostContent {
+	public static Asset<Texture2D> CloseButton;
 	public static Asset<Texture2D> ShadowIcon;
 
-	public static Asset<Texture2D>[] OrderGroupIcons;
+	public static Asset<Texture2D>[] BaseOrderGroups;
 
 	public static Asset<Texture2D>[,] PreviewIcons;
 
@@ -19,11 +20,14 @@ public class LibAssets : IPostContent {
 		if (Main.dedServ)
 			return;
 
-		ShadowIcon = CreateSingle("AltLibrary/Assets/WorldIcons/ShadowIcon");
+		CloseButton = CreateSingle<Asset<Texture2D>>("AltLibrary/Assets/Menu/ButtonClose");
+		ShadowIcon = CreateSingle<Asset<Texture2D>>("AltLibrary/Assets/WorldIcons/ShadowIcon");
 
-		OrderGroupIcons = CreateMultipleFrom<IAOrderGroup>(x => x.Texture);
+		BaseOrderGroups = CreateMultiple<Asset<Texture2D>>(i => {
+			return OGICallCache.orderGroupInstanceCallsCache[i]();
+		}, OGICallCache.orderGroupInstanceCallsCache.Length);
 
-		PreviewIcons = CreateMultidimensional(i => {
+		PreviewIcons = CreateMultidimensional<Asset<Texture2D>>(i => {
 			int x = i / 3;
 			int y = i % 3;
 			if (x == 0) {

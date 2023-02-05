@@ -1,4 +1,5 @@
 ﻿using AltLibrary.Common.AltTypes;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,13 @@ public interface IAOrderGroup : IModType {
 	int Type { get; }
 	float Order { get; }
 }
+public interface IStaticOrderGroup {
+	static abstract string GetTexture();
+	static abstract Rectangle GetSourceRectangle();
+}
 public abstract class AOrderGroup<Self, T> : ModTexturedType, IAOrderGroup where Self : AOrderGroup<Self, T> where T : IAAltType {
+	public const string DefaultTexture = "Terraria/Images/UI/Bestiary/Icon_Tags_Shadow";
+
 	public List<T> Elements { get; } = new(3);
 	public int Type { get; private set; }
 

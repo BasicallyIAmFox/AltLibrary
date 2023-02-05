@@ -6,6 +6,18 @@ using Terraria.ModLoader;
 namespace AltLibrary;
 
 public static class LibTils {
+	public static IEnumerable<IGrouping<Type, TArray>> SeparateTypes<TArray>(this IEnumerable<TArray> objects, Type baseDeclaringType) {
+		return objects.GroupBy(x => {
+			Type oldType = null;
+			Type type = x.GetType().BaseType;
+			while ($"{type.Namespace}.{type.Name}" != baseDeclaringType?.FullName) {
+				oldType = type;
+				type = type.BaseType;
+			}
+			return Type.GetType($"{oldType.Namespace}.{oldType.Name}");
+		});
+	}
+
 	public static IEnumerable<T> ForEach<T>(this IEnumerable<T> enumerable, Action<T> action) {
 		for (int i = enumerable.Count() - 1; i >= 0; i--) {
 			action(enumerable.ElementAt(i));
