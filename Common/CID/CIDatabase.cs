@@ -1,4 +1,5 @@
 ﻿using AltLibrary.Common.AltTypes;
+using AltLibrary.Common.Attributes;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -106,7 +107,8 @@ public abstract class CIData {
 	public int GetConverted_Modded<T>(in int baseTile, in ushort x, in ushort y) where T : class, IAltBiome
 		=> GetConverted_Modded(in baseTile, ModContent.GetInstance<T>(), in x, in y);
 }
-public class CIDatabase : IPostContent {
+[LoadableContent(ContentOrder.Content, nameof(Load))]
+public static class CIDatabase {
 	private readonly record struct CachedData<T>(in int BaseTile, in T ConversionType, in ushort X, in ushort Y) {
 	}
 
@@ -118,12 +120,9 @@ public class CIDatabase : IPostContent {
 	private static readonly Dictionary<CachedData<byte>, int> CacheWall_V = new();
 	private static readonly Dictionary<CachedData<IAAltType>, int> CacheWall_M = new();
 
-	public void Load(Mod mod) {
+	public static void Load() {
 		TileData.Bake();
 		WallData.Bake();
-	}
-
-	public void Unload() {
 	}
 
 	public static int GetConvertedTile_Vanilla(in int baseTile, in byte conversionType, in ushort x, in ushort y) {

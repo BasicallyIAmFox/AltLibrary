@@ -3,15 +3,18 @@ using AltLibrary.Common.Data;
 using AltLibrary.Common.OrderGroups;
 using System.Collections.Generic;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace AltLibrary.Common.AltTypes;
 
-public interface IAltBiome : IAAltType {
+public interface IAltBiome : IAAltType, ILocalizedModType {
 	internal static List<IAltBiome> altBiomes = new(8);
 
 	int GetAltBlock(in int baseTile, in ushort x, in ushort y);
 }
 public abstract class AltBiome<T> : AAltType<AltBiome<T>, T, IAltBiome>, IAltBiome where T : BiomeGroup {
+	public override string LocalizationCategory => "AltBiome";
+
 	public sealed override void SetupContent() {
 		DataHandler = new BiomeDataHandler();
 		base.SetupContent();

@@ -1,15 +1,16 @@
 ﻿using AltLibrary.Common.AltTypes;
+using AltLibrary.Common.Attributes;
 using AltLibrary.Common.CID;
 using AltLibrary.Common.Data;
 using System;
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Hooks;
 
-public class CIDConvert : ILoadable {
-	public void Load(Mod mod) {
+[LoadableContent(ContentOrder.Content, nameof(Load))]
+public static class CIDConvert {
+	public static void Load() {
 		ILHelper.On<WorldGen>(nameof(WorldGen.Convert), On_WorldGen_Convert);
 	}
 
@@ -109,8 +110,5 @@ public class CIDConvert : ILoadable {
 			}
 		}
 		return;
-	}
-
-	public void Unload() {
 	}
 }

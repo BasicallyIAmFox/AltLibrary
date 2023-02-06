@@ -1,4 +1,5 @@
-﻿using Mono.Cecil.Cil;
+﻿using AltLibrary.Common.Attributes;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour.HookGen;
 using MonoMod.Utils;
@@ -12,7 +13,9 @@ using Terraria.ModLoader;
 
 namespace AltLibrary.Common;
 
-public class ILHelper {
+[LoadableContent(ContentOrder.Content, nameof(Load), UnloadName = nameof(Unload))]
+[LoadableContent(ContentOrder.PostContent, nameof(PostLoad))]
+public static class ILHelper {
 	private static List<(MethodInfo, Delegate, bool, bool)> IlsAndDetours = new();
 
 	public static void Load() {
@@ -36,8 +39,8 @@ public class ILHelper {
 	public static void Unload() {
 		HookUp(
 			(e, m) => $"Failed to unmodify method {m.DeclaringType.Namespace} {m.Name}!\n{e.Message}",
-			(m, d) => HookEndpointManager.Add(m, d),
-			(m, d) => HookEndpointManager.Modify(m, d),
+			(m, d) => HookEndpointManager.Remove(m, d),
+			(m, d) => HookEndpointManager.Unmodify(m, d),
 			load => false
 		);
 
@@ -72,11 +75,13 @@ public class ILHelper {
 	public static void On(MethodInfo method, Delegate del, bool lateLoading = false) => IlsAndDetours.Add((method, del, true, lateLoading));
 
 	#region https://github.com/blushiemagic/MagicStorage/blob/1.4/Edits/ILHelper.cs
+	public static bool LogILEdits { get; set; } =
 #if DEBUG
-	public static bool LogILEdits { get; set; } = true;
+		true
 #else
-	public static bool LogILEdits { get; set; } = false;
+		false
 #endif
+		;
 
 	public static void CompleteLog(Mod mod, ILCursor c, bool beforeEdit = false) {
 		if (!LogILEdits)

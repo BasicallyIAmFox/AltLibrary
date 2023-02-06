@@ -3,18 +3,22 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using static AltLibrary.Common.OrderGroups.IAOrderGroup;
 
 namespace AltLibrary.Common.OrderGroups;
 
-public interface IAOrderGroup : IModType {
+public interface IAOrderGroup : IModType, ILocalizedModType {
 	internal static List<IAOrderGroup> tiers = new(4);
 
 	List<IAAltType> Elements { get; }
 	string Texture { get; }
 	int Type { get; }
 	float Order { get; }
+
+	LocalizedText DisplayName { get; }
+	LocalizedText Description { get; }
 }
 public interface IStaticOrderGroup {
 	static abstract string GetTexture();
@@ -31,6 +35,11 @@ public abstract class AOrderGroup<Self, T> : ModTexturedType, IAOrderGroup where
 
 	List<IAAltType> IAOrderGroup.Elements => Elements.Cast<IAAltType>().ToList();
 	string IAOrderGroup.Texture => Texture;
+
+	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
+	public virtual LocalizedText Description => this.GetLocalization(nameof(Description));
+
+	public abstract string LocalizationCategory { get; }
 
 	public void Add(T ore) => Elements.Add(ore);
 

@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Cache;
 
-[Cache(nameof(Load))]
+[LoadableContent(ContentOrder.PostContent, nameof(Load))]
 public static class OGICallCache {
 	internal static MethodInfo ModContent_GetInstance;
 	internal static Func<string>[] orderGroupInstanceCallsCache;

@@ -1,18 +1,16 @@
 ﻿using AltLibrary.Common.Cache;
-using AltLibrary.Common.OrderGroups;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System.Linq;
 using System.Reflection;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
-using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
 
 namespace AltLibrary.Common.SelectableUIs;
 
-public partial class ScrollableUI {
+public static partial class ScrollableUI {
 	private class BuildUI : ILoadable {
 		private static readonly FieldInfo UIWorldCreation__descriptionText = typeof(UIWorldCreation).GetField("_descriptionText", BindingFlags.Instance | BindingFlags.NonPublic);
 
@@ -54,10 +52,10 @@ public partial class ScrollableUI {
 					var texture = OGICallCache.orderGroupInstanceCallsCache[i]();
 					var color = OGICallCache.orderGroupInstanceCallsCache3[i]();
 					var rectangle = OGICallCache.orderGroupInstanceCallsCache2[i]();
-					
+
 					var groupOptionButton = new LibOptionButton<int>(i,
-						Language.GetText(OGICallCache.sampleCache[i].FullName),
-						Language.GetText(OGICallCache.sampleCache[i].FullName),
+						OGICallCache.sampleCache[i].Group.DisplayName,
+						OGICallCache.sampleCache[i].Group.Description,
 						color, texture, rectangle, 1f, 1f, 16f) {
 						Width = StyleDimension.FromPixelsAndPercent(4 * (c - 3), 1f / c * usableWidthPercent),
 						Left = StyleDimension.FromPercent(1f - usableWidthPercent),

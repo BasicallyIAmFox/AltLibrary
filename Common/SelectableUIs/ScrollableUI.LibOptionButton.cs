@@ -11,7 +11,7 @@ using Terraria.UI;
 
 namespace AltLibrary.Common.SelectableUIs;
 
-public partial class ScrollableUI {
+public static partial class ScrollableUI {
 	public class LibOptionButton<T> : UIElement, IGroupOptionButton {
 		private readonly Asset<Texture2D> _BasePanelTexture;
 		private readonly Asset<Texture2D> _selectedBorderTexture;

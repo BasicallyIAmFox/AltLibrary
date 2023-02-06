@@ -1,5 +1,6 @@
 using AltLibrary.Common;
 using AltLibrary.Common.Attributes;
+using MonoMod.Utils;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -9,38 +10,60 @@ namespace AltLibrary;
 
 public class AltLibrary : Mod {
 	public static AltLibrary Instance { get; set; }
-	private static List<IPostContent> postContentInstances = new();
+	private static readonly Dictionary<Type, object> loadableContent = new();
 
 	public AltLibrary() {
 		Instance = this;
+		LoadLoadableContents(ContentOrder.Init);
 	}
 
 	public override void Load() {
-		ILHelper.Load();
+		LoadLoadableContents(ContentOrder.Content);
 	}
 
 	public override void PostSetupContent() {
-		LibUtils.ForEachType(x => x.GetCustomAttribute<CacheAttribute>() != null, (current, mod)
-			=> current.GetMethod(current.GetCustomAttribute<CacheAttribute>().MethodName, BindingFlags.Static | BindingFlags.Public).Invoke(null, null));
-
-		LibUtils.ForEachType(x => !x.IsAbstract && x.IsAssignableTo(typeof(IPostContent)), (current, mod) => {
-			var instance = (IPostContent)Activator.CreateInstance(current);
-			if (!postContentInstances.Contains(instance)) {
-				postContentInstances.Add(instance);
-			}
-			instance.Load(mod);
-		});
-
-		ILHelper.PostLoad();
+		LoadLoadableContents(ContentOrder.PostContent);
 	}
 
 	public override void Unload() {
-		LibUtils.ForEach(postContentInstances, postContent => {
-			postContent.Unload();
-		});
-		postContentInstances.Clear();
-
-		ILHelper.Unload(); // Have to unload ILs and Detours manually.
+		LoadLoadableContents(ContentOrder.Unload, true);
 		StaticCollector.Clean(this);
+	}
+
+	private static void LoadLoadableContents(ContentOrder contentOrder, bool unload = false) {
+		LibUtils.ForEachType(x => unload || x.GetCustomAttribute<LoadableContentAttribute>()?.ContentOrder == contentOrder, (current, mod) => {
+			var attri = current.GetCustomAttribute<LoadableContentAttribute>();
+			MethodInfo method = null;
+			if (!unload) {
+				method = current.FindMethod(attri.LoadName);
+			}
+			else if (attri.UnloadName != null) {
+				method = current.FindMethod(attri.UnloadName);
+			}
+
+			if (method == null) {
+				return;
+			}
+
+			object[] parameters;
+			if (method.GetParameters().Length == 1 && method.GetParameters()[0].ParameterType == typeof(Mod)) {
+				parameters = new object[] { mod };
+			}
+			else if (method.GetParameters().Length > 1) {
+				throw new ArgumentException($"Too many parameters for {method.Name} from {current.FullName}!");
+			}
+			else {
+				parameters = Array.Empty<object>();
+			}
+
+			loadableContent.TryGetValue(current, out object obj);
+			if (obj == null && !method.IsStatic) {
+				loadableContent[current] = Activator.CreateInstance(current);
+			}
+			else if (obj != null && method.IsStatic) {
+				obj = null;
+			}
+			method.Invoke(obj, parameters);
+		});
 	}
 }

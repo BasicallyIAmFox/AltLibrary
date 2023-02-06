@@ -1,13 +1,14 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using AltLibrary.Common.Attributes;
+using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using Terraria;
-using Terraria.ModLoader;
 using static AltLibrary.Common.Assets.AssetFactory;
 
 namespace AltLibrary.Common.Assets;
 
-public class LibAssets : IPostContent {
+[LoadableContent(ContentOrder.PostContent, nameof(Load))]
+public static class LibAssets {
 	#region Textures
 	public static Asset<Texture2D> CloseButton;
 	public static Asset<Texture2D> ShadowIcon;
@@ -19,7 +20,7 @@ public class LibAssets : IPostContent {
 	public static Effect ZenithShader;
 	#endregion
 
-	public void Load(Mod mod) {
+	public static void Load() {
 		if (Main.dedServ)
 			return;
 
@@ -45,8 +46,5 @@ public class LibAssets : IPostContent {
 		#region Effects
 		ZenithShader = CreateSingle<Effect>("AltLibrary/Assets/Shaders/ZenithShader");
 		#endregion
-	}
-
-	public void Unload() {
 	}
 }
