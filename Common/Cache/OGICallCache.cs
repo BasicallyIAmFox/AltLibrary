@@ -19,10 +19,10 @@ public static class OGICallCache {
 
 	public static void Load() {
 		var allTypes = ModContent.GetContent<IAOrderGroup>().SeparateTypes(typeof(AOrderGroup<,>)).ToArray();
-		sampleCache = new IAAltType[orderGroupInstanceCallsCache.Length];
 		orderGroupInstanceCallsCache = new Func<string>[allTypes.Length];
 		orderGroupInstanceCallsCache2 = new Func<Rectangle?>[allTypes.Length];
 		orderGroupInstanceCallsCache3 = new Func<Color>[allTypes.Length];
+		sampleCache = new IAAltType[allTypes.Length];
 
 		for (int i = 0, c = allTypes.Length; i < c; i++) {
 			orderGroupInstanceCallsCache[i] = allTypes[i].Key

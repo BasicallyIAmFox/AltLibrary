@@ -55,7 +55,10 @@ public partial class ScrollableUI {
 					var color = OGICallCache.orderGroupInstanceCallsCache3[i]();
 					var rectangle = OGICallCache.orderGroupInstanceCallsCache2[i]();
 					
-					var groupOptionButton = new LibOptionButton<int>(i, Language.GetText(OGICallCache.sampleCache[i].FullName), null, color, texture, rectangle, 1f, 1f, 16f) {
+					var groupOptionButton = new LibOptionButton<int>(i,
+						Language.GetText(OGICallCache.sampleCache[i].FullName),
+						Language.GetText(OGICallCache.sampleCache[i].FullName),
+						color, texture, rectangle, 1f, 1f, 16f) {
 						Width = StyleDimension.FromPixelsAndPercent(4 * (c - 3), 1f / c * usableWidthPercent),
 						Left = StyleDimension.FromPercent(1f - usableWidthPercent),
 						HAlign = (float)i / (c - 1)
@@ -64,7 +67,7 @@ public partial class ScrollableUI {
 					groupOptionButton.OnLeftMouseDown += (UIMouseEvent evt, UIElement listeningElement) => {
 						chosenOption = groupOptionButton.OptionValue;
 						for (int i = 0; i < groupOptions.Length; i++) {
-							groupOptions[i].SetCurrentOption(groupOptionButton.OptionValue);
+							groupOptions[i].SetCurrentOption(chosenOption);
 						}
 					};
 					groupOptionButton.OnMouseOver += (UIMouseEvent evt, UIElement listeningElement) => {
