@@ -127,7 +127,7 @@ public sealed class CIDTile : CIData {
 	}
 
 	public override int GetConverted_Vanilla(in int baseTile, in byte conversionType, in ushort x, in ushort y) {
-		return GetConverted(in baseTile, in conversionType, in x, in y);
+		return GetConverted(baseTile, in conversionType, in x, in y);
 	}
 
 	public override int GetConverted_Modded(in int baseTile, in IAltBiome biome, in ushort x, in ushort y) {
@@ -143,6 +143,6 @@ public sealed class CIDTile : CIData {
 		else if (biome.Type == ModContent.GetInstance<TropicsBiome>().Type) {
 			return GetConverted_Vanilla(in baseTile, BiomeConversionID.Purity, in x, in y);
 		}
-		return biome.GetAltBlock(in baseTile, in x, in y);
+		return biome.GetAltBlock(baseTile, in x, in y);
 	}
 }

@@ -28,7 +28,7 @@ public abstract class CIData {
 	public int GetConverted(int baseTile, in byte conversionType, in ushort x, in ushort y) {
 		int forcedConvertedTile = KEEP;
 		while (true) {
-			int test = GetAltBlock((short)baseTile, in conversionType, in x, in y);
+			int test = GetAltBlock(in baseTile, in conversionType, in x, in y);
 			if (test != KEEP) {
 				return test;
 			}
@@ -50,7 +50,7 @@ public abstract class CIData {
 		}
 	}
 
-	public virtual int GetAltBlock(in short baseTile, in byte conversionType, in ushort x, in ushort y) {
+	public virtual int GetAltBlock(in int baseTile, in byte conversionType, in ushort x, in ushort y) {
 		int newTile;
 		if (conversionType == BiomeConversionID.Purity) {
 			if (!PurityConversion.TryGetValue(baseTile, out newTile)) {
@@ -95,7 +95,7 @@ public abstract class CIData {
 		else if (!Parent.TryGetValue(baseTile, out newTile)) {
 			newTile = KEEP;
 		}
-		return (short)newTile;
+		return newTile;
 	}
 
 	public abstract void Bake();
