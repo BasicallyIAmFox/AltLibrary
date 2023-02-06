@@ -11,6 +11,8 @@ public abstract class BiomeGroup : AOrderGroup<BiomeGroup, IAltBiome>, IStaticOr
 	public static string GetTexture() => DefaultTexture;
 	public static Color GetColor() => new(130, 183, 108);
 
+	public override string LocalizationCategory => "BiomeGroup";
+
 	private protected override Type GetMainSubclass() {
 		return typeof(AltBiome<>);
 	}

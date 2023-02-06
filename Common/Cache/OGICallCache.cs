@@ -11,7 +11,6 @@ namespace AltLibrary.Common.Cache;
 
 [LoadableContent(ContentOrder.PostContent, nameof(Load))]
 public static class OGICallCache {
-	internal static MethodInfo ModContent_GetInstance;
 	internal static Func<string>[] orderGroupInstanceCallsCache;
 	internal static Func<Rectangle?>[] orderGroupInstanceCallsCache2;
 	internal static Func<Color>[] orderGroupInstanceCallsCache3;

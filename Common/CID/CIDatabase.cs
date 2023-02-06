@@ -107,7 +107,7 @@ public abstract class CIData {
 	public int GetConverted_Modded<T>(in int baseTile, in ushort x, in ushort y) where T : class, IAltBiome
 		=> GetConverted_Modded(in baseTile, ModContent.GetInstance<T>(), in x, in y);
 }
-[LoadableContent(ContentOrder.Content, nameof(Load))]
+[LoadableContent(ContentOrder.PostContent, nameof(Load))]
 public static class CIDatabase {
 	private readonly record struct CachedData<T>(in int BaseTile, in T ConversionType, in ushort X, in ushort Y) {
 	}

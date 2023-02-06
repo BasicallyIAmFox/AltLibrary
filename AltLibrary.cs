@@ -3,6 +3,7 @@ using AltLibrary.Common.Attributes;
 using MonoMod.Utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Terraria.ModLoader;
 
@@ -31,39 +32,46 @@ public class AltLibrary : Mod {
 	}
 
 	private static void LoadLoadableContents(ContentOrder contentOrder, bool unload = false) {
-		LibUtils.ForEachType(x => unload || x.GetCustomAttribute<LoadableContentAttribute>()?.ContentOrder == contentOrder, (current, mod) => {
-			var attri = current.GetCustomAttribute<LoadableContentAttribute>();
-			MethodInfo method = null;
-			if (!unload) {
-				method = current.FindMethod(attri.LoadName);
-			}
-			else if (attri.UnloadName != null) {
-				method = current.FindMethod(attri.UnloadName);
-			}
+		LibUtils.ForEachType(x => unload || x.GetCustomAttributes<LoadableContentAttribute>()?.Any(x => x.ContentOrder == contentOrder) == true, (current, mod) => {
+			var attris = current.GetCustomAttributes<LoadableContentAttribute>().ToArray();
+			for (int i = 0, c = attris.Length; i < c; i++) {
+				var attri = attris[i];
+				if (attri.ContentOrder != contentOrder) {
+					continue;
+				}
 
-			if (method == null) {
-				return;
-			}
+				MethodInfo method = null;
+				if (!unload) {
+					method = current.FindMethod(attri.LoadName);
+				}
+				else if (attri.UnloadName != null) {
+					method = current.FindMethod(attri.UnloadName);
+				}
 
-			object[] parameters;
-			if (method.GetParameters().Length == 1 && method.GetParameters()[0].ParameterType == typeof(Mod)) {
-				parameters = new object[] { mod };
-			}
-			else if (method.GetParameters().Length > 1) {
-				throw new ArgumentException($"Too many parameters for {method.Name} from {current.FullName}!");
-			}
-			else {
-				parameters = Array.Empty<object>();
-			}
+				if (method == null) {
+					continue;
+				}
 
-			loadableContent.TryGetValue(current, out object obj);
-			if (obj == null && !method.IsStatic) {
-				loadableContent[current] = Activator.CreateInstance(current);
+				object[] parameters;
+				if (method.GetParameters().Length == 1 && method.GetParameters()[0].ParameterType == typeof(Mod)) {
+					parameters = new object[] { mod };
+				}
+				else if (method.GetParameters().Length > 1) {
+					throw new ArgumentException($"Too many parameters for {method.Name} from {current.FullName}!");
+				}
+				else {
+					parameters = Array.Empty<object>();
+				}
+
+				loadableContent.TryGetValue(current, out object obj);
+				if (obj == null && !method.IsStatic) {
+					loadableContent[current] = Activator.CreateInstance(current);
+				}
+				else if (obj != null && method.IsStatic) {
+					obj = null;
+				}
+				method.Invoke(obj, parameters);
 			}
-			else if (obj != null && method.IsStatic) {
-				obj = null;
-			}
-			method.Invoke(obj, parameters);
 		});
 	}
 }
