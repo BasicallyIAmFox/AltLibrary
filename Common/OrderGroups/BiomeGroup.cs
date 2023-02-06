@@ -9,6 +9,7 @@ public abstract class BiomeGroup : AOrderGroup<BiomeGroup, IAltBiome>, IStaticOr
 
 	public static Rectangle? GetSourceRectangle() => new(0, 0, 30, 30);
 	public static string GetTexture() => DefaultTexture;
+	public static Color GetColor() => new(130, 183, 108);
 
 	private protected override Type GetMainSubclass() {
 		return typeof(AltBiome<>);

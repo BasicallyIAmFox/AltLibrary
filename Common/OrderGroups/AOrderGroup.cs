@@ -19,6 +19,7 @@ public interface IAOrderGroup : IModType {
 public interface IStaticOrderGroup {
 	static abstract string GetTexture();
 	static abstract Rectangle? GetSourceRectangle();
+	static abstract Color GetColor();
 }
 public abstract class AOrderGroup<Self, T> : ModTexturedType, IAOrderGroup where Self : AOrderGroup<Self, T> where T : IAAltType {
 	public const string DefaultTexture = "Terraria/Images/UI/Bestiary/Icon_Tags_Shadow";

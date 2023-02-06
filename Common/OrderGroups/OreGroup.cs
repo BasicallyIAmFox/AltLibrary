@@ -9,6 +9,7 @@ public abstract class OreGroup : AOrderGroup<OreGroup, IAltOre>, IStaticOrderGro
 
 	public static Rectangle? GetSourceRectangle() => new(60, 0, 30, 30);
 	public static string GetTexture() => DefaultTexture;
+	public static Color GetColor() => new(143, 183, 183);
 
 	private protected override Type GetMainSubclass() {
 		return typeof(AltOre<>);

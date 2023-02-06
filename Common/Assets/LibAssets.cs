@@ -1,5 +1,4 @@
-﻿using AltLibrary.Common.Cache;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using Terraria;
@@ -12,8 +11,6 @@ public class LibAssets : IPostContent {
 	#region Textures
 	public static Asset<Texture2D> CloseButton;
 	public static Asset<Texture2D> ShadowIcon;
-
-	public static Asset<Texture2D>[] BaseOrderGroups;
 
 	public static Asset<Texture2D>[,] PreviewIcons;
 	#endregion
@@ -29,10 +26,6 @@ public class LibAssets : IPostContent {
 		#region Textures
 		CloseButton = CreateSingle<Asset<Texture2D>>("AltLibrary/Assets/Menu/ButtonClose");
 		ShadowIcon = CreateSingle<Asset<Texture2D>>("AltLibrary/Assets/WorldIcons/ShadowIcon");
-
-		BaseOrderGroups = CreateMultiple<Asset<Texture2D>>(i => {
-			return OGICallCache.orderGroupInstanceCallsCache[i]();
-		}, OGICallCache.orderGroupInstanceCallsCache.Length);
 
 		PreviewIcons = CreateMultidimensional<Asset<Texture2D>>(i => {
 			int x = i / 3;

@@ -1,133 +1,87 @@
-﻿using AltLibrary.Common.Assets;
-using AltLibrary.Common.Cache;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using AltLibrary.Common.Cache;
+using AltLibrary.Common.OrderGroups;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using ReLogic.Content;
+using System.Linq;
 using System.Reflection;
-using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
-using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
 
 namespace AltLibrary.Common.SelectableUIs;
 
 public partial class ScrollableUI {
-	private class UIImageButtonWithRectangle : UIElement {
-		private readonly Rectangle? rectangle;
-		private readonly Asset<Texture2D> _texture;
-		private readonly Asset<Texture2D> _borderTexture;
-
-		public UIImageButtonWithRectangle(Asset<Texture2D> texture, Rectangle? rectangle) {
-			_texture = texture;
-			Width.Set(_texture.Width(), 0f);
-			Height.Set(_texture.Height(), 0f);
-			this.rectangle = rectangle;
-		}
-
-		protected override void DrawSelf(SpriteBatch spriteBatch) {
-			CalculatedStyle dimensions = GetDimensions();
-			spriteBatch.Draw(_texture.Value, dimensions.Position(), rectangle, Color.White);
-			if (_borderTexture != null && IsMouseHovering)
-				spriteBatch.Draw(_borderTexture.Value, dimensions.Position(), rectangle, Color.White);
-		}
-
-		public override void MouseOver(UIMouseEvent evt) {
-			base.MouseOver(evt);
-			SoundEngine.PlaySound(SoundID.MenuTick);
-		}
-
-		public override void MouseOut(UIMouseEvent evt) {
-			base.MouseOut(evt);
-		}
-	}
-
 	private class BuildUI : ILoadable {
-		private static UIElement _basePanel;
-		private static float _accumulatedHeight = 0f;
+		private static readonly FieldInfo UIWorldCreation__descriptionText = typeof(UIWorldCreation).GetField("_descriptionText", BindingFlags.Instance | BindingFlags.NonPublic);
+
+		private static LibOptionButton<int>[] groupOptions;
+		private static int chosenOption;
 
 		public void Load(Mod mod) {
-			ILHelper.On<UIWorldCreation>("BuildPage", (On_UIWorldCreation.orig_BuildPage orig, UIWorldCreation self) => {
-				orig(self);
-				BuildBasePage(self);
-			});
-			ILHelper.IL<UIWorldCreation>("MakeInfoMenu", (ILContext il) => {
-				var c = new ILCursor(il);
-
-				var heightIndex = 0;
-				var label = c.DefineLabel();
-
-				ILHelper.CompleteLog(AltLibrary.Instance, c, true);
-
-				c.GotoNext(i => i.MatchLdstr("evil"))
-					.GotoNext(
-						i => i.MatchLdloc(out heightIndex),
-						i => i.MatchLdcR4(out _)
-					);
-
-				c.Emit(OpCodes.Br, label)
-					.GotoNext(i => i.MatchLdarg(0),
-						i => i.MatchLdloc(out _),
-						i => i.MatchLdloc(heightIndex),
-						i => i.MatchLdstr("desc")
-					);
-
-				c.MarkLabel(label);
-
-				ILHelper.CompleteLog(AltLibrary.Instance, c, false);
-			});
 			ILHelper.IL<UIWorldCreation>("AddWorldEvilOptions", (ILContext il) => {
 				var c = new ILCursor(il);
 
-				c.Emit(OpCodes.Ldarg, 2);
-				c.Emit(OpCodes.Stsfld, typeof(BuildUI).GetField(nameof(_accumulatedHeight), BindingFlags.Static | BindingFlags.NonPublic));
+				var evilButtonsArrayIndex = 0;
+
+				c.GotoNext(MoveType.After,
+					i => i.MatchLdstr("Images/UI/WorldCreation/IconEvilCrimson"),
+					i => i.MatchStelemRef(),
+					i => i.MatchStloc(out _))
+				.GotoNext(MoveType.After,
+					i => i.MatchStloc(out evilButtonsArrayIndex));
+
+				c.Emit(OpCodes.Ldc_I4, 0);
+				c.Emit(OpCodes.Newarr, typeof(GroupOptionButton<>).MakeGenericType(typeof(UIWorldCreation).GetNestedType("WorldEvilId", BindingFlags.NonPublic)));
+				c.Emit(OpCodes.Stloc_S, (byte)evilButtonsArrayIndex);
+
+				ILHelper.CompleteLog(AltLibrary.Instance, c, false);
 			});
-		}
+			ILHelper.On<UIWorldCreation>("AddWorldEvilOptions", (On_UIWorldCreation.orig_AddWorldEvilOptions orig, UIWorldCreation self, UIElement container, float accumualtedHeight, UIElement.MouseEvent clickEvent, string tagGroup, float usableWidthPercent) => {
+				var oldChildrenLength = container.Children.Count();
 
-		private static void BuildBasePage(UIWorldCreation self) {
-			var basePanel = new UIPanel {
-				Width = StyleDimension.FromPixels(500f),
-				Height = StyleDimension.FromPixels(452f),
-				Top = StyleDimension.FromPixels(152f),
-				HAlign = 0.5f,
-			};
-			basePanel.BackgroundColor.A = 255;
+				orig(self, container, accumualtedHeight, clickEvent, tagGroup, usableWidthPercent);
 
-			var closeButton = new UIImageButton(LibAssets.CloseButton);
-			closeButton.OnLeftClick += (UIMouseEvent evt, UIElement listeningElement) => {
-				_basePanel = basePanel;
-				basePanel.RemoveChild(basePanel);
-			};
-			closeButton.OnUpdate += (UIElement affectedElement) => {
-				if (affectedElement.IsMouseHovering) {
-					Main.instance.MouseTextHackZoom("Close");
+				var tempArray = container.Children.ToArray();
+				for (int i = tempArray.Length - 1; i > tempArray.Length - (tempArray.Length - oldChildrenLength); i--) {
+					tempArray[i].Remove();
 				}
-			};
 
-			for (int i = 0, c = LibAssets.BaseOrderGroups.Length; i < c; i++) {
-				var button = new UIImageButtonWithRectangle(
-						LibAssets.BaseOrderGroups[i],
-						OGICallCache.orderGroupInstanceCallsCache2[i]()
-					) {
-					Width = StyleDimension.FromPixelsAndPercent(-4 * (c - 1), 1f / c),
-					Left = StyleDimension.FromPercent(1f),
-					HAlign = i / (c - 1)
-				};
-				button.OnLeftClick += (UIMouseEvent evt, UIElement listeningElement) => {
-					self.Append(_basePanel);
-				};
-				button.Top.Set(_accumulatedHeight, 0f);
-				button.SetSnapPoint($"baseordergroup{i}", i);
-				self.Append(button);
-			}
+				int c;
+				groupOptions = new LibOptionButton<int>[c = OGICallCache.orderGroupInstanceCallsCache.Length];
+				for (int i = 0; i < c; i++) {
+					var texture = OGICallCache.orderGroupInstanceCallsCache[i]();
+					var color = OGICallCache.orderGroupInstanceCallsCache3[i]();
+					var rectangle = OGICallCache.orderGroupInstanceCallsCache2[i]();
+					
+					var groupOptionButton = new LibOptionButton<int>(i, Language.GetText(OGICallCache.sampleCache[i].FullName), null, color, texture, rectangle, 1f, 1f, 16f) {
+						Width = StyleDimension.FromPixelsAndPercent(4 * (c - 3), 1f / c * usableWidthPercent),
+						Left = StyleDimension.FromPercent(1f - usableWidthPercent),
+						HAlign = (float)i / (c - 1)
+					};
+					groupOptionButton.Top.Set(accumualtedHeight, 0f);
+					groupOptionButton.OnLeftMouseDown += (UIMouseEvent evt, UIElement listeningElement) => {
+						chosenOption = groupOptionButton.OptionValue;
+						for (int i = 0; i < groupOptions.Length; i++) {
+							groupOptions[i].SetCurrentOption(groupOptionButton.OptionValue);
+						}
+					};
+					groupOptionButton.OnMouseOver += (UIMouseEvent evt, UIElement listeningElement) => {
+						var desc = groupOptionButton.Description;
+						if (desc == null) {
+							return;
+						}
+						((UIText)UIWorldCreation__descriptionText.GetValue(self)).SetText(groupOptionButton.Description);
+					};
+					groupOptionButton.OnMouseOut += self.ClearOptionDescription;
+					groupOptionButton.SetSnapPoint(tagGroup, i, null, null);
+					container.Append(groupOptionButton);
 
-			basePanel.Append(closeButton);
-			_basePanel = basePanel;
-			_basePanel.Append(basePanel);
+					groupOptionButton.SetCurrentOption(-1);
+					groupOptions[i] = groupOptionButton;
+				}
+			});
 		}
 
 		public void Unload() {
