@@ -37,7 +37,7 @@ public abstract class AOrderGroup<Self, T> : ModTexturedType, IAOrderGroup where
 	private protected abstract Type GetMainSubclass();
 
 	private void LoadInternal() {
-		LibTils.ForEachType(x => !x.IsAbstract && x.IsSubclassOf(GetMainSubclass().MakeGenericType(GetType())), (current, mod) => {
+		LibUtils.ForEachType(x => !x.IsAbstract && x.IsSubclassOf(GetMainSubclass().MakeGenericType(GetType())), (current, mod) => {
 			var ore = (T)Activator.CreateInstance(current);
 			mod.AddContent(ore);
 			Add(ore);

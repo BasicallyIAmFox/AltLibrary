@@ -1,40 +1,22 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Assets;
 
-public interface IProcess {
-	Type ProcessType { get; }
-	object Load(string path);
-}
-public abstract class Process<T> : IProcess where T : class {
-	public Type ProcessType => typeof(T);
-
-	object IProcess.Load(string path) => Load(path);
-	public abstract T Load(string path);
-}
-public sealed class AssetProcessor : Process<Asset<Texture2D>> {
-	public override Asset<Texture2D> Load(string path) {
-		return ModContent.Request<Texture2D>(path, AssetRequestMode.ImmediateLoad);
-	}
-}
-
 public sealed class AssetFactory : ILoadable {
-	private static Dictionary<Type, IProcess> processes = new(4);
+	private static Dictionary<Type, IProcessor> processes = new(4);
 
 	public void Load(Mod mod) {
-		LibTils.ForEachType(x => !x.IsAbstract && x.IsAssignableTo(typeof(IProcess)), (current, mod) => {
-			var process = Activator.CreateInstance(current) as IProcess;
+		LibUtils.ForEachType(x => !x.IsAbstract && x.IsAssignableTo(typeof(IProcessor)), (current, mod) => {
+			var process = Activator.CreateInstance(current) as IProcessor;
 			processes.TryAdd(process.ProcessType, process);
 		});
 	}
 
 	public static T CreateSingle<T>(string path) where T : class {
-		if (processes.TryGetValue(typeof(T), out IProcess process)) {
+		if (processes.TryGetValue(typeof(T), out IProcessor process)) {
 			return process.Load(path) as T;
 		}
 		throw new ArgumentOutOfRangeException();

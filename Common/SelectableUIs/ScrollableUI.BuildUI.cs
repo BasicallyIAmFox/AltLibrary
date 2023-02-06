@@ -51,7 +51,7 @@ public partial class ScrollableUI {
 
 	private class BuildUI : ILoadable {
 		private static UIElement _basePanel;
-		private static float accumulatedHeight = 0f;
+		private static float _accumulatedHeight = 0f;
 
 		public void Load(Mod mod) {
 			ILHelper.On<UIWorldCreation>("BuildPage", (On_UIWorldCreation.orig_BuildPage orig, UIWorldCreation self) => {
@@ -62,8 +62,7 @@ public partial class ScrollableUI {
 				var c = new ILCursor(il);
 
 				c.Emit(OpCodes.Ldarg, 2);
-				c.Emit(OpCodes.Stsfld, typeof(BuildUI).GetField(nameof(_basePanel), BindingFlags.Static | BindingFlags.NonPublic));
-				c.Emit(OpCodes.Ret);
+				c.Emit(OpCodes.Stsfld, typeof(BuildUI).GetField(nameof(_accumulatedHeight), BindingFlags.Static | BindingFlags.NonPublic));
 			});
 			ILHelper.IL<UIWorldCreation>("SetDefaultOptions", (ILContext il) => {
 				var c = new ILCursor(il);
@@ -202,10 +201,7 @@ public partial class ScrollableUI {
 			};
 			basePanel.BackgroundColor.A = 255;
 
-			var closeButton = new UIImageButton(LibAssets.CloseButton) {
-				Width = StyleDimension.FromPixels(22f),
-				Height = StyleDimension.FromPixels(22f),
-			};
+			var closeButton = new UIImageButton(LibAssets.CloseButton);
 			closeButton.OnLeftClick += (UIMouseEvent evt, UIElement listeningElement) => {
 				_basePanel = basePanel;
 				basePanel.RemoveChild(basePanel);
@@ -228,7 +224,7 @@ public partial class ScrollableUI {
 				button.OnLeftClick += (UIMouseEvent evt, UIElement listeningElement) => {
 					self.Append(_basePanel);
 				};
-				button.Top.Set(accumulatedHeight, 0f);
+				button.Top.Set(_accumulatedHeight, 0f);
 				button.SetSnapPoint($"baseordergroup{i}", i);
 				self.Append(button);
 			}

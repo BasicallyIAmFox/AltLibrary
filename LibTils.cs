@@ -1,15 +1,18 @@
 ﻿using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.ModLoader;
 
 namespace AltLibrary;
 
-public static class LibTils {
+public static class LibUtils {
 	public static IEnumerable<IGrouping<Type, TArray>> SeparateTypes<TArray>(this IEnumerable<TArray> objects, Type baseDeclaringType) {
 		return objects.GroupBy(x => {
 			Type oldType = null;
 			Type type = x.GetType().BaseType;
+			// It's a special case where I should NOT use ToString() or FullName.
+			// For whatever reason, doing this causes to result type name be C[[B[[A]]]] instead of C
 			while ($"{type.Namespace}.{type.Name}" != baseDeclaringType?.FullName) {
 				oldType = type;
 				type = type.BaseType;
@@ -19,16 +22,19 @@ public static class LibTils {
 	}
 
 	public static IEnumerable<T> ForEach<T>(this IEnumerable<T> enumerable, Action<T> action) {
-		for (int i = enumerable.Count() - 1; i >= 0; i--) {
-			action(enumerable.ElementAt(i));
+		var array = ArrayPool<T>.Shared.Rent(enumerable.Count());
+		for (int i = 0, c = array.Length; i < c; i++) {
+			array[i] = enumerable.ElementAt(i);
+			action(array[i]);
 		}
+		ArrayPool<T>.Shared.Return(array, true);
 		return enumerable;
 	}
 
 	public static void ForEachSpecificMod(Mod mod, Func<Type, bool> whereFunc, Action<Type, Mod> action) {
-		var enumerator = mod.Code.GetTypes().Where(x => whereFunc(x));
-		for (int i = enumerator.Count() - 1; i >= 0; i--) {
-			action(enumerator.ElementAt(i), mod);
+		var enumerable = mod.Code.GetTypes().Where(x => whereFunc(x));
+		for (int i = enumerable.Count() - 1; i >= 0; i--) {
+			action(enumerable.ElementAt(i), mod);
 		}
 	}
 

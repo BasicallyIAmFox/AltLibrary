@@ -16,7 +16,7 @@ public static class StaticCollector {
 	/// <returns></returns>
 	public static List<FieldInfo> Collect(Mod mod) {
 		var list = new List<FieldInfo>();
-		LibTils.ForEachSpecificMod(mod,
+		LibUtils.ForEachSpecificMod(mod,
 			x => x.GetFields(Flags).Length > 0,
 			(type, mod) => list.AddRange(type.GetFields(Flags)));
 		return list;

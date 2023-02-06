@@ -15,10 +15,10 @@ public interface IAAltType : IModType {
 	IDataHandler DataHandler { get; }
 }
 [Autoload(false)]
-public abstract class AAltType<Self, G, I> : ModTexturedType, IAAltType
-	where Self : AAltType<Self, G, I>, I
-	where G : class, IAOrderGroup
-	where I : IAAltType {
+public abstract class AAltType<Self, BaseGroup, Interface> : ModTexturedType, IAAltType
+	where Self : AAltType<Self, BaseGroup, Interface>, Interface
+	where BaseGroup : class, IAOrderGroup
+	where Interface : IAAltType {
 	string IAAltType.Texture => Texture;
 
 	int IAAltType.Type => Type;
@@ -27,25 +27,25 @@ public abstract class AAltType<Self, G, I> : ModTexturedType, IAAltType
 	IDataHandler IAAltType.DataHandler => DataHandler;
 	public IDataHandler DataHandler { get; protected set; }
 
-	IAOrderGroup IAAltType.Group => Group;
-	public G Group => ModContent.GetInstance<G>();
+	IAOrderGroup IAAltType.Group => this.Group;
+	public BaseGroup Group => ModContent.GetInstance<BaseGroup>();
 
 	public override void SetupContent() {
 		SetStaticDefaults();
 
-		LibTils.ForEachType(x => x.IsAssignableTo(typeof(IDataAlwaysExists<>).MakeGenericType(typeof(I))) && x.GetCustomAttribute<DataAlwaysExistsAttribute>() != null, (current, mod) => {
+		LibUtils.ForEachType(x => x.IsAssignableTo(typeof(IDataAlwaysExists<>).MakeGenericType(typeof(Interface))) && x.GetCustomAttribute<DataAlwaysExistsAttribute>() != null, (current, mod) => {
 			current.GetMethod("CheckThere", BindingFlags.Static | BindingFlags.Public).Invoke(null, new object[] { this });
 		});
 	}
 
 	protected sealed override void Register() {
 		ModTypeLookup<IAAltType>.Register(this);
-		ModTypeLookup<I>.Register((Self)this);
+		ModTypeLookup<Interface>.Register((Self)this);
 		ModTypeLookup<Self>.Register((Self)this);
 
 		Type = GetListOfTypes().Count;
 		GetListOfTypes().Add((Self)this);
 	}
 
-	private protected abstract List<I> GetListOfTypes();
+	private protected abstract List<Interface> GetListOfTypes();
 }
