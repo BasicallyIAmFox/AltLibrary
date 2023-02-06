@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Terraria.ModLoader;
 
 namespace AltLibrary.Common;
@@ -29,7 +30,7 @@ public static class StaticCollector {
 		var list = Collect(mod);
 		for (int i = list.Count - 1; i >= 0; i--) {
 			var current = list[i];
-			if (current.IsInitOnly || !current.FieldType.IsClass) {
+			if (current.DeclaringType.GetCustomAttribute<CompilerGeneratedAttribute>() != null || current.IsInitOnly || !current.FieldType.IsClass) {
 				continue;
 			}
 

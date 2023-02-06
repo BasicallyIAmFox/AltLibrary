@@ -106,7 +106,7 @@ public class ILHelper {
 		if (modName.Contains('.'))
 			modName = modName[..modName.IndexOf('.')];
 
-		path = Path.Combine(path, "aA Mods", modName);
+		path = Path.Combine(path, "AltLibrary IL Output", modName);
 		Directory.CreateDirectory(path);
 
 		//Get the class name

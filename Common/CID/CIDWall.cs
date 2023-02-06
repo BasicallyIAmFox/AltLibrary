@@ -4,20 +4,16 @@ using System;
 namespace AltLibrary.Common.CID;
 
 public sealed class CIDWall : CIData {
-	public CIDWall() {
-		Bake();
-	}
-
 	public override void Bake() {
 	}
 
 	[Obsolete]
-	public override int GetConverted_Vanilla(int baseTile, int conversionType, int x, int y) {
+	public override int GetConverted_Vanilla(in int baseTile, in byte conversionType, in ushort x, in ushort y) {
 		return -1;
 	}
 
 	[Obsolete]
-	public override int GetConverted_Modded(int baseTile, IAltBiome biome, int x, int y) {
+	public override int GetConverted_Modded(in int baseTile, in IAltBiome biome, in ushort x, in ushort y) {
 		return -1;
 	}
 }

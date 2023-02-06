@@ -10,10 +10,6 @@ namespace AltLibrary.Common.CID;
 public sealed class CIDTile : CIData {
 	public Dictionary<int, BitsByte> TryKillTreesOnConversion = new();
 
-	public CIDTile() {
-		Bake();
-	}
-
 	public override void Bake() {
 		for (int x = 0; x < TileLoader.TileCount; x++) {
 			if (TileID.Sets.Conversion.GolfGrass[x] && x != TileID.GolfGrass) {
@@ -90,6 +86,15 @@ public sealed class CIDTile : CIData {
 		Parent.TryAdd(TileID.JungleThorns, TileID.CorruptThorns);
 		Parent.TryAdd(TileID.JungleThorns, TileID.CrimsonThorns);
 
+		// Hallowed
+		HallowConversion.TryAdd(TileID.Stone, TileID.Pearlstone);
+		HallowConversion.TryAdd(TileID.Grass, TileID.HallowedGrass);
+		HallowConversion.TryAdd(TileID.GolfGrass, TileID.GolfGrassHallowed);
+		HallowConversion.TryAdd(TileID.IceBlock, TileID.HallowedIce);
+		HallowConversion.TryAdd(TileID.Sand, TileID.Pearlsand);
+		HallowConversion.TryAdd(TileID.HardenedSand, TileID.HallowHardenedSand);
+		HallowConversion.TryAdd(TileID.Sandstone, TileID.HallowSandstone);
+
 		// Corruption
 		CorruptionConversion.TryAdd(TileID.Stone, TileID.Ebonstone);
 		CorruptionConversion.TryAdd(TileID.Grass, TileID.CorruptGrass);
@@ -121,28 +126,23 @@ public sealed class CIDTile : CIData {
 		Parent.TryAdd(TileID.MushroomGrass, TileID.JungleGrass);
 	}
 
-	public override int GetConverted_Vanilla(int baseTile, int conversionType, int x, int y) {
-		var convType = conversionType switch {
-			> BiomeConversionID.Dirt => 0, //declentaminate
-			< 0 => 0,
-			_ => conversionType,
-		};
-		return GetConverted(baseTile, convType, x, y);
+	public override int GetConverted_Vanilla(in int baseTile, in byte conversionType, in ushort x, in ushort y) {
+		return GetConverted(in baseTile, in conversionType, in x, in y);
 	}
 
-	public override int GetConverted_Modded(int baseTile, IAltBiome biome, int x, int y) {
+	public override int GetConverted_Modded(in int baseTile, in IAltBiome biome, in ushort x, in ushort y) {
 		if (biome.Type == ModContent.GetInstance<CorruptBiome>().Type) {
-			return GetConverted_Vanilla(baseTile, BiomeConversionID.Corruption, x, y);
+			return GetConverted_Vanilla(in baseTile, BiomeConversionID.Corruption, in x, in y);
 		}
 		else if (biome.Type == ModContent.GetInstance<CrimsonBiome>().Type) {
-			return GetConverted_Vanilla(baseTile, BiomeConversionID.Crimson, x, y);
+			return GetConverted_Vanilla(in baseTile, BiomeConversionID.Crimson, in x, in y);
 		}
 		else if (biome.Type == ModContent.GetInstance<HallowBiome>().Type) {
-			return GetConverted_Vanilla(baseTile, BiomeConversionID.Hallow, x, y);
+			return GetConverted_Vanilla(in baseTile, BiomeConversionID.Hallow, in x, in y);
 		}
 		else if (biome.Type == ModContent.GetInstance<TropicsBiome>().Type) {
-			return GetConverted_Vanilla(baseTile, BiomeConversionID.Purity, x, y);
+			return GetConverted_Vanilla(in baseTile, BiomeConversionID.Purity, in x, in y);
 		}
-		return biome.GetAltBlock(baseTile, x, y);
+		return biome.GetAltBlock(in baseTile, in x, in y);
 	}
 }

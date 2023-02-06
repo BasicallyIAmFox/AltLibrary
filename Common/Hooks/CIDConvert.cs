@@ -14,11 +14,11 @@ public class CIDConvert : ILoadable {
 	}
 
 	private static void On_WorldGen_Convert(On_WorldGen.orig_Convert orig, int i, int j, int conversionType, int size) {
-		for (int k = i - size; k <= i + size; k++) {
-			for (int l = j - size; l <= j + size; l++) {
+		for (ushort k = (ushort)(i - size); k <= i + size; k++) {
+			for (ushort l = (ushort)(j - size); l <= j + size; l++) {
 				if (WorldGen.InWorld(k, l, 1) && Math.Abs(k - i) + Math.Abs(l - j) < 6) {
 					Tile tile = Main.tile[k, l];
-					int newTile = CIDatabase.GetConvertedTile_Vanilla(tile.TileType, conversionType, k, l);
+					int newTile = CIDatabase.GetConvertedTile_Vanilla(tile.TileType, (byte)conversionType, in k, in l);
 					if (newTile == CIData.KILL) {
 						WorldGen.KillTile(k, l, false, false, false);
 						if (Main.netMode == NetmodeID.MultiplayerClient) {
@@ -32,7 +32,7 @@ public class CIDConvert : ILoadable {
 						NetMessage.SendTileSquare(-1, k, l, TileChangeType.None);
 					}
 
-					int newWall = CIDatabase.GetConvertedWall_Vanilla(tile.WallType, conversionType, k, l);
+					int newWall = CIDatabase.GetConvertedWall_Vanilla(tile.TileType, (byte)conversionType, k, l);
 					if (newWall == CIData.KILL) {
 						WorldGen.KillWall(k, l, false);
 						if (Main.netMode == NetmodeID.MultiplayerClient) {
@@ -67,11 +67,11 @@ public class CIDConvert : ILoadable {
 	public static void Convert(IAltBiome biome, int i, int j, int size = 4) {
 		if (biome is null)
 			throw new ArgumentNullException(nameof(biome), "Can't be null!");
-		for (int k = i - size; k <= i + size; k++) {
-			for (int l = j - size; l <= j + size; l++) {
+		for (ushort k = (ushort)(i - size); k <= i + size; k++) {
+			for (ushort l = (ushort)(j - size); l <= j + size; l++) {
 				if (WorldGen.InWorld(k, l, 1) && Math.Abs(k - i) + Math.Abs(l - j) < 6) {
 					Tile tile = Main.tile[k, l];
-					int newTile = CIDatabase.GetConvertedTile_Modded(tile.TileType, biome, k, l);
+					int newTile = CIDatabase.GetConvertedTile_Modded(tile.TileType, in biome, in k, in l);
 					if (newTile == CIData.KILL) {
 						WorldGen.KillTile(k, l, false, false, false);
 						if (Main.netMode == NetmodeID.MultiplayerClient) {
@@ -85,7 +85,7 @@ public class CIDConvert : ILoadable {
 						NetMessage.SendTileSquare(-1, k, l, TileChangeType.None);
 					}
 
-					int newWall = CIDatabase.GetConvertedWall_Modded(tile.WallType, biome, k, l);
+					int newWall = CIDatabase.GetConvertedWall_Modded(tile.WallType, in biome, in k, in l);
 					if (newWall == CIData.KILL) {
 						WorldGen.KillWall(k, l, false);
 						if (Main.netMode == NetmodeID.MultiplayerClient) {

@@ -32,7 +32,7 @@ public static class LibUtils {
 	}
 
 	public static void ForEachSpecificMod(Mod mod, Func<Type, bool> whereFunc, Action<Type, Mod> action) {
-		var enumerable = mod.Code.GetTypes().Where(x => whereFunc(x));
+		var enumerable = mod.Code.GetExportedTypes().Where(x => whereFunc(x));
 		for (int i = enumerable.Count() - 1; i >= 0; i--) {
 			action(enumerable.ElementAt(i), mod);
 		}

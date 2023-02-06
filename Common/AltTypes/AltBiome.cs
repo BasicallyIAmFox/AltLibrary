@@ -9,7 +9,7 @@ namespace AltLibrary.Common.AltTypes;
 public interface IAltBiome : IAAltType {
 	internal static List<IAltBiome> altBiomes = new(8);
 
-	int GetAltBlock(int baseTile, int x, int y);
+	int GetAltBlock(in short baseTile, in ushort x, in ushort y);
 }
 public abstract class AltBiome<T> : AAltType<AltBiome<T>, T, IAltBiome>, IAltBiome where T : BiomeGroup {
 	public sealed override void SetupContent() {
@@ -17,9 +17,9 @@ public abstract class AltBiome<T> : AAltType<AltBiome<T>, T, IAltBiome>, IAltBio
 		base.SetupContent();
 	}
 
-	public virtual int GetAltBlock(int baseTile, int x, int y) {
+	public virtual int GetAltBlock(in short baseTile, in ushort x, in ushort y) {
 		var data = DataHandler.Get<ConversionData>();
-		return baseTile switch {
+		return (int)baseTile switch {
 			TileID.Stone => data.Stone == 0 ? data.Stone : CIData.KEEP,
 			TileID.Grass => data.Grass == 0 ? data.Grass : CIData.KEEP,
 			TileID.JungleGrass => data.JungleGrass == 0 ? data.JungleGrass : CIData.KEEP,
