@@ -1,6 +1,7 @@
 ﻿using AltLibrary.Common.AltTypes;
 using AltLibrary.Content.Biomes;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -10,6 +11,7 @@ namespace AltLibrary.Common.CID;
 public sealed class CIDTile : CIData {
 	public Dictionary<int, BitsByte> TryKillTreesOnConversion = new();
 
+	[MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
 	public override void Bake() {
 		for (int x = 0; x < TileLoader.TileCount; x++) {
 			if (TileID.Sets.Conversion.GolfGrass[x] && x != TileID.GolfGrass) {
@@ -25,7 +27,7 @@ public sealed class CIDTile : CIData {
 				TryKillTreesOnConversion.TryAdd(x, new(false, true, true, true, true, true, true, true));
 			}
 			else if ((Main.tileMoss[x] || TileID.Sets.Conversion.Stone[x]) && x != TileID.Stone) {
-				ForestConversion.TryAdd(x, x);
+				PurityConversion.TryAdd(x, x);
 				Parent.TryAdd(x, TileID.Stone);
 			}
 			else if (TileID.Sets.Conversion.Ice[x] && x != TileID.IceBlock) {
@@ -66,6 +68,8 @@ public sealed class CIDTile : CIData {
 				SnowConversion.TryAdd(x, TileID.IceBlock);
 				TryKillTreesOnConversion.TryAdd(x, new(true, true, true, true, true, true, false, true));
 			}
+
+			// TODO: Add Yellow Solution
 		}
 
 		// Purity
@@ -126,10 +130,12 @@ public sealed class CIDTile : CIData {
 		Parent.TryAdd(TileID.MushroomGrass, TileID.JungleGrass);
 	}
 
+	[MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
 	public override int GetConverted_Vanilla(in int baseTile, in byte conversionType, in ushort x, in ushort y) {
 		return GetConverted(baseTile, in conversionType, in x, in y);
 	}
 
+	[MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
 	public override int GetConverted_Modded(in int baseTile, in IAltBiome biome, in ushort x, in ushort y) {
 		if (biome.Type == ModContent.GetInstance<CorruptBiome>().Type) {
 			return GetConverted_Vanilla(in baseTile, BiomeConversionID.Corruption, in x, in y);
