@@ -27,7 +27,7 @@ public interface ICIData {
 	IReadOnlyDictionary<int, BitsByte> BreakIfConversionFail { get; }
 }
 public abstract class CIData : ICIData {
-	public delegate int GetAltBlockEvent(ICIData data, in int baseTile, in byte conversionType, in ushort x, in ushort y);
+	public delegate int GetAltBlockEvent(ICIData data, int baseTile, int newTile, byte conversionType, ushort x, ushort y);
 
 	public static GetAltBlockEvent AltBlockEvent;
 
@@ -60,7 +60,7 @@ public abstract class CIData : ICIData {
 	public const int KILL = -2;
 
 	[MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
-	public int GetConverted(in int baseTile, in byte conversionType, in ushort x, in ushort y) {
+	public int GetConverted(int baseTile, byte conversionType, ushort x, ushort y) {
 		int forcedConvertedTile = KEEP;
 		int tile = baseTile;
 
@@ -131,7 +131,7 @@ public abstract class CIData : ICIData {
 		}
 		tile = test;
 
-		if (GetAltBlock(in tile, in conversionType, in x, in y) != KEEP) {
+		if (GetAltBlock(tile, conversionType, x, y) != KEEP) {
 			return test;
 		}
 
@@ -143,11 +143,8 @@ public abstract class CIData : ICIData {
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
-	public virtual int GetAltBlock(in int baseTile, in byte conversionType, in ushort x, in ushort y) {
+	public virtual int GetAltBlock(int baseTile, byte conversionType, ushort x, ushort y) {
 		int newTile;
-		if (AltBlockEvent != null) {
-			return AltBlockEvent(this, in baseTile, in conversionType, in x, in y);
-		}
 		switch (conversionType) {
 			case BiomeConversionID.Purity:
 				if (!PurityConversion.TryGetValue(baseTile, out newTile)) {
@@ -195,58 +192,70 @@ public abstract class CIData : ICIData {
 				}
 				break;
 		}
+		if (AltBlockEvent != null) {
+			return AltBlockEvent(this, baseTile, newTile, conversionType, x, y);
+		}
 		return newTile;
 	}
 
 	public abstract void Bake();
 
-	public abstract int GetConverted_Vanilla(in int baseTile, in byte conversionType, in ushort x, in ushort y);
-	public abstract int GetConverted_Modded(in int baseTile, in IAltBiome biome, in ushort x, in ushort y);
+	public abstract int GetConverted_Vanilla(int baseTile, byte conversionType, ushort x, ushort y);
+	public abstract int GetConverted_Modded(int baseTile, IAltBiome biome, ushort x, ushort y);
 
 	[MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
-	public int GetConverted_Modded<T>(in int baseTile, in ushort x, in ushort y) where T : class, IAltBiome
-		=> GetConverted_Modded(in baseTile, ModContent.GetInstance<T>(), in x, in y);
+	public int GetConverted_Modded<T>(int baseTile, ushort x, ushort y) where T : class, IAltBiome => GetConverted_Modded(baseTile, ModContent.GetInstance<T>(), x, y);
 }
 [LoadableContent(ContentOrder.PostContent, nameof(Load))]
 public static class CIDatabase {
-	internal static readonly CIDTile TileData = new();
-	internal static readonly CIDWall WallData = new();
+	private static CIDTile TileData;
+	private static CIDWall WallData;
 
 	public static void Load() {
 		CIData.AltBlockEvent += AltBlockEvent_Delegate;
+
+		TileData = new();
+		WallData = new();
 
 		TileData.Bake();
 		WallData.Bake();
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
-	private static int AltBlockEvent_Delegate(ICIData data, in int baseTile, in byte conversionType, in ushort x, in ushort y) {
-		if (conversionType <= BiomeConversionID.Dirt || baseTile == TileID.JungleGrass) {
-			return baseTile;
+	private static int AltBlockEvent_Delegate(ICIData data, int baseTile, int newTile, byte conversionType, ushort x, ushort y) {
+		if (conversionType <= BiomeConversionID.Dirt) {
+			return newTile;
 		}
-		if (!data.PurityConversion.TryGetValue(baseTile, out int test)) {
+
+		if (!data.PurityConversion.TryGetValue(newTile, out int test)) {
 			test = CIData.KEEP;
 		}
 		return test;
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
-	public static int GetConvertedTile_Vanilla(in int baseTile, in byte conversionType, in ushort x, in ushort y) {
-		return TileData.GetConverted_Vanilla(in baseTile, in conversionType, in x, in y);
+	public static int GetConvertedTile_Vanilla(int baseTile, byte conversionType, ushort x, ushort y) {
+		return TileData.GetConverted_Vanilla(baseTile, conversionType, x, y);
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
-	public static int GetConvertedWall_Vanilla(in int baseTile, in byte conversionType, in ushort x, in ushort y) {
-		return WallData.GetConverted_Vanilla(in baseTile, in conversionType, in x, in y);
+	public static int GetConvertedWall_Vanilla(int baseTile, byte conversionType, ushort x, ushort y) {
+		return WallData.GetConverted_Vanilla(baseTile, conversionType, x, y);
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
-	public static int GetConvertedTile_Modded(in int baseTile, in IAltBiome conversionType, in ushort x, in ushort y) {
-		return TileData.GetConverted_Modded(in baseTile, in conversionType, in x, in y);
+	public static int GetConvertedTile_Modded(int baseTile, IAltBiome conversionType, ushort x, ushort y) {
+		return TileData.GetConverted_Modded(baseTile, conversionType, x, y);
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
-	public static int GetConvertedWall_Modded(in int baseTile, in IAltBiome conversionType, in ushort x, in ushort y) {
-		return WallData.GetConverted_Modded(in baseTile, in conversionType, in x, in y);
+	public static int GetConvertedTile_Modded<T>(int baseTile, ushort x, ushort y) where T : class, IAltBiome => TileData.GetConverted_Modded<T>(baseTile, x, y);
+
+	[MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
+	public static int GetConvertedWall_Modded(int baseTile, IAltBiome conversionType, ushort x, ushort y) {
+		return WallData.GetConverted_Modded(baseTile, conversionType, x, y);
 	}
+
+	[MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
+	public static int GetConvertedWall_Modded<T>(int baseTile, ushort x, ushort y) where T : class, IAltBiome => WallData.GetConverted_Modded<T>(baseTile, x, y);
 }

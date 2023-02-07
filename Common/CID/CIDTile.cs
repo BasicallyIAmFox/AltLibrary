@@ -11,7 +11,6 @@ namespace AltLibrary.Common.CID;
 public sealed class CIDTile : CIData {
 	public Dictionary<int, BitsByte> TryKillTreesOnConversion = new();
 
-	[MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
 	public override void Bake() {
 		for (int x = 0; x < TileLoader.TileCount; x++) {
 			if (TileID.Sets.Conversion.GolfGrass[x] && x != TileID.GolfGrass) {
@@ -131,23 +130,23 @@ public sealed class CIDTile : CIData {
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
-	public override int GetConverted_Vanilla(in int baseTile, in byte conversionType, in ushort x, in ushort y) {
-		return GetConverted(baseTile, in conversionType, in x, in y);
+	public override int GetConverted_Vanilla(int baseTile, byte conversionType, ushort x, ushort y) {
+		return GetConverted(baseTile, conversionType, x, y);
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
-	public override int GetConverted_Modded(in int baseTile, in IAltBiome biome, in ushort x, in ushort y) {
+	public override int GetConverted_Modded(int baseTile, IAltBiome biome, ushort x, ushort y) {
 		if (biome.Type == ModContent.GetInstance<CorruptBiome>().Type) {
-			return GetConverted_Vanilla(in baseTile, BiomeConversionID.Corruption, in x, in y);
+			return GetConverted_Vanilla(baseTile, BiomeConversionID.Corruption, x, y);
 		}
 		else if (biome.Type == ModContent.GetInstance<CrimsonBiome>().Type) {
-			return GetConverted_Vanilla(in baseTile, BiomeConversionID.Crimson, in x, in y);
+			return GetConverted_Vanilla(baseTile, BiomeConversionID.Crimson, x, y);
 		}
 		else if (biome.Type == ModContent.GetInstance<HallowBiome>().Type) {
-			return GetConverted_Vanilla(in baseTile, BiomeConversionID.Hallow, in x, in y);
+			return GetConverted_Vanilla(baseTile, BiomeConversionID.Hallow, x, y);
 		}
 		else if (biome.Type == ModContent.GetInstance<TropicsBiome>().Type) {
-			return GetConverted_Vanilla(in baseTile, BiomeConversionID.Purity, in x, in y);
+			return GetConverted_Vanilla(baseTile, BiomeConversionID.Purity, x, y);
 		}
 		return biome.GetAltBlock(baseTile, in x, in y);
 	}

@@ -30,7 +30,7 @@ public static class StaticCollector {
 		var list = Collect(mod);
 		for (int i = list.Count - 1; i >= 0; i--) {
 			var current = list[i];
-			if (current.DeclaringType.GetCustomAttribute<CompilerGeneratedAttribute>() != null || current.IsInitOnly || !current.FieldType.IsClass) {
+			if (current.IsLiteral || current.DeclaringType.GetCustomAttribute<CompilerGeneratedAttribute>() != null || current.IsInitOnly || !current.FieldType.IsClass) {
 				continue;
 			}
 
