@@ -5,18 +5,18 @@ namespace AltLibrary.Common.Data;
 
 [DataAlwaysExists]
 public struct WorldIconData : IBiomeData, IDataAlwaysExists<IAltBiome> {
-	public string NormalWorldIcon { get; set; }
-	public string DrunkBaseWorldIcon { get; set; }
-	public string DrunkWorldIcon { get; set; }
-	public string NotTheBeesWorldIcon { get; set; }
-	public string ForTheWorthyWorldIcon { get; set; }
-	public string Celebrationmk10WorldIcon { get; set; }
-	public string TheConstantWorldIcon { get; set; }
-	public string NoTrapsWorldIcon { get; set; }
-	public string DontDigUpWorldIcon { get; set; }
-	public string GetFixedBoiLeftWorldIcon { get; set; }
-	public string GetFixedBoiFullWorldIcon { get; set; }
-	public string GetFixedBoiRightWorldIcon { get; set; }
+	public string NormalWorldIcon { readonly get; set; }
+	public string DrunkBaseWorldIcon { readonly get; set; }
+	public string DrunkWorldIcon { readonly get; set; }
+	public string NotTheBeesWorldIcon { readonly get; set; }
+	public string ForTheWorthyWorldIcon { readonly get; set; }
+	public string Celebrationmk10WorldIcon { readonly get; set; }
+	public string TheConstantWorldIcon { readonly get; set; }
+	public string NoTrapsWorldIcon { readonly get; set; }
+	public string DontDigUpWorldIcon { readonly get; set; }
+	public string GetFixedBoiLeftWorldIcon { readonly get; set; }
+	public string GetFixedBoiFullWorldIcon { readonly get; set; }
+	public string GetFixedBoiRightWorldIcon { readonly get; set; }
 
 	public static void CheckThere(IAltBiome biome) {
 		var worldIconData = biome.DataHandler.Get<WorldIconData>();

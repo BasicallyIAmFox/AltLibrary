@@ -21,7 +21,7 @@ public struct ConversionData : IBiomeData {
 	public int Snow { get; set; }
 	public int Ice { get; set; }
 
-	public List<int> AsList() {
+	public IReadOnlyList<int> AsList() {
 		var self = this;
 		return GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public)
 			.Where(x => x.DeclaringType == typeof(int))

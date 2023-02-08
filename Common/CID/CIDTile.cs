@@ -145,7 +145,7 @@ public sealed class CIDTile : CIData {
 		else if (biome.Type == ModContent.GetInstance<HallowBiome>().Type) {
 			return GetConverted_Vanilla(baseTile, BiomeConversionID.Hallow, x, y);
 		}
-		else if (biome.Type == ModContent.GetInstance<TropicsBiome>().Type) {
+		else if (biome.Type == ModContent.GetInstance<JungleBiome>().Type) {
 			return GetConverted_Vanilla(baseTile, BiomeConversionID.Purity, x, y);
 		}
 		return biome.GetAltBlock(baseTile, in x, in y);

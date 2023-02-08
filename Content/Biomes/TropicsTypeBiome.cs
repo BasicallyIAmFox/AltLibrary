@@ -3,7 +3,7 @@ using AltLibrary.Content.Groups;
 
 namespace AltLibrary.Content.Biomes;
 
-public sealed class TropicsBiome : AltBiome<TropicsBiomeGroup> {
+public sealed class JungleBiome : AltBiome<TropicsBiomeGroup> {
 	public override void SetStaticDefaults() {
 	}
 }
