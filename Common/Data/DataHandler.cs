@@ -5,7 +5,7 @@ namespace AltLibrary.Common.Data;
 
 public interface IDataHandler {
 	void Add<T>(T data) where T : IAltData;
-	V Get<V>() where V : IAltData;
+	T Get<T>() where T : unmanaged, IAltData;
 }
 
 public abstract class DataHandler : IDataHandler {
@@ -15,8 +15,8 @@ public abstract class DataHandler : IDataHandler {
 		database[typeof(T)] = data;
 	}
 
-	public T Get<T>() where T : IAltData {
-		return database.TryGetValue(typeof(T), out IAltData data) ? (T)data : default;
+	public T Get<T>() where T : unmanaged, IAltData {
+		return database.TryGetValue(typeof(T), out IAltData data) ? (T)data : new T();
 	}
 }
 

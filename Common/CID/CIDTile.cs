@@ -1,7 +1,7 @@
 ﻿using AltLibrary.Common.AltTypes;
-using AltLibrary.Content.Biomes;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using AltLibrary.Common.Data;
+using AltLibrary.Content.Groups;
+using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -9,145 +9,111 @@ using Terraria.ModLoader;
 namespace AltLibrary.Common.CID;
 
 public sealed class CIDTile : CIData {
-	public Dictionary<int, BitsByte> TryKillTreesOnConversion = new();
-
 	public override void Bake() {
 		for (int x = 0; x < TileLoader.TileCount; x++) {
 			if (TileID.Sets.Conversion.GolfGrass[x] && x != TileID.GolfGrass) {
-				Parent.TryAdd(x, TileID.GolfGrass);
-				TryKillTreesOnConversion.TryAdd(x, new(false, true, true, true, true, true, true, true));
+				tiles[DecleminationId][x] = TileID.GolfGrass;
 			}
 			else if (TileID.Sets.Conversion.Grass[x] && x != TileID.Grass) {
-				Parent.TryAdd(x, TileID.Grass);
-				TryKillTreesOnConversion.TryAdd(x, new(false, true, true, true, true, true, true, true));
+				tiles[DecleminationId][x] = TileID.Grass;
 			}
 			else if (TileID.Sets.Conversion.JungleGrass[x] && x != TileID.JungleGrass) {
-				Parent.TryAdd(x, TileID.JungleGrass);
-				TryKillTreesOnConversion.TryAdd(x, new(false, true, true, true, true, true, true, true));
+				tiles[DecleminationId][x] = TileID.JungleGrass;
 			}
 			else if ((Main.tileMoss[x] || TileID.Sets.Conversion.Stone[x]) && x != TileID.Stone) {
-				PurityConversion.TryAdd(x, x);
-				Parent.TryAdd(x, TileID.Stone);
+				tiles[DecleminationId][x] = TileID.Stone;
 			}
 			else if (TileID.Sets.Conversion.Ice[x] && x != TileID.IceBlock) {
-				Parent.TryAdd(x, TileID.IceBlock);
-				TryKillTreesOnConversion.TryAdd(x, new(false, true, true, true, true, true, true, true));
+				tiles[DecleminationId][x] = TileID.IceBlock;
 			}
 			else if (TileID.Sets.Conversion.Sandstone[x] && x != TileID.Sandstone) {
-				Parent.TryAdd(x, TileID.Sandstone);
+				tiles[DecleminationId][x] = TileID.Sandstone;
 			}
 			else if (TileID.Sets.Conversion.HardenedSand[x] && x != TileID.HardenedSand) {
-				Parent.TryAdd(x, TileID.HardenedSand);
+				tiles[DecleminationId][x] = TileID.HardenedSand;
 			}
 			else if (TileID.Sets.Conversion.Sand[x] && x != TileID.Sand) {
-				Parent.TryAdd(x, TileID.Sand);
-				TryKillTreesOnConversion.TryAdd(x, new(false, true, true, true, true, true, true, true));
+				tiles[DecleminationId][x] = TileID.Sand;
 			}
 
 			// Brown Solution
 			if ((TileID.Sets.Conversion.Stone[x] || TileID.Sets.Conversion.Ice[x] || TileID.Sets.Conversion.Sandstone[x]) && x != TileID.Stone) {
-				ForestConversion.TryAdd(x, TileID.Stone);
-				TryKillTreesOnConversion.TryAdd(x, new(true, true, true, true, true, true, true, false));
+				tiles[BrownSolutionId][x] = TileID.Stone;
 			}
 			else if (TileID.Sets.Conversion.GolfGrass[x] && x != TileID.GolfGrass) {
-				ForestConversion.TryAdd(x, TileID.GolfGrass);
-				TryKillTreesOnConversion.TryAdd(x, new(true, true, true, true, true, true, true, false));
+				tiles[BrownSolutionId][x] = TileID.GolfGrass;
 			}
 			else if (TileID.Sets.Conversion.Grass[x] && x != TileID.Grass && x != TileID.GolfGrass) {
-				ForestConversion.TryAdd(x, TileID.Grass);
-				TryKillTreesOnConversion.TryAdd(x, new(true, true, true, true, true, true, true, false));
+				tiles[BrownSolutionId][x] = TileID.Grass;
 			}
 
 			// White Solution
 			if ((TileID.Sets.Conversion.Grass[x] || TileID.Sets.Conversion.Sand[x] || TileID.Sets.Conversion.HardenedSand[x] || TileID.Sets.Conversion.Snow[x] || TileID.Sets.Conversion.Dirt[x]) && x != TileID.SnowBlock) {
-				SnowConversion.TryAdd(x, TileID.SnowBlock);
-				TryKillTreesOnConversion.TryAdd(x, new(true, true, true, true, true, true, false, true));
+				tiles[WhiteSolutionId][x] = TileID.SnowBlock;
 			}
 			else if ((Main.tileMoss[x] || TileID.Sets.Conversion.Stone[x] || TileID.Sets.Conversion.Ice[x] || TileID.Sets.Conversion.Sandstone[x]) && x != TileID.IceBlock) {
-				SnowConversion.TryAdd(x, TileID.IceBlock);
-				TryKillTreesOnConversion.TryAdd(x, new(true, true, true, true, true, true, false, true));
+				tiles[WhiteSolutionId][x] = TileID.SnowBlock;
 			}
 
 			// TODO: Add Yellow Solution
 		}
 
 		// Purity
-		PurityConversion.TryAdd(TileID.Stone, TileID.Stone);
-		PurityConversion.TryAdd(TileID.Grass, TileID.Grass);
-		PurityConversion.TryAdd(TileID.GolfGrass, TileID.GolfGrass);
-		PurityConversion.TryAdd(TileID.JungleGrass, TileID.JungleGrass);
-		PurityConversion.TryAdd(TileID.IceBlock, TileID.IceBlock);
-		PurityConversion.TryAdd(TileID.Sand, TileID.Sand);
-		PurityConversion.TryAdd(TileID.HardenedSand, TileID.HardenedSand);
-		PurityConversion.TryAdd(TileID.Sandstone, TileID.Sandstone);
-		PurityConversion.TryAdd(TileID.JungleThorns, TileID.JungleThorns);
-		PurityConversion.TryAdd(TileID.MushroomGrass, TileID.Grass);
+		tiles[DecleminationId][TileID.Stone] = TileID.Stone;
+		tiles[DecleminationId][TileID.Grass] = TileID.Grass;
+		tiles[DecleminationId][TileID.GolfGrass] = TileID.GolfGrass;
+		tiles[DecleminationId][TileID.JungleGrass] = TileID.JungleGrass;
+		tiles[DecleminationId][TileID.IceBlock] = TileID.IceBlock;
+		tiles[DecleminationId][TileID.Sand] = TileID.Sand;
+		tiles[DecleminationId][TileID.HardenedSand] = TileID.HardenedSand;
+		tiles[DecleminationId][TileID.Sandstone] = TileID.Sandstone;
+		tiles[DecleminationId][TileID.JungleThorns] = TileID.JungleThorns;
 
-		TryKillTreesOnConversion.TryAdd(TileID.MushroomGrass, new(false, true, true, true, true, true, true, true));
-		BreakIfConversionFail.TryAdd(TileID.JungleThorns, new(true, true, true, true, true, true, true, true));
-
-		Parent.TryAdd(TileID.JungleThorns, TileID.CorruptThorns);
-		Parent.TryAdd(TileID.JungleThorns, TileID.CrimsonThorns);
-
-		// Hallowed
-		HallowConversion.TryAdd(TileID.Stone, TileID.Pearlstone);
-		HallowConversion.TryAdd(TileID.Grass, TileID.HallowedGrass);
-		HallowConversion.TryAdd(TileID.GolfGrass, TileID.GolfGrassHallowed);
-		HallowConversion.TryAdd(TileID.IceBlock, TileID.HallowedIce);
-		HallowConversion.TryAdd(TileID.Sand, TileID.Pearlsand);
-		HallowConversion.TryAdd(TileID.HardenedSand, TileID.HallowHardenedSand);
-		HallowConversion.TryAdd(TileID.Sandstone, TileID.HallowSandstone);
-
-		// Corruption
-		CorruptionConversion.TryAdd(TileID.Stone, TileID.Ebonstone);
-		CorruptionConversion.TryAdd(TileID.Grass, TileID.CorruptGrass);
-		CorruptionConversion.TryAdd(TileID.JungleGrass, TileID.CorruptJungleGrass);
-		CorruptionConversion.TryAdd(TileID.IceBlock, TileID.CorruptIce);
-		CorruptionConversion.TryAdd(TileID.Sand, TileID.Ebonsand);
-		CorruptionConversion.TryAdd(TileID.HardenedSand, TileID.CorruptHardenedSand);
-		CorruptionConversion.TryAdd(TileID.Sandstone, TileID.CorruptSandstone);
-		CorruptionConversion.TryAdd(TileID.CorruptThorns, TileID.CorruptThorns);
-
-		BreakIfConversionFail.TryAdd(TileID.CorruptThorns, new(true, true, true, true, true, true, true, true));
-
-		// Crimson
-		CrimsonConversion.TryAdd(TileID.Stone, TileID.Crimstone);
-		CrimsonConversion.TryAdd(TileID.Grass, TileID.CrimsonGrass);
-		CrimsonConversion.TryAdd(TileID.JungleGrass, TileID.CrimsonGrass);
-		CrimsonConversion.TryAdd(TileID.IceBlock, TileID.FleshIce);
-		CrimsonConversion.TryAdd(TileID.Sand, TileID.Crimsand);
-		CrimsonConversion.TryAdd(TileID.HardenedSand, TileID.CrimsonHardenedSand);
-		CrimsonConversion.TryAdd(TileID.Sandstone, TileID.CrimsonSandstone);
-		CrimsonConversion.TryAdd(TileID.CrimsonThorns, TileID.CrimsonThorns);
-
-		BreakIfConversionFail.TryAdd(TileID.CrimsonThorns, new(true, true, true, true));
-
-		Parent.TryAdd(TileID.CrimsonThorns, TileID.CorruptThorns);
+		tiles[DecleminationId][TileID.CorruptThorns] = TileID.JungleThorns;
+		tiles[DecleminationId][TileID.CrimsonThorns] = TileID.JungleThorns;
 
 		// Mushroom
-		MushroomConversion.TryAdd(TileID.JungleGrass, TileID.MushroomGrass);
-		Parent.TryAdd(TileID.MushroomGrass, TileID.JungleGrass);
+		tiles[DarkBlueSolutionId][TileID.JungleGrass] = TileID.MushroomGrass;
+		tiles[DecleminationId][TileID.MushroomGrass] = TileID.JungleGrass;
+
+		ForeachTileAltBiome();
 	}
 
-	[MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
-	public override int GetConverted_Vanilla(int baseTile, byte conversionType, ushort x, ushort y) {
-		return GetConverted(baseTile, conversionType, x, y);
-	}
+	private void ForeachTileAltBiome() {
+		var union = UniteAltBiomes();
+		foreach (IAltBiome u in union) {
+			var data = u.DataHandler.Get<ConversionData>();
+			for (int x = 0; x < TileLoader.TileCount; x++) {
+				int t = 5 + u.Type;
 
-	[MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
-	public override int GetConverted_Modded(int baseTile, IAltBiome biome, ushort x, ushort y) {
-		if (biome.Type == ModContent.GetInstance<CorruptBiome>().Type) {
-			return GetConverted_Vanilla(baseTile, BiomeConversionID.Corruption, x, y);
+				if (TileID.Sets.Conversion.GolfGrass[x] && data.MowedGrass != Keep && x != data.MowedGrass) {
+					tiles[t][x] = data.MowedGrass;
+				}
+				else if (TileID.Sets.Conversion.Grass[x] && data.Grass != Keep && x != data.Grass) {
+					tiles[t][x] = data.Grass;
+				}
+				else if (TileID.Sets.Conversion.JungleGrass[x] && data.JungleGrass != Keep && x != data.JungleGrass) {
+					tiles[t][x] = data.JungleGrass;
+				}
+				else if ((Main.tileMoss[x] || TileID.Sets.Conversion.Stone[x]) && data.Stone != Keep && x != data.Stone) {
+					tiles[t][x] = data.Stone;
+				}
+				else if (TileID.Sets.Conversion.Snow[x] && data.Snow != Keep && x != data.Snow) {
+					tiles[t][x] = data.Snow;
+				}
+				else if (TileID.Sets.Conversion.Ice[x] && data.Ice != Keep && x != data.Ice) {
+					tiles[t][x] = data.Ice;
+				}
+				else if (TileID.Sets.Conversion.Sandstone[x] && data.Sandstone != Keep && x != data.Sandstone) {
+					tiles[t][x] = data.Sandstone;
+				}
+				else if (TileID.Sets.Conversion.HardenedSand[x] && data.HardSand != Keep && x != data.HardSand) {
+					tiles[t][x] = data.HardSand;
+				}
+				else if (TileID.Sets.Conversion.Sand[x] && data.Sand != Keep && x != data.Sand) {
+					tiles[t][x] = data.Sand;
+				}
+			}
 		}
-		else if (biome.Type == ModContent.GetInstance<CrimsonBiome>().Type) {
-			return GetConverted_Vanilla(baseTile, BiomeConversionID.Crimson, x, y);
-		}
-		else if (biome.Type == ModContent.GetInstance<HallowBiome>().Type) {
-			return GetConverted_Vanilla(baseTile, BiomeConversionID.Hallow, x, y);
-		}
-		else if (biome.Type == ModContent.GetInstance<JungleBiome>().Type) {
-			return GetConverted_Vanilla(baseTile, BiomeConversionID.Purity, x, y);
-		}
-		return biome.GetAltBlock(baseTile, in x, in y);
 	}
 }

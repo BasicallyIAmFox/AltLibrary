@@ -40,7 +40,7 @@ public sealed class AssetFactory : ILoadable {
 
 		int GetIndex(int[] indices, int[] size) {
 			int index = 0;
-			for (int i = 0; i < indices.Length; i++) {
+			for (int i = 0, c = indices.Length; i < c; i++) {
 				index = index * size[i] + indices[i];
 			}
 			return index;

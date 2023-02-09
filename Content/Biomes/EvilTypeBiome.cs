@@ -8,8 +8,16 @@ namespace AltLibrary.Content.Biomes;
 public sealed class CorruptBiome : AltBiome<EvilBiomeGroup> {
 	public override void SetStaticDefaults() {
 		DataHandler.Add(new ConversionData {
-			Grass = TileID.CorruptGrass,
 			Stone = TileID.Ebonstone,
+			Sandstone = TileID.CorruptSandstone,
+			HardSand = TileID.CorruptHardenedSand,
+
+			ThornBush = TileID.CorruptThorns,
+
+			Grass = TileID.CorruptGrass,
+			JungleGrass = TileID.CorruptJungleGrass,
+
+			Sand = TileID.Ebonsand,
 			Ice = TileID.CorruptIce
 		});
 	}
@@ -17,8 +25,16 @@ public sealed class CorruptBiome : AltBiome<EvilBiomeGroup> {
 public sealed class CrimsonBiome : AltBiome<EvilBiomeGroup> {
 	public override void SetStaticDefaults() {
 		DataHandler.Add(new ConversionData {
-			Grass = TileID.CrimsonGrass,
 			Stone = TileID.Crimstone,
+			Sandstone = TileID.CrimsonSandstone,
+			HardSand = TileID.CrimsonHardenedSand,
+
+			ThornBush = TileID.CrimsonThorns,
+
+			Grass = TileID.CrimsonGrass,
+			JungleGrass = TileID.CrimsonJungleGrass,
+
+			Sand = TileID.Crimsand,
 			Ice = TileID.FleshIce
 		});
 	}

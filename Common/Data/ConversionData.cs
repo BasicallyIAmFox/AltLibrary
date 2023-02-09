@@ -1,25 +1,28 @@
-﻿using System.Collections.Generic;
+﻿using AltLibrary.Common.CID;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
 namespace AltLibrary.Common.Data;
 
 public struct ConversionData : IBiomeData {
-	public int Stone { get; set; }
-	public int Sandstone { get; set; }
-	public int HardSand { get; set; }
+	public ConversionData() {
+	}
 
-	public int ThornBush { get; set; }
+	public int Stone { get; set; } = CIData.Keep;
+	public int Sandstone { get; set; } = CIData.Keep;
+	public int HardSand { get; set; } = CIData.Keep;
 
-	public int Grass { get; set; }
-	public int JungleGrass { get; set; }
-	public int MowedGrass { get; set; }
-	public int Mud { get; set; }
-	public bool MudToDirt { get; set; }
+	public int ThornBush { get; set; } = CIData.Keep;
 
-	public int Sand { get; set; }
-	public int Snow { get; set; }
-	public int Ice { get; set; }
+	public int Grass { get; set; } = CIData.Keep;
+	public int JungleGrass { get; set; } = CIData.Keep;
+	public int MowedGrass { get; set; } = CIData.Keep;
+	public int Mud { get; set; } = CIData.Keep;
+
+	public int Sand { get; set; } = CIData.Keep;
+	public int Snow { get; set; } = CIData.Keep;
+	public int Ice { get; set; } = CIData.Keep;
 
 	public IReadOnlyList<int> AsList() {
 		var self = this;

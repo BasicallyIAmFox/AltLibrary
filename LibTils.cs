@@ -1,9 +1,7 @@
-﻿using AltLibrary.Common.IO;
-using System;
+﻿using System;
 using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
-using Terraria.IO;
 using Terraria.ModLoader;
 
 namespace AltLibrary;
@@ -49,5 +47,6 @@ public static class LibUtils {
 
 	public static void ForEachContent<T>(Action<T> action) where T : ILoadable => ModContent.GetContent<T>().ForEach(type => action(type));
 
-	public static LibWorldData GetLibData(this WorldFileData worldFileData) => LibWorldData.libWorldData[worldFileData];
+	internal static T To<T>(this string fullName) where T : IModType
+		=> ModContent.TryFind<T>(fullName, out var value) ? value : default;
 }

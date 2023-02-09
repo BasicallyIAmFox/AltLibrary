@@ -74,6 +74,12 @@ public static class ILHelper {
 	public static void On(Type type, string methodName, Delegate del, bool lateLoading = false) => On(type.FindMethod(methodName), del, lateLoading);
 	public static void On(MethodInfo method, Delegate del, bool lateLoading = false) => IlsAndDetours.Add((method, del, true, lateLoading));
 
+	public static int AddVariable<T>(this ILContext context) => context.AddVariable(typeof(T));
+	public static int AddVariable(this ILContext context, Type type) {
+		context.Body.Variables.Add(new VariableDefinition(context.Import(type)));
+		return context.Body.Variables.Count - 1;
+	}
+
 	#region https://github.com/blushiemagic/MagicStorage/blob/1.4/Edits/ILHelper.cs
 	public static bool LogILEdits { get; set; } =
 #if DEBUG

@@ -10,7 +10,7 @@ public enum ContentOrder {
 	Content,
 	PostContent,
 }
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
 public class LoadableContentAttribute : Attribute {
 	public ContentOrder ContentOrder { get; }
 	public string LoadName { get; }
