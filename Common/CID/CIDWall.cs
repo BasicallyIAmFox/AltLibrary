@@ -1,6 +1,6 @@
 ﻿namespace AltLibrary.Common.CID;
 
-public sealed class CIDWall : CIData {
+public sealed class ConversionInheritanceDataWall : ConversionInheritanceData {
 	public override void Bake() {
 	}
 }

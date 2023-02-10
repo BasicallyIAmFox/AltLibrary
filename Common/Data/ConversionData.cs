@@ -9,20 +9,20 @@ public struct ConversionData : IBiomeData {
 	public ConversionData() {
 	}
 
-	public int Stone { get; set; } = CIData.Keep;
-	public int Sandstone { get; set; } = CIData.Keep;
-	public int HardSand { get; set; } = CIData.Keep;
+	public int Stone { get; set; } = ConversionInheritanceData.Keep;
+	public int Sandstone { get; set; } = ConversionInheritanceData.Keep;
+	public int HardSand { get; set; } = ConversionInheritanceData.Keep;
 
-	public int ThornBush { get; set; } = CIData.Keep;
+	public int ThornBush { get; set; } = ConversionInheritanceData.Keep;
 
-	public int Grass { get; set; } = CIData.Keep;
-	public int JungleGrass { get; set; } = CIData.Keep;
-	public int MowedGrass { get; set; } = CIData.Keep;
-	public int Mud { get; set; } = CIData.Keep;
+	public int Grass { get; set; } = ConversionInheritanceData.Keep;
+	public int JungleGrass { get; set; } = ConversionInheritanceData.Keep;
+	public int MowedGrass { get; set; } = ConversionInheritanceData.Keep;
+	public int Mud { get; set; } = ConversionInheritanceData.Keep;
 
-	public int Sand { get; set; } = CIData.Keep;
-	public int Snow { get; set; } = CIData.Keep;
-	public int Ice { get; set; } = CIData.Keep;
+	public int Sand { get; set; } = ConversionInheritanceData.Keep;
+	public int Snow { get; set; } = ConversionInheritanceData.Keep;
+	public int Ice { get; set; } = ConversionInheritanceData.Keep;
 
 	public IReadOnlyList<int> AsList() {
 		var self = this;

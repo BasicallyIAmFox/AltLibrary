@@ -1,17 +1,18 @@
 ﻿using AltLibrary.Common.AltTypes;
 using AltLibrary.Common.Attributes;
 using AltLibrary.Content.Groups;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static AltLibrary.Common.CID.ConversionInheritanceData;
 
 namespace AltLibrary.Common.CID;
 
 // TODO: More optimization.
 
-// Conversion Inhertiance Database
-public abstract class CIData {
+public abstract class ConversionInheritanceData {
 	public const int Keep = -1;
 	public const int Break = -2;
 
@@ -21,43 +22,49 @@ public abstract class CIData {
 	public const int WhiteSolutionId = 3;       // Snow
 	public const int DarkBlueSolutionId = 4;    // Mushroom
 
-	protected readonly int[][] tiles;
+	private readonly int[] tiles;
 
-	public CIData() {
-		int size = 5 + UniteAltBiomes().Length;
-		tiles = new int[size][];
-		for (int i = 0; i < size; i++) {
-			tiles[i] = TileID.Sets.Factory.CreateIntSet();
-		}
+	public ConversionInheritanceData() {
+		int size = 5 + UniteAltBiomes().LastOrDefault()?.Type ?? 0;
+		tiles = new SetFactory(size * TileLoader.TileCount).CreateIntSet(defaultState: Keep);
 	}
 
-	public static IAltBiome[] UniteAltBiomes() => ModContent.GetContent<IAltBiome>().Where(x => x is AltBiome<EvilBiomeGroup> or AltBiome<GoodBiomeGroup>).ToArray();
+	[MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+	private static int GetId(int id, int tile) => id * TileLoader.TileCount + tile;
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+	public static int GetConversionIdOf<T>() where T : class, IAltBiome => 5 + ModContent.GetInstance<T>().Type;
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+	public static IEnumerable<IAltBiome> UniteAltBiomes() => ModContent.GetContent<IAltBiome>().Where(x => x is AltBiome<EvilBiomeGroup> or AltBiome<GoodBiomeGroup>);
 
 	public abstract void Bake();
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-	public void Set(ushort id, int baseTile, int tile) => tiles[id][baseTile] = tile;
-
-	public void Set<T>(int baseTile, int tile) where T : class, IAltBiome => Set((ushort)(ModContent.GetInstance<T>().Type + 5), baseTile, tile);
+	public int Get(int id, int tile) => tiles[GetId(id, tile)];
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-	public int GetInfectedTile(int tile, ushort id) => tiles[id][tile];
+	public int Get<T>(int tile) where T : class, IAltBiome => Get(GetConversionIdOf<T>(), tile);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+	public void Set(int id, int baseTile, int tile) => tiles[GetId(id, baseTile)] = tile;
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+	public void Set<T>(int baseTile, int tile) where T : class, IAltBiome => Set(GetConversionIdOf<T>(), baseTile, tile);
 }
 [LoadableContent(ContentOrder.PostContent, nameof(Load))]
-public static class CIDatabase {
-	private static CIDTile TileData;
-	private static CIDWall WallData;
+public static class ConversionInheritanceDatabase {
+	private static ConversionInheritanceDataTile TileData;
+	private static ConversionInheritanceDataWall WallData;
 
 	public static void Load() {
 		(TileData = new()).Bake();
 		(WallData = new()).Bake();
 	}
 
-	public static int GetConvertedTile(ushort conversionType, int baseTile) => TileData.GetInfectedTile(baseTile, conversionType);
-	public static int GetConvertedTile(int conversionType, int baseTile) => GetConvertedTile((ushort)conversionType, baseTile);
-	public static int GetConvertedTile<T>(int baseTile) where T : class, IAltBiome => GetConvertedTile(ModContent.GetInstance<T>().Type + 5, baseTile);
+	public static int GetConvertedTile(int conversionType, int baseTile) => TileData.Get(baseTile, conversionType);
+	public static int GetConvertedTile<T>(int baseTile) where T : class, IAltBiome => GetConvertedTile(GetConversionIdOf<T>(), baseTile);
 
-	public static int GetConvertedWall(ushort conversionType, int baseTile) => WallData.GetInfectedTile(baseTile, conversionType);
-	public static int GetConvertedWall(int conversionType, int baseTile) => GetConvertedWall((ushort)conversionType, baseTile);
-	public static int GetConvertedWall<T>(int baseTile) where T : class, IAltBiome => GetConvertedWall(ModContent.GetInstance<T>().Type + 5, baseTile);
+	public static int GetConvertedWall(int conversionType, int baseTile) => WallData.Get(baseTile, conversionType);
+	public static int GetConvertedWall<T>(int baseTile) where T : class, IAltBiome => GetConvertedWall(GetConversionIdOf<T>(), baseTile);
 }

@@ -4,18 +4,18 @@ using System.Collections.Generic;
 namespace AltLibrary.Common.Data;
 
 public interface IDataHandler {
-	void Add<T>(T data) where T : IAltData;
-	T Get<T>() where T : unmanaged, IAltData;
+	void Add<T>(T data) where T : struct, IAltData;
+	T Get<T>() where T : struct, IAltData;
 }
 
 public abstract class DataHandler : IDataHandler {
 	private readonly Dictionary<Type, IAltData> database = new();
 
-	public void Add<T>(T data) where T : IAltData {
+	public void Add<T>(T data) where T : struct, IAltData {
 		database[typeof(T)] = data;
 	}
 
-	public T Get<T>() where T : unmanaged, IAltData {
+	public T Get<T>() where T : struct, IAltData {
 		return database.TryGetValue(typeof(T), out IAltData data) ? (T)data : new T();
 	}
 }

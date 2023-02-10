@@ -160,10 +160,10 @@ public sealed class LayeredWorldIconElement : UIImage {
 			}
 
 			Draw(assets[0]);
-			Draw(LibAssets.IconZenith_Left[_glitchVariation]);
-			Draw(LibAssets.IconZenith_Right[_glitchVariation]);
+			//Draw(LibAssets.IconZenith_Left[_glitchVariation]);
+			//Draw(LibAssets.IconZenith_Right[_glitchVariation]);
 
-			//spriteBatch.End();
+			spriteBatch.End();
 			//spriteBatch.GetData().SortMode = sortMode;
 			return;
 		}

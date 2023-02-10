@@ -1,14 +1,16 @@
-﻿using System;
+﻿using AltLibrary.Common.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Assets;
 
-public sealed class AssetFactory : ILoadable {
-	private static Dictionary<Type, IProcessor> processes = new(4);
+[LoadableContent(ContentOrder.Content, nameof(Load))]
+public static class AssetFactory {
+	private static readonly Dictionary<Type, IProcessor> processes = new(4);
 
-	public void Load(Mod mod) {
+	private static void Load() {
 		LibUtils.ForEachType(x => !x.IsAbstract && x.IsAssignableTo(typeof(IProcessor)), (current, mod) => {
 			var process = Activator.CreateInstance(current) as IProcessor;
 			processes.TryAdd(process.ProcessType, process);
@@ -19,14 +21,27 @@ public sealed class AssetFactory : ILoadable {
 		if (processes.TryGetValue(typeof(T), out IProcessor process)) {
 			return process.Load(path) as T;
 		}
-		throw new ArgumentOutOfRangeException();
+
+		// oi shut up
+#pragma warning disable CA2208 // Instantiate argument exceptions correctly
+		throw new ArgumentOutOfRangeException(nameof(processes), $"Couldn't find Processor that could load {typeof(T).FullName}!");
+#pragma warning restore CA2208 // Instantiate argument exceptions correctly
 	}
 
 	public static T[] CreateMultiple<T>(Func<int, string> selector, int size) where T : class {
 		var array = new T[size];
-		for (int i = 0; i < size; i++) {
+
+		int i = 0;
+		for (; i < size - 4; i += 4) {
+			array[i] = CreateSingle<T>(selector(i));
+			array[i + 1] = CreateSingle<T>(selector(i + 1));
+			array[i + 2] = CreateSingle<T>(selector(i + 2));
+			array[i + 3] = CreateSingle<T>(selector(i + 3));
+		}
+		for (; i < size; i++) {
 			array[i] = CreateSingle<T>(selector(i));
 		}
+
 		return array;
 	}
 
@@ -38,7 +53,7 @@ public sealed class AssetFactory : ILoadable {
 		var mdArray = Array.CreateInstance(typeof(T), size);
 		RecursiveFill(new int[size.Length], size, 0);
 
-		int GetIndex(int[] indices, int[] size) {
+		static int GetIndex(int[] indices, int[] size) {
 			int index = 0;
 			for (int i = 0, c = indices.Length; i < c; i++) {
 				index = index * size[i] + indices[i];
@@ -57,8 +72,5 @@ public sealed class AssetFactory : ILoadable {
 		}
 
 		return mdArray;
-	}
-
-	public void Unload() {
 	}
 }

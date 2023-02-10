@@ -24,16 +24,16 @@ public abstract partial class AltBiome<T> : AAltType<AltBiome<T>, T, IAltBiome>,
 	public virtual int GetAltBlock(int baseTile) {
 		var data = DataHandler.Get<ConversionData>();
 		return baseTile switch {
-			TileID.Stone => data.Stone == 0 ? data.Stone : CIData.Keep,
-			TileID.Grass => data.Grass == 0 ? data.Grass : CIData.Keep,
-			TileID.JungleGrass => data.JungleGrass == 0 ? data.JungleGrass : CIData.Keep,
-			TileID.GolfGrass => data.MowedGrass == 0 ? data.MowedGrass : CIData.Keep,
-			TileID.IceBlock => data.Ice == 0 ? data.Ice : CIData.Keep,
-			TileID.Sand => data.Sand == 0 ? data.Sand : CIData.Keep,
-			TileID.HardenedSand => data.HardSand == 0 ? data.HardSand : CIData.Keep,
-			TileID.Sandstone => data.Sandstone == 0 ? data.Sandstone : CIData.Keep,
-			TileID.CorruptThorns or TileID.CrimsonThorns => data.ThornBush == 0 ? data.ThornBush : CIData.Keep,
-			_ => CIData.Keep,
+			TileID.Stone => data.Stone == 0 ? data.Stone : ConversionInheritanceData.Keep,
+			TileID.Grass => data.Grass == 0 ? data.Grass : ConversionInheritanceData.Keep,
+			TileID.JungleGrass => data.JungleGrass == 0 ? data.JungleGrass : ConversionInheritanceData.Keep,
+			TileID.GolfGrass => data.MowedGrass == 0 ? data.MowedGrass : ConversionInheritanceData.Keep,
+			TileID.IceBlock => data.Ice == 0 ? data.Ice : ConversionInheritanceData.Keep,
+			TileID.Sand => data.Sand == 0 ? data.Sand : ConversionInheritanceData.Keep,
+			TileID.HardenedSand => data.HardSand == 0 ? data.HardSand : ConversionInheritanceData.Keep,
+			TileID.Sandstone => data.Sandstone == 0 ? data.Sandstone : ConversionInheritanceData.Keep,
+			TileID.CorruptThorns or TileID.CrimsonThorns => data.ThornBush == 0 ? data.ThornBush : ConversionInheritanceData.Keep,
+			_ => ConversionInheritanceData.Keep,
 		};
 	}
 

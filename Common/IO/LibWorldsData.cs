@@ -64,8 +64,7 @@ public static class LibWorldsData {
 				[ModContent.GetInstance<TropicsBiomeGroup>()] = ModContent.GetInstance<JungleBiome>(),
 				[ModContent.GetInstance<UnderworldBiomeGroup>()] = ModContent.GetInstance<UnderworldBiome>(),
 			},
-			[WorldDataManager.OreDataKey] = new Dictionary<OreGroup, ModTypeData<IAltOre>>() {
-			}
+			[WorldDataManager.OreDataKey] = new Dictionary<OreGroup, ModTypeData<IAltOre>>()
 		};
 	}
 }
