@@ -24,8 +24,7 @@ public static class LibUtils {
 	public static IEnumerable<T> ForEach<T>(this IEnumerable<T> enumerable, Action<T> action) {
 		var array = ArrayPool<T>.Shared.Rent(enumerable.Count());
 		for (int i = 0, c = array.Length; i < c; i++) {
-			array[i] = enumerable.ElementAt(i);
-			action(array[i]);
+			action(enumerable.ElementAt(i));
 		}
 		ArrayPool<T>.Shared.Return(array, true);
 		return enumerable;

@@ -1,5 +1,6 @@
 using AltLibrary.Common;
 using AltLibrary.Common.Attributes;
+using AltLibrary.Common.IL;
 using MonoMod.Utils;
 using System;
 using System.Collections.Generic;
@@ -10,20 +11,43 @@ using Terraria.ModLoader;
 namespace AltLibrary;
 
 public class AltLibrary : Mod {
+#if DEBUG
+	internal static bool MonoModDumbps => false;
+#endif
+
 	public static AltLibrary Instance { get; set; }
 	private static readonly Dictionary<Type, object> loadableContent = new();
 
 	public AltLibrary() {
 		Instance = this;
+
+#if DEBUG
+		ILHelper.EnableMonoModDump();
+#endif
 		LoadLoadableContents(ContentOrder.Init);
+#if DEBUG
+		ILHelper.DisableMonModDump();
+#endif
 	}
 
 	public override void Load() {
+#if DEBUG
+		ILHelper.EnableMonoModDump();
+#endif
 		LoadLoadableContents(ContentOrder.Content);
+#if DEBUG
+		ILHelper.DisableMonModDump();
+#endif
 	}
 
 	public override void PostSetupContent() {
+#if DEBUG
+		ILHelper.EnableMonoModDump();
+#endif
 		LoadLoadableContents(ContentOrder.PostContent);
+#if DEBUG
+		ILHelper.DisableMonModDump();
+#endif
 	}
 
 	public override void Unload() {

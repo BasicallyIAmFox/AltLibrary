@@ -1,4 +1,5 @@
 ﻿using AltLibrary.Common.Attributes;
+using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour.HookGen;
@@ -11,7 +12,7 @@ using System.Reflection;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace AltLibrary.Common;
+namespace AltLibrary.Common.IL;
 
 [LoadableContent(ContentOrder.Content, nameof(Load), UnloadName = nameof(Unload))]
 [LoadableContent(ContentOrder.PostContent, nameof(PostLoad))]
@@ -48,6 +49,7 @@ public static class ILHelper {
 		IlsAndDetours = null;
 	}
 
+	#region Hooking
 	private static void HookUp(Func<Exception, MethodInfo, string> errorFunc, Action<MethodInfo, Delegate> actionOn, Action<MethodInfo, Delegate> actionIL, Func<bool, bool> shouldLateLoad) {
 		foreach ((MethodInfo method, Delegate callback, bool isDetour, bool lateLoad) in IlsAndDetours) {
 			if (shouldLateLoad(lateLoad)) {
@@ -73,12 +75,48 @@ public static class ILHelper {
 	public static void On<T>(string methodName, Delegate del, bool lateLoading = false) => On(typeof(T), methodName, del, lateLoading);
 	public static void On(Type type, string methodName, Delegate del, bool lateLoading = false) => On(type.FindMethod(methodName), del, lateLoading);
 	public static void On(MethodInfo method, Delegate del, bool lateLoading = false) => IlsAndDetours.Add((method, del, true, lateLoading));
+	#endregion
 
+	#region Extensions
 	public static int AddVariable<T>(this ILContext context) => context.AddVariable(typeof(T));
-	public static int AddVariable(this ILContext context, Type type) {
-		context.Body.Variables.Add(new VariableDefinition(context.Import(type)));
+	public static int AddVariable(this ILContext context, Type type) => context.AddVariable(new VariableDefinition(context.Import(type)));
+	public static int AddVariable(this ILContext context, TypeReference typeDefinition) => context.AddVariable(new VariableDefinition(typeDefinition));
+	public static int AddVariable(this ILContext context, VariableDefinition variableDefinition) {
+		context.Body.Variables.Add(variableDefinition);
 		return context.Body.Variables.Count - 1;
 	}
+	#endregion
+
+#if DEBUG
+	public static void EnableMonoModDump() {
+		var di = new DirectoryInfo("MonoModDump");
+		if (di.Exists) {
+			foreach (var fileInfo in di.GetFiles()) {
+				fileInfo.Delete();
+			}
+		}
+
+		if (!AltLibrary.MonoModDumbps) {
+			return;
+		}
+
+		Environment.SetEnvironmentVariable("MONOMOD_DMD_TYPE", "Auto");
+		Environment.SetEnvironmentVariable("MONOMOD_DMD_DEBUG", "1");
+		string dumpDir = Path.GetFullPath("MonoModDump");
+		Directory.CreateDirectory(dumpDir);
+		Environment.SetEnvironmentVariable("MONOMOD_DMD_DUMP", dumpDir);
+	}
+
+	public static void DisableMonModDump() {
+		if (!AltLibrary.MonoModDumbps) {
+			return;
+		}
+
+		Environment.SetEnvironmentVariable("MONOMOD_DMD_TYPE", "");
+		Environment.SetEnvironmentVariable("MONOMOD_DMD_DEBUG", "0");
+		Environment.SetEnvironmentVariable("MONOMOD_DMD_DUMP", "");
+	}
+#endif
 
 	#region https://github.com/blushiemagic/MagicStorage/blob/1.4/Edits/ILHelper.cs
 	public static bool LogILEdits { get; set; } =

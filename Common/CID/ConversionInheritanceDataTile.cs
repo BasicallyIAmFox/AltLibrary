@@ -83,11 +83,47 @@ public sealed class ConversionInheritanceDataTile : ConversionInheritanceData {
 
 	private void ForeachTileAltBiome() {
 		var union = UniteAltBiomes().ToArray();
+
+		var tileCount = TileLoader.TileCount;
 		foreach (IAltBiome u in union) {
 			var data = u.DataHandler.Get<ConversionData>();
-			for (int x = 0; x < TileLoader.TileCount; x++) {
-				int t = 5 + u.Type;
+			int t = 5 + u.Type;
 
+			int x = 0;
+			for (; x < tileCount - 4; x += 4) {
+				if (TileID.Sets.Conversion.GolfGrass[x] && data.MowedGrass != Keep && x != data.MowedGrass) {
+					Set(t, x, data.MowedGrass);
+				}
+				else if (TileID.Sets.Conversion.Grass[x] && data.Grass != Keep && x != data.Grass) {
+					Set(t, x, data.Grass);
+				}
+				else if (TileID.Sets.Conversion.JungleGrass[x] && data.JungleGrass != Keep && x != data.JungleGrass) {
+					Set(t, x, data.JungleGrass);
+				}
+				else if ((Main.tileMoss[x] || TileID.Sets.Conversion.Stone[x]) && data.Stone != Keep && x != data.Stone) {
+					Set(t, x, data.Stone);
+				}
+				else if (TileID.Sets.Conversion.Snow[x] && data.Snow != Keep && x != data.Snow) {
+					Set(t, x, data.Snow);
+				}
+				else if (TileID.Sets.Conversion.Ice[x] && data.Ice != Keep && x != data.Ice) {
+					Set(t, x, data.Ice);
+				}
+				else if (TileID.Sets.Conversion.Sandstone[x] && data.Sandstone != Keep && x != data.Sandstone) {
+					Set(t, x, data.Sandstone);
+				}
+				else if (TileID.Sets.Conversion.HardenedSand[x] && data.HardSand != Keep && x != data.HardSand) {
+					Set(t, x, data.HardSand);
+				}
+				else if (TileID.Sets.Conversion.Sand[x] && data.Sand != Keep && x != data.Sand) {
+					Set(t, x, data.Sand);
+				}
+				else if (TileID.Sets.Conversion.Thorn[x] && data.ThornBush != Keep && x != TileID.JungleThorns) {
+					Set(t, x, data.ThornBush);
+				}
+			}
+
+			for (; x < tileCount; x++) {
 				if (TileID.Sets.Conversion.GolfGrass[x] && data.MowedGrass != Keep && x != data.MowedGrass) {
 					Set(t, x, data.MowedGrass);
 				}
