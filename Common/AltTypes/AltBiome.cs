@@ -17,7 +17,7 @@ public abstract partial class AltBiome<T> : AAltType<AltBiome<T>, T, IAltBiome>,
 	public override string LocalizationCategory => "AltBiome";
 
 	public sealed override void SetupContent() {
-		DataHandler = new BiomeDataHandler();
+		DataHandler = new DataHandler();
 		base.SetupContent();
 	}
 

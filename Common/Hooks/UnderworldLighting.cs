@@ -7,8 +7,6 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.Utils;
 using System;
-using System.Runtime.Intrinsics.X86;
-using Terraria;
 using Terraria.Graphics.Light;
 
 namespace AltLibrary.Common.Hooks;
@@ -27,7 +25,7 @@ public static class UnderworldLighting {
 			var intensityIndex = 0;
 
 			c.Emit(OpCodes.Ldc_I4, 0);
-			c.Emit(OpCodes.Ldloc_S, (byte)shouldAffectLightingIndex);
+			c.Emit(OpCodes.Stloc, shouldAffectLightingIndex);
 
 			/*
 	// float num11 = 0f;
@@ -100,10 +98,10 @@ public static class UnderworldLighting {
 					i => i.MatchStloc(bIndex));
 
 				c.Emit(OpCodes.Call, typeof(WorldDataManager).GetMethod(nameof(WorldDataManager.GetUnderworld), 0, Array.Empty<Type>()));
-				c.Emit(OpCodes.Ldloca_S, (byte)rIndex);
-				c.Emit(OpCodes.Ldloca_S, (byte)gIndex);
-				c.Emit(OpCodes.Ldloca_S, (byte)bIndex);
-				c.Emit(OpCodes.Ldloca_S, (byte)shouldAffectLightingIndex);
+				c.Emit(OpCodes.Ldloca, rIndex);
+				c.Emit(OpCodes.Ldloca, gIndex);
+				c.Emit(OpCodes.Ldloca, bIndex);
+				c.Emit(OpCodes.Ldloca, shouldAffectLightingIndex);
 				c.Emit(OpCodes.Callvirt, typeof(IAltBiome).FindMethod(nameof(IAltBiome.ModifyUnderworldLighting)));
 			};
 
@@ -112,8 +110,8 @@ public static class UnderworldLighting {
 
 			var skipTileLightingModificationLabel = c.DefineLabel();
 
-			c.Emit(OpCodes.Ldloc_S, (byte)shouldAffectLightingIndex);
-			c.Emit(OpCodes.Brtrue_S, skipTileLightingModificationLabel);
+			c.Emit(OpCodes.Ldloc, shouldAffectLightingIndex);
+			c.Emit(OpCodes.Brtrue, skipTileLightingModificationLabel);
 
 			/*
 	// if (lightColor.X < num11)
@@ -133,7 +131,7 @@ public static class UnderworldLighting {
 				i => i.MatchLdfld<Vector3>("X"),
 				i => i.MatchLdloc(rIndex),
 				i => i.MatchBgeUn(out _),
-				
+
 				i => i.MatchLdarg(tempLightColorIndex),
 				i => i.MatchLdloc(rIndex),
 				i => i.MatchStfld<Vector3>("X"));

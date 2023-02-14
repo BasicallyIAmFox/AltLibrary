@@ -58,14 +58,16 @@ public static class LibWorldsData {
 	}
 
 	private static TagCompound GetNewInstanceOfTagCompound(WorldFileData data) {
-		return new() {
-			[WorldDataManager.BiomeDataKey] = new Dictionary<BiomeGroup, ModTypeData<IAltBiome>>() {
-				[ModContent.GetInstance<EvilBiomeGroup>()] = data.HasCorruption ? ModContent.GetInstance<CorruptBiome>() : ModContent.GetInstance<CrimsonBiome>(),
-				[ModContent.GetInstance<GoodBiomeGroup>()] = ModContent.GetInstance<HallowBiome>(),
-				[ModContent.GetInstance<TropicsBiomeGroup>()] = ModContent.GetInstance<JungleBiome>(),
-				[ModContent.GetInstance<UnderworldBiomeGroup>()] = ModContent.GetInstance<UnderworldBiome>(),
-			},
-			[WorldDataManager.OreDataKey] = new Dictionary<OreGroup, ModTypeData<IAltOre>>()
-		};
+		return dataPerWorld.GetValue(data, data => {
+			return new() {
+				[WorldDataManager.BiomeDataKey] = new Dictionary<BiomeGroup, ModTypeData<IAltBiome>>() {
+					[ModContent.GetInstance<EvilBiomeGroup>()] = data.HasCorruption ? ModContent.GetInstance<CorruptBiome>() : ModContent.GetInstance<CrimsonBiome>(),
+					[ModContent.GetInstance<GoodBiomeGroup>()] = ModContent.GetInstance<HallowBiome>(),
+					[ModContent.GetInstance<TropicsBiomeGroup>()] = ModContent.GetInstance<JungleBiome>(),
+					[ModContent.GetInstance<UnderworldBiomeGroup>()] = ModContent.GetInstance<UnderworldBiome>(),
+				},
+				[WorldDataManager.OreDataKey] = new Dictionary<OreGroup, ModTypeData<IAltOre>>()
+			};
+		});
 	}
 }

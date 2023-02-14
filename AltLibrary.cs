@@ -49,7 +49,7 @@ public class AltLibrary : Mod {
 	}
 
 	private static void LoadLoadableContents(ContentOrder contentOrder, bool unload = false) {
-		LibUtils.ForEachType(x => unload || x.GetCustomAttributes<LoadableContentAttribute>()?.Any(x => x.ContentOrder == contentOrder) == true, (current, mod) => {
+		LibUtils.ForEachType(x => x.GetCustomAttributes<LoadableContentAttribute>()?.Any(x => unload && x.UnloadName != null || x.ContentOrder == contentOrder) == true, (current, mod) => {
 			var attris = current.GetCustomAttributes<LoadableContentAttribute>().ToArray();
 			for (int i = 0, c = attris.Length; i < c; i++) {
 				var attri = attris[i];

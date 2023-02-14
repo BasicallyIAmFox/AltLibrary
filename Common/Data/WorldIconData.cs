@@ -4,7 +4,7 @@ using AltLibrary.Common.Attributes;
 namespace AltLibrary.Common.Data;
 
 [DataAlwaysExists]
-public struct WorldIconData : IBiomeData, IDataAlwaysExists<IAltBiome> {
+public struct WorldIconData : IAltData, IDataAlwaysExists<IAltBiome> {
 	public string NormalWorldIcon { readonly get; set; }
 	public string DrunkBaseWorldIcon { readonly get; set; }
 	public string DrunkWorldIcon { readonly get; set; }

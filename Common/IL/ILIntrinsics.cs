@@ -62,7 +62,7 @@ public static class ILIntrinsics {
 				continue;
 			}
 
-#region Locals
+			#region Locals
 			int index;
 			if (instrs[i].MatchLdarg(out int ldargIndex) || instrs[i].MatchStarg(out ldargIndex)) {
 				var prm = options.ParameterTypes[ldargIndex - 1];
@@ -93,9 +93,9 @@ public static class ILIntrinsics {
 				instMap[instrs[i]] = c.Prev;
 				continue;
 			}
-#endregion
+			#endregion
 
-#region Intrinsic Methods
+			#region Intrinsic Methods
 			if (instrs[i].Next.IsIntrinsic(out IntrisicType type, out MethodReference intrinsicMethod, out EmitDelegate fastReflectionDelegate)) {
 				Instruction ind;
 				if (type == IntrisicType.Indexed) {
@@ -119,7 +119,7 @@ public static class ILIntrinsics {
 				instrs[i].Next = ind;
 				continue;
 			}
-#endregion
+			#endregion
 
 			if (instrs[i].Operand == null) {
 				c.Emit(instrs[i].OpCode);
@@ -179,7 +179,7 @@ public static class ILIntrinsics {
 	}
 
 	/// <summary>
-	/// Pops value off stack.
+	/// Replaced with a <seealso cref="OpCodes.Pop"/> opcode.
 	/// </summary>
 	[ILIntrinsicMethod<PopImpl>(IntrisicType.None)]
 	public static void Pop() {

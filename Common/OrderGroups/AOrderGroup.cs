@@ -47,6 +47,9 @@ public abstract class AOrderGroup<Self, T> : ModTexturedType, IAOrderGroup where
 	private protected abstract Type GetMainSubclass();
 
 	private void LoadInternal() {
+		if (this is not IStaticOrderGroup) {
+			throw new NotImplementedException($"{GetType().DeclaringType.FullName} doesn't implements '{typeof(IStaticOrderGroup).FullName}' interface!");
+		}
 		LibUtils.ForEachType(x => !x.IsAbstract && x.IsSubclassOf(GetMainSubclass().MakeGenericType(GetType())), (current, mod) => {
 			var ore = (T)Activator.CreateInstance(current);
 			mod.AddContent(ore);
@@ -56,10 +59,10 @@ public abstract class AOrderGroup<Self, T> : ModTexturedType, IAOrderGroup where
 
 	public sealed override void Load() {
 		LoadInternal();
-		LoadOther();
+		LoadSelf();
 	}
 
-	public virtual void LoadOther() {
+	public virtual void LoadSelf() {
 	}
 	#endregion
 

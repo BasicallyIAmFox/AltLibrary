@@ -20,7 +20,6 @@ public static class CIDConvert {
 			var c = new ILCursor(il);
 
 			c.EmitDelegateBody((int conversionType) => conversionType = conversionType switch {
-				BiomeConversionID.Purity => ConversionInheritanceData.DecleminationId,
 				BiomeConversionID.Sand => ConversionInheritanceData.YellowSolutionId,
 				BiomeConversionID.Dirt => ConversionInheritanceData.BrownSolutionId,
 				BiomeConversionID.Snow => ConversionInheritanceData.WhiteSolutionId,
@@ -90,7 +89,7 @@ public static class CIDConvert {
 				i => i.MatchSwitch(out _));
 
 			var skipVanilla = c.DefineLabel();
-			c.Emit(OpCodes.Br_S, skipVanilla);
+			c.Emit(OpCodes.Br, skipVanilla);
 
 			var tempIndex2 = 0;
 			/*
@@ -135,10 +134,10 @@ public static class CIDConvert {
 				i => i.MatchLdloc(tempIndex2),
 				i => i.MatchLdcI4(out _),
 				i => i.MatchAdd(),
-				i => i.MatchStloc(tempIndex2)
-				);
+				i => i.MatchStloc(tempIndex2));
 
 			c.Index -= 4;
+			c.MarkLabel(skipVanilla);
 			c.EmitDelegateBody(static (Tile tile, int conversionType, int tileType, int wallType, int k, int l) => {
 				int newTile = ConversionInheritanceDatabase.GetConvertedTile(conversionType, tileType);
 				int newWall = ConversionInheritanceDatabase.GetConvertedWall(conversionType, wallType);

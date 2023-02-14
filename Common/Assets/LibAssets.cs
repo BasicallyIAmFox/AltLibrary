@@ -63,31 +63,49 @@ public static class LibAssets {
 		ShadowIcon = CreateSingle<Asset<Texture2D>>("AltLibrary/Assets/WorldIcons/ShadowIcon");
 
 		IconNormal_Base = CreateSingle<Asset<Texture2D>>("AltLibrary/Assets/WorldIcons/IconNormal");
-		IconNormal_Evils = CreateMultiple<AltBiome<EvilBiomeGroup>, Asset<Texture2D>>(x => x.DataHandler.Get<WorldIconData>().NormalWorldIcon);
-		IconNormal_Goods = CreateMultiple<AltBiome<GoodBiomeGroup>, Asset<Texture2D>>(x => x.DataHandler.Get<WorldIconData>().NormalWorldIcon);
 		IconDrunk_Base = CreateSingle<Asset<Texture2D>>("AltLibrary/Assets/WorldIcons/IconDrunk");
-		IconDrunk_Evils = CreateMultiple<AltBiome<EvilBiomeGroup>, Asset<Texture2D>>(x => x.DataHandler.Get<WorldIconData>().DrunkWorldIcon);
-		IconDrunk_Goods = CreateMultiple<AltBiome<GoodBiomeGroup>, Asset<Texture2D>>(x => x.DataHandler.Get<WorldIconData>().DrunkWorldIcon);
-		IconDrunkBase_Evils = CreateMultiple<AltBiome<EvilBiomeGroup>, Asset<Texture2D>>(x => x.DataHandler.Get<WorldIconData>().DrunkBaseWorldIcon);
-		IconDrunkBase_Goods = CreateMultiple<AltBiome<GoodBiomeGroup>, Asset<Texture2D>>(x => x.DataHandler.Get<WorldIconData>().DrunkBaseWorldIcon);
 		IconForTheWorthy_Base = CreateSingle<Asset<Texture2D>>("AltLibrary/Assets/WorldIcons/IconForTheWorthy");
-		IconForTheWorthy_Evils = CreateMultiple<AltBiome<EvilBiomeGroup>, Asset<Texture2D>>(x => x.DataHandler.Get<WorldIconData>().ForTheWorthyWorldIcon);
-		IconForTheWorthy_Goods = CreateMultiple<AltBiome<GoodBiomeGroup>, Asset<Texture2D>>(x => x.DataHandler.Get<WorldIconData>().ForTheWorthyWorldIcon);
 		IconNotTheBees_Base = CreateSingle<Asset<Texture2D>>("AltLibrary/Assets/WorldIcons/IconNotTheBees");
-		IconNotTheBees_Evils = CreateMultiple<AltBiome<EvilBiomeGroup>, Asset<Texture2D>>(x => x.DataHandler.Get<WorldIconData>().NotTheBeesWorldIcon);
-		IconNotTheBees_Goods = CreateMultiple<AltBiome<GoodBiomeGroup>, Asset<Texture2D>>(x => x.DataHandler.Get<WorldIconData>().NotTheBeesWorldIcon);
 		IconAnniversary_Base = CreateSingle<Asset<Texture2D>>("AltLibrary/Assets/WorldIcons/IconAnniversary");
-		IconAnniversary_Evils = CreateMultiple<AltBiome<EvilBiomeGroup>, Asset<Texture2D>>(x => x.DataHandler.Get<WorldIconData>().Celebrationmk10WorldIcon);
-		IconAnniversary_Goods = CreateMultiple<AltBiome<GoodBiomeGroup>, Asset<Texture2D>>(x => x.DataHandler.Get<WorldIconData>().Celebrationmk10WorldIcon);
 		IconDontStarve_Base = CreateSingle<Asset<Texture2D>>("AltLibrary/Assets/WorldIcons/IconDontStarve");
-		IconDontStarve_Evils = CreateMultiple<AltBiome<EvilBiomeGroup>, Asset<Texture2D>>(x => x.DataHandler.Get<WorldIconData>().TheConstantWorldIcon);
-		IconDontStarve_Goods = CreateMultiple<AltBiome<GoodBiomeGroup>, Asset<Texture2D>>(x => x.DataHandler.Get<WorldIconData>().TheConstantWorldIcon);
 		IconRemix_Base = CreateSingle<Asset<Texture2D>>("AltLibrary/Assets/WorldIcons/IconRemix");
-		IconRemix_Evils = CreateMultiple<AltBiome<EvilBiomeGroup>, Asset<Texture2D>>(x => x.DataHandler.Get<WorldIconData>().DontDigUpWorldIcon);
-		IconRemix_Goods = CreateMultiple<AltBiome<GoodBiomeGroup>, Asset<Texture2D>>(x => x.DataHandler.Get<WorldIconData>().DontDigUpWorldIcon);
 		IconNoTraps_Base = CreateSingle<Asset<Texture2D>>("AltLibrary/Assets/WorldIcons/IconNoTraps");
-		IconNoTraps_Evils = CreateMultiple<AltBiome<EvilBiomeGroup>, Asset<Texture2D>>(x => x.DataHandler.Get<WorldIconData>().NoTrapsWorldIcon);
-		IconNoTraps_Goods = CreateMultiple<AltBiome<GoodBiomeGroup>, Asset<Texture2D>>(x => x.DataHandler.Get<WorldIconData>().NoTrapsWorldIcon);
+
+		IconNormal_Evils = IconNormal_Goods =
+			IconDrunk_Evils = IconDrunk_Goods =
+			IconDrunkBase_Evils = IconDrunkBase_Goods =
+			IconForTheWorthy_Evils = IconForTheWorthy_Goods =
+			IconNotTheBees_Evils = IconNotTheBees_Goods =
+			IconAnniversary_Evils = IconAnniversary_Goods =
+			IconDontStarve_Evils = IconDontStarve_Goods =
+			IconRemix_Evils = IconRemix_Goods =
+			IconNoTraps_Evils = IconNoTraps_Goods =
+			IconZenith_Left = IconZenith_Right = new Asset<Texture2D>[IAltBiome.altBiomes.Count];
+		for (int i = 0; i < IAltBiome.altBiomes.Count; i++) {
+			var biome = IAltBiome.altBiomes[i];
+			if (biome is AltBiome<EvilBiomeGroup>) {
+				var data = biome.DataHandler.Get<WorldIconData>();
+				IconNormal_Evils[i] = CreateSingle<Asset<Texture2D>>(data.NormalWorldIcon);
+				IconDrunk_Evils[i] = CreateSingle<Asset<Texture2D>>(data.DrunkWorldIcon);
+				IconDrunkBase_Evils[i] = CreateSingle<Asset<Texture2D>>(data.DrunkBaseWorldIcon);
+				IconForTheWorthy_Evils[i] = CreateSingle<Asset<Texture2D>>(data.ForTheWorthyWorldIcon);
+				IconAnniversary_Evils[i] = CreateSingle<Asset<Texture2D>>(data.Celebrationmk10WorldIcon);
+				IconDontStarve_Evils[i] = CreateSingle<Asset<Texture2D>>(data.TheConstantWorldIcon);
+				IconRemix_Evils[i] = CreateSingle<Asset<Texture2D>>(data.DontDigUpWorldIcon);
+				IconNoTraps_Evils[i] = CreateSingle<Asset<Texture2D>>(data.NoTrapsWorldIcon);
+				IconZenith_Left[i] = IconNormal_Evils[i];
+			}
+			else if (biome is AltBiome<GoodBiomeGroup>) {
+				var data = biome.DataHandler.Get<WorldIconData>();
+				IconNormal_Goods[i] = CreateSingle<Asset<Texture2D>>(data.NormalWorldIcon);
+				IconDrunk_Goods[i] = CreateSingle<Asset<Texture2D>>(data.DrunkWorldIcon);
+				IconForTheWorthy_Goods[i] = CreateSingle<Asset<Texture2D>>(data.ForTheWorthyWorldIcon);
+				IconAnniversary_Goods[i] = CreateSingle<Asset<Texture2D>>(data.Celebrationmk10WorldIcon);
+				IconDontStarve_Goods[i] = CreateSingle<Asset<Texture2D>>(data.TheConstantWorldIcon);
+				IconRemix_Goods[i] = CreateSingle<Asset<Texture2D>>(data.DontDigUpWorldIcon);
+				IconNoTraps_Goods[i] = CreateSingle<Asset<Texture2D>>(data.NoTrapsWorldIcon);
+			}
+		}
 
 		PreviewIcons = CreateMultidimensional<Asset<Texture2D>>(i => {
 			int x = i / 3;

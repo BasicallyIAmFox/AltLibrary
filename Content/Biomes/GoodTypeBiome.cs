@@ -10,7 +10,6 @@ public sealed class HallowBiome : AltBiome<GoodBiomeGroup> {
 		DataHandler.Add(new WorldIconData {
 			NormalWorldIcon = "AltLibrary/Assets/WorldIcons/Normal/Hallow",
 			DrunkWorldIcon = "AltLibrary/Assets/WorldIcons/Drunk/Hallow",
-			DrunkBaseWorldIcon = "AltLibrary/Assets/WorldIcons/DrunkBase/Hallow",
 			ForTheWorthyWorldIcon = "AltLibrary/Assets/WorldIcons/ForTheWorthy/Hallow",
 			NotTheBeesWorldIcon = "AltLibrary/Assets/WorldIcons/NotTheBees/Hallow",
 			Celebrationmk10WorldIcon = "AltLibrary/Assets/WorldIcons/Anniversary/Hallow",

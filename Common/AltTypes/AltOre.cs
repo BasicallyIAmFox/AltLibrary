@@ -12,7 +12,7 @@ public abstract class AltOre<T> : AAltType<AltOre<T>, T, IAltOre>, IAltOre where
 	public override string LocalizationCategory => "AltOre";
 
 	public sealed override void SetupContent() {
-		DataHandler = new OreDataHandler();
+		DataHandler = new DataHandler();
 		base.SetupContent();
 	}
 

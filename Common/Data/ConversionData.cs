@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace AltLibrary.Common.Data;
 
-public struct ConversionData : IBiomeData {
+public struct ConversionData : IAltData {
 	public ConversionData() {
 	}
 
