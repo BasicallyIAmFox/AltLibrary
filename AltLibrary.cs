@@ -4,6 +4,7 @@ using AltLibrary.Common.IL;
 using MonoMod.Utils;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Terraria.ModLoader;
@@ -20,39 +21,31 @@ public class AltLibrary : Mod {
 
 	public AltLibrary() {
 		Instance = this;
-
-#if DEBUG
-		ILHelper.EnableMonoModDump();
-#endif
-		LoadLoadableContents(ContentOrder.Init);
-#if DEBUG
-		ILHelper.DisableMonModDump();
-#endif
+		LoadLoadables(ContentOrder.Init);
 	}
 
 	public override void Load() {
-#if DEBUG
-		ILHelper.EnableMonoModDump();
-#endif
-		LoadLoadableContents(ContentOrder.Content);
-#if DEBUG
-		ILHelper.DisableMonModDump();
-#endif
+		LoadLoadables(ContentOrder.Content);
 	}
 
 	public override void PostSetupContent() {
-#if DEBUG
-		ILHelper.EnableMonoModDump();
-#endif
-		LoadLoadableContents(ContentOrder.PostContent);
-#if DEBUG
-		ILHelper.DisableMonModDump();
-#endif
+		LoadLoadables(ContentOrder.PostContent);
 	}
 
 	public override void Unload() {
 		LoadLoadableContents(ContentOrder.Unload, true);
 		StaticCollector.Clean(this);
+	}
+
+	private static void LoadLoadables(ContentOrder contentOrder) {
+#if DEBUG
+		ILHelper.EnableMonoModDump();
+#endif
+		LoadLoadableContents(contentOrder);
+#if DEBUG
+		Debug.Assert(true);
+		ILHelper.DisableMonModDump();
+#endif
 	}
 
 	private static void LoadLoadableContents(ContentOrder contentOrder, bool unload = false) {

@@ -7,10 +7,8 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.Utils;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.Intrinsics.X86;
+using Terraria;
 using Terraria.Graphics.Light;
 
 namespace AltLibrary.Common.Hooks;
@@ -33,14 +31,14 @@ public static class UnderworldLighting {
 
 			/*
 	// float num11 = 0f;
-	IL_0001: ldc.r4 0.0
-	IL_0006: stloc.0
+	IL_0000: ldc.r4 0.0
+	IL_0005: stloc.0
 	// float num10 = 0f;
-	IL_0007: ldc.r4 0.0
-	IL_000c: stloc.1
+	IL_0006: ldc.r4 0.0
+	IL_000b: stloc.1
 	// float num9 = 0f;
-	IL_000d: ldc.r4 0.0
-	IL_0012: stloc.2
+	IL_000c: ldc.r4 0.0
+	IL_0011: stloc.2
 			 */
 			c.GotoNext(
 				i => i.MatchLdcR4(out _),
@@ -52,17 +50,17 @@ public static class UnderworldLighting {
 
 			/*
 	// float num8 = 0.55f + (float)Math.Sin((double)(Main.GlobalTimeWrappedHourly * 2f)) * 0.08f;
-	IL_0013: ldc.r4 0.55
-	IL_0018: ldsfld float32 Terraria.Main::GlobalTimeWrappedHourly
-	IL_001d: ldc.r4 2
-	IL_0022: mul
-	IL_0023: conv.r8
-	IL_0024: call float64[System.Runtime]System.Math::Sin(float64)
-	IL_0029: conv.r4
-	IL_002a: ldc.r4 0.08
-	IL_002f: mul
-	IL_0030: add
-	IL_0031: stloc.3
+	IL_0012: ldc.r4 0.55
+	IL_0017: ldsfld float32 Terraria.Main::GlobalTimeWrappedHourly
+	IL_001c: ldc.r4 2
+	IL_0021: mul
+	IL_0022: conv.r8
+	IL_0023: call float64 [System.Runtime]System.Math::Sin(float64)
+	IL_0028: conv.r4
+	IL_0029: ldc.r4 0.08
+	IL_002e: mul
+	IL_002f: add
+	IL_0030: stloc.3
 			*/
 			c.GotoNext(
 				i => i.MatchConvR4(),
@@ -74,18 +72,18 @@ public static class UnderworldLighting {
 			void gotoNext() {
 				/*
 		// num11 = num8;
-		IL_0164: ldloc.3
-		IL_0165: stloc.0
+		IL_0159: ldloc.3
+		IL_015a: stloc.0
 		// num10 = num8 * 0.6f;
-		IL_0166: ldloc.3
-		IL_0167: ldc.r4 0.6
-		IL_016c: mul
-		IL_016d: stloc.1
+		IL_015b: ldloc.3
+		IL_015c: ldc.r4 0.6
+		IL_0161: mul
+		IL_0162: stloc.1
 		// num9 = num8 * 0.2f;
-		IL_016e: ldloc.3
-		IL_016f: ldc.r4 0.2
-		IL_0174: mul
-		IL_0175: stloc.2
+		IL_0163: ldloc.3
+		IL_0164: ldc.r4 0.2
+		IL_0169: mul
+		IL_016a: stloc.2
 				*/
 				c.GotoNext(MoveType.After,
 					i => i.MatchLdloc(intensityIndex),
@@ -106,7 +104,7 @@ public static class UnderworldLighting {
 				c.Emit(OpCodes.Ldloca_S, (byte)gIndex);
 				c.Emit(OpCodes.Ldloca_S, (byte)bIndex);
 				c.Emit(OpCodes.Ldloca_S, (byte)shouldAffectLightingIndex);
-				c.Emit(OpCodes.Call, typeof(IAltBiome).FindMethod(nameof(IAltBiome.ModifyUnderworldLighting)));
+				c.Emit(OpCodes.Callvirt, typeof(IAltBiome).FindMethod(nameof(IAltBiome.ModifyUnderworldLighting)));
 			};
 
 			gotoNext();
@@ -118,28 +116,27 @@ public static class UnderworldLighting {
 			c.Emit(OpCodes.Brtrue_S, skipTileLightingModificationLabel);
 
 			/*
-	IL_02f2: nop
-
 	// if (lightColor.X < num11)
-	IL_02f3: ldarg.s lightColor
-	IL_02f5: ldfld float32 [FNA]Microsoft.Xna.Framework.Vector3::X
-	IL_02fa: ldloc.0
-	IL_02fb: clt
-	IL_02fd: stloc.s 11
-	// (no C# code)
-	IL_02ff: ldloc.s 11
-	IL_0301: brfalse.s IL_030b
+	IL_02de: ldarg.s lightColor
+	IL_02e0: ldfld float32 [FNA]Microsoft.Xna.Framework.Vector3::X
+	IL_02e5: ldloc.0
+	IL_02e6: bge.un.s IL_02f0
 
 	// lightColor.X = num11;
-	IL_0303: ldarg.s lightColor
-	IL_0305: ldloc.0
-	IL_0306: stfld float32 [FNA]Microsoft.Xna.Framework.Vector3::X
+	IL_02e8: ldarg.s lightColor
+	IL_02ea: ldloc.0
+	IL_02eb: stfld float32 [FNA]Microsoft.Xna.Framework.Vector3::X
 			 */
+			var tempLightColorIndex = 0;
 			c.GotoNext(
-				i => i.MatchLdarg(out _),
+				i => i.MatchLdarg(out tempLightColorIndex),
 				i => i.MatchLdfld<Vector3>("X"),
 				i => i.MatchLdloc(rIndex),
-				i => i.MatchBgeUn(out _));
+				i => i.MatchBgeUn(out _),
+				
+				i => i.MatchLdarg(tempLightColorIndex),
+				i => i.MatchLdloc(rIndex),
+				i => i.MatchStfld<Vector3>("X"));
 
 			c.MarkLabel(skipTileLightingModificationLabel);
 		});

@@ -20,7 +20,7 @@ public static class ILIntrinsics {
 	}
 	public sealed class GoToImpl : ILIntrinsicMethodImpl {
 		public static void Emit(ILCursor cursor, EmitOptions options, ref Instruction instruction, int index) {
-			instruction.OpCode = OpCodes.Br_S;
+			instruction.OpCode = OpCodes.Br;
 			instruction.Operand = options.LabelIntrinsics[index].Target;
 		}
 	}
@@ -62,7 +62,7 @@ public static class ILIntrinsics {
 				continue;
 			}
 
-			#region Locals
+#region Locals
 			int index;
 			if (instrs[i].MatchLdarg(out int ldargIndex) || instrs[i].MatchStarg(out ldargIndex)) {
 				var prm = options.ParameterTypes[ldargIndex - 1];
@@ -76,7 +76,7 @@ public static class ILIntrinsics {
 			}
 			else if (instrs[i].MatchLdarga(out ldargIndex)) {
 				var prm = options.ParameterTypes[ldargIndex - 1];
-				c.Emit(OpCodes.Ldarga, prm.index);
+				c.Emit(prm.type == ParamRef.TargetLocal ? OpCodes.Ldloca : OpCodes.Ldarga, prm.index);
 				instMap[instrs[i]] = c.Prev;
 				continue;
 			}
@@ -93,9 +93,9 @@ public static class ILIntrinsics {
 				instMap[instrs[i]] = c.Prev;
 				continue;
 			}
-			#endregion
+#endregion
 
-			#region Intrinsic Methods
+#region Intrinsic Methods
 			if (instrs[i].Next.IsIntrinsic(out IntrisicType type, out MethodReference intrinsicMethod, out EmitDelegate fastReflectionDelegate)) {
 				Instruction ind;
 				if (type == IntrisicType.Indexed) {
@@ -119,7 +119,7 @@ public static class ILIntrinsics {
 				instrs[i].Next = ind;
 				continue;
 			}
-			#endregion
+#endregion
 
 			if (instrs[i].Operand == null) {
 				c.Emit(instrs[i].OpCode);
@@ -170,23 +170,54 @@ public static class ILIntrinsics {
 	public static void Body(int index) {
 	}
 
+	/// <summary>
+	/// Emits a <seealso cref="OpCodes.Br"/> opcode to the label at <seealso cref="EmitOptions.LabelIntrinsics"/>[<paramref name="index"/>].
+	/// </summary>
+	/// <param name="index"></param>
 	[ILIntrinsicMethod<GoToImpl>(IntrisicType.Indexed)]
 	public static void GoTo(int index) {
 	}
 
+	/// <summary>
+	/// Pops value off stack.
+	/// </summary>
 	[ILIntrinsicMethod<PopImpl>(IntrisicType.None)]
 	public static void Pop() {
 	}
 
+	/// <summary>
+	/// Replaced with a <seealso cref="OpCodes.Nop"/> opcode, pushes a value to the evaluation stack.
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <param name="value"></param>
+	/// <exception cref="NotSupportedException"></exception>
 	[ILIntrinsicMethod<NopImpl>(IntrisicType.Valued)]
 	public static void Push<T>(T value) => throw new NotSupportedException();
 
+	/// <summary>
+	/// Replaced with a <seealso cref="OpCodes.Nop"/> opcode, pops a value from the evaluation stack.
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <returns></returns>
+	/// <exception cref="NotSupportedException"></exception>
 	[ILIntrinsicMethod<NopImpl>(IntrisicType.None)]
 	public static T Pop<T>() => throw new NotSupportedException();
 
+	/// <summary>
+	/// Replaced with a <seealso cref="OpCodes.Nop"/> opcode, pushes a reference to the evaluation stack.
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <param name="value"></param>
+	/// <exception cref="NotSupportedException"></exception>
 	[ILIntrinsicMethod<NopImpl>(IntrisicType.Valued)]
 	public static void PushRef<T>(ref T value) => throw new NotSupportedException();
 
+	/// <summary>
+	/// Replaced with a <seealso cref="OpCodes.Nop"/> opcode, pops a reference from the evaluation stack.
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <param name="value"></param>
+	/// <exception cref="NotSupportedException"></exception>
 	[ILIntrinsicMethod<NopImpl>(IntrisicType.None)]
 	public static ref T PopRef<T>() => throw new NotSupportedException();
 }

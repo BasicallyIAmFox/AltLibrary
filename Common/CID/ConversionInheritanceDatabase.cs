@@ -33,7 +33,10 @@ public abstract class ConversionInheritanceData {
 	private static int GetId(int id, int tile) => id * TileLoader.TileCount + tile;
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-	public static int GetConversionIdOf<T>() where T : class, IAltBiome => 5 + ModContent.GetInstance<T>().Type;
+	public static int GetConversionIdOf(IAltBiome biome) => 5 + biome.Type;
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+	public static int GetConversionIdOf<T>() where T : class, IAltBiome => GetConversionIdOf(ModContent.GetInstance<T>());
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
 	public static IEnumerable<IAltBiome> UniteAltBiomes() => ModContent.GetContent<IAltBiome>().Where(x => x is AltBiome<EvilBiomeGroup> or AltBiome<GoodBiomeGroup>);
@@ -63,8 +66,10 @@ public static class ConversionInheritanceDatabase {
 	}
 
 	public static int GetConvertedTile(int conversionType, int baseTile) => TileData.Get(baseTile, conversionType);
+	public static int GetConvertedTile(IAltBiome biome, int baseTile) => GetConvertedTile(GetConversionIdOf(biome), baseTile);
 	public static int GetConvertedTile<T>(int baseTile) where T : class, IAltBiome => GetConvertedTile(GetConversionIdOf<T>(), baseTile);
 
 	public static int GetConvertedWall(int conversionType, int baseTile) => WallData.Get(baseTile, conversionType);
+	public static int GetConvertedWall(IAltBiome biome, int baseTile) => GetConvertedWall(GetConversionIdOf(biome), baseTile);
 	public static int GetConvertedWall<T>(int baseTile) where T : class, IAltBiome => GetConvertedWall(GetConversionIdOf<T>(), baseTile);
 }

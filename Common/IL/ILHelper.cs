@@ -89,15 +89,15 @@ public static class ILHelper {
 
 #if DEBUG
 	public static void EnableMonoModDump() {
+		if (!AltLibrary.MonoModDumbps) {
+			return;
+		}
+
 		var di = new DirectoryInfo("MonoModDump");
 		if (di.Exists) {
 			foreach (var fileInfo in di.GetFiles()) {
 				fileInfo.Delete();
 			}
-		}
-
-		if (!AltLibrary.MonoModDumbps) {
-			return;
 		}
 
 		Environment.SetEnvironmentVariable("MONOMOD_DMD_TYPE", "Auto");
