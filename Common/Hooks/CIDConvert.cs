@@ -19,21 +19,7 @@ public static class CIDConvert {
 		ILHelper.IL<WorldGen>(nameof(WorldGen.Convert), (ILContext il) => {
 			var c = new ILCursor(il);
 
-			c.EmitDelegateBody((int conversionType) => conversionType = conversionType switch {
-				BiomeConversionID.Sand => ConversionInheritanceData.YellowSolutionId,
-				BiomeConversionID.Dirt => ConversionInheritanceData.BrownSolutionId,
-				BiomeConversionID.Snow => ConversionInheritanceData.WhiteSolutionId,
-				BiomeConversionID.GlowingMushroom => ConversionInheritanceData.DarkBlueSolutionId,
-
-				BiomeConversionID.Corruption => ConversionInheritanceData.GetConversionIdOf<CorruptBiome>(),
-				BiomeConversionID.Crimson => ConversionInheritanceData.GetConversionIdOf<CrimsonBiome>(),
-				BiomeConversionID.Hallow => ConversionInheritanceData.GetConversionIdOf<HallowBiome>(),
-				_ => conversionType
-			}, new() {
-				ParameterTypes = new ParameterReferenceType[] {
-					new(ParamRef.TargetParameter, 2) // conversionType
-				}
-			});
+			var startIndex = c.Index;
 
 			var conversionTypeIndex = 0;
 			var xIndex = 0;
@@ -71,74 +57,48 @@ public static class CIDConvert {
 				i => i.MatchLdloc(out xIndex),
 				i => i.MatchLdloc(out yIndex),
 				i => i.MatchCall<Tilemap>("get_Item"),
-				i => i.MatchStloc(out tileIndex));
-			c.GotoNext(
+				i => i.MatchStloc(out tileIndex),
+
 				i => i.MatchLdloca(tileIndex),
 				i => i.MatchCall<Tile>("get_type"),
 				i => i.MatchLdindU2(),
-				i => i.MatchStloc(out typeIndex));
-			c.GotoNext(
+				i => i.MatchStloc(out typeIndex),
+
 				i => i.MatchLdloca(tileIndex),
 				i => i.MatchCall<Tile>("get_wall"),
 				i => i.MatchLdindU2(),
-				i => i.MatchStloc(out wallIndex));
-			c.GotoNext(
+				i => i.MatchStloc(out wallIndex),
+
 				i => i.MatchLdarg(out conversionTypeIndex),
 				i => i.MatchLdcI4(out _),
 				i => i.MatchSub(),
 				i => i.MatchSwitch(out _));
 
-			var skipVanilla = c.DefineLabel();
-			c.Emit(OpCodes.Br, skipVanilla);
+			var endIndex = c.Index;
+			c.Index = startIndex;
 
-			var tempIndex2 = 0;
-			/*
-			// NetMessage.SendData(17, -1, -1, null, 0, (float)l, (float)k, 0f, 0, 0, 0);
-			IL_17f6: ldc.i4.s 17
-			IL_17f8: ldc.i4.m1
-			IL_17f9: ldc.i4.m1
-			IL_17fa: ldnull
-			IL_17fb: ldc.i4.0
-			IL_17fc: ldloc.0
-			IL_17fd: conv.r4
-			IL_17fe: ldloc.1
-			IL_17ff: conv.r4
-			IL_1800: ldc.r4 0.0
-			IL_1805: ldc.i4.0
-			IL_1806: ldc.i4.0
-			IL_1807: ldc.i4.0
-			IL_1808: call void Terraria.NetMessage::SendData(int32, int32, int32, class Terraria.Localization.NetworkText, int32, float32, float32, float32, int32, int32, int32)
+			c.Emit(OpCodes.Ldarg, conversionTypeIndex);
+			c.EmitDelegate(static (int conversionType) => conversionType switch {
+				BiomeConversionID.Sand => ConversionInheritanceData.YellowSolutionId,
+				BiomeConversionID.Dirt => ConversionInheritanceData.BrownSolutionId,
+				BiomeConversionID.Snow => ConversionInheritanceData.WhiteSolutionId,
+				BiomeConversionID.GlowingMushroom => ConversionInheritanceData.DarkBlueSolutionId,
 
-			// for (int k = j - size; k <= j + size; k++)
-			IL_180d: ldloc.1
-			IL_180e: ldc.i4.1
-			IL_180f: add
-			IL_1810: stloc.1
-			 */
-			c.GotoNext(MoveType.After,
-				i => i.MatchLdcI4(out _),
-				i => i.MatchLdcI4(out _),
-				i => i.MatchLdcI4(out _),
-				i => i.MatchLdnull(),
-				i => i.MatchLdcI4(out _),
-				i => i.MatchLdloc(out _),
-				i => i.MatchConvR4(),
-				i => i.MatchLdloc(out tempIndex2),
-				i => i.MatchConvR4(),
-				i => i.MatchLdcR4(out _),
-				i => i.MatchLdcI4(out _),
-				i => i.MatchLdcI4(out _),
-				i => i.MatchLdcI4(out _),
-				i => i.MatchCall<NetMessage>(nameof(NetMessage.SendData)),
+				BiomeConversionID.Corruption => ConversionInheritanceData.GetConversionIdOf<CorruptBiome>(),
+				BiomeConversionID.Crimson => ConversionInheritanceData.GetConversionIdOf<CrimsonBiome>(),
+				BiomeConversionID.Hallow => ConversionInheritanceData.GetConversionIdOf<HallowBiome>(),
+				_ => conversionType
+			});
+			c.Emit(OpCodes.Starg, conversionTypeIndex);
 
-				i => i.MatchLdloc(tempIndex2),
-				i => i.MatchLdcI4(out _),
-				i => i.MatchAdd(),
-				i => i.MatchStloc(tempIndex2));
-
-			c.Index -= 4;
-			c.MarkLabel(skipVanilla);
-			c.EmitDelegateBody(static (Tile tile, int conversionType, int tileType, int wallType, int k, int l) => {
+			c.Index = endIndex;
+			c.Emit(OpCodes.Ldloc, tileIndex);
+			c.Emit(OpCodes.Ldarg, conversionTypeIndex);
+			c.Emit(OpCodes.Ldloc, typeIndex);
+			c.Emit(OpCodes.Ldloc, wallIndex);
+			c.Emit(OpCodes.Ldloc, xIndex);
+			c.Emit(OpCodes.Ldloc, yIndex);
+			c.EmitDelegate(static (Tile tile, int conversionType, int tileType, int wallType, int k, int l) => {
 				int newTile = ConversionInheritanceDatabase.GetConvertedTile(conversionType, tileType);
 				int newWall = ConversionInheritanceDatabase.GetConvertedWall(conversionType, wallType);
 
@@ -170,16 +130,69 @@ public static class CIDConvert {
 					WorldGen.SquareTileFrame(k, l);
 					NetMessage.SendTileSquare(-1, k, l);
 				}
-			}, new() {
-				ParameterTypes = new ParameterReferenceType[] {
-					new(ParamRef.TargetLocal, tileIndex),
-					new(ParamRef.TargetParameter, conversionTypeIndex),
-					new(ParamRef.TargetLocal, typeIndex),
-					new(ParamRef.TargetLocal, wallIndex),
-					new(ParamRef.TargetLocal, xIndex),
-					new(ParamRef.TargetLocal, yIndex),
-				}
 			});
+
+			var skipVanilla = c.DefineLabel();
+			c.Emit(OpCodes.Ldarg, 0);
+			c.Emit(OpCodes.Pop);
+			c.Emit(OpCodes.Br, skipVanilla);
+
+			var tempIndex2 = 0;
+			/*
+			// if (Main.netMode == 1)
+			IL_17ee: ldsfld int32 Terraria.Main::netMode
+			IL_17f3: ldc.i4.1
+			IL_17f4: bne.un.s IL_180d
+
+			// NetMessage.SendData(17, -1, -1, null, 0, (float)l, (float)k, 0f, 0, 0, 0);
+			IL_17f6: ldc.i4.s 17
+			IL_17f8: ldc.i4.m1
+			IL_17f9: ldc.i4.m1
+			IL_17fa: ldnull
+			IL_17fb: ldc.i4.0
+			IL_17fc: ldloc.0
+			IL_17fd: conv.r4
+			IL_17fe: ldloc.1
+			IL_17ff: conv.r4
+			IL_1800: ldc.r4 0.0
+			IL_1805: ldc.i4.0
+			IL_1806: ldc.i4.0
+			IL_1807: ldc.i4.0
+			IL_1808: call void Terraria.NetMessage::SendData(int32, int32, int32, class Terraria.Localization.NetworkText, int32, float32, float32, float32, int32, int32, int32)
+
+			// for (int k = j - size; k <= j + size; k++)
+			IL_180d: ldloc.1
+			IL_180e: ldc.i4.1
+			IL_180f: add
+			IL_1810: stloc.1
+			 */
+			c.GotoNext(MoveType.After,
+				i => i.MatchLdsfld<Main>(nameof(Main.netMode)),
+				i => i.MatchLdcI4(out _),
+				i => i.MatchBneUn(out _),
+
+				i => i.MatchLdcI4(out _),
+				i => i.MatchLdcI4(out _),
+				i => i.MatchLdcI4(out _),
+				i => i.MatchLdnull(),
+				i => i.MatchLdcI4(out _),
+				i => i.MatchLdloc(out _),
+				i => i.MatchConvR4(),
+				i => i.MatchLdloc(out tempIndex2),
+				i => i.MatchConvR4(),
+				i => i.MatchLdcR4(out _),
+				i => i.MatchLdcI4(out _),
+				i => i.MatchLdcI4(out _),
+				i => i.MatchLdcI4(out _),
+				i => i.MatchCall<NetMessage>(nameof(NetMessage.SendData)),
+
+				i => i.MatchLdloc(tempIndex2),
+				i => i.MatchLdcI4(out _),
+				i => i.MatchAdd(),
+				i => i.MatchStloc(tempIndex2));
+
+			c.Index -= 4;
+			c.MarkLabel(skipVanilla);
 		});
 	}
 

@@ -55,11 +55,11 @@ public static class ILIntrinsics {
 		for (; i < instrs.Count; i++) {
 			if (instrs[i].OpCode == OpCodes.Ret) {
 				instMap[instrs[i]] = c.Next;
-				continue;
+				goto Next;
 			}
 			else if (skipNext) {
 				skipNext = false;
-				continue;
+				goto Next;
 			}
 
 			#region Locals
@@ -71,14 +71,12 @@ public static class ILIntrinsics {
 					: prm.type == ParamRef.TargetLocal ? OpCodes.Stloc : OpCodes.Starg;
 				index = prm.index;
 				c.Emit(code, index);
-				instMap[instrs[i]] = c.Prev;
-				continue;
+				goto Next;
 			}
 			else if (instrs[i].MatchLdarga(out ldargIndex)) {
 				var prm = options.ParameterTypes[ldargIndex - 1];
 				c.Emit(prm.type == ParamRef.TargetLocal ? OpCodes.Ldloca : OpCodes.Ldarga, prm.index);
-				instMap[instrs[i]] = c.Prev;
-				continue;
+				goto Next;
 			}
 			else if (instrs[i].MatchLdloc(out int ldlocIndex) || instrs[i].MatchStloc(out ldlocIndex) || instrs[i].MatchLdloca(out ldargIndex)) {
 				bool v = instrs[i].MatchLdloc(out _);
@@ -90,8 +88,7 @@ public static class ILIntrinsics {
 					index = indexes[ldlocIndex] = c.Context.AddVariable(body.Variables[ldlocIndex].VariableType.GetElementType());
 				}
 				c.Emit(code, index);
-				instMap[instrs[i]] = c.Prev;
-				continue;
+				goto Next;
 			}
 			#endregion
 
@@ -123,11 +120,13 @@ public static class ILIntrinsics {
 
 			if (instrs[i].Operand == null) {
 				c.Emit(instrs[i].OpCode);
-				instMap[instrs[i]] = c.Prev;
-				continue;
+				goto Next;
 			}
 			c.Emit(instrs[i].OpCode, instrs[i].Operand);
+
+		Next:
 			instMap[instrs[i]] = c.Prev;
+			continue;
 		}
 		foreach (var inst in instMap.Values) {
 			if (inst.Operand is Instruction[] oldTargets) {

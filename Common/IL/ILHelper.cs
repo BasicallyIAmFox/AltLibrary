@@ -2,6 +2,7 @@
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using MonoMod.RuntimeDetour;
 using MonoMod.RuntimeDetour.HookGen;
 using MonoMod.Utils;
 using System;

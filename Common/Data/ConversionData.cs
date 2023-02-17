@@ -27,7 +27,6 @@ public struct ConversionData : IAltData {
 	public IReadOnlyList<int> AsList() {
 		var self = this;
 		return GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public)
-			.Where(x => x.DeclaringType == typeof(int))
 			.Select(x => (int)x.GetValue(self))
 			.ToList();
 	}
