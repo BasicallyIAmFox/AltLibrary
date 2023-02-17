@@ -17,10 +17,12 @@ public static class HardmodeConversion {
 		ILHelper.IL<WorldGen>(nameof(WorldGen.GERunner), (ILContext il) => {
 			var c = new ILCursor(il);
 
-			var startIndex = c.Index;
-			var endIndex = startIndex;
-
 			var biomeConvIdIndex = c.AddVariable<int>();
+
+			// Hardcoded :(
+			c.Emit(OpCodes.Ldarg, 4);
+			c.EmitDelegate(static (bool good) => ConversionInheritanceData.GetConversionIdOf(good ? WorldDataManager.GetHallow() : WorldDataManager.GetEvil()));
+			c.Emit(OpCodes.Stloc, biomeConvIdIndex);
 
 			var xIndex = 0;
 			var yIndex = 0;
@@ -96,15 +98,7 @@ public static class HardmodeConversion {
 				i => i.MatchLdarg(out goodIndex),
 				i => i.MatchBrfalse(out _));
 
-			endIndex = c.Index;
-			c.Index = startIndex;
-
-			c.Emit(OpCodes.Ldarg, goodIndex);
-			c.EmitDelegate(static (bool good) => ConversionInheritanceData.GetConversionIdOf(good ? WorldDataManager.GetHallow() : WorldDataManager.GetEvil()));
-			c.Emit(OpCodes.Stloc, biomeConvIdIndex);
-
-			c.Index = endIndex;
-
+			c.Index -= 2;
 			c.Emit(OpCodes.Ldloc, xIndex);
 			c.Emit(OpCodes.Ldloc, yIndex);
 			c.Emit(OpCodes.Ldloc, biomeConvIdIndex);
@@ -128,9 +122,7 @@ public static class HardmodeConversion {
 				}
 			});
 
-			c.Emit(OpCodes.Ldc_I4, 1);
-			c.Emit(OpCodes.Ldc_I4, 0);
-			c.Emit(OpCodes.Bne_Un, incLoopLabel);
+			c.Emit(OpCodes.Br, incLoopLabel);
 		});
 	}
 }

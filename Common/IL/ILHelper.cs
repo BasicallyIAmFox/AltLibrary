@@ -106,7 +106,7 @@ public static class ILHelper {
 			}
 		}
 
-		Environment.SetEnvironmentVariable("MONOMOD_DMD_TYPE", "Auto");
+		Environment.SetEnvironmentVariable("MONOMOD_DMD_TYPE", "cecil"); // auto
 		Environment.SetEnvironmentVariable("MONOMOD_DMD_DEBUG", "1");
 		string dumpDir = Path.GetFullPath("MonoModDump");
 		Directory.CreateDirectory(dumpDir);

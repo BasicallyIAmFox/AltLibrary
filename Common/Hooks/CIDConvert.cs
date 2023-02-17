@@ -19,16 +19,27 @@ public static class CIDConvert {
 		ILHelper.IL<WorldGen>(nameof(WorldGen.Convert), (ILContext il) => {
 			var c = new ILCursor(il);
 
-			ILHelper.CompleteLog(AltLibrary.Instance, c, true);
-
-			var startIndex = c.Index;
-
 			var conversionTypeIndex = 0;
 			var xIndex = 0;
 			var yIndex = 0;
 			var tileIndex = 0;
 			var typeIndex = 0;
 			var wallIndex = 0;
+
+			// Hardcoded.
+			c.Emit(OpCodes.Ldarg, 2);
+			c.EmitDelegate(static (int conversionType) => conversionType switch {
+				BiomeConversionID.Sand => ConversionInheritanceData.YellowSolutionId,
+				BiomeConversionID.Dirt => ConversionInheritanceData.BrownSolutionId,
+				BiomeConversionID.Snow => ConversionInheritanceData.WhiteSolutionId,
+				BiomeConversionID.GlowingMushroom => ConversionInheritanceData.DarkBlueSolutionId,
+
+				BiomeConversionID.Corruption => ConversionInheritanceData.GetConversionIdOf<CorruptBiome>(),
+				BiomeConversionID.Crimson => ConversionInheritanceData.GetConversionIdOf<CrimsonBiome>(),
+				BiomeConversionID.Hallow => ConversionInheritanceData.GetConversionIdOf<HallowBiome>(),
+				_ => conversionType
+			});
+			c.Emit(OpCodes.Starg, 2);
 
 			/*
 			// Tile tile = Main.tile[l, k];
@@ -76,24 +87,6 @@ public static class CIDConvert {
 				i => i.MatchSub(),
 				i => i.MatchSwitch(out _));
 
-			var endIndex = c.Index;
-			c.Index = startIndex;
-
-			c.Emit(OpCodes.Ldarg, conversionTypeIndex);
-			c.EmitDelegate(static (int conversionType) => conversionType switch {
-				BiomeConversionID.Sand => ConversionInheritanceData.YellowSolutionId,
-				BiomeConversionID.Dirt => ConversionInheritanceData.BrownSolutionId,
-				BiomeConversionID.Snow => ConversionInheritanceData.WhiteSolutionId,
-				BiomeConversionID.GlowingMushroom => ConversionInheritanceData.DarkBlueSolutionId,
-
-				BiomeConversionID.Corruption => ConversionInheritanceData.GetConversionIdOf<CorruptBiome>(),
-				BiomeConversionID.Crimson => ConversionInheritanceData.GetConversionIdOf<CrimsonBiome>(),
-				BiomeConversionID.Hallow => ConversionInheritanceData.GetConversionIdOf<HallowBiome>(),
-				_ => conversionType
-			});
-			c.Emit(OpCodes.Starg, conversionTypeIndex);
-
-			c.Index = endIndex;
 			c.Emit(OpCodes.Ldloc, tileIndex);
 			c.Emit(OpCodes.Ldarg, conversionTypeIndex);
 			c.Emit(OpCodes.Ldloc, typeIndex);
@@ -135,13 +128,7 @@ public static class CIDConvert {
 			});
 
 			var skipVanilla = c.DefineLabel();
-
-			// Some funny IL happening here.
-			// It could be simplified to be just Br opcode,
-			// but it breaks everything. So we have this instead, and it works.
-			c.Emit(OpCodes.Ldc_I4, 1);
-			c.Emit(OpCodes.Ldc_I4, 0);
-			c.Emit(OpCodes.Bne_Un, skipVanilla);
+			c.Emit(OpCodes.Br, skipVanilla);
 
 			var tempIndex2 = 0;
 			/*
@@ -149,7 +136,6 @@ public static class CIDConvert {
 			IL_17ee: ldsfld int32 Terraria.Main::netMode
 			IL_17f3: ldc.i4.1
 			IL_17f4: bne.un.s IL_180d
-
 			// NetMessage.SendData(17, -1, -1, null, 0, (float)l, (float)k, 0f, 0, 0, 0);
 			IL_17f6: ldc.i4.s 17
 			IL_17f8: ldc.i4.m1
@@ -165,7 +151,6 @@ public static class CIDConvert {
 			IL_1806: ldc.i4.0
 			IL_1807: ldc.i4.0
 			IL_1808: call void Terraria.NetMessage::SendData(int32, int32, int32, class Terraria.Localization.NetworkText, int32, float32, float32, float32, int32, int32, int32)
-
 			// for (int k = j - size; k <= j + size; k++)
 			IL_180d: ldloc.1
 			IL_180e: ldc.i4.1
@@ -199,8 +184,6 @@ public static class CIDConvert {
 
 			c.Index -= 4;
 			c.MarkLabel(skipVanilla);
-
-			ILHelper.CompleteLog(AltLibrary.Instance, c, false);
 		});
 	}
 

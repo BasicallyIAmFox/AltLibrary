@@ -20,7 +20,6 @@ public sealed class CorruptBiome : AltBiome<EvilBiomeGroup> {
 
 			GetFixedBoiLeftWorldIcon = "AltLibrary/Assets/WorldIcons/Normal/Corrupt",
 			GetFixedBoiFullWorldIcon = "AltLibrary/Assets/WorldIcons/DrunkBase/Corrupt",
-			GetFixedBoiRightWorldIcon = "AltLibrary/Assets/WorldIcons/Drunk/Corrupt",
 		});
 		DataHandler.Add(new ConversionData {
 			Stone = TileID.Ebonstone,
@@ -52,7 +51,6 @@ public sealed class CrimsonBiome : AltBiome<EvilBiomeGroup> {
 
 			GetFixedBoiLeftWorldIcon = "AltLibrary/Assets/WorldIcons/Normal/Crimson",
 			GetFixedBoiFullWorldIcon = "AltLibrary/Assets/WorldIcons/DrunkBase/Crimson",
-			GetFixedBoiRightWorldIcon = "AltLibrary/Assets/WorldIcons/Drunk/Crimson",
 		});
 		DataHandler.Add(new ConversionData {
 			Stone = TileID.Crimstone,
