@@ -15,9 +15,11 @@ namespace AltLibrary.Common.Hooks;
 
 [LoadableContent(ContentOrder.Content, nameof(Load))]
 public static class CIDConvert {
-	public static void Load() {
+	private static void Load() {
 		ILHelper.IL<WorldGen>(nameof(WorldGen.Convert), (ILContext il) => {
 			var c = new ILCursor(il);
+
+			ILHelper.CompleteLog(AltLibrary.Instance, c, true);
 
 			var startIndex = c.Index;
 
@@ -29,22 +31,22 @@ public static class CIDConvert {
 			var wallIndex = 0;
 
 			/*
-			// Tile tile = Main.tile[k, l];
-			IL_0044: ldsflda valuetype Terraria.Tilemap Terraria.Main::tile
-			IL_0049: ldloc.0
-			IL_004a: ldloc.1
-			IL_004b: call instance valuetype Terraria.Tile Terraria.Tilemap::get_Item(int32, int32)
-			IL_0050: stloc.2
+			// Tile tile = Main.tile[l, k];
+			IL_0036: ldsflda valuetype Terraria.Tilemap Terraria.Main::tile
+			IL_003b: ldloc.0
+			IL_003c: ldloc.1
+			IL_003d: call instance valuetype Terraria.Tile Terraria.Tilemap::get_Item(int32, int32)
+			IL_0042: stloc.2
 			// int type = *(ushort*)tile.type;
-			IL_0051: ldloca.s 2
-			IL_0053: call instance uint16& Terraria.Tile::get_type()
-			IL_0058: ldind.u2
-			IL_0059: stloc.3
+			IL_0043: ldloca.s 2
+			IL_0045: call instance uint16& Terraria.Tile::get_type()
+			IL_004a: ldind.u2
+			IL_004b: stloc.3
 			// int wall = *(ushort*)tile.wall;
-			IL_005a: ldloca.s 2
-			IL_005c: call instance uint16& Terraria.Tile::get_wall()
-			IL_0061: ldind.u2
-			IL_0062: stloc.s 4
+			IL_004c: ldloca.s 2
+			IL_004e: call instance uint16& Terraria.Tile::get_wall()
+			IL_0053: ldind.u2
+			IL_0054: stloc.s 4
 			// switch (conversionType)
 			IL_0056: ldarg.2
 			// (no C# code)
@@ -133,9 +135,13 @@ public static class CIDConvert {
 			});
 
 			var skipVanilla = c.DefineLabel();
-			c.Emit(OpCodes.Ldarg, 0);
-			c.Emit(OpCodes.Pop);
-			c.Emit(OpCodes.Br, skipVanilla);
+
+			// Some funny IL happening here.
+			// It could be simplified to be just Br opcode,
+			// but it breaks everything. So we have this instead, and it works.
+			c.Emit(OpCodes.Ldc_I4, 1);
+			c.Emit(OpCodes.Ldc_I4, 0);
+			c.Emit(OpCodes.Bne_Un, skipVanilla);
 
 			var tempIndex2 = 0;
 			/*
@@ -193,15 +199,56 @@ public static class CIDConvert {
 
 			c.Index -= 4;
 			c.MarkLabel(skipVanilla);
+
+			ILHelper.CompleteLog(AltLibrary.Instance, c, false);
 		});
 	}
 
-	public static void Convert<T>(int i, int j, int size = 4) where T : class, IAltBiome {
+	public static void Convert<T>(int i, int j) where T : class, IAltBiome {
+		Convert(ModContent.GetInstance<T>(), i, j);
+	}
+
+	public static void Convert<T>(int i, int j, int size) where T : class, IAltBiome {
 		Convert(ModContent.GetInstance<T>(), i, j, size);
 	}
 
+	public static void Convert(IAltBiome biome, int i, int j) {
+		Tile tile = Main.tile[i, j];
+		int newTile = ConversionInheritanceDatabase.GetConvertedTile(biome, tile.TileType);
+		int newWall = ConversionInheritanceDatabase.GetConvertedWall(biome, tile.WallType);
+
+		bool transformedAny = false;
+		bool breakNewTile = newTile == ConversionInheritanceData.Break;
+		bool breakNewWall = newWall == ConversionInheritanceData.Break;
+		if (breakNewTile || breakNewWall) {
+			if (breakNewTile) {
+				WorldGen.KillTile(i, j);
+			}
+			if (breakNewWall) {
+				WorldGen.KillWall(i, j);
+			}
+
+			if (Main.netMode == NetmodeID.MultiplayerClient) {
+				NetMessage.SendData(MessageID.TileManipulation, number: i, number2: j);
+			}
+		}
+
+		if (newTile >= 0 && newTile != tile.TileType) {
+			tile.TileType = (ushort)newTile;
+			transformedAny = true;
+		}
+		if (newWall >= 0 && newWall != tile.WallType) {
+			tile.WallType = (ushort)newWall;
+			transformedAny = true;
+		}
+		if (transformedAny) {
+			WorldGen.SquareTileFrame(i, j);
+			NetMessage.SendTileSquare(-1, i, j);
+		}
+	}
+
 	[MethodImpl(MethodImplOptions.AggressiveOptimization)]
-	public static void Convert(IAltBiome biome, int i, int j, int size = 4) {
+	public static void Convert(IAltBiome biome, int i, int j, int size) {
 		if (biome is null)
 			throw new ArgumentNullException(nameof(biome), "Can't be null!");
 
@@ -211,38 +258,7 @@ public static class CIDConvert {
 					continue;
 				}
 
-				Tile tile = Main.tile[k, l];
-				int newTile = ConversionInheritanceDatabase.GetConvertedTile(biome, tile.TileType);
-				int newWall = ConversionInheritanceDatabase.GetConvertedWall(biome, tile.WallType);
-
-				bool transformedAny = false;
-				bool breakNewTile = newTile == ConversionInheritanceData.Break;
-				bool breakNewWall = newWall == ConversionInheritanceData.Break;
-				if (breakNewTile || breakNewWall) {
-					if (breakNewTile) {
-						WorldGen.KillTile(k, l);
-					}
-					if (breakNewWall) {
-						WorldGen.KillWall(k, l);
-					}
-
-					if (Main.netMode == NetmodeID.MultiplayerClient) {
-						NetMessage.SendData(MessageID.TileManipulation, number: k, number2: l);
-					}
-				}
-
-				if (newTile >= 0 && newTile != tile.TileType) {
-					tile.TileType = (ushort)newTile;
-					transformedAny = true;
-				}
-				if (newWall >= 0 && newWall != tile.WallType) {
-					tile.WallType = (ushort)newWall;
-					transformedAny = true;
-				}
-				if (transformedAny) {
-					WorldGen.SquareTileFrame(k, l);
-					NetMessage.SendTileSquare(-1, k, l);
-				}
+				Convert(biome, i, j);
 			}
 		}
 	}

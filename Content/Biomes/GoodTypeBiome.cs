@@ -17,9 +17,8 @@ public sealed class HallowBiome : AltBiome<GoodBiomeGroup> {
 			NoTrapsWorldIcon = "AltLibrary/Assets/WorldIcons/NoTraps/Hallow",
 			DontDigUpWorldIcon = "AltLibrary/Assets/WorldIcons/Remix/Hallow",
 
-			GetFixedBoiLeftWorldIcon = "AltLibrary/Assets/WorldIcons/Zenith/Hallow",
-			GetFixedBoiFullWorldIcon = "AltLibrary/Assets/WorldIcons/Zenith/Hallow",
-			GetFixedBoiRightWorldIcon = "AltLibrary/Assets/WorldIcons/Normal/Hallow",
+			GetFixedBoiLeftWorldIcon = "AltLibrary/Assets/WorldIcons/Normal/HallowLeft",
+			GetFixedBoiFullWorldIcon = "AltLibrary/Assets/WorldIcons/Normal/HallowFull",
 		});
 		DataHandler.Add(new ConversionData {
 			Stone = TileID.Pearlstone,

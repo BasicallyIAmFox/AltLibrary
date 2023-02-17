@@ -16,7 +16,6 @@ public struct WorldIconData : IAltData, IDataAlwaysExists<IAltBiome> {
 	public string DontDigUpWorldIcon { readonly get; set; }
 	public string GetFixedBoiLeftWorldIcon { readonly get; set; }
 	public string GetFixedBoiFullWorldIcon { readonly get; set; }
-	public string GetFixedBoiRightWorldIcon { readonly get; set; }
 
 	public static void CheckThere(IAltBiome biome) {
 		var worldIconData = biome.DataHandler.Get<WorldIconData>();
@@ -28,11 +27,10 @@ public struct WorldIconData : IAltData, IDataAlwaysExists<IAltBiome> {
 		worldIconData.ForTheWorthyWorldIcon ??= worldIconData.NormalWorldIcon + "_ForTheWorthy";
 		worldIconData.Celebrationmk10WorldIcon ??= worldIconData.NormalWorldIcon + "_Anniversary";
 		worldIconData.TheConstantWorldIcon ??= worldIconData.NormalWorldIcon + "_Constant";
-		worldIconData.NoTrapsWorldIcon ??= worldIconData.NormalWorldIcon + "_NoTraps";
+		worldIconData.NoTrapsWorldIcon ??= worldIconData.NormalWorldIcon;
 		worldIconData.DontDigUpWorldIcon ??= worldIconData.NormalWorldIcon + "_Remix";
 		worldIconData.GetFixedBoiFullWorldIcon ??= worldIconData.NormalWorldIcon + "_ZenithFull";
 		worldIconData.GetFixedBoiLeftWorldIcon ??= worldIconData.NormalWorldIcon + "_ZenithLeft";
-		worldIconData.GetFixedBoiRightWorldIcon ??= worldIconData.NormalWorldIcon + "_ZenithRight";
 
 		biome.DataHandler.Add(worldIconData);
 	}

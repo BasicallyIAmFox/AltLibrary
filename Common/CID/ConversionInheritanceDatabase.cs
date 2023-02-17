@@ -1,6 +1,7 @@
 ﻿using AltLibrary.Common.AltTypes;
 using AltLibrary.Common.Attributes;
 using AltLibrary.Content.Groups;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -25,7 +26,7 @@ public abstract class ConversionInheritanceData {
 	private readonly int[] tiles;
 
 	public ConversionInheritanceData() {
-		int size = 5 + UniteAltBiomes().LastOrDefault()?.Type ?? 0;
+		int size = 6 + UniteAltBiomes().LastOrDefault()?.Type ?? 0;
 		tiles = new SetFactory(size * TileLoader.TileCount).CreateIntSet(defaultState: Keep);
 	}
 

@@ -6,6 +6,7 @@ using AltLibrary.Content.Groups;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
@@ -22,11 +23,13 @@ public sealed class LayeredWorldIconElement : UIImage {
 	private readonly SpriteEffects effects;
 	private int _glitchFrame;
 	private int _glitchFrameCounter;
-	private int _glitchVariation;
+	private int[] _glitchVariation;
 
 	public LayeredWorldIconElement(WorldFileData data, TagCompound tagCompound) : base(Asset<Texture2D>.Empty) {
 		Asset<Texture2D> treeType = LibAssets.IconNormal_Base;
 
+		_glitchVariation = new int[3];
+		_glitchVariation[0] = -1;
 		if (data.ZenithWorld) {
 			zenith = true;
 			assets.Add(treeType);
@@ -160,8 +163,26 @@ public sealed class LayeredWorldIconElement : UIImage {
 			}
 
 			Draw(assets[0]);
-			//Draw(LibAssets.IconZenith_Left[_glitchVariation]);
-			//Draw(LibAssets.IconZenith_Right[_glitchVariation]);
+			switch (_glitchVariation[0]) {
+				case 0:
+					Draw(LibAssets.IconNormal_Evils[_glitchVariation[1]]);
+					break;
+				case 1:
+					Draw(LibAssets.IconDrunkBase_Evils[_glitchVariation[2]]);
+					Draw(LibAssets.IconNormal_Evils[_glitchVariation[1]]);
+					break;
+				case 2:
+					Draw(LibAssets.IconZenith_GoodsL[_glitchVariation[1]]);
+					break;
+				case 3:
+					Draw(LibAssets.IconZenith_GoodsF[_glitchVariation[1]]);
+					Draw(LibAssets.IconZenith_GoodsL[_glitchVariation[2]]);
+					break;
+				case 4:
+					Draw(LibAssets.IconZenith_GoodsF[_glitchVariation[1]]);
+					Draw(LibAssets.IconNormal_Evils[_glitchVariation[2]]);
+					break;
+			}
 
 			spriteBatch.End();
 			//spriteBatch.GetData().SortMode = sortMode;
@@ -195,7 +216,27 @@ public sealed class LayeredWorldIconElement : UIImage {
 		_glitchFrame = (_glitchFrame + 1) % 16;
 
 		if ((_glitchFrame == 4 || _glitchFrame == 8 || _glitchFrame == 12) && Main.rand.NextBool(3)) {
-			_glitchVariation = Main.rand.Next(LibAssets.IconZenith_Left.Length);
+			var id = Main.rand.Next(5);
+
+			_glitchVariation[0] = id;
+			if (id == 0) {
+				_glitchVariation[1] = Main.rand.Next(LibAssets.ValidZenithEvils.Count);
+			}
+			else if (id == 1) {
+				_glitchVariation[2] = Main.rand.Next(LibAssets.ValidZenithEvils.Count);
+				_glitchVariation[1] = Main.rand.Next(LibAssets.ValidZenithEvils.Count);
+			}
+			else if (id == 2) {
+				_glitchVariation[1] = Main.rand.Next(LibAssets.ValidZenithGoods.Count);
+			}
+			else if (id == 3) {
+				_glitchVariation[2] = Main.rand.Next(LibAssets.ValidZenithGoods.Count);
+				_glitchVariation[1] = Main.rand.Next(LibAssets.ValidZenithGoods.Count);
+			}
+			else if (id == 4) {
+				_glitchVariation[2] = Main.rand.Next(LibAssets.ValidZenithEvils.Count);
+				_glitchVariation[1] = Main.rand.Next(LibAssets.ValidZenithGoods.Count);
+			}
 		}
 	}
 }

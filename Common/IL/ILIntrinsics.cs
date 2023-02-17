@@ -102,7 +102,6 @@ public static class ILIntrinsics {
 					ind = instrs[i].Next;
 					fastReflectionDelegate(c, options, ref ind, index);
 					instrs[i + 1] = ind;
-					skipNext = true;
 					continue;
 				}
 				else if (type == IntrisicType.Valued) {

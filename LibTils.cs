@@ -13,9 +13,12 @@ public static class LibUtils {
 		return objects.GroupBy(x => {
 			Type oldType = null;
 			Type type = x.GetType().BaseType;
-			while (type != baseDeclaringType) {
+			// It's a special case where I should NOT use ToString() or FullName.
+			// For whatever reason, doing this causes to result type name be C[[B[[A]]]] instead of C
+			// don't even try to clean this mess up
+			while ($"{type.Namespace}.{type.Name}" != baseDeclaringType?.FullName) {
 				oldType = type;
-				type = type.BaseType;
+				type = type?.BaseType;
 			}
 			return Type.GetType($"{oldType.Namespace}.{oldType.Name}");
 		});

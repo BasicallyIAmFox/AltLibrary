@@ -5,6 +5,7 @@ using AltLibrary.Content.Groups;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using static AltLibrary.Common.Assets.AssetFactory;
 
@@ -44,8 +45,10 @@ public static class LibAssets {
 	public static Asset<Texture2D>[] IconNoTraps_Evils;
 	public static Asset<Texture2D>[] IconNoTraps_Goods;
 
-	public static Asset<Texture2D>[] IconZenith_Left;
-	public static Asset<Texture2D>[] IconZenith_Right;
+	public static Asset<Texture2D>[] IconZenith_GoodsF;
+	public static Asset<Texture2D>[] IconZenith_GoodsL;
+	internal static List<int> ValidZenithEvils;
+	internal static List<int> ValidZenithGoods;
 
 	public static Asset<Texture2D>[,] PreviewIcons;
 	#endregion
@@ -71,6 +74,7 @@ public static class LibAssets {
 		IconRemix_Base = CreateSingle<Asset<Texture2D>>("AltLibrary/Assets/WorldIcons/IconRemix");
 		IconNoTraps_Base = CreateSingle<Asset<Texture2D>>("AltLibrary/Assets/WorldIcons/IconNoTraps");
 
+		ValidZenithEvils = ValidZenithGoods = new();
 		IconNormal_Evils = IconNormal_Goods =
 			IconDrunk_Evils = IconDrunk_Goods =
 			IconDrunkBase_Evils = IconDrunkBase_Goods =
@@ -80,7 +84,8 @@ public static class LibAssets {
 			IconDontStarve_Evils = IconDontStarve_Goods =
 			IconRemix_Evils = IconRemix_Goods =
 			IconNoTraps_Evils = IconNoTraps_Goods =
-			IconZenith_Left = IconZenith_Right = new Asset<Texture2D>[IAltBiome.altBiomes.Count];
+			IconZenith_GoodsL = IconZenith_GoodsF = new Asset<Texture2D>[IAltBiome.altBiomes.Count];
+
 		for (int i = 0; i < IAltBiome.altBiomes.Count; i++) {
 			var biome = IAltBiome.altBiomes[i];
 			if (biome is AltBiome<EvilBiomeGroup>) {
@@ -93,7 +98,7 @@ public static class LibAssets {
 				IconDontStarve_Evils[i] = CreateSingle<Asset<Texture2D>>(data.TheConstantWorldIcon);
 				IconRemix_Evils[i] = CreateSingle<Asset<Texture2D>>(data.DontDigUpWorldIcon);
 				IconNoTraps_Evils[i] = CreateSingle<Asset<Texture2D>>(data.NoTrapsWorldIcon);
-				IconZenith_Left[i] = IconNormal_Evils[i];
+				ValidZenithEvils.Add(i);
 			}
 			else if (biome is AltBiome<GoodBiomeGroup>) {
 				var data = biome.DataHandler.Get<WorldIconData>();
@@ -104,6 +109,9 @@ public static class LibAssets {
 				IconDontStarve_Goods[i] = CreateSingle<Asset<Texture2D>>(data.TheConstantWorldIcon);
 				IconRemix_Goods[i] = CreateSingle<Asset<Texture2D>>(data.DontDigUpWorldIcon);
 				IconNoTraps_Goods[i] = CreateSingle<Asset<Texture2D>>(data.NoTrapsWorldIcon);
+				IconZenith_GoodsL[i] = CreateSingle<Asset<Texture2D>>(data.GetFixedBoiLeftWorldIcon);
+				IconZenith_GoodsF[i] = CreateSingle<Asset<Texture2D>>(data.GetFixedBoiFullWorldIcon);
+				ValidZenithGoods.Add(i);
 			}
 		}
 
