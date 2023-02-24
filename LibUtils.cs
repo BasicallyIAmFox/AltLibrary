@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Buffers;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,7 +7,14 @@ using Terraria.ModLoader;
 
 namespace AltLibrary;
 
-public static class LibUtils {
+public static partial class LibUtils {
+	public static T As<T>(this object value) => (T)value;
+
+	public static TList With<TList, TType>(this TList collection, TType value) where TList : ICollection<TType> {
+		collection.Add(value);
+		return collection;
+	}
+
 	public static IEnumerable<IGrouping<Type, TArray>> SeparateTypes<TArray>(this IEnumerable<TArray> objects, Type baseDeclaringType) {
 		return objects.GroupBy(x => {
 			Type oldType = null;
@@ -24,7 +30,7 @@ public static class LibUtils {
 		});
 	}
 
-	public static IEnumerable<T> ForEach<T>(this IEnumerable<T> enumerable, Action<T> action) {
+	internal static IEnumerable<T> ForEach<T>(this IEnumerable<T> enumerable, Action<T> action) {
 		var array = enumerable.ToArray();
 		for (int i = array.Length - 1; i >= 0; i--) {
 			action(array[i]);
@@ -52,7 +58,5 @@ public static class LibUtils {
 	}
 
 	public static void ForEachContent<T>(Action<T> action) where T : ILoadable => ModContent.GetContent<T>().ForEach(type => action(type));
-
-	internal static T To<T>(this string fullName) where T : IModType
-		=> ModContent.TryFind<T>(fullName, out var value) ? value : default;
+	internal static T To<T>(this string fullName) where T : IModType => ModContent.TryFind<T>(fullName, out var value) ? value : default;
 }

@@ -1,24 +1,41 @@
 ﻿using AltLibrary.Common.CID;
 using AltLibrary.Common.Data;
 using AltLibrary.Common.OrderGroups;
+using AltLibrary.Common.Solutions;
 using System.Collections.Generic;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace AltLibrary.Common.AltTypes;
 
-public partial interface IAltBiome : IAAltType, ILocalizedModType {
+public partial interface IAltBiome : IAAltType, ILocalizedModType, ISolution {
 	internal static List<IAltBiome> altBiomes = new(8);
+
+	int[] ItemReplacements { get; }
 
 	int GetAltBlock(int baseTile);
 }
-public abstract partial class AltBiome<T> : AAltType<AltBiome<T>, T, IAltBiome>, IAltBiome
+public abstract partial class AltBiome<T> : AAltType<AltBiome<T>, T, IAltBiome>, IAltBiome, ISolution
 	where T : BiomeGroup {
 	public override string LocalizationCategory => "AltBiome";
 
+	public int[] ItemReplacements;
+
+	int[] IAltBiome.ItemReplacements => ItemReplacements;
+
 	public sealed override void SetupContent() {
+		ItemReplacements = ItemID.Sets.Factory.CreateIntSet(ItemID.None);
+
 		DataHandler = new DataHandler();
 		base.SetupContent();
+
+		ISolution.solutions.Add(this);
+	}
+
+	public virtual void FillTileEntries(int currentTileId, ref int tileEntry) {
+	}
+
+	public virtual void FillWallEntries(int currentWallId, ref int wallEntry) {
 	}
 
 	public virtual int GetAltBlock(int baseTile) {

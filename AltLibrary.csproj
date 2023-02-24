@@ -8,12 +8,11 @@
 		<LangVersion>latest</LangVersion>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
-	<ItemGroup>
-	  <None Remove="Common\IL\ILHelper.cs~RF5e08672.TMP" />
-	</ItemGroup>
+	
 	<ItemGroup>
 		<PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
 	</ItemGroup>
+	
 	<PropertyGroup>
 		<!-- Opt in to preview features before using them -->
 		<NoWarn>$(NoWarn);CA2252</NoWarn>

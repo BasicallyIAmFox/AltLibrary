@@ -6,7 +6,6 @@ using AltLibrary.Content.Groups;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
@@ -23,7 +22,7 @@ public sealed class LayeredWorldIconElement : UIImage {
 	private readonly SpriteEffects effects;
 	private int _glitchFrame;
 	private int _glitchFrameCounter;
-	private int[] _glitchVariation;
+	private readonly int[] _glitchVariation;
 
 	public LayeredWorldIconElement(WorldFileData data, TagCompound tagCompound) : base(Asset<Texture2D>.Empty) {
 		Asset<Texture2D> treeType = LibAssets.IconNormal_Base;
@@ -69,7 +68,7 @@ public sealed class LayeredWorldIconElement : UIImage {
 					goto skip;
 				}
 
-				var type = biome.Type;
+				var type = ((IAAltType)biome).Type;
 				if (data.DrunkWorld) {
 					assets.Add(LibAssets.IconDrunkBase_Evils[type]);
 					assets.Add(LibAssets.IconDrunk_Evils[type]);
@@ -106,7 +105,7 @@ public sealed class LayeredWorldIconElement : UIImage {
 					goto skip;
 				}
 
-				var type = biome.Type;
+				var type = ((IAAltType)biome).Type;
 				if (data.DrunkWorld) {
 					assets.Add(LibAssets.IconDrunkBase_Goods[type]);
 					assets.Add(LibAssets.IconDrunk_Goods[type]);

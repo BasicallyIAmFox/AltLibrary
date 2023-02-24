@@ -11,7 +11,7 @@ using Terraria.Graphics.Light;
 
 namespace AltLibrary.Common.Hooks;
 
-[LoadableContent(ContentOrder.Content, nameof(Load))]
+[LoadableContent(ContentOrder.EarlyContent, nameof(Load))]
 public static class UnderworldLighting {
 	private static void Load() {
 		ILHelper.IL<TileLightScanner>("ApplyHellLight", (ILContext il) => {

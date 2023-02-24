@@ -25,7 +25,8 @@ public class AltLibrary : Mod {
 	}
 
 	public override void Load() {
-		LoadLoadables(ContentOrder.Content);
+		LoadLoadables(ContentOrder.EarlyContent);
+		LoadLoadables(ContentOrder.MidContent);
 	}
 
 	public override void PostSetupContent() {

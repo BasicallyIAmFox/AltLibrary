@@ -3,7 +3,6 @@ using AltLibrary.Common.Data;
 using AltLibrary.Common.OrderGroups;
 using System.Collections.Generic;
 using System.Reflection;
-using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
@@ -37,7 +36,7 @@ public abstract class AAltType<Self, BaseGroup, Interface> : ModTexturedType, IA
 
 	public override void SetupContent() {
 		SetStaticDefaults();
-		
+
 		LibUtils.ForEachType(x => x.IsAssignableTo(typeof(IDataAlwaysExists<Interface>)) && x.GetCustomAttribute<DataAlwaysExistsAttribute>() != null, (current, mod) => {
 			current.GetMethod("CheckThere", BindingFlags.Static | BindingFlags.Public).Invoke(null, new object[] { this });
 		});

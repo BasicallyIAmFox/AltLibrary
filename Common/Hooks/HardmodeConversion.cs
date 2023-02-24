@@ -6,12 +6,13 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using ReLogic.Utilities;
 using System;
+using System.Reflection;
 using Terraria;
 using Terraria.Utilities;
 
 namespace AltLibrary.Common.Hooks;
 
-[LoadableContent(ContentOrder.Content, nameof(Load))]
+[LoadableContent(ContentOrder.EarlyContent, nameof(Load))]
 public static class HardmodeConversion {
 	private static void Load() {
 		ILHelper.IL<WorldGen>(nameof(WorldGen.GERunner), (ILContext il) => {
@@ -20,8 +21,8 @@ public static class HardmodeConversion {
 			var biomeConvIdIndex = c.AddVariable<int>();
 
 			// Hardcoded :(
-			c.Emit(OpCodes.Ldarg, 4);
-			c.EmitDelegate(static (bool good) => ConversionInheritanceData.GetConversionIdOf(good ? WorldDataManager.GetHallow() : WorldDataManager.GetEvil()));
+			c.Emit(OpCodes.Ldarg, c.Body.Method.Parameters[4]); // 'good' parameter
+			c.EmitDelegate(static (bool good) => ConversionInheritanceData.GetIdOf(good ? WorldDataManager.GetHallow() : WorldDataManager.GetEvil()));
 			c.Emit(OpCodes.Stloc, biomeConvIdIndex);
 
 			var xIndex = 0;
@@ -94,33 +95,15 @@ public static class HardmodeConversion {
 				i => i.MatchAdd(),
 				i => i.MatchMul(),
 				i => i.MatchBgeUn(out incLoopLabel),
-				
+
 				i => i.MatchLdarg(out goodIndex),
 				i => i.MatchBrfalse(out _));
 
 			c.Index -= 2;
+			c.Emit(OpCodes.Ldloc, biomeConvIdIndex);
 			c.Emit(OpCodes.Ldloc, xIndex);
 			c.Emit(OpCodes.Ldloc, yIndex);
-			c.Emit(OpCodes.Ldloc, biomeConvIdIndex);
-			c.EmitDelegate(static (int x, int y, int conversionType) => {
-				Tile tile = Main.tile[x, y];
-
-				var convType = ConversionInheritanceDatabase.GetConvertedTile(conversionType, tile.TileType);
-				var convWall = ConversionInheritanceDatabase.GetConvertedWall(conversionType, tile.WallType);
-
-				var transformedAny = false;
-				if (convType >= 0 && convType != tile.TileType) {
-					tile.TileType = (ushort)convType;
-					transformedAny = true;
-				}
-				if (convWall >= 0 && convWall != tile.WallType) {
-					tile.WallType = (ushort)convWall;
-					transformedAny = true;
-				}
-				if (transformedAny) {
-					WorldGen.SquareTileFrame(x, y);
-				}
-			});
+			c.Emit(OpCodes.Call, typeof(CIDConvert).GetMethod(nameof(CIDConvert.Convert), BindingFlags.Static | BindingFlags.Public, new Type[] { typeof(int), typeof(int), typeof(int) }));
 
 			c.Emit(OpCodes.Br, incLoopLabel);
 		});

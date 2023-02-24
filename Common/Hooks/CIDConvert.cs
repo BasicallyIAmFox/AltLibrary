@@ -2,7 +2,7 @@
 using AltLibrary.Common.Attributes;
 using AltLibrary.Common.CID;
 using AltLibrary.Common.IL;
-using AltLibrary.Content.Biomes;
+using AltLibrary.Common.Solutions;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Hooks;
 
-[LoadableContent(ContentOrder.Content, nameof(Load))]
+[LoadableContent(ContentOrder.EarlyContent, nameof(Load))]
 public static class CIDConvert {
 	private static void Load() {
 		ILHelper.IL<WorldGen>(nameof(WorldGen.Convert), (ILContext il) => {
@@ -28,17 +28,7 @@ public static class CIDConvert {
 
 			// Hardcoded.
 			c.Emit(OpCodes.Ldarg, 2);
-			c.EmitDelegate(static (int conversionType) => conversionType switch {
-				BiomeConversionID.Sand => ConversionInheritanceData.YellowSolutionId,
-				BiomeConversionID.Dirt => ConversionInheritanceData.BrownSolutionId,
-				BiomeConversionID.Snow => ConversionInheritanceData.WhiteSolutionId,
-				BiomeConversionID.GlowingMushroom => ConversionInheritanceData.DarkBlueSolutionId,
-
-				BiomeConversionID.Corruption => ConversionInheritanceData.GetConversionIdOf<CorruptBiome>(),
-				BiomeConversionID.Crimson => ConversionInheritanceData.GetConversionIdOf<CrimsonBiome>(),
-				BiomeConversionID.Hallow => ConversionInheritanceData.GetConversionIdOf<HallowBiome>(),
-				_ => conversionType
-			});
+			c.EmitDelegate(static (int conversionType) => ConversionInheritanceData.GetIdOf(conversionType));
 			c.Emit(OpCodes.Starg, 2);
 
 			/*
@@ -187,19 +177,11 @@ public static class CIDConvert {
 		});
 	}
 
-	public static void Convert<T>(int i, int j) where T : class, IAltBiome {
-		Convert(ModContent.GetInstance<T>(), i, j);
-	}
-
-	public static void Convert<T>(int i, int j, int size) where T : class, IAltBiome {
-		Convert(ModContent.GetInstance<T>(), i, j, size);
-	}
-
-	public static void Convert(IAltBiome biome, int i, int j) {
+	public static void Convert(int conversionType, int i, int j) {
 		Tile tile = Main.tile[i, j];
-		int newTile = ConversionInheritanceDatabase.GetConvertedTile(biome, tile.TileType);
-		int newWall = ConversionInheritanceDatabase.GetConvertedWall(biome, tile.WallType);
-
+		int newTile = ConversionInheritanceDatabase.GetConvertedTile(conversionType, tile.TileType);
+		int newWall = ConversionInheritanceDatabase.GetConvertedWall(conversionType, tile.WallType);
+		
 		bool transformedAny = false;
 		bool breakNewTile = newTile == ConversionInheritanceData.Break;
 		bool breakNewWall = newWall == ConversionInheritanceData.Break;
@@ -231,18 +213,22 @@ public static class CIDConvert {
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveOptimization)]
-	public static void Convert(IAltBiome biome, int i, int j, int size) {
-		if (biome is null)
-			throw new ArgumentNullException(nameof(biome), "Can't be null!");
-
+	public static void Convert(int conversionType, int i, int j, int size) {
 		for (int k = i - size; k <= i + size; k++) {
 			for (int l = j - size; l <= j + size; l++) {
 				if (!WorldGen.InWorld(k, l, 1) || Math.Abs(k - i) + Math.Abs(l - j) >= 6) {
 					continue;
 				}
-
-				Convert(biome, i, j);
+				Convert(conversionType, i, j);
 			}
 		}
 	}
+
+	public static void Convert<T>(int i, int j) where T : class, ISolution => Convert(ModContent.GetInstance<T>(), i, j);
+
+	public static void Convert<T>(int i, int j, int size) where T : class, ISolution => Convert(ModContent.GetInstance<T>(), i, j, size);
+
+	public static void Convert(ISolution solution, int i, int j) => Convert(ConversionInheritanceData.GetIdOf(solution), i, j);
+
+	public static void Convert(ISolution solution, int i, int j, int size) => Convert(ConversionInheritanceData.GetIdOf(solution), i, j, size);
 }

@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Assets;
 
-[LoadableContent(ContentOrder.Content, nameof(Load))]
+[LoadableContent(ContentOrder.EarlyContent, nameof(Load))]
 public static class AssetFactory {
 	private static readonly Dictionary<Type, IProcessor> processes = new(4);
 

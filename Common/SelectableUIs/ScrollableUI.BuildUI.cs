@@ -19,23 +19,14 @@ public static partial class ScrollableUI {
 		private static int chosenOption;
 
 		public void Load(Mod mod) {
-			ILHelper.IL<UIWorldCreation>("AddWorldEvilOptions", (ILContext il) => {
+			ILHelper.IL<UIWorldCreation>("BuildPage", (ILContext il) => {
 				var c = new ILCursor(il);
-
-				var evilButtonsArrayIndex = 0;
-
+				
 				c.GotoNext(MoveType.After,
-					i => i.MatchLdstr("Images/UI/WorldCreation/IconEvilCrimson"),
-					i => i.MatchStelemRef(),
-					i => i.MatchStloc(out _))
-				.GotoNext(MoveType.After,
-					i => i.MatchStloc(out evilButtonsArrayIndex));
+					i => i.MatchLdcR4(out _));
 
-				c.Emit(OpCodes.Ldc_I4, 0);
-				c.Emit(OpCodes.Newarr, typeof(GroupOptionButton<>).MakeGenericType(typeof(UIWorldCreation).GetNestedType("WorldEvilId", BindingFlags.NonPublic)));
-				c.Emit(OpCodes.Stloc_S, (byte)evilButtonsArrayIndex);
-
-				ILHelper.CompleteLog(AltLibrary.Instance, c, false);
+				c.Emit(OpCodes.Pop);
+				c.Emit(OpCodes.Ldc_R4, 1000f);
 			});
 			ILHelper.On<UIWorldCreation>("AddWorldEvilOptions", (On_UIWorldCreation.orig_AddWorldEvilOptions orig, UIWorldCreation self, UIElement container, float accumualtedHeight, UIElement.MouseEvent clickEvent, string tagGroup, float usableWidthPercent) => {
 				var oldChildrenLength = container.Children.Count();
@@ -47,8 +38,8 @@ public static partial class ScrollableUI {
 					tempArray[i].Remove();
 				}
 
-				int c;
-				groupOptions = new LibOptionButton<int>[c = OGICallCache.orderGroupInstanceCallsCache.Length];
+				int c = OGICallCache.orderGroupInstanceCallsCache.Length;
+				groupOptions = new LibOptionButton<int>[c];
 				for (int i = 0; i < c; i++) {
 					var texture = OGICallCache.orderGroupInstanceCallsCache[i]();
 					var color = OGICallCache.orderGroupInstanceCallsCache3[i]();
@@ -74,7 +65,7 @@ public static partial class ScrollableUI {
 						if (desc == null) {
 							return;
 						}
-						((UIText)UIWorldCreation__descriptionText.GetValue(self)).SetText(groupOptionButton.Description);
+						((UIText)UIWorldCreation__descriptionText.GetValue(self)).SetText(desc);
 					};
 					groupOptionButton.OnMouseOut += self.ClearOptionDescription;
 					groupOptionButton.SetSnapPoint(tagGroup, i, null, null);

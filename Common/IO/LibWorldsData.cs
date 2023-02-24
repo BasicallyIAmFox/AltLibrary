@@ -20,7 +20,7 @@ using Terraria.Utilities;
 
 namespace AltLibrary.Common.IO;
 
-[LoadableContent(ContentOrder.Content, nameof(Load))]
+[LoadableContent(ContentOrder.EarlyContent, nameof(Load))]
 public static class LibWorldsData {
 	private static readonly ConditionalWeakTable<WorldFileData, TagCompound> dataPerWorld = new();
 	private static readonly FieldInfo AWorldListItem__data = typeof(AWorldListItem).GetField("_data", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);

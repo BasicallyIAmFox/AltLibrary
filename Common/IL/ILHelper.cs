@@ -2,7 +2,6 @@
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using MonoMod.RuntimeDetour;
 using MonoMod.RuntimeDetour.HookGen;
 using MonoMod.Utils;
 using System;
@@ -15,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace AltLibrary.Common.IL;
 
-[LoadableContent(ContentOrder.Content, nameof(Load), UnloadName = nameof(Unload))]
+[LoadableContent(ContentOrder.EarlyContent, nameof(Load), UnloadName = nameof(Unload))]
 [LoadableContent(ContentOrder.PostContent, nameof(PostLoad))]
 public static class ILHelper {
 	private static List<(MethodInfo, Delegate, bool, bool)> IlsAndDetours = new();
@@ -23,8 +22,8 @@ public static class ILHelper {
 	public static void Load() {
 		HookUp(
 			(e, m) => $"Failed to modify method {m.DeclaringType.Namespace} {m.Name}!\n{e.Message}",
-			(m, d) => HookEndpointManager.Add(m, d),
-			(m, d) => HookEndpointManager.Modify(m, d),
+			HookEndpointManager.Add,
+			HookEndpointManager.Modify,
 			load => load
 		);
 	}
@@ -32,8 +31,8 @@ public static class ILHelper {
 	public static void PostLoad() {
 		HookUp(
 			(e, m) => $"Failed to late-modify method {m.DeclaringType.Namespace} {m.Name}!\n{e.Message}",
-			(m, d) => HookEndpointManager.Add(m, d),
-			(m, d) => HookEndpointManager.Modify(m, d),
+			HookEndpointManager.Add,
+			HookEndpointManager.Modify,
 			load => !load
 		);
 	}
@@ -41,8 +40,8 @@ public static class ILHelper {
 	public static void Unload() {
 		HookUp(
 			(e, m) => $"Failed to unmodify method {m.DeclaringType.Namespace} {m.Name}!\n{e.Message}",
-			(m, d) => HookEndpointManager.Remove(m, d),
-			(m, d) => HookEndpointManager.Unmodify(m, d),
+			HookEndpointManager.Remove,
+			HookEndpointManager.Unmodify,
 			load => false
 		);
 

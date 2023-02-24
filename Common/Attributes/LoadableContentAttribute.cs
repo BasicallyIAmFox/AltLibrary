@@ -7,10 +7,12 @@ public enum ContentOrder {
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	Unload = -1,
 	Init,
-	Content,
+	EarlyContent,
+	[EditorBrowsable(EditorBrowsableState.Never)]
+	MidContent,
 	PostContent,
 }
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
 public class LoadableContentAttribute : Attribute {
 	public ContentOrder ContentOrder { get; }
 	public string LoadName { get; }
