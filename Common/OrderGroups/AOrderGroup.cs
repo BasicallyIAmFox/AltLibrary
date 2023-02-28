@@ -25,10 +25,10 @@ public interface IStaticOrderGroup {
 	static abstract Rectangle? GetSourceRectangle();
 	static abstract Color GetColor();
 }
-public abstract class AOrderGroup<Self, T> : ModTexturedType, IAOrderGroup where Self : AOrderGroup<Self, T> where T : IAAltType {
+public abstract class AOrderGroup<TSelf, TType> : ModTexturedType, IAOrderGroup where TSelf : AOrderGroup<TSelf, TType> where TType : IAAltType {
 	public const string DefaultTexture = "Terraria/Images/UI/Bestiary/Icon_Tags_Shadow";
 
-	public List<T> Elements { get; } = new(3);
+	public List<TType> Elements { get; } = new(3);
 	public int Type { get; private set; }
 
 	public float Order { get; set; }
@@ -41,7 +41,7 @@ public abstract class AOrderGroup<Self, T> : ModTexturedType, IAOrderGroup where
 
 	public abstract string LocalizationCategory { get; }
 
-	public void Add(T ore) => Elements.Add(ore);
+	public void Add(TType ore) => Elements.Add(ore);
 
 	#region Loading
 	private protected abstract Type GetMainSubclass();
@@ -51,7 +51,7 @@ public abstract class AOrderGroup<Self, T> : ModTexturedType, IAOrderGroup where
 			throw new NotImplementedException($"{GetType().DeclaringType.FullName} doesn't implements '{typeof(IStaticOrderGroup).FullName}' interface!");
 		}
 		LibUtils.ForEachType(x => !x.IsAbstract && x.IsSubclassOf(GetMainSubclass().MakeGenericType(GetType())), (current, mod) => {
-			var ore = (T)Activator.CreateInstance(current);
+			var ore = Activator.CreateInstance(current).As<TType>();
 			mod.AddContent(ore);
 			Add(ore);
 		});
@@ -72,7 +72,7 @@ public abstract class AOrderGroup<Self, T> : ModTexturedType, IAOrderGroup where
 
 	protected sealed override void Register() {
 		ModTypeLookup<IAOrderGroup>.Register(this);
-		ModTypeLookup<Self>.Register((Self)this);
+		ModTypeLookup<TSelf>.Register(this.As<TSelf>());
 		Type = tiers.Count;
 		tiers.Add(this);
 	}

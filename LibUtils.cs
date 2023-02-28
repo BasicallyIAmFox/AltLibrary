@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 namespace AltLibrary;
 
 public static partial class LibUtils {
-	public static T As<T>(this object value) => (T)value;
+	public static TCast As<TCast>(this object value) => (TCast)value;
 
 	public static TList With<TList, TType>(this TList collection, TType value) where TList : ICollection<TType> {
 		collection.Add(value);

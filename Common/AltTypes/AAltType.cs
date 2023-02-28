@@ -34,6 +34,16 @@ public abstract class AAltType<Self, BaseGroup, Interface> : ModTexturedType, IA
 
 	public abstract string LocalizationCategory { get; }
 
+	public sealed override void Load() {
+		LoadInternal();
+		LoadSelf();
+	}
+
+	public virtual void LoadSelf() { }
+	private void LoadInternal() {
+		
+	}
+
 	public override void SetupContent() {
 		SetStaticDefaults();
 
@@ -44,11 +54,11 @@ public abstract class AAltType<Self, BaseGroup, Interface> : ModTexturedType, IA
 
 	protected sealed override void Register() {
 		ModTypeLookup<IAAltType>.Register(this);
-		ModTypeLookup<Interface>.Register((Self)this);
-		ModTypeLookup<Self>.Register((Self)this);
+		ModTypeLookup<Interface>.Register(this.As<Self>());
+		ModTypeLookup<Self>.Register(this.As<Self>());
 
 		Type = GetListOfTypes().Count;
-		GetListOfTypes().Add((Self)this);
+		GetListOfTypes().Add(this.As<Self>());
 	}
 
 	private protected abstract List<Interface> GetListOfTypes();

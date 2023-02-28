@@ -1,6 +1,7 @@
 ﻿using AltLibrary.Common.AltTypes;
 using Microsoft.Xna.Framework;
 using System;
+using Terraria.ModLoader;
 
 namespace AltLibrary.Common.OrderGroups;
 
@@ -13,7 +14,5 @@ public abstract class OreGroup : AOrderGroup<OreGroup, IAltOre>, IStaticOrderGro
 
 	public override string LocalizationCategory => "OreGroup";
 
-	private protected override Type GetMainSubclass() {
-		return typeof(AltOre<>);
-	}
+	private protected override Type GetMainSubclass() => typeof(AltOre<>);
 }

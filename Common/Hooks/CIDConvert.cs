@@ -6,6 +6,7 @@ using AltLibrary.Common.Solutions;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using Terraria;
 using Terraria.ID;
@@ -23,8 +24,6 @@ public static class CIDConvert {
 			var xIndex = 0;
 			var yIndex = 0;
 			var tileIndex = 0;
-			var typeIndex = 0;
-			var wallIndex = 0;
 
 			// Hardcoded.
 			c.Emit(OpCodes.Ldarg, 2);
@@ -65,57 +64,22 @@ public static class CIDConvert {
 				i => i.MatchLdloca(tileIndex),
 				i => i.MatchCall<Tile>("get_type"),
 				i => i.MatchLdindU2(),
-				i => i.MatchStloc(out typeIndex),
+				i => i.MatchStloc(out _),
 
 				i => i.MatchLdloca(tileIndex),
 				i => i.MatchCall<Tile>("get_wall"),
 				i => i.MatchLdindU2(),
-				i => i.MatchStloc(out wallIndex),
+				i => i.MatchStloc(out _),
 
 				i => i.MatchLdarg(out conversionTypeIndex),
 				i => i.MatchLdcI4(out _),
 				i => i.MatchSub(),
 				i => i.MatchSwitch(out _));
 
-			c.Emit(OpCodes.Ldloc, tileIndex);
 			c.Emit(OpCodes.Ldarg, conversionTypeIndex);
-			c.Emit(OpCodes.Ldloc, typeIndex);
-			c.Emit(OpCodes.Ldloc, wallIndex);
 			c.Emit(OpCodes.Ldloc, xIndex);
 			c.Emit(OpCodes.Ldloc, yIndex);
-			c.EmitDelegate(static (Tile tile, int conversionType, int tileType, int wallType, int k, int l) => {
-				int newTile = ConversionInheritanceDatabase.GetConvertedTile(conversionType, tileType);
-				int newWall = ConversionInheritanceDatabase.GetConvertedWall(conversionType, wallType);
-
-				bool transformedAny = false;
-				bool breakNewTile = newTile == ConversionInheritanceData.Break;
-				bool breakNewWall = newWall == ConversionInheritanceData.Break;
-				if (breakNewTile || breakNewWall) {
-					if (breakNewTile) {
-						WorldGen.KillTile(k, l);
-					}
-					if (breakNewWall) {
-						WorldGen.KillWall(k, l);
-					}
-
-					if (Main.netMode == NetmodeID.MultiplayerClient) {
-						NetMessage.SendData(MessageID.TileManipulation, number: k, number2: l);
-					}
-				}
-
-				if (newTile >= 0 && newTile != tile.TileType) {
-					tile.TileType = (ushort)newTile;
-					transformedAny = true;
-				}
-				if (newWall >= 0 && newWall != tile.WallType) {
-					tile.WallType = (ushort)newWall;
-					transformedAny = true;
-				}
-				if (transformedAny) {
-					WorldGen.SquareTileFrame(k, l);
-					NetMessage.SendTileSquare(-1, k, l);
-				}
-			});
+			c.Emit(OpCodes.Call, typeof(CIDConvert).GetMethod(nameof(CIDConvert.Convert), BindingFlags.Static | BindingFlags.Public, new Type[] { typeof(int), typeof(int), typeof(int) }));
 
 			var skipVanilla = c.DefineLabel();
 			c.Emit(OpCodes.Br, skipVanilla);
@@ -177,6 +141,7 @@ public static class CIDConvert {
 		});
 	}
 
+	[MethodImpl(MethodImplOptions.AggressiveOptimization)]
 	public static void Convert(int conversionType, int i, int j) {
 		Tile tile = Main.tile[i, j];
 		int newTile = ConversionInheritanceDatabase.GetConvertedTile(conversionType, tile.TileType);

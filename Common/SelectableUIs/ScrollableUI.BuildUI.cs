@@ -34,7 +34,7 @@ public static partial class ScrollableUI {
 				orig(self, container, accumualtedHeight, clickEvent, tagGroup, usableWidthPercent);
 
 				var tempArray = container.Children.ToArray();
-				for (int i = tempArray.Length - 1; i > tempArray.Length - (tempArray.Length - oldChildrenLength); i--) {
+				for (int i = tempArray.Length - 1; i >= tempArray.Length - (tempArray.Length - oldChildrenLength); i--) {
 					tempArray[i].Remove();
 				}
 

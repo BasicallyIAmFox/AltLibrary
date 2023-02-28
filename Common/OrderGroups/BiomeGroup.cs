@@ -1,6 +1,7 @@
 ﻿using AltLibrary.Common.AltTypes;
 using Microsoft.Xna.Framework;
 using System;
+using Terraria.ModLoader;
 
 namespace AltLibrary.Common.OrderGroups;
 
@@ -13,7 +14,5 @@ public abstract class BiomeGroup : AOrderGroup<BiomeGroup, IAltBiome>, IStaticOr
 
 	public override string LocalizationCategory => "BiomeGroup";
 
-	private protected override Type GetMainSubclass() {
-		return typeof(AltBiome<>);
-	}
+	private protected override Type GetMainSubclass() => typeof(AltBiome<>);
 }

@@ -14,14 +14,29 @@ using Terraria.ModLoader;
 
 namespace AltLibrary.Common.IL;
 
+[LoadableContent(ContentOrder.Init, nameof(Init))]
 [LoadableContent(ContentOrder.EarlyContent, nameof(Load), UnloadName = nameof(Unload))]
 [LoadableContent(ContentOrder.PostContent, nameof(PostLoad))]
 public static class ILHelper {
 	private static List<(MethodInfo, Delegate, bool, bool)> IlsAndDetours = new();
+	private static MethodInfo ilcursor__insert;
+	private static int stackCode = 0;
+
+	private static ILCursor ILCursor__Insert(Func<ILCursor, Instruction, ILCursor> orig, ILCursor self, Instruction instr) {
+		stackCode++;
+		return orig(self, instr);
+	}
+
+	public static void Init() {
+		ilcursor__insert = typeof(ILCursor).FindMethod("_Insert");
+		if (ilcursor__insert != null) {
+			HookEndpointManager.Add(ilcursor__insert, ILCursor__Insert);
+		}
+	}
 
 	public static void Load() {
 		HookUp(
-			(e, m) => $"Failed to modify method {m.DeclaringType.Namespace} {m.Name}!\n{e.Message}",
+			(e, m) => $"Failed to modify method {m.DeclaringType.Namespace} {m.Name}!",
 			HookEndpointManager.Add,
 			HookEndpointManager.Modify,
 			load => load
@@ -30,7 +45,7 @@ public static class ILHelper {
 
 	public static void PostLoad() {
 		HookUp(
-			(e, m) => $"Failed to late-modify method {m.DeclaringType.Namespace} {m.Name}!\n{e.Message}",
+			(e, m) => $"Failed to late-modify method {m.DeclaringType.Namespace} {m.Name}!",
 			HookEndpointManager.Add,
 			HookEndpointManager.Modify,
 			load => !load
@@ -39,18 +54,23 @@ public static class ILHelper {
 
 	public static void Unload() {
 		HookUp(
-			(e, m) => $"Failed to unmodify method {m.DeclaringType.Namespace} {m.Name}!\n{e.Message}",
+			(e, m) => $"Failed to unmodify method {m.DeclaringType.Namespace} {m.Name}!",
 			HookEndpointManager.Remove,
 			HookEndpointManager.Unmodify,
 			load => false
 		);
 
+		if (ilcursor__insert != null) {
+			HookEndpointManager.Remove(ilcursor__insert, ILCursor__Insert);
+		}
 		IlsAndDetours.Clear();
 		IlsAndDetours = null;
 	}
 
 	#region Hooking
 	private static void HookUp(Func<Exception, MethodInfo, string> errorFunc, Action<MethodInfo, Delegate> actionOn, Action<MethodInfo, Delegate> actionIL, Func<bool, bool> shouldLateLoad) {
+		int i = 0;
+		stackCode = 0;
 		foreach ((MethodInfo method, Delegate callback, bool isDetour, bool lateLoad) in IlsAndDetours) {
 			if (shouldLateLoad(lateLoad)) {
 				continue;
@@ -63,8 +83,11 @@ public static class ILHelper {
 				actionIL(method, callback);
 			}
 			catch (Exception e) {
+				AltLibrary.Instance.Logger.Error($"Error Code: {i}-{stackCode:X4}");
 				AltLibrary.Instance.Logger.Warn(errorFunc(e, method));
 			}
+			stackCode = 0;
+			i++;
 		}
 	}
 
