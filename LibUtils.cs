@@ -5,8 +5,28 @@ using Terraria.ModLoader;
 
 namespace AltLibrary;
 
-public static class LibUtils {
+internal static partial class LibUtils {
 	public static TCast As<TCast>(this object value) => (TCast)value;
+
+	public static bool TryFindIndex<T>(this List<T> values, Predicate<T> predicate, out int i) {
+		i = values.FindIndex(predicate);
+		return i != -1;
+	}
+
+	public static bool TryFindIndex<T>(this List<T> values, int startIndex, Predicate<T> predicate, out int i) {
+		i = values.FindIndex(startIndex, predicate);
+		return i != -1;
+	}
+
+	public static bool TryFindLastIndex<T>(this List<T> values, Predicate<T> predicate, out int i) {
+		i = values.FindLastIndex(predicate);
+		return i != -1;
+	}
+
+	public static bool TryFindLastIndex<T>(this List<T> values, int startIndex, Predicate<T> predicate, out int i) {
+		i = values.FindLastIndex(startIndex, predicate);
+		return i != -1;
+	}
 
 	internal static IEnumerable<T> ForEach<T>(this IEnumerable<T> enumerable, Action<T> action) {
 		var array = enumerable.ToArray();

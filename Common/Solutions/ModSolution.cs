@@ -1,19 +1,12 @@
-﻿using Terraria.ModLoader;
+﻿using AltLibrary.Common.Conversion;
+using Terraria;
+using Terraria.ModLoader;
 
 namespace AltLibrary.Common.Solutions;
 
 public abstract class ModSolution : ModType {
+	public ConversionData Conversion { get; private set; }
 	public int Type { get; private set; }
-
-	public abstract void FillTileEntries(int currentTile, ref int convertedTile, ref bool forceConversionCode);
-
-	public abstract void FillWallEntries(int currentWall, ref int convertedWall, ref bool forceConversionCode);
-
-	public virtual void OnTileConversion(int oldTile, int i, int j) {
-	}
-
-	public virtual void OnWallConversion(int oldWall, int i, int j) {
-	}
 
 	public sealed override void SetupContent() {
 		SetStaticDefaults();
@@ -22,7 +15,12 @@ public abstract class ModSolution : ModType {
 	protected sealed override void Register() {
 		ModTypeLookup<ModSolution>.Register(this);
 
+		Type = SolutionLoader.solutions.Count;
 		SolutionLoader.solutions.Add(this);
-		Type = SolutionLoader.ReserveID();
+		Conversion = new(this);
+	}
+
+	public static void TryKillingTreesAboveIfTheyWouldBecomeInvalid(Tile tile, int oldTileType, int i, int j) {
+		WorldGen.TryKillingTreesAboveIfTheyWouldBecomeInvalid(i, j, tile.TileType);
 	}
 }

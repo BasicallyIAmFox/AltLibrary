@@ -7,43 +7,56 @@ namespace AltLibrary.Content.Solutions;
 
 // Last update: 1.4.4.9
 public sealed class YellowSolution : ModSolution {
-	public override void FillTileEntries(int index3, ref int convertedTile, ref bool forceConversionCode) {
-		if ((TileID.Sets.Conversion.Grass[index3] || TileID.Sets.Conversion.Sand[index3] || TileID.Sets.Conversion.Snow[index3] || TileID.Sets.Conversion.Dirt[index3]) && index3 != 53) {
-			forceConversionCode = true;
-		}
-		else if (TileID.Sets.Conversion.HardenedSand[index3] && index3 != 397) {
-			convertedTile = 397;
-		}
-		else if ((Main.tileMoss[index3] || TileID.Sets.Conversion.Stone[index3] || TileID.Sets.Conversion.Ice[index3] || TileID.Sets.Conversion.Sandstone[index3]) && index3 != 396) {
-			convertedTile = 396;
-		}
-		else if (TileID.Sets.Conversion.Thorn[index3] && index3 != 69) {
-			convertedTile = ConversionHandler.Break;
-		}
-	}
+	public override void SetStaticDefaults() {
+		Conversion
+			.From(TileID.Sets.Conversion.Grass)
+			.From(TileID.Sets.Conversion.Sand)
+			.From(TileID.Sets.Conversion.Snow)
+			.From(TileID.Sets.Conversion.Dirt)
+			.BeforeConversion((Tile tile, int i, int j) => {
+				ushort newFloorType = 53;
+				if (WorldGen.BlockBelowMakesSandConvertIntoHardenedSand(i, j)) {
+					newFloorType = 397;
+				}
+				WorldGen.TryKillingTreesAboveIfTheyWouldBecomeInvalid(i, j, newFloorType);
+				tile.TileType = newFloorType;
 
-	public override void OnTileConversion(int index3, int index1, int index2) {
-		if ((TileID.Sets.Conversion.Grass[index3] || TileID.Sets.Conversion.Sand[index3] || TileID.Sets.Conversion.Snow[index3] || TileID.Sets.Conversion.Dirt[index3]) && index3 != 53) {
-			int newFloorType = 53;
-			if (WorldGen.BlockBelowMakesSandConvertIntoHardenedSand(index1, index2))
-				newFloorType = 397;
-			WorldGen.TryKillingTreesAboveIfTheyWouldBecomeInvalid(index1, index2, newFloorType);
-			Main.tile[index1, index2].TileType = (ushort)newFloorType;
-		}
-		else if ((Main.tileMoss[index3] || TileID.Sets.Conversion.Stone[index3] || TileID.Sets.Conversion.Ice[index3] || TileID.Sets.Conversion.Sandstone[index3]) && index3 != 396) {
-			WorldGen.TryKillingTreesAboveIfTheyWouldBecomeInvalid(index1, index2, Main.tile[index1, index2].TileType);
-		}
-	}
+				WorldGen.SquareTileFrame(i, j);
+				NetMessage.SendTileSquare(-1, i, j);
+				return ConversionRunCodeValues.DontRun;
+			})
+			.RegisterTile()
 
-	public override void FillWallEntries(int index4, ref int convertedWall, ref bool forceConversionCode) {
-		if ((WallID.Sets.Conversion.Stone[index4] || WallID.Sets.Conversion.NewWall1[index4] || WallID.Sets.Conversion.NewWall2[index4] || WallID.Sets.Conversion.NewWall3[index4] || WallID.Sets.Conversion.NewWall4[index4] || WallID.Sets.Conversion.Ice[index4] || WallID.Sets.Conversion.Sandstone[index4]) && index4 != 187) {
-			convertedWall = 187;
-		}
-		else if ((WallID.Sets.Conversion.HardenedSand[index4] || WallID.Sets.Conversion.Dirt[index4] || WallID.Sets.Conversion.Snow[index4]) && index4 != 216) {
-			convertedWall = 216;
-		}
-	}
+			.From(TileID.Sets.Conversion.HardenedSand)
+			.To(397)
+			.RegisterTile()
 
-	public override void OnWallConversion(int index4, int index1, int index2) {
+			.From(Main.tileMoss)
+			.From(TileID.Sets.Conversion.Stone)
+			.From(TileID.Sets.Conversion.Ice)
+			.From(TileID.Sets.Conversion.Sandstone)
+			.To(396)
+			.OnConversion(TryKillingTreesAboveIfTheyWouldBecomeInvalid)
+			.RegisterTile()
+
+			.From(TileID.Sets.Conversion.Thorn)
+			.To(ConversionHandler.Break)
+			.RegisterTile()
+
+			.From(WallID.Sets.Conversion.Stone)
+			.From(WallID.Sets.Conversion.NewWall1)
+			.From(WallID.Sets.Conversion.NewWall2)
+			.From(WallID.Sets.Conversion.NewWall3)
+			.From(WallID.Sets.Conversion.NewWall4)
+			.From(WallID.Sets.Conversion.Ice)
+			.From(WallID.Sets.Conversion.Sandstone)
+			.To(187)
+			.RegisterWall()
+
+			.From(WallID.Sets.Conversion.HardenedSand)
+			.From(WallID.Sets.Conversion.Dirt)
+			.From(WallID.Sets.Conversion.Snow)
+			.To(216)
+			.RegisterWall();
 	}
 }

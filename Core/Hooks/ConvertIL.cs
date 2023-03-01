@@ -3,7 +3,9 @@ using AltLibrary.Common.Solutions;
 using AltLibrary.Core.Attributes;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using MonoMod.Utils;
 using System;
+using System.Reflection;
 using Terraria;
 
 namespace AltLibrary.Core.Hooks;
@@ -12,8 +14,7 @@ namespace AltLibrary.Core.Hooks;
 internal static class ConvertIL {
 	public static void Load() {
 		ILHelper.On<WorldGen>(nameof(WorldGen.Convert), (Action<int, int, int, int> orig, int i, int j, int conversionType, int size) => {
-			conversionType = ConversionHandler.ChangeVanillaConversionIdToModdedConversionId(conversionType);
-			orig(i, j, conversionType, size);
+			orig(i, j, ConversionHandler.ChangeVanillaConversionIdToModdedConversionId(conversionType), size);
 		});
 		ILHelper.IL<WorldGen>(nameof(WorldGen.Convert), (ILContext il) => {
 			var c = new ILCursor(il);
@@ -63,11 +64,10 @@ internal static class ConvertIL {
 				i => i.MatchBge(endOfLoopLabel));
 
 			c.Emit(OpCodes.Ldarg, 2); // conversionType parameter index
+			c.Emit(OpCodes.Call, typeof(SolutionLoader).FindMethod(nameof(SolutionLoader.Get)));
 			c.Emit(OpCodes.Ldarg, iIndex);
 			c.Emit(OpCodes.Ldarg, jIndex);
-			c.EmitDelegate((int conversionType, int i, int j) => {
-				ConversionHandler.Convert(SolutionLoader.Get(conversionType), i, j);
-			});
+			c.Emit(OpCodes.Call, typeof(ConversionHandler).GetMethod(nameof(ConversionHandler.Convert), BindingFlags.Static | BindingFlags.Public, new Type[] { typeof(ModSolution), typeof(int), typeof(int) }));
 			c.Emit(OpCodes.Br, endOfLoopLabel);
 		});
 	}

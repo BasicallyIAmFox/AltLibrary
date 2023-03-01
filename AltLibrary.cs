@@ -46,7 +46,7 @@ public class AltLib : Mod {
 				}
 
 				MethodInfo method = null;
-				if (!unload) {
+				if (attri.UnloadName == null && !unload) {
 					method = current.FindMethod(attri.LoadName);
 				}
 				else if (attri.UnloadName != null) {

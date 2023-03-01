@@ -13,7 +13,7 @@ namespace AltLibrary.Core;
 [LoadableContent(ContentOrder.Init, nameof(Init))]
 [LoadableContent(ContentOrder.EarlyContent, nameof(Load), nameof(Unload))]
 [LoadableContent(ContentOrder.PostContent, nameof(PostLoad))]
-public static class ILHelper {
+internal static class ILHelper {
 	private static List<(MethodInfo, Delegate, bool, bool)> IlsAndDetours = new();
 	private static MethodInfo ilcursor__insert;
 	private static int stackCode = 0;
@@ -93,20 +93,5 @@ public static class ILHelper {
 	public static void On<T>(string methodName, Delegate del, bool lateLoading = false) => On(typeof(T), methodName, del, lateLoading);
 	public static void On(Type type, string methodName, Delegate del, bool lateLoading = false) => On(type.FindMethod(methodName), del, lateLoading);
 	public static void On(MethodInfo method, Delegate del, bool lateLoading = false) => IlsAndDetours.Add((method, del, true, lateLoading));
-	#endregion
-
-	#region Extensions
-	public static int AddVariable<T>(this ILCursor c) => c.Context.AddVariable<T>();
-	public static int AddVariable(this ILCursor c, Type type) => c.Context.AddVariable(type);
-	public static int AddVariable(this ILCursor c, TypeReference typeDefinition) => c.Context.AddVariable(typeDefinition);
-	public static int AddVariable(this ILCursor c, VariableDefinition variableDefinition) => c.Context.AddVariable(variableDefinition);
-
-	public static int AddVariable<T>(this ILContext context) => context.AddVariable(typeof(T));
-	public static int AddVariable(this ILContext context, Type type) => context.AddVariable(new VariableDefinition(context.Import(type)));
-	public static int AddVariable(this ILContext context, TypeReference typeDefinition) => context.AddVariable(new VariableDefinition(typeDefinition));
-	public static int AddVariable(this ILContext context, VariableDefinition variableDefinition) {
-		context.Body.Variables.Add(variableDefinition);
-		return context.Body.Variables.Count - 1;
-	}
 	#endregion
 }

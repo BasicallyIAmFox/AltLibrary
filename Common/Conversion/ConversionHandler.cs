@@ -10,32 +10,13 @@ namespace AltLibrary.Common.Conversion;
 
 [LoadableContent(ContentOrder.PostContent, nameof(PostLoad))]
 public sealed class ConversionHandler {
-	private static int[] tiles;
-	private static int[] walls;
-	private static bool[] tiles2;
-	private static bool[] walls2;
+	private static ConversionData.Data[] data;
 
 	public const int Keep = -1;
 	public const int Break = -2;
 
 	internal static void PostLoad() {
-		var tileFactory = new SetFactory(TileLoader.TileCount * SolutionLoader.Count);
-		var wallFactory = new SetFactory(WallLoader.WallCount * SolutionLoader.Count);
-		tiles = tileFactory.CreateIntSet(defaultState: Keep);
-		walls = wallFactory.CreateIntSet(defaultState: Keep);
-		tiles2 = tileFactory.CreateBoolSet(defaultState: false);
-		walls2 = wallFactory.CreateBoolSet(defaultState: false);
-
-		foreach (var solution in SolutionLoader.solutions) {
-			for (int i = 0; i < TileLoader.TileCount; i++) {
-				var id = TileIndex(solution, i);
-				solution.FillTileEntries(i, ref tiles[id], ref tiles2[id]);
-			}
-			for (int i = 0; i < WallLoader.WallCount; i++) {
-				var id = WallIndex(solution, i);
-				solution.FillWallEntries(i, ref walls[id], ref walls2[id]);
-			}
-		}
+		SolutionLoader.Fill((TileLoader.TileCount + WallLoader.WallCount) * SolutionLoader.Count, out data);
 	}
 
 	internal static int ChangeVanillaConversionIdToModdedConversionId(int biomeConversionId) {
@@ -52,52 +33,76 @@ public sealed class ConversionHandler {
 		};
 	}
 
-	internal static int TileIndex(ModSolution solution, int type) => TileLoader.TileCount * solution.Type + type;
-	internal static int WallIndex(ModSolution solution, int type) => WallLoader.WallCount * solution.Type + type;
+	internal static int TileIndex(int solution, int type) => (TileLoader.TileCount * solution) + type;
+	internal static int WallIndex(int solution, int type) => (TileLoader.TileCount * SolutionLoader.Count) + (WallLoader.WallCount * solution) + type;
 
 	public static void Convert<T>(int i, int j) where T : ModSolution => Convert(ModContent.GetInstance<T>(), i, j);
 	public static void Convert<T>(int i, int j, int size) where T : ModSolution => Convert(ModContent.GetInstance<T>(), i, j, size);
 	public static void Convert(ModSolution solution, int i, int j) {
+		const int wallOffset = 4;
+
+		const int wasCalled = 0;
+		const int breakTile = 1;
+		const int replacedTile = 2;
+		const int wasCalledW = wasCalled + wallOffset;
+		const int breakTileW = breakTile + wallOffset;
+		const int replacedTileW = replacedTile + wallOffset;
+
 		var tile = Main.tile[i, j];
 		var oldTile = tile.TileType;
 		var oldWall = tile.WallType;
-		var convertedTile = tiles[TileIndex(solution, tile.TileType)];
-		var convertedWall = walls[WallIndex(solution, tile.WallType)];
+		var tIndex = TileIndex(solution.Type, oldTile);
+		var wIndex = WallIndex(solution.Type, oldWall);
+		var convertedTile = data[tIndex];
+		var convertedWall = data[wIndex];
 
 		var transformations = new BitsByte();
-		var breakNewTile = convertedTile == Break;
-		var breakNewWall = convertedWall == Break;
-		if (breakNewTile || breakNewWall) {
-			if (breakNewTile) {
+
+		var preConvTileVal = convertedTile?.PreConversionDelegate?.Invoke(tile, i, j);
+		var preConvWallVal = convertedWall?.PreConversionDelegate?.Invoke(tile, i, j);
+		transformations[breakTile] = preConvTileVal == ConversionRunCodeValues.Break;
+		transformations[breakTileW] = preConvWallVal == ConversionRunCodeValues.Break;
+
+		if (convertedTile != null && preConvTileVal != ConversionRunCodeValues.DontRun) {
+			transformations[wasCalled] = true;
+			if (convertedTile.ConvertsTo == Break) {
+				transformations[breakTile] = true;
+			}
+			else {
+				var conv = convertedTile.ConvertsTo;
+				if (conv >= 0 && oldWall != conv) {
+					tile.TileType = conv.As<ushort>();
+					convertedTile.OnConversionDelegate?.Invoke(tile, oldWall, i, j);
+					transformations[replacedTile] = true;
+				}
+			}
+		}
+
+		if (convertedWall != null && preConvWallVal != ConversionRunCodeValues.DontRun) {
+			transformations[wasCalledW] = true;
+			if (convertedWall.ConvertsTo == Break) {
+				transformations[breakTileW] = true;
+			}
+			else {
+				var conv = convertedWall.ConvertsTo;
+				if (conv >= 0 && oldWall != conv) {
+					tile.WallType = conv.As<ushort>();
+					convertedWall.OnConversionDelegate?.Invoke(tile, oldWall, i, j);
+					transformations[replacedTileW] = true;
+				}
+			}
+		}
+
+		if ((transformations[breakTile] || transformations[breakTileW]) && Main.netMode == NetmodeID.MultiplayerClient) {
+			if (transformations[breakTile]) {
 				WorldGen.KillTile(i, j);
 			}
-			if (breakNewWall) {
+			if (transformations[breakTileW]) {
 				WorldGen.KillWall(i, j);
 			}
-
-			if (Main.netMode == NetmodeID.MultiplayerClient) {
-				NetMessage.SendData(MessageID.TileManipulation, number: i, number2: j);
-			}
-			return;
+			NetMessage.SendData(MessageID.TileManipulation, number: i, number2: j);
 		}
-
-		if (convertedTile >= 0 && tile.TileType != convertedTile) {
-			tile.TileType = (ushort)convertedTile;
-			transformations[0] = true;
-			transformations[1] = true;
-		}
-		if (convertedWall >= 0 && tile.WallType != convertedWall) {
-			tile.WallType = (ushort)convertedWall;
-			transformations[0] = true;
-			transformations[2] = true;
-		}
-		if (tiles2[oldTile] || walls2[oldWall] || transformations[0]) {
-			if (transformations[1]) {
-				solution.OnTileConversion(oldTile, i, j);
-			}
-			if (transformations[2]) {
-				solution.OnWallConversion(oldWall, i, j);
-			}
+		if (transformations[replacedTile] || transformations[replacedTileW]) {
 			WorldGen.SquareTileFrame(i, j);
 			NetMessage.SendTileSquare(-1, i, j);
 		}

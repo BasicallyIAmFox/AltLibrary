@@ -1,4 +1,5 @@
-﻿using AltLibrary.Core.Attributes;
+﻿using AltLibrary.Common.Conversion;
+using AltLibrary.Core.Attributes;
 using System.Collections.Generic;
 
 namespace AltLibrary.Common.Solutions;
@@ -7,20 +8,18 @@ namespace AltLibrary.Common.Solutions;
 public static class SolutionLoader {
 	internal static readonly IList<ModSolution> solutions = new List<ModSolution>();
 
-	private static int next = 0;
-
-	public static int Count => next;
-
-	internal static int ReserveID() {
-		return ++next - 1;
-	}
+	public static int Count => solutions.Count;
 
 	internal static void Unload() {
 		solutions.Clear();
-		next = 0;
 	}
 
-	public static ModSolution Get(int type) {
-		return type >= 0 && type < Count ? solutions[type] : null;
+	public static ModSolution Get(int type) => type >= 0 && type < Count ? solutions[type] : null;
+
+	internal static void Fill(int count, out ConversionData.Data[] data) {
+		data = new ConversionData.Data[count];
+		foreach (var s in solutions) {
+			s.Conversion.Fill(data);
+		}
 	}
 }
