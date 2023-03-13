@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Terraria.ModLoader;
 
 namespace AltLibrary;
@@ -8,24 +9,8 @@ namespace AltLibrary;
 internal static partial class LibUtils {
 	public static TCast As<TCast>(this object value) => (TCast)value;
 
-	public static bool TryFindIndex<T>(this List<T> values, Predicate<T> predicate, out int i) {
-		i = values.FindIndex(predicate);
-		return i != -1;
-	}
-
-	public static bool TryFindIndex<T>(this List<T> values, int startIndex, Predicate<T> predicate, out int i) {
-		i = values.FindIndex(startIndex, predicate);
-		return i != -1;
-	}
-
-	public static bool TryFindLastIndex<T>(this List<T> values, Predicate<T> predicate, out int i) {
-		i = values.FindLastIndex(predicate);
-		return i != -1;
-	}
-
-	public static bool TryFindLastIndex<T>(this List<T> values, int startIndex, Predicate<T> predicate, out int i) {
-		i = values.FindLastIndex(startIndex, predicate);
-		return i != -1;
+	public static string[] CreateNamesBasedOnFields(Type type, BindingFlags flags) {
+		return type.GetFields(flags).Select(x => x.Name).ToArray();
 	}
 
 	internal static IEnumerable<T> ForEach<T>(this IEnumerable<T> enumerable, Action<T> action) {
@@ -37,8 +22,7 @@ internal static partial class LibUtils {
 	}
 
 	public static void ForEachSpecificMod(Mod mod, Func<Type, bool> whereFunc, Action<Type, Mod> action) {
-		var enumerable = mod.Code.GetExportedTypes().Where(x => whereFunc(x));
-		var array = enumerable.ToArray();
+		var array = mod.Code.GetTypes().Where(x => whereFunc(x)).ToArray();
 		for (int i = array.Length - 1; i >= 0; i--) {
 			action(array[i], mod);
 		}
@@ -46,7 +30,7 @@ internal static partial class LibUtils {
 
 	public static void ForEachType(Func<Type, bool> whereFunc, Action<Type, Mod> action) {
 		var mods = ModLoader.Mods;
-		for (int i = mods.Length - 1; i >= 1; i--) {
+		for (int i = mods.Length - 1; i >= 0; i--) {
 			ForEachSpecificMod(mods[i], whereFunc, action);
 		}
 	}

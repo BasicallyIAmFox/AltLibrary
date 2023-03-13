@@ -10,72 +10,72 @@ public sealed class RedSolution : ModSolution {
 		Conversion
 			.From(Main.tileMoss)
 			.From(TileID.Sets.Conversion.Stone)
-			.To(203)
+			.To(TileID.Crimstone)
 			.OnConversion(TryKillingTreesAboveIfTheyWouldBecomeInvalid)
 			.RegisterTile()
 
 			.From(TileID.Sets.Conversion.JungleGrass)
-			.To(662)
+			.To(TileID.CrimsonJungleGrass)
 			.OnConversion(TryKillingTreesAboveIfTheyWouldBecomeInvalid)
 			.RegisterTile()
 
 			.From(TileID.Sets.Conversion.Grass)
-			.To(199)
+			.To(TileID.CrimsonGrass)
 			.OnConversion(TryKillingTreesAboveIfTheyWouldBecomeInvalid)
 			.RegisterTile()
 
 			.From(TileID.Sets.Conversion.Ice)
-			.To(200)
+			.To(TileID.FleshIce)
 			.OnConversion(TryKillingTreesAboveIfTheyWouldBecomeInvalid)
 			.RegisterTile()
 
 			.From(TileID.Sets.Conversion.Sand)
-			.To(234)
+			.To(TileID.Crimsand)
 			.OnConversion(TryKillingTreesAboveIfTheyWouldBecomeInvalid)
 			.RegisterTile()
 
 			.From(TileID.Sets.Conversion.HardenedSand)
-			.To(399)
+			.To(TileID.CrimsonHardenedSand)
 			.RegisterTile()
 
 			.From(TileID.Sets.Conversion.Sandstone)
-			.To(401)
+			.To(TileID.CrimsonSandstone)
 			.RegisterTile()
 
 			.From(TileID.Sets.Conversion.Thorn)
-			.To(352)
+			.To(TileID.CrimsonThorns)
 			.RegisterTile()
 
 			.From(WallID.Sets.Conversion.Grass)
-			.To(81)
+			.To(WallID.CrimsonGrassUnsafe)
 			.RegisterWall()
 
 			.From(WallID.Sets.Conversion.Stone)
-			.To(83)
+			.To(WallID.CrimstoneUnsafe)
 			.RegisterWall()
 
 			.From(WallID.Sets.Conversion.HardenedSand)
-			.To(218)
+			.To(WallID.CrimsonHardenedSand)
 			.RegisterWall()
 
 			.From(WallID.Sets.Conversion.Sandstone)
-			.To(221)
+			.To(WallID.CrimsonSandstone)
 			.RegisterWall()
 
 			.From(WallID.Sets.Conversion.NewWall1)
-			.To(192)
+			.To(WallID.CrimsonUnsafe1)
 			.RegisterWall()
 
 			.From(WallID.Sets.Conversion.NewWall2)
-			.To(193)
+			.To(WallID.CrimsonUnsafe2)
 			.RegisterWall()
 
 			.From(WallID.Sets.Conversion.NewWall3)
-			.To(194)
+			.To(WallID.CrimsonUnsafe3)
 			.RegisterWall()
 
 			.From(WallID.Sets.Conversion.NewWall4)
-			.To(195)
+			.To(WallID.CrimsonUnsafe4)
 			.RegisterWall();
 	}
 }

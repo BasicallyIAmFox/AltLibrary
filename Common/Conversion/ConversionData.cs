@@ -2,6 +2,8 @@
 using AltLibrary.Core.LogicGates;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -20,69 +22,22 @@ public sealed class ConversionData {
 
 	internal ConversionData(ModSolution solution) => type = solution.Type;
 
-	private void CreateSuccessCheck<T>(SuccessCheckDelegate checkDelegate) where T : ILogicGate {
+	private void CreateSuccessCheck(SuccessCheckDelegate checkDelegate) {
 		var del = CacheConversion.SuccessCheckDelegate;
 		if (del == null) {
 			CacheConversion.SuccessCheckDelegate = checkDelegate;
 			return;
 		}
-		CacheConversion.SuccessCheckDelegate = (int tileType) => T.Perform(del(tileType), checkDelegate(tileType));
+		CacheConversion.SuccessCheckDelegate = (int tileType) => del(tileType) | checkDelegate(tileType);
 	}
 
-	public ConversionData From<T>() where T : ModBlockType => OrFrom(ModContent.GetInstance<T>().Type);
-	public ConversionData From(int type) => OrFrom((int tileType) => type == tileType);
-	public ConversionData From(bool[] boolArray) => OrFrom((int tileType) => boolArray[tileType]);
-	public ConversionData From(SuccessCheckDelegate checkDelegate) => OrFrom(checkDelegate);
-
-	#region 'Logic Gate' 'From' methods
-	public ConversionData AndFrom<T>() where T : ModBlockType => AndFrom(ModContent.GetInstance<T>().Type);
-	public ConversionData AndFrom(int type) => AndFrom((int tileType) => type == tileType);
-	public ConversionData AndFrom(bool[] boolArray) => AndFrom((int tileType) => boolArray[tileType]);
-	public ConversionData AndFrom(SuccessCheckDelegate checkDelegate) {
-		CreateSuccessCheck<AndLogicGate>(checkDelegate);
+	public ConversionData From<T>() where T : ModBlockType => From(ModContent.GetInstance<T>().Type);
+	public ConversionData From(int type) => From((int tileType) => type == tileType);
+	public ConversionData From(bool[] boolArray) => From((int tileType) => boolArray[tileType]);
+	public ConversionData From(SuccessCheckDelegate checkDelegate) {
+		CreateSuccessCheck(checkDelegate);
 		return this;
 	}
-
-	public ConversionData OrFrom<T>() where T : ModBlockType => OrFrom(ModContent.GetInstance<T>().Type);
-	public ConversionData OrFrom(int type) => OrFrom((int tileType) => type == tileType);
-	public ConversionData OrFrom(bool[] boolArray) => OrFrom((int tileType) => boolArray[tileType]);
-	public ConversionData OrFrom(SuccessCheckDelegate checkDelegate) {
-		CreateSuccessCheck<OrLogicGate>(checkDelegate);
-		return this;
-	}
-
-	public ConversionData NandFrom<T>() where T : ModBlockType => NandFrom(ModContent.GetInstance<T>().Type);
-	public ConversionData NandFrom(int type) => NandFrom((int tileType) => type == tileType);
-	public ConversionData NandFrom(bool[] boolArray) => NandFrom((int tileType) => boolArray[tileType]);
-	public ConversionData NandFrom(SuccessCheckDelegate checkDelegate) {
-		CreateSuccessCheck<NandLogicGate>(checkDelegate);
-		return this;
-	}
-
-	public ConversionData NorFrom<T>() where T : ModBlockType => NorFrom(ModContent.GetInstance<T>().Type);
-	public ConversionData NorFrom(int type) => NorFrom((int tileType) => type == tileType);
-	public ConversionData NorFrom(bool[] boolArray) => NorFrom((int tileType) => boolArray[tileType]);
-	public ConversionData NorFrom(SuccessCheckDelegate checkDelegate) {
-		CreateSuccessCheck<NorLogicGate>(checkDelegate);
-		return this;
-	}
-
-	public ConversionData XorFrom<T>() where T : ModBlockType => XorFrom(ModContent.GetInstance<T>().Type);
-	public ConversionData XorFrom(int type) => XorFrom((int tileType) => type == tileType);
-	public ConversionData XorFrom(bool[] boolArray) => XorFrom((int tileType) => boolArray[tileType]);
-	public ConversionData XorFrom(SuccessCheckDelegate checkDelegate) {
-		CreateSuccessCheck<XorLogicGate>(checkDelegate);
-		return this;
-	}
-
-	public ConversionData XnorFrom<T>() where T : ModBlockType => XnorFrom(ModContent.GetInstance<T>().Type);
-	public ConversionData XnorFrom(int type) => XnorFrom((int tileType) => type == tileType);
-	public ConversionData XnorFrom(bool[] boolArray) => XnorFrom((int tileType) => boolArray[tileType]);
-	public ConversionData XnorFrom(SuccessCheckDelegate checkDelegate) {
-		CreateSuccessCheck<OrLogicGate>(checkDelegate);
-		return this;
-	}
-	#endregion
 
 	public ConversionData To<T>() where T : ModBlockType => To(ModContent.GetInstance<T>().Type);
 	public ConversionData To(int type) {
@@ -123,7 +78,7 @@ public sealed class ConversionData {
 			throw new ArgumentException($"Unable to register {_cacheConversion.Type} because there no target tile!");
 		}
 		if (_cacheConversion.ConvertsTo < ConversionHandler.Break) {
-			throw new ArgumentOutOfRangeException($"Unable to have target tile that is less than {ConversionHandler.Break}!");
+			throw new ArgumentOutOfRangeException($"Unable to have target tile that is lesser than {ConversionHandler.Break}!");
 		}
 		if (_cacheConversion.ConvertsTo >= TileLoader.TileCount) {
 			throw new ArgumentOutOfRangeException($"Unable to have target tile that is greater than {TileLoader.TileCount}!");
@@ -150,7 +105,7 @@ public sealed class ConversionData {
 		conversions.ForEach(conversion => {
 			if (conversion.Type == ConversionType.Tile) {
 				for (int i = 0; i < TileLoader.TileCount; i++) {
-					if (!conversion.SuccessCheckDelegate(i)) {
+					if (i != conversion.ConvertsTo && !(conversion.SuccessCheckDelegate?.Invoke(i) ?? true)) {
 						continue;
 					}
 					data[ConversionHandler.TileIndex(type, i)] = conversion;
@@ -158,7 +113,7 @@ public sealed class ConversionData {
 			}
 			else if (conversion.Type == ConversionType.Wall) {
 				for (int i = 0; i < WallLoader.WallCount; i++) {
-					if (!conversion.SuccessCheckDelegate(i)) {
+					if (i != conversion.ConvertsTo && !(conversion.SuccessCheckDelegate?.Invoke(i) ?? true)) {
 						continue;
 					}
 					data[ConversionHandler.WallIndex(type, i)] = conversion;

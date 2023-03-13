@@ -12,7 +12,7 @@ internal static partial class LibUtils {
 	public static int AddVariable(this ILCursor c, VariableDefinition variableDefinition) => c.Context.AddVariable(variableDefinition);
 
 	public static int AddVariable<T>(this ILContext context) => context.AddVariable(typeof(T));
-	public static int AddVariable(this ILContext context, Type type) => context.AddVariable(new VariableDefinition(context.Import(type)));
+	public static int AddVariable(this ILContext context, Type type) => context.AddVariable(context.Import(type));
 	public static int AddVariable(this ILContext context, TypeReference typeDefinition) => context.AddVariable(new VariableDefinition(typeDefinition));
 	public static int AddVariable(this ILContext context, VariableDefinition variableDefinition) {
 		context.Body.Variables.Add(variableDefinition);

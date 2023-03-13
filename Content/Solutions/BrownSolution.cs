@@ -12,17 +12,17 @@ public sealed class BrownSolution : ModSolution {
 			.From(TileID.Sets.Conversion.Stone)
 			.From(TileID.Sets.Conversion.Ice)
 			.From(TileID.Sets.Conversion.Sandstone)
-			.To(1)
+			.To(TileID.Stone)
 			.OnConversion(TryKillingTreesAboveIfTheyWouldBecomeInvalid)
 			.RegisterTile()
 
 			.From(TileID.Sets.Conversion.GolfGrass)
-			.To(477)
+			.To(TileID.GolfGrass)
 			.OnConversion(TryKillingTreesAboveIfTheyWouldBecomeInvalid)
 			.RegisterTile()
 
 			.From(TileID.Sets.Conversion.Grass)
-			.To(2)
+			.To(TileID.Grass)
 			.OnConversion(TryKillingTreesAboveIfTheyWouldBecomeInvalid)
 			.RegisterTile()
 
@@ -31,16 +31,14 @@ public sealed class BrownSolution : ModSolution {
 			.From(TileID.Sets.Conversion.Snow)
 			.From(TileID.Sets.Conversion.Dirt)
 			.BeforeConversion((Tile tile, int i, int j) => {
-				int newFloorType = 0;
+				int newFloorType = TileID.Dirt;
 				if (WorldGen.TileIsExposedToAir(i, j)) {
-					newFloorType = 2;
+					newFloorType = TileID.Grass;
 				}
 				WorldGen.TryKillingTreesAboveIfTheyWouldBecomeInvalid(i, j, newFloorType);
 				tile.TileType = (ushort)newFloorType;
 
-				WorldGen.SquareTileFrame(i, j);
-				NetMessage.SendTileSquare(-1, i, j);
-
+				SquareFrameTile(i, j);
 				return ConversionRunCodeValues.DontRun;
 			})
 			.RegisterTile()
@@ -52,29 +50,29 @@ public sealed class BrownSolution : ModSolution {
 			.From(WallID.Sets.Conversion.Stone)
 			.From(WallID.Sets.Conversion.Ice)
 			.From(WallID.Sets.Conversion.Sandstone)
-			.To(1)
+			.To(WallID.Stone)
 			.RegisterWall()
 
 			.From(WallID.Sets.Conversion.HardenedSand)
 			.From(WallID.Sets.Conversion.Snow)
 			.From(WallID.Sets.Conversion.Dirt)
-			.To(2)
+			.To(WallID.DirtUnsafe)
 			.RegisterWall()
 
 			.From(WallID.Sets.Conversion.NewWall1)
-			.To(196)
+			.To(WallID.DirtUnsafe1)
 			.RegisterWall()
 
 			.From(WallID.Sets.Conversion.NewWall2)
-			.To(197)
+			.To(WallID.DirtUnsafe2)
 			.RegisterWall()
 
 			.From(WallID.Sets.Conversion.NewWall3)
-			.To(198)
+			.To(WallID.DirtUnsafe3)
 			.RegisterWall()
 
 			.From(WallID.Sets.Conversion.NewWall4)
-			.To(199)
+			.To(WallID.DirtUnsafe4)
 			.RegisterWall();
 	}
 }

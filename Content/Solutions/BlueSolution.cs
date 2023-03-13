@@ -1,6 +1,8 @@
 ﻿using AltLibrary.Common.Conversion;
 using AltLibrary.Common.Solutions;
+using AltLibrary.Core;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 
 namespace AltLibrary.Content.Solutions;
@@ -11,46 +13,47 @@ public sealed class BlueSolution : ModSolution {
 		Conversion
 			.From(Main.tileMoss)
 			.From(TileID.Sets.Conversion.Stone)
-			.To(117)
+			.To(TileID.Pearlstone)
 			.OnConversion(TryKillingTreesAboveIfTheyWouldBecomeInvalid)
 			.RegisterTile()
 
 			.From(TileID.Sets.Conversion.GolfGrass)
-			.To(492)
+			.To(TileID.GolfGrassHallowed)
 			.OnConversion(TryKillingTreesAboveIfTheyWouldBecomeInvalid)
 			.RegisterTile()
 
 			.From(TileID.Sets.Conversion.Grass)
-			.To(109)
+			.To(TileID.HallowedGrass)
 			.OnConversion(TryKillingTreesAboveIfTheyWouldBecomeInvalid)
 			.RegisterTile()
 
 			.From(TileID.Sets.Conversion.Ice)
-			.To(164)
+			.To(TileID.HallowedIce)
 			.OnConversion(TryKillingTreesAboveIfTheyWouldBecomeInvalid)
 			.RegisterTile()
 
 			.From(TileID.Sets.Conversion.Sand)
-			.To(116)
+			.To(TileID.Pearlsand)
 			.OnConversion(TryKillingTreesAboveIfTheyWouldBecomeInvalid)
 			.RegisterTile()
 
 			.From(TileID.Sets.Conversion.HardenedSand)
-			.To(402)
+			.To(TileID.HallowHardenedSand)
 			.RegisterTile()
 
 			.From(TileID.Sets.Conversion.Sandstone)
-			.To(403)
+			.To(TileID.HallowSandstone)
 			.RegisterTile()
 
 			.From(TileID.Sets.Conversion.Thorn)
 			.To(ConversionHandler.Break)
 			.RegisterTile()
 
-			.From(59)
-			.To(0)
+			.From(TileID.Mud)
+			.To(TileID.Dirt)
 			.BeforeConversion((Tile tile, int i, int j) => {
-				if (Main.tile[i - 1, j].TileType == 109 || Main.tile[i + 1, j].TileType == 109 || Main.tile[i, j - 1].TileType == 109 || Main.tile[i, j + 1].TileType == 109) {
+				const ushort hallowedGrassId = TileID.HallowedGrass;
+				if (TileScanner.ScanCircleTile(new(i, j), 1, hallowedGrassId)) {
 					return ConversionRunCodeValues.Run;
 				}
 				return ConversionRunCodeValues.DontRun;
@@ -58,35 +61,35 @@ public sealed class BlueSolution : ModSolution {
 			.RegisterTile()
 
 			.From(WallID.Sets.Conversion.Grass)
-			.To(70)
+			.To(WallID.HallowedGrassUnsafe)
 			.RegisterWall()
 
 			.From(WallID.Sets.Conversion.Stone)
-			.To(28)
+			.To(WallID.PearlstoneBrickUnsafe)
 			.RegisterWall()
 
 			.From(WallID.Sets.Conversion.HardenedSand)
-			.To(219)
+			.To(WallID.HallowHardenedSand)
 			.RegisterWall()
 
 			.From(WallID.Sets.Conversion.Sandstone)
-			.To(222)
+			.To(WallID.HallowSandstone)
 			.RegisterWall()
 
 			.From(WallID.Sets.Conversion.NewWall1)
-			.To(200)
+			.To(WallID.HallowUnsafe1)
 			.RegisterWall()
 
 			.From(WallID.Sets.Conversion.NewWall2)
-			.To(201)
+			.To(WallID.HallowUnsafe2)
 			.RegisterWall()
 
 			.From(WallID.Sets.Conversion.NewWall3)
-			.To(202)
+			.To(WallID.HallowUnsafe3)
 			.RegisterWall()
 
 			.From(WallID.Sets.Conversion.NewWall4)
-			.To(203)
+			.To(WallID.HallowUnsafe4)
 			.RegisterWall();
 	}
 }

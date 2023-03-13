@@ -8,8 +8,8 @@ namespace AltLibrary.Content.Solutions;
 public sealed class DarkBlueSolution : ModSolution {
 	public override void SetStaticDefaults() {
 		Conversion
-			.From(60)
-			.To(70)
+			.From(TileID.JungleGrass)
+			.To(TileID.MushroomGrass)
 			.OnConversion(TryKillingTreesAboveIfTheyWouldBecomeInvalid)
 			.RegisterTile()
 
@@ -18,7 +18,7 @@ public sealed class DarkBlueSolution : ModSolution {
 			.RegisterTile()
 
 			.From(WallID.Sets.CanBeConvertedToGlowingMushroom)
-			.To(80)
+			.To(WallID.MushroomUnsafe)
 			.RegisterWall();
 	}
 }

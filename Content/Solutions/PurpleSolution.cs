@@ -9,74 +9,73 @@ public sealed class PurpleSolution : ModSolution {
 	public override void SetStaticDefaults() {
 		Conversion
 			.From(TileID.Sets.Conversion.JungleGrass)
-			.To(661)
+			.To(TileID.CorruptJungleGrass)
 			.OnConversion(TryKillingTreesAboveIfTheyWouldBecomeInvalid)
 			.RegisterTile()
 
 			.From(Main.tileMoss)
 			.From(TileID.Sets.Conversion.Stone)
-			.To(25)
+			.To(TileID.Ebonstone)
 			.OnConversion(TryKillingTreesAboveIfTheyWouldBecomeInvalid)
 			.RegisterTile()
 
 			.From(TileID.Sets.Conversion.Grass)
-			.To(23)
+			.To(TileID.CorruptGrass)
 			.OnConversion(TryKillingTreesAboveIfTheyWouldBecomeInvalid)
 			.RegisterTile()
 
 			.From(TileID.Sets.Conversion.Ice)
-			.To(163)
+			.To(TileID.CorruptIce)
 			.OnConversion(TryKillingTreesAboveIfTheyWouldBecomeInvalid)
 			.RegisterTile()
 
 			.From(TileID.Sets.Conversion.Sand)
-			.To(112)
+			.To(TileID.Ebonsand)
 			.OnConversion(TryKillingTreesAboveIfTheyWouldBecomeInvalid)
 			.RegisterTile()
 
 			.From(TileID.Sets.Conversion.HardenedSand)
-			.To(398)
+			.To(TileID.CorruptHardenedSand)
 			.RegisterTile()
 
 			.From(TileID.Sets.Conversion.Sandstone)
-			.To(400)
+			.To(TileID.CorruptSandstone)
 			.RegisterTile()
 
 			.From(TileID.Sets.Conversion.Thorn)
-			.To(32)
+			.To(TileID.CorruptThorns)
 			.RegisterTile()
 
 			.From(WallID.Sets.Conversion.Grass)
-			.To(69)
+			.To(WallID.CorruptGrassUnsafe)
 			.RegisterWall()
 
 			.From(WallID.Sets.Conversion.Stone)
-			.To(3)
+			.To(WallID.EbonstoneUnsafe)
 			.RegisterWall()
 
 			.From(WallID.Sets.Conversion.HardenedSand)
-			.To(217)
+			.To(WallID.CorruptHardenedSand)
 			.RegisterWall()
 
 			.From(WallID.Sets.Conversion.Sandstone)
-			.To(220)
+			.To(WallID.CorruptSandstone)
 			.RegisterWall()
 
 			.From(WallID.Sets.Conversion.NewWall1)
-			.To(188)
-			.RegisterWall()
+			.To(WallID.CorruptionUnsafe1)
 			.RegisterWall()
 
 			.From(WallID.Sets.Conversion.NewWall2)
-			.To(189)
+			.To(WallID.CorruptionUnsafe2)
 			.RegisterWall()
 
 			.From(WallID.Sets.Conversion.NewWall3)
-			.To(190)
+			.To(WallID.CorruptionUnsafe3)
 			.RegisterWall()
 
 			.From(WallID.Sets.Conversion.NewWall4)
-			.To(191)
+			.To(WallID.CorruptionUnsafe4)
 			.RegisterWall();
 	}
 }

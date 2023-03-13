@@ -10,9 +10,6 @@ using System.Reflection;
 
 namespace AltLibrary.Core;
 
-[LoadableContent(ContentOrder.Init, nameof(Init))]
-[LoadableContent(ContentOrder.EarlyContent, nameof(Load), nameof(Unload))]
-[LoadableContent(ContentOrder.PostContent, nameof(PostLoad))]
 internal static class ILHelper {
 	private static List<(MethodInfo, Delegate, bool, bool)> IlsAndDetours = new();
 	private static MethodInfo ilcursor__insert;

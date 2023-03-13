@@ -14,28 +14,27 @@ public sealed class YellowSolution : ModSolution {
 			.From(TileID.Sets.Conversion.Snow)
 			.From(TileID.Sets.Conversion.Dirt)
 			.BeforeConversion((Tile tile, int i, int j) => {
-				ushort newFloorType = 53;
+				ushort newFloorType = TileID.Stone;
 				if (WorldGen.BlockBelowMakesSandConvertIntoHardenedSand(i, j)) {
-					newFloorType = 397;
+					newFloorType = TileID.HardenedSand;
 				}
 				WorldGen.TryKillingTreesAboveIfTheyWouldBecomeInvalid(i, j, newFloorType);
 				tile.TileType = newFloorType;
 
-				WorldGen.SquareTileFrame(i, j);
-				NetMessage.SendTileSquare(-1, i, j);
+				SquareFrameTile(i, j);
 				return ConversionRunCodeValues.DontRun;
 			})
 			.RegisterTile()
 
 			.From(TileID.Sets.Conversion.HardenedSand)
-			.To(397)
+			.To(TileID.HardenedSand)
 			.RegisterTile()
 
 			.From(Main.tileMoss)
 			.From(TileID.Sets.Conversion.Stone)
 			.From(TileID.Sets.Conversion.Ice)
 			.From(TileID.Sets.Conversion.Sandstone)
-			.To(396)
+			.To(TileID.Sandstone)
 			.OnConversion(TryKillingTreesAboveIfTheyWouldBecomeInvalid)
 			.RegisterTile()
 
@@ -50,13 +49,13 @@ public sealed class YellowSolution : ModSolution {
 			.From(WallID.Sets.Conversion.NewWall4)
 			.From(WallID.Sets.Conversion.Ice)
 			.From(WallID.Sets.Conversion.Sandstone)
-			.To(187)
+			.To(WallID.Sandstone)
 			.RegisterWall()
 
 			.From(WallID.Sets.Conversion.HardenedSand)
 			.From(WallID.Sets.Conversion.Dirt)
 			.From(WallID.Sets.Conversion.Snow)
-			.To(216)
+			.To(WallID.HardenedSand)
 			.RegisterWall();
 	}
 }

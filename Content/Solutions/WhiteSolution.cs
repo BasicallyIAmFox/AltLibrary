@@ -14,7 +14,7 @@ public sealed class WhiteSolution : ModSolution {
 			.From(TileID.Sets.Conversion.HardenedSand)
 			.From(TileID.Sets.Conversion.Snow)
 			.From(TileID.Sets.Conversion.Dirt)
-			.To(147)
+			.To(TileID.SnowBlock)
 			.OnConversion(TryKillingTreesAboveIfTheyWouldBecomeInvalid)
 			.RegisterTile()
 
@@ -22,7 +22,7 @@ public sealed class WhiteSolution : ModSolution {
 			.From(TileID.Sets.Conversion.Stone)
 			.From(TileID.Sets.Conversion.Ice)
 			.From(TileID.Sets.Conversion.Sandstone)
-			.To(161)
+			.To(TileID.IceBlock)
 			.OnConversion(TryKillingTreesAboveIfTheyWouldBecomeInvalid)
 			.RegisterTile()
 
@@ -37,14 +37,14 @@ public sealed class WhiteSolution : ModSolution {
 			.From(WallID.Sets.Conversion.NewWall4)
 			.From(WallID.Sets.Conversion.Ice)
 			.From(WallID.Sets.Conversion.Sandstone)
-			.To(71)
+			.To(WallID.IceUnsafe)
 			.OnConversion(TryKillingTreesAboveIfTheyWouldBecomeInvalid)
 			.RegisterWall()
 
 			.From(WallID.Sets.Conversion.HardenedSand)
 			.From(WallID.Sets.Conversion.Dirt)
 			.From(WallID.Sets.Conversion.Snow)
-			.To(40)
+			.To(WallID.SnowWallUnsafe)
 			.RegisterWall();
 	}
 }
